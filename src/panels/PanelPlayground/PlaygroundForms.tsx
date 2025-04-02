@@ -33,7 +33,7 @@ export const PlaygroundForms = obs(function PlaygroundImportFromComfy_(p: {}) {
          }),
       })
       return raw.useClass(
-         class extends Field_group<(typeof raw)['z$Field']['z$Subfields']> {
+         class extends Field_group<(typeof raw)['{field}']['{subfields}']> {
             v1 = (): React.JSX.Element => {
                const { a, b } = field.zFields
                return (

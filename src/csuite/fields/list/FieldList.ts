@@ -17,17 +17,17 @@ import { hole, type HOLE } from './HOLE'
 // #region 🔶AUTO
 interface AutoBehaviour<out T extends CSchema> {
    /** list of keys that must be present */
-   keys(self: T['z$Field']): string[] // ['foo', 'bar', 'baz']
+   keys(self: T['{field}']): string[] // ['foo', 'bar', 'baz']
 
    /** for every item given by the list above */
-   getKey(self: T['z$Field'], ix: number): string
+   getKey(self: T['{field}'], ix: number): string
 
    /** once an item if  */
-   init(key: string /* foo */): T['z$Value']
+   init(key: string /* foo */): T['{value}']
 }
 
 // #region CONFIG
-export type Field_list_config<T extends CSchema> = Field_list<T>['z$Config']
+export type Field_list_config<T extends CSchema> = Field_list<T>['{config}']
 type Field_list_ownConfig<out T extends CSchema> = {
    /**
     * item schema;
@@ -66,18 +66,18 @@ type Field_list_ownConfig<out T extends CSchema> = {
 // #region SERIAL type
 export type Field_list_ItemID = Tagged<string, 'Field_list_ItemID'>
 
-export type Field_list_serial<T extends CSchema> = Field_list<T>['z$Serial']
+export type Field_list_serial<T extends CSchema> = Field_list<T>['{serial}']
 type Field_list_ownSerial<T extends CSchema> = {
    $: 'list'
    /** when undefined, means the list has not be `set` yet */
-   items_?: (T['z$Serial'] | HOLE)[]
+   items_?: (T['{serial}'] | HOLE)[]
    keys?: Field_list_ItemID[]
 }
 
 // #region VALUE type
-export type Field_list_value<T extends CSchema> = T['z$Value'][]
-export type Field_list_SetValue<T extends CSchema> = T['z$Setvalue'][]
-export type Field_list_unchecked<T extends CSchema> = T['z$Unchecked'][]
+export type Field_list_value<T extends CSchema> = T['{value}'][]
+export type Field_list_SetValue<T extends CSchema> = T['{setvalue}'][]
+export type Field_list_unchecked<T extends CSchema> = T['{unchecked}'][]
 
 export type Field_list_patch<T extends CSchema> =
    | Field_list_patch_insert<T>
@@ -87,7 +87,7 @@ export type Field_list_patch_insert<T extends CSchema> = Patch_Common<'list'> & 
    op: 'insert'
    order: Field_list_ItemID[]
    key: Field_list_ItemID
-   value: T['z$Serial']
+   value: T['{serial}']
 }
 export type Field_list_patch_remove = Patch_Common<'list'> & {
    op: 'remove'
@@ -108,15 +108,15 @@ export type Field_list_patch_move = Patch_Common<'list'> & {
 
 // #region STATE
 export interface Field_list<T extends CSchema> {
-   z$Type: 'list'
-   z$OwnConfig: Field_list_ownConfig<T>
-   z$OwnSerial: Field_list_ownSerial<T>
-   z$Value: Field_list_value<T>
-   z$Setvalue: Field_list_SetValue<T>
-   z$Unchecked: Field_list_unchecked<T>
-   z$Child: T['z$Field']
-   z$Opts: unknown
-   z$OwnPatch: Field_list_patch<T>
+   '{type}': 'list'
+   '{ownConfig}': Field_list_ownConfig<T>
+   '{ownSerial}': Field_list_ownSerial<T>
+   '{value}': Field_list_value<T>
+   '{setvalue}': Field_list_SetValue<T>
+   '{unchecked}': Field_list_unchecked<T>
+   '{child}': T['{field}']
+   '{opts}': unknown
+   '{ownPatch}': Field_list_patch<T>
 }
 export class Field_list<T extends CSchema> extends Field {
    // #region TYPE
@@ -160,7 +160,7 @@ export class Field_list<T extends CSchema> extends Field {
    }
 
    static generateSerial(
-      value: Maybe<Field_list<CSchema>['z$Value']>,
+      value: Maybe<Field_list<CSchema>['{value}']>,
       config: Field_list_config<CSchema>,
    ): Field_list_serial<CSchema> {
       if (value == null && config.defaultLength == null) return this.unsetSerial
@@ -203,10 +203,10 @@ export class Field_list<T extends CSchema> extends Field {
       return this.items_.length
    }
 
-   private readonly items_: T['z$Field'][] = observable([])
-   public get items(): readonly T['z$Field'][] { return this.items_ } // prettier-ignore
-   public get _(): readonly T['z$Field'][] { return this.items_ } // prettier-ignore
-   map<U>(fn: (item: T['z$Field'], ix: number) => U): U[] {
+   private readonly items_: T['{field}'][] = observable([])
+   public get items(): readonly T['{field}'][] { return this.items_ } // prettier-ignore
+   public get _(): readonly T['{field}'][] { return this.items_ } // prettier-ignore
+   map<U>(fn: (item: T['{field}'], ix: number) => U): U[] {
       return this.items_.map(fn)
    }
 
@@ -252,7 +252,7 @@ export class Field_list<T extends CSchema> extends Field {
       while (at != null) {
          at = at.zParent
          if (at === this) {
-            return this.items_.indexOf(child as T['z$Field'])
+            return this.items_.indexOf(child as T['{field}'])
          }
          child = at
       }
@@ -263,7 +263,7 @@ export class Field_list<T extends CSchema> extends Field {
       return `items_.[${branchName}]`
    }
 
-   override get zChildrenAll(): T['z$Field'][] {
+   override get zChildrenAll(): T['{field}'][] {
       return this.items_
    }
 
@@ -329,7 +329,7 @@ export class Field_list<T extends CSchema> extends Field {
       this.startAutoBehaviour()
    }
 
-   at(ix: number): T['z$Field'] | undefined {
+   at(ix: number): T['{field}'] | undefined {
       return this.items_.at(ix)
    }
 
@@ -521,19 +521,19 @@ export class Field_list<T extends CSchema> extends Field {
    }
 
    // 🦊 get zValue_or_fail(): Field_list_value<T> {
-   // 🦊     const x: this['z$Value'] = new Proxy([], this.makeValueProxy('fail'))
+   // 🦊     const x: this['{value}'] = new Proxy([], this.makeValueProxy('fail'))
    // 🦊     Object.defineProperty(this, 'zValue_or_fail', { value: x })
    // 🦊     return x
    // 🦊 }
 
    // 🦊 get zValue_or_zero(): Field_list_value<T> {
-   // 🦊     const x: this['z$Value'] = new Proxy([], this.makeValueProxy('zero'))
+   // 🦊     const x: this['{value}'] = new Proxy([], this.makeValueProxy('zero'))
    // 🦊     Object.defineProperty(this, 'zValue_or_zero', { value: x })
    // 🦊     return x
    // 🦊 }
 
    // 🦊 get value_unchecked(): Field_list_unchecked<T> {
-   // 🦊     const x: this['z$Unchecked'] = new Proxy([], this.makeValueProxy('unchecked'))
+   // 🦊     const x: this['{unchecked}'] = new Proxy([], this.makeValueProxy('unchecked'))
    // 🦊     Object.defineProperty(this, 'value_unchecked', { value: x })
    // 🦊     return x
    // 🦊 }
@@ -630,7 +630,7 @@ export class Field_list<T extends CSchema> extends Field {
       }
    }
 
-   override zGetSetValue(): this['z$Setvalue'] | undefined {
+   override zGetSetValue(): this['{setvalue}'] | undefined {
       // console.log(`[💀 getSetValue] `, this.path)
       return this.value_set
    }
@@ -663,7 +663,7 @@ export class Field_list<T extends CSchema> extends Field {
    }
 
    // ADDING ITEMS -------------------------------------------------
-   duplicateItemAtIndex(ix: number): Maybe<T['z$Field']> {
+   duplicateItemAtIndex(ix: number): Maybe<T['{field}']> {
       const item = bang(this.items_[ix])
       return this.addItem({ at: ix, value: item.zIsValid ? item.zValue : undefined })
    }
@@ -672,7 +672,7 @@ export class Field_list<T extends CSchema> extends Field {
     * Appends new elements to the end of an array,
     * and returns the new length of the array.
     */
-   push(...values: T['z$Setvalue'][]): number {
+   push(...values: T['{setvalue}'][]): number {
       if (values.length === 0) return this.length
       this.zRunInTransaction(() => {
          for (const v of values) {
@@ -686,7 +686,7 @@ export class Field_list<T extends CSchema> extends Field {
     * Inserts new elements at the start of an array,
     * and returns the new length of the array.
     */
-   unshift(...values: T['z$Value'][]): number {
+   unshift(...values: T['{value}'][]): number {
       if (values.length === 0) return this.length
       this.zRunInTransaction(() => {
          for (const v of values) {
@@ -703,11 +703,11 @@ export class Field_list<T extends CSchema> extends Field {
          at?: number
          applyEvenIfAtMaxLen?: boolean
          // value
-         value?: T['z$Value']
-         valueExt?: T['z$Setvalue']
-         serial?: T['z$Serial']
+         value?: T['{value}']
+         valueExt?: T['{setvalue}']
+         serial?: T['{serial}']
       } = {},
-   ): Maybe<T['z$Field']> {
+   ): Maybe<T['{field}']> {
       if (p.at != null && p.at < 0) return void console.log(`[🔶] list.addItem: at is negative`)
       if (p.at != null && p.at > this.items_.length)
          return void console.log(`[🔶] list.addItem: at is out of bounds`)
@@ -788,10 +788,10 @@ export class Field_list<T extends CSchema> extends Field {
       start: number,
       /** The number of elements to remove. */
       deleteCount: number = Infinity,
-   ): T['z$Field'][] {
+   ): T['{field}'][] {
       if (deleteCount === 0) return []
       if (start >= this.length) return []
-      let deleted: T['z$Field'][] = []
+      let deleted: T['{field}'][] = []
       this.zRunInTransaction(() => {
          // remove from serial
          this.zPatchSerial((draft) => {
@@ -815,7 +815,7 @@ export class Field_list<T extends CSchema> extends Field {
     * Removes all elements from the array and
     * @returns An array containing the elements that were deleted.
     */
-   removeAllItems(): T['z$Field'][] {
+   removeAllItems(): T['{field}'][] {
       // ensure list is not empty
       if (this.length === 0) {
          console.log(`[🔶] list.removeAllItems: list is already empty`)
@@ -835,7 +835,7 @@ export class Field_list<T extends CSchema> extends Field {
       // })
    }
 
-   removeItem(item: T['z$Field']): Maybe<T['z$Field']> {
+   removeItem(item: T['{field}']): Maybe<T['{field}']> {
       // ensure item is in the list
       const i = this.items_.indexOf(item)
       if (i === -1) {
@@ -854,11 +854,11 @@ export class Field_list<T extends CSchema> extends Field {
     * Removes the first element from an array and returns it.
     * If the array is empty, undefined is returned and the array is not modified.
     */
-   shift(): Maybe<T['z$Field']> {
+   shift(): Maybe<T['{field}']> {
       return this.removeItemAt(0)
    }
 
-   removeItemAt(i: number): Maybe<T['z$Field']> {
+   removeItemAt(i: number): Maybe<T['{field}']> {
       if (this.length < i) return null
       return this.splice(i, 1)[0]
    }
@@ -879,7 +879,7 @@ export class Field_list<T extends CSchema> extends Field {
       const added = thisMountKeys
          .map((mountKey, ix) => ({
             mountKey,
-            serial: thisSerials[ix] as T['z$Serial'],
+            serial: thisSerials[ix] as T['{serial}'],
          }))
          // It's easier to filter afterwards, because the map function needs the index
          // to get the serial
@@ -979,7 +979,7 @@ export class Field_list<T extends CSchema> extends Field {
                   )
 
                   newMountKeys.splice(indexEstimation, 0, patch.key)
-                  newItems.splice(indexEstimation, 0, patch.value as T['z$Serial'])
+                  newItems.splice(indexEstimation, 0, patch.value as T['{serial}'])
                } else {
                   throw new Error('❌ Field_list.applyOwnPatches: unknown patch')
                }

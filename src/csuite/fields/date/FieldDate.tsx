@@ -31,7 +31,7 @@ export type Field_date_value<VALUE> = VALUE
 export type Field_date_unchecked<VALUE> = Maybe<Field_date_value<VALUE>>
 
 // #region Serial
-type Field_date_serial = Field_date<unknown>['z$Serial']
+type Field_date_serial = Field_date<unknown>['{serial}']
 type Field_date_ownSerial = {
    $: 'date'
    value?: ISOString | null
@@ -39,15 +39,15 @@ type Field_date_ownSerial = {
 
 // #region Types
 export interface Field_date<VALUE> {
-   z$Type: 'date'
-   z$OwnConfig: Field_date_ownConfig<VALUE>
-   z$OwnSerial: Field_date_ownSerial
-   z$Value: Field_date_value<VALUE>
-   z$Setvalue: Field_date_value<VALUE>
-   z$Unchecked: Field_date_unchecked<VALUE>
-   z$Child: never
-   z$Opts: unknown
-   z$OwnPatch: Patch<'date'>
+   '{type}': 'date'
+   '{ownConfig}': Field_date_ownConfig<VALUE>
+   '{ownSerial}': Field_date_ownSerial
+   '{value}': Field_date_value<VALUE>
+   '{setvalue}': Field_date_value<VALUE>
+   '{unchecked}': Field_date_unchecked<VALUE>
+   '{child}': never
+   '{opts}': unknown
+   '{ownPatch}': Patch<'date'>
 }
 
 // #region State
@@ -55,7 +55,7 @@ export class Field_date<out VALUE> extends Field {
    // #region static
    static readonly type: 'date' = 'date'
    private static readonly unsetSerial: Field_date_serial = { $: 'date' }
-   static readonly codeForTypescriptValue = (config: Field_date<unknown>['z$Config']): string =>
+   static readonly codeForTypescriptValue = (config: Field_date<unknown>['{config}']): string =>
       config.codeForTypescriptValue ?? 'Date'
    // #region migration
    static override migrateSerial(serial: object): Field_date_serial | null {
@@ -81,9 +81,9 @@ export class Field_date<out VALUE> extends Field {
    }
 
    static generateSerial(
-      value: Maybe<Field_date<any>['z$Value']>,
-      config: Field_date<any>['z$Config'],
-   ): Field_date<any>['z$Serial'] {
+      value: Maybe<Field_date<any>['{value}']>,
+      config: Field_date<any>['{config}'],
+   ): Field_date<any>['{serial}'] {
       const defaultValue = typeof config.default === 'function' ? config.default() : config.default
       if (value == null && defaultValue == null) return this.unsetSerial
 

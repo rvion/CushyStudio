@@ -6,7 +6,7 @@ import { Frame } from '../../../csuite/frame/Frame'
 
 export const UCMaskMenuUI = obs(function UCMaskMenuUI_(p: {
    //
-   mask: Mask$['z$Field']
+   mask: Mask$['{field}']
    index: number
 }) {
    const inputHeight = cushy.preferences.interface.zValue.inputHeight

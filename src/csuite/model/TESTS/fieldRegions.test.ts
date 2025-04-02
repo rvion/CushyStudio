@@ -7,10 +7,10 @@ const directoryPath: 'src/csuite' = 'src/csuite' // Change this to your director
 
 // Define the list of required regions in order
 const requiredRegions: string[] = [
-   'z$Config', // config type
-   'z$Serial', // serial type
-   'z$Value',
-   'z$Types',
+   '{config}', // config type
+   '{serial}', // serial type
+   '{value}',
+   '{types}',
    'State',
    'Static',
    'Ctor',

@@ -12,7 +12,7 @@
  * */
 
 // this should be a default
-export type OutputFor<UIFn extends (...args: any[]) => { z$Value: any }> = ReturnType<UIFn>['z$Value']
+export type OutputFor<UIFn extends (...args: any[]) => { '{value}': any }> = ReturnType<UIFn>['{value}']
 
 export type UI_HighResFix = Z.Group<{
    upscaleMethod: Z.XSelectOne_<'regular' | 'Neural 1.5' | 'Neural XL'>

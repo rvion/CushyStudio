@@ -18,7 +18,7 @@ export type CustomWidgetProps<T> = {
    extra: UIKit
 }
 
-// #region ['z$Config']
+// #region ['{config}']
 export type Field_custom_ownConfig<T> = {
    defaultValue: () => T
    subTree?: () => CSchema
@@ -31,34 +31,34 @@ export type Field_custom_ownSerial<T> = {
    value?: T
 }
 
-// #region ['z$Value']
+// #region ['{value}']
 export type Field_custom_value<T> = T
 
 // #region $Types
 export interface Field_custom<T> {
-   z$Type: 'custom'
-   z$OwnConfig: Field_custom_ownConfig<T>
-   z$OwnSerial: Field_custom_ownSerial<T>
-   z$Value: Field_custom_value<T>
-   z$Unchecked: Field_custom_value<T> | undefined
-   z$Field: Field_custom<T>
-   z$Child: never
+   '{type}': 'custom'
+   '{ownConfig}': Field_custom_ownConfig<T>
+   '{ownSerial}': Field_custom_ownSerial<T>
+   '{value}': Field_custom_value<T>
+   '{unchecked}': Field_custom_value<T> | undefined
+   '{field}': Field_custom<T>
+   '{child}': never
 }
 
 export class Field_custom<T> extends Field {
    static readonly type: 'custom' = 'custom'
-   static readonly unsetSerial: Field_custom<any>['z$Serial'] = { $: 'custom' }
+   static readonly unsetSerial: Field_custom<any>['{serial}'] = { $: 'custom' }
    static generateSerial(
-      value: Maybe<Field_custom<any>['z$Value']>,
-      config: Field_custom<any>['z$Config'],
-   ): Field_custom<any>['z$Serial'] {
+      value: Maybe<Field_custom<any>['{value}']>,
+      config: Field_custom<any>['{config}'],
+   ): Field_custom<any>['{serial}'] {
       if (value == null && config.defaultValue == null) return this.unsetSerial
       const finalValue = value != null ? value : config.defaultValue()
       return { $: 'custom', value: finalValue }
    }
    static migrateSerial(): undefined {}
    public static readonly patchedSerialPaths: readonly string[] = Object.freeze(['val'])
-   static codeForTypescriptValue(config: Field_custom<any>['z$Config']): string {
+   static codeForTypescriptValue(config: Field_custom<any>['{config}']): string {
       return `unknown /* ${config.Component.name} */`
    }
 
@@ -69,7 +69,7 @@ export class Field_custom<T> extends Field {
       parent: Field | null,
       schema: CSchema<Field_custom<T>>,
       initialMountKey: string,
-      serial?: Field_custom<T>['z$Serial'],
+      serial?: Field_custom<T>['{serial}'],
    ) {
       super(repo, root, parent, schema, initialMountKey, serial)
       this.init(serial)
@@ -79,7 +79,7 @@ export class Field_custom<T> extends Field {
       return this.zSerial.value !== undefined
    }
 
-   protected zSetOwnSerial(next: Field_custom<T>['z$Serial']): void {
+   protected zSetOwnSerial(next: Field_custom<T>['{serial}']): void {
       if (!(this.zSerial.value === undefined)) {
          const def = this.defaultValue
          if (def !== undefined) {
@@ -94,7 +94,7 @@ export class Field_custom<T> extends Field {
    DefaultHeaderUI = WidgetCustom_HeaderUI
    DefaultBodyUI: undefined = undefined
 
-   get Component(): Field_custom<T>['z$Config']['Component'] {
+   get Component(): Field_custom<T>['{config}']['Component'] {
       return this.zConfig.Component
    }
 

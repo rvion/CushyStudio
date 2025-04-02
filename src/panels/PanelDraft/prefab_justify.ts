@@ -16,7 +16,7 @@ export const ui_justify = (ui: CushySchemaBuilder): UI_Justify =>
       },
    )
 
-export const run_justify = (value: ReturnType<typeof ui_justify>['z$Value']): string | undefined => {
+export const run_justify = (value: ReturnType<typeof ui_justify>['{value}']): string | undefined => {
    if (value === 'full') return 'w-full'
    if (value === 'center') return 'max-w-xl m-auto'
    if (value === 'L') return 'max-w-xl'

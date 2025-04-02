@@ -3,7 +3,7 @@ import type { UC2$ } from '../stateV2/ucV2'
 import { useUnifiedCanvas } from '../states/UnifiedCanvasCtx'
 import { PixiMediaImage } from './PixiMediaImage'
 
-export const PIXIUCLayers = obs(function UCLayers_(p: { uc2: UC2$['z$Field'] }) {
+export const PIXIUCLayers = obs(function UCLayers_(p: { uc2: UC2$['{field}'] }) {
    const uc1 = useUnifiedCanvas()
    const uc2 = p.uc2
    return (

@@ -40,8 +40,8 @@ describe('field customizations', () => {
          // const z: CSchema<CSchema<F>> = 0 as any
          const S1 = b.bool().useClass(F, null)
          const E1 = S1.create()
-         E1 satisfies CSchema<CSchema<F>['z$Field']>['z$Field']
-         E1 satisfies CSchema<CSchema<CSchema<F>['z$Field']>['z$Field']>['z$Field']
+         E1 satisfies CSchema<CSchema<F>['{field}']>['{field}']
+         E1 satisfies CSchema<CSchema<CSchema<F>['{field}']>['{field}']>['{field}']
 
          expect(E1.zValue).toBe(false)
          expect(E1.inverse).toBe(true)
@@ -50,7 +50,7 @@ describe('field customizations', () => {
       it('works with external class', () => {
          const S0 = b.fields({ foo: b.int({ default: 10 }) })
 
-         type T0 = Field_group<{ foo: Z.Number }>['z$Subfields']
+         type T0 = Field_group<{ foo: Z.Number }>['{subfields}']
 
          interface Foo2 extends MAGICFIELDS<T0> {}
          class Foo2 extends Field_group<T0> {

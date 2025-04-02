@@ -25,25 +25,25 @@ export type Field_color_unchecked = Field_color_value | undefined
 
 // STATE
 export interface Field_color {
-   z$Type: 'color'
-   z$OwnConfig: Field_color_ownConfig
-   z$OwnSerial: Field_color_ownSerial
-   z$Value: Field_color_value
-   z$Setvalue: Field_color_value
-   z$Unchecked: Field_color_unchecked
-   z$Child: never
-   z$Opts: unknown
-   z$OwnPatch: Patch<'color'>
+   '{type}': 'color'
+   '{ownConfig}': Field_color_ownConfig
+   '{ownSerial}': Field_color_ownSerial
+   '{value}': Field_color_value
+   '{setvalue}': Field_color_value
+   '{unchecked}': Field_color_unchecked
+   '{child}': never
+   '{opts}': unknown
+   '{ownPatch}': Patch<'color'>
 }
 export class Field_color extends Field {
    static readonly type: 'color' = 'color'
-   static readonly unsetSerial: Field_color['z$Serial'] = { $: 'color' }
+   static readonly unsetSerial: Field_color['{serial}'] = { $: 'color' }
    static override migrateSerial(): undefined {}
-   static readonly codeForTypescriptValue = (config: Field_color['z$Config']): string => 'Z.Color'
+   static readonly codeForTypescriptValue = (config: Field_color['{config}']): string => 'Z.Color'
    static generateSerial(
-      value: Maybe<Field_color['z$Value']>,
-      config: Field_color['z$Config'],
-   ): Field_color['z$Serial'] {
+      value: Maybe<Field_color['{value}']>,
+      config: Field_color['{config}'],
+   ): Field_color['{serial}'] {
       if (value == null && config.default == null) return this.unsetSerial
 
       return {
@@ -58,13 +58,13 @@ export class Field_color extends Field {
       parent: Field | null,
       schema: CSchema<Field_color>,
       initialMountKey: string,
-      serial?: Field_color['z$Serial'],
+      serial?: Field_color['{serial}'],
    ) {
       super(repo, root, parent, schema, initialMountKey, serial)
       this.init(serial)
    }
 
-   protected zSetOwnSerial(next: this['z$Serial']): void {
+   protected zSetOwnSerial(next: this['{serial}']): void {
       if (next.value == null) {
          const def = this.defaultValue
          if (def != null) next = produce(next, (draft) => void (draft.value = def))

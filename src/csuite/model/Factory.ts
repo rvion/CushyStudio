@@ -63,7 +63,7 @@ export class Factory<BUILDER extends IBuilder = IBuilder> {
    document<SCHEMA extends CSchema>(
       schemaExt: SCHEMA | ((form: BUILDER) => SCHEMA),
       entityConfig: EntityConfig<NoInfer<SCHEMA>> = {},
-   ): SCHEMA['z$Field'] {
+   ): SCHEMA['{field}'] {
       const schema: SCHEMA = this.evalSchema(schemaExt)
       const doc = schema.create(entityConfig.serial?.(), this.repository)
       if (entityConfig.onSerialChange != null) doc.zOnSerialChanges(entityConfig.onSerialChange)
@@ -75,7 +75,7 @@ export class Factory<BUILDER extends IBuilder = IBuilder> {
    draft<SCHEMA extends CSchema>(
       schemaExt: SCHEMA | ((form: BUILDER) => SCHEMA),
       entityConfig: EntityConfig<NoInfer<SCHEMA>> = {},
-   ): DraftLike<SCHEMA['z$Field']> {
+   ): DraftLike<SCHEMA['{field}']> {
       return this.document(schemaExt, entityConfig)
    }
 
@@ -92,7 +92,7 @@ export class Factory<BUILDER extends IBuilder = IBuilder> {
       schemaExt: SCHEMA | ((form: BUILDER) => SCHEMA),
       entityConfig: EntityConfig<SCHEMA> = {},
       deps: DependencyList = [],
-   ): SCHEMA['z$Field'] {
+   ): SCHEMA['{field}'] {
       const doc = useMemo(() => {
          // TODO: document properly
          // 💬 2024-09-19 rvion:
@@ -114,9 +114,9 @@ export class Factory<BUILDER extends IBuilder = IBuilder> {
 
    // // this is not much more than a useMemo(() => new Prez(field))...
    // usePrez<SCHEMA extends CSchema>(
-   //    fieldOrSchema: SCHEMA['z$Field'] | SCHEMA,
+   //    fieldOrSchema: SCHEMA['{field}'] | SCHEMA,
    //    conf:
-   //       | RENDERER.FieldRenderArgs<SCHEMA['z$Field']>
+   //       | RENDERER.FieldRenderArgs<SCHEMA['{field}']>
    //       | ((fo: RENDERER.Prez<SCHEMA>) => RENDERER.Prez<SCHEMA>) = {},
    //    deps: DependencyList = [],
    // ): RENDERER.Prez<SCHEMA> {
@@ -138,7 +138,7 @@ export class Factory<BUILDER extends IBuilder = IBuilder> {
       schemaExt: SCHEMA | ((form: BUILDER) => SCHEMA),
       entityConfig: EntityConfig<NoInfer<SCHEMA>> = {},
       deps: DependencyList = [],
-   ): SCHEMA['z$Field'] {
+   ): SCHEMA['{field}'] {
       const doc = this.use(schemaExt, entityConfig, deps)
       // dispose that document when the component unmount
       useEffect(() => (): void => doc.zDisposeTree(), [doc])
@@ -149,7 +149,7 @@ export class Factory<BUILDER extends IBuilder = IBuilder> {
       schemaExt: SCHEMA | ((form: BUILDER) => SCHEMA),
       entityConfig: EntityConfig<NoInfer<SCHEMA>> = {},
       deps: DependencyList = [],
-   ): DraftLike<SCHEMA['z$Field']> {
+   ): DraftLike<SCHEMA['{field}']> {
       return this.use(schemaExt, entityConfig, deps)
    }
 
@@ -164,7 +164,7 @@ export class Factory<BUILDER extends IBuilder = IBuilder> {
       schemaExt: SCHEMA | ((form: BUILDER) => SCHEMA),
       entityConfig: EntityConfig<NoInfer<SCHEMA>> = {},
       deps: DependencyList = [],
-   ): DraftLike<SCHEMA['z$Field']> {
+   ): DraftLike<SCHEMA['{field}']> {
       return this.useDisposable(schemaExt, entityConfig, deps)
    }
 
@@ -173,7 +173,7 @@ export class Factory<BUILDER extends IBuilder = IBuilder> {
       key: string,
       schemaExt: SCHEMA | ((form: BUILDER) => SCHEMA),
       deps: DependencyList = [],
-   ): SCHEMA['z$Field'] {
+   ): SCHEMA['{field}'] {
       let serial: any = null
 
       try {
@@ -202,7 +202,7 @@ export class Factory<BUILDER extends IBuilder = IBuilder> {
       key: string,
       schemaExt: SCHEMA | ((form: BUILDER) => SCHEMA),
       deps: DependencyList = [],
-   ): SCHEMA['z$Field'] {
+   ): SCHEMA['{field}'] {
       let serial: any = null
 
       try {

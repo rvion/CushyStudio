@@ -126,7 +126,7 @@ export function ui_LatentShapeGenerator(
 /** this function returns a fancy latent */
 export const run_LatentShapeGenerator = async (
    /** the shape generation config */
-   shapeConfig: UI_LatentShapeGenerator['z$Value'],
+   shapeConfig: UI_LatentShapeGenerator['{value}'],
    /** required to convert generated image to latent */
    vae: Comfy.Signal['VAE'],
 ): Promise<{

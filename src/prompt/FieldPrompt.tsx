@@ -30,7 +30,7 @@ export type Field_prompt_ownConfig = {
 }
 
 // #region Serial from value
-export const Field_prompt_fromValue = (val: Field_prompt_value): Field_prompt['z$Serial'] => ({
+export const Field_prompt_fromValue = (val: Field_prompt_value): Field_prompt['{serial}'] => ({
    $: 'prompt',
    val: val.text,
 })
@@ -48,24 +48,24 @@ export type Field_prompt_unchecked = Field_prompt
 
 // #region State
 export interface Field_prompt {
-   z$Type: 'prompt'
-   z$OwnConfig: Field_prompt_ownConfig
-   z$OwnSerial: Field_prompt_ownSerial
-   z$Value: Field_prompt_value
-   z$Unchecked: Field_prompt_value | undefined
-   z$Field: Field_prompt
-   z$Child: never
+   '{type}': 'prompt'
+   '{ownConfig}': Field_prompt_ownConfig
+   '{ownSerial}': Field_prompt_ownSerial
+   '{value}': Field_prompt_value
+   '{unchecked}': Field_prompt_value | undefined
+   '{field}': Field_prompt
+   '{child}': never
 }
 export class Field_prompt extends Field {
    // #region types
    static readonly type: 'prompt' = 'prompt'
-   static readonly unsetSerial: Field_prompt['z$Serial'] = { $: 'prompt' }
+   static readonly unsetSerial: Field_prompt['{serial}'] = { $: 'prompt' }
    static codeForTypescriptValue = () => `Field_prompt`
    public static readonly patchedSerialPaths: readonly string[] = Object.freeze(['val'])
    static generateSerial(
-      value: Maybe<Field_prompt['z$Value']>,
-      config: Field_prompt['z$Config'],
-   ): Field_prompt['z$Serial'] {
+      value: Maybe<Field_prompt['{value}']>,
+      config: Field_prompt['{config}'],
+   ): Field_prompt['{serial}'] {
       if (value == null && config.default == null) return this.unsetSerial
       return { $: 'prompt', val: value != null ? value.zSerial.val : config.default }
    }
@@ -78,7 +78,7 @@ export class Field_prompt extends Field {
       parent: Field | null,
       schema: CSchema<Field_prompt>,
       initialMountKey: string,
-      serial?: Field_prompt['z$Serial'],
+      serial?: Field_prompt['{serial}'],
    ) {
       super(repo, root, parent, schema, initialMountKey, serial)
       this.init(serial)
@@ -110,7 +110,7 @@ export class Field_prompt extends Field {
       return (this.zSerial.val ?? '') !== (this.zConfig.default ?? '')
    }
 
-   protected zSetOwnSerial(next: Field_prompt['z$Serial']): void {
+   protected zSetOwnSerial(next: Field_prompt['{serial}']): void {
       // assign default value if not value set but has default value
       if (next.val == null) {
          const def = this.defaultValue
@@ -175,7 +175,7 @@ export class Field_prompt extends Field {
       return this
    }
 
-   override zGetSetValue(): this['z$Setvalue'] | undefined {
+   override zGetSetValue(): this['{setvalue}'] | undefined {
       // console.log(`[💀 getSetValue] `, this.path)
       return this.zSerial.val
    }

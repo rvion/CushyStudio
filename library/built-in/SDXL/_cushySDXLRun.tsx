@@ -24,7 +24,7 @@ import { _evalPrompt } from './_evalPrompt'
 export async function _cushySDXLRun(
    //
    sdk: Runtime<CushySDXLSchema>,
-   ui: CushySDXLSchema['z$Value'],
+   ui: CushySDXLSchema['{value}'],
    ctx: DraftExecutionContext,
 ): Promise<void> {
    const graph = sdk.nodes

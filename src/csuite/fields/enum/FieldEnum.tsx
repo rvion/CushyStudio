@@ -37,28 +37,28 @@ export type Field_enum_value<O extends ComfyUnionValue> = O // Requirable[T]
 
 // #region State
 export interface Field_enum<O extends ComfyUnionValue> {
-   z$Type: 'enum'
-   z$OwnConfig: Field_enum_ownConfig<O>
-   z$OwnSerial: Field_enum_ownSerial<O>
-   z$Value: Field_enum_value<O>
-   z$Unchecked: Field_enum_value<O> | undefined
-   z$Field: Field_enum<O>
-   z$Child: never
+   '{type}': 'enum'
+   '{ownConfig}': Field_enum_ownConfig<O>
+   '{ownSerial}': Field_enum_ownSerial<O>
+   '{value}': Field_enum_value<O>
+   '{unchecked}': Field_enum_value<O> | undefined
+   '{field}': Field_enum<O>
+   '{child}': never
 }
 export class Field_enum<O extends ComfyUnionValue> extends Field {
    // #region Static
    static readonly type: 'enum' = 'enum'
    public static readonly patchedSerialPaths: readonly string[] = Object.freeze(['val'])
-   static readonly unsetSerial: Field_enum<any>['z$Serial'] = { $: 'enum' }
+   static readonly unsetSerial: Field_enum<any>['{serial}'] = { $: 'enum' }
    static generateSerial(
-      value: Maybe<Field_enum<any>['z$Value']>,
-      config: Field_enum<any>['z$Config'],
-   ): Field_enum<any>['z$Serial'] {
+      value: Maybe<Field_enum<any>['{value}']>,
+      config: Field_enum<any>['{config}'],
+   ): Field_enum<any>['{serial}'] {
       if (value == null && config.default == null) return this.unsetSerial
       return { $: 'enum', val: value ?? config.default }
    }
 
-   static codeForTypescriptValue(config: Field_enum<any>['z$Config']): string {
+   static codeForTypescriptValue(config: Field_enum<any>['{config}']): string {
       const knownValues = cushy.schema.knownUnionBySlotName.get(config.slotName)?.values ?? []
       return knownValues.map((v) => JSON.stringify(v)).join(' | ')
    }
@@ -87,7 +87,7 @@ export class Field_enum<O extends ComfyUnionValue> extends Field {
       parent: Field | null,
       schema: CSchema<Field_enum<O>>,
       initialMountKey: string,
-      serial?: Field_enum<O>['z$Serial'],
+      serial?: Field_enum<O>['{serial}'],
    ) {
       super(repo, root, parent, schema, initialMountKey, serial)
       this.init(serial)
@@ -115,7 +115,7 @@ export class Field_enum<O extends ComfyUnionValue> extends Field {
       return isValidDef
    }
 
-   protected zSetOwnSerial(next: Field_enum<O>['z$Serial']): void {
+   protected zSetOwnSerial(next: Field_enum<O>['{serial}']): void {
       // handle default
       if (next?.val === undefined) {
          const def = _extractDefaultValue(this.zConfig)

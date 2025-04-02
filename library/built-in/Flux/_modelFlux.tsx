@@ -70,7 +70,7 @@ export const prefabModelFlux = (): $prefabModelFlux => {
 }
 
 export const evalModelFlux = (
-   doc: $prefabModelFlux['z$Value'],
+   doc: $prefabModelFlux['{value}'],
 ): {
    ckpt: Comfy.Signal['MODEL']
    vae: Comfy.Signal['VAE']

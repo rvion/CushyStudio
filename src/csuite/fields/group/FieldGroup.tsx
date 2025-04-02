@@ -15,7 +15,7 @@ import { Field } from '../../model/Field'
 import { registerFieldClass } from '../WidgetUI.DI'
 
 // CONFIG
-export type Field_group_config<T extends SchemaDict> = Field_group<T>['z$Config']
+export type Field_group_config<T extends SchemaDict> = Field_group<T>['{config}']
 type Field_group_ownConfig<T extends SchemaDict> = {
    /**
     * Lambdas allowed only for recursive fields;
@@ -28,14 +28,14 @@ type Field_group_ownConfig<T extends SchemaDict> = {
    items?: T | (() => T)
 
    /** @deprecated; use `toString` instead */
-   summary?: CovariantFn<[items: { [k in keyof T]: T[k]['z$Value'] }, self: Field_group<T>], string>
+   summary?: CovariantFn<[items: { [k in keyof T]: T[k]['{value}'] }, self: Field_group<T>], string>
    // (
    //    //
    // ): string
 
    /** @default @false */
    presetButtons?: boolean
-   default?: T['z$Value']
+   default?: T['{value}']
 
    // 🔶 TODO 1: remove summary from here and move it to the base field config directly
    // 🟢 TODO 2: stop passing values to that function, only pass the field directly
@@ -44,48 +44,48 @@ type Field_group_ownConfig<T extends SchemaDict> = {
 }
 
 // SERIAL
-export type Field_group_serial<T extends SchemaDict> = Field_group<T>['z$Serial']
+export type Field_group_serial<T extends SchemaDict> = Field_group<T>['{serial}']
 type Field_group_ownSerial<T extends SchemaDict> = {
    $: 'group'
    // fix required here; invariant violation!
    // TODO: why is that not optional ? it should be.
-   values_: { [K in keyof T]?: T[K]['z$Serial'] }
+   values_: { [K in keyof T]?: T[K]['{serial}'] }
 }
 
 // VALUE
 export type Field_group_value<T extends SchemaDict> = {
-   [k in keyof T]: T[k]['z$Value']
+   [k in keyof T]: T[k]['{value}']
 }
 
 export type Field_group_SetValue<T extends SchemaDict> = {
-   [k in keyof T]?: T[k]['z$Setvalue']
+   [k in keyof T]?: T[k]['{setvalue}']
 }
 
 export type Field_group_unchecked<T extends SchemaDict> = {
-   [k in keyof T]: T[k]['z$Unchecked']
+   [k in keyof T]: T[k]['{unchecked}']
 }
 
 // TYPES
 export interface Field_group<T extends SchemaDict = SchemaDict> {
-   z$Type: 'group'
-   z$OwnConfig: Field_group_ownConfig<T>
-   z$OwnSerial: Field_group_ownSerial<T>
-   z$Value: Field_group_value<T>
-   z$Setvalue: Field_group_SetValue<T>
-   z$Unchecked: Field_group_unchecked<T>
-   z$Child: T[keyof T]['z$Field']
-   z$Opts: unknown
-   z$OwnPatch: Patch<'group'>
+   '{type}': 'group'
+   '{ownConfig}': Field_group_ownConfig<T>
+   '{ownSerial}': Field_group_ownSerial<T>
+   '{value}': Field_group_value<T>
+   '{setvalue}': Field_group_SetValue<T>
+   '{unchecked}': Field_group_unchecked<T>
+   '{child}': T[keyof T]['{field}']
+   '{opts}': unknown
+   '{ownPatch}': Patch<'group'>
    // own
-   z$Subfields: T
+   '{subfields}': T
 }
 
 // ---------------------------------------------------------------------------
 // 💬 2025-02-10 rvion: pending decision about removal or not
 /** @deprecated */
 export type FieldGroupWithMAGICFIELDS<T extends SchemaDict> = Field_group<T> & MAGICFIELDS<T>
-export type MAGICFIELDS<T extends { [key: string]: { z$Field: any } }> = {
-   [K in keyof T /* as Capitalize<K & string> */]: T[K]['z$Field']
+export type MAGICFIELDS<T extends { [key: string]: { '{field}': any } }> = {
+   [K in keyof T /* as Capitalize<K & string> */]: T[K]['{field}']
 }
 
 export class Field_group<T extends SchemaDict> extends Field {
@@ -121,9 +121,9 @@ export class Field_group<T extends SchemaDict> extends Field {
       return OUT
    }
    static generateSerial(
-      value: Maybe<Field_group<any>['z$Value']>,
-      config: Field_group<any>['z$Config'],
-   ): Field_group<any>['z$Serial'] {
+      value: Maybe<Field_group<any>['{value}']>,
+      config: Field_group<any>['{config}'],
+   ): Field_group<any>['{serial}'] {
       const configItems = typeof config.items === 'function' ? config.items() : config.items
       if (configItems == null) return this.unsetSerial
 
@@ -244,7 +244,7 @@ export class Field_group<T extends SchemaDict> extends Field {
                if (isNew) {
                   const hasDefault = this.zConfig.default != null && fName in this.zConfig.default
                   if (hasDefault) {
-                     child.value = this.zConfig.default![fName as keyof T['z$Value']]
+                     child.value = this.zConfig.default![fName as keyof T['{value}']]
                   }
                }
             },
@@ -259,7 +259,7 @@ export class Field_group<T extends SchemaDict> extends Field {
     * // fix | I'm not really convinces that this should be observable
     * // fix | varying fields should probably always go though a dynamic 🤔
     */
-   zFields: { [k in keyof T]: T[k]['z$Field'] } = observable({}) as any
+   zFields: { [k in keyof T]: T[k]['{field}'] } = observable({}) as any
    override zAcknowledgeNewChildSerial(mountKey: string, newChildSerial: any): boolean {
       // fast path: abort when exactly the same
       if (this.zSerial.values_[mountKey] === newChildSerial) return false
@@ -276,7 +276,7 @@ export class Field_group<T extends SchemaDict> extends Field {
    }
 
    /** return item at give key */
-   zAt<K extends keyof T>(key: K): T[K]['z$Field'] {
+   zAt<K extends keyof T>(key: K): T[K]['{field}'] {
       return this.zFields[key]
    }
 
@@ -302,7 +302,7 @@ export class Field_group<T extends SchemaDict> extends Field {
       return Object.entries(fieldSchemas) as [keyof T & string, CSchema<any>][]
    }
    // #region VALUE
-   override zSet(x: this['z$Setvalue']): this {
+   override zSet(x: this['{setvalue}']): this {
       this.zRunInTransaction(() => {
          for (const key in x) {
             // set support partial values
@@ -435,7 +435,7 @@ export class Field_group<T extends SchemaDict> extends Field {
       }
    }
 
-   override zGetSetValue(): this['z$Setvalue'] | undefined {
+   override zGetSetValue(): this['{setvalue}'] | undefined {
       // console.log(`[💀 getSetValue] `, this.path)
       return this.zValue_set
    }

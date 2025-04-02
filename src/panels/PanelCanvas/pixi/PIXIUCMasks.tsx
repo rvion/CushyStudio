@@ -2,7 +2,7 @@ import type { UC2$ } from '../stateV2/ucV2'
 
 import { PixiMediaImage } from './PixiMediaImage'
 
-export const PIXIUCMasks = obs(function UCMasks_(p: { uc2: UC2$['z$Field'] }) {
+export const PIXIUCMasks = obs(function UCMasks_(p: { uc2: UC2$['{field}'] }) {
    const uc2 = p.uc2
    return (
       <>
