@@ -6,7 +6,7 @@ import type { Repository } from '../../model/Repository'
 import type { Problem_Ext } from '../../model/Validation'
 
 import { produce } from 'immer'
-import { computed } from 'mobx'
+import { computed, observable } from 'mobx'
 
 import { csuiteConfig } from '../../config/configureCsuite'
 import { type ErrorConfigValue, extractConfigMessage, extractConfigValue } from '../../errors/extractConfig'
@@ -224,7 +224,7 @@ export class Field_string extends Field {
    public static patchedSerialPaths: readonly string[] = Object.freeze(['value'])
 
    // #region BUFFERED
-   temporaryValue: string | null = null
+   @observable accessor temporaryValue: string | null = null
    setTemporaryValue(next: string | null): void {
       this.temporaryValue = next
    }
