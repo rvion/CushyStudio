@@ -24,9 +24,9 @@ describe('field customizations', () => {
       it('fails when useClass + useClass', () => {
          const S0 = b.fields({ foo: b.int({ default: 10 }) })
          class A extends Field_group<any> {}
-         const S1 = S0.useClass(A, null)
+         const S1 = S0.useClass(A)
          class B extends Field_group<any> {}
-         expect(() => S1.useClass(B, null)).toThrow()
+         expect(() => S1.useClass(B)).toThrow()
       })
    })
 
@@ -64,7 +64,7 @@ describe('field customizations', () => {
             }
          }
 
-         const S1 = S0.useClass(Foo2, null)
+         const S1 = S0.useClass(Foo2)
 
          const E1: Foo2 = S1.create()
          // proper constructor
@@ -208,7 +208,7 @@ describe('field customizations', () => {
             }
          }
 
-         const S1 = S0.useClass(Foo3, null)
+         const S1 = S0.useClass(Foo3)
 
          const E1: Foo3 = S1.create()
          // proper constructor
@@ -270,7 +270,7 @@ describe('field customizations', () => {
             }
          }
 
-         const S1 = S0.useClass(Glux, null)
+         const S1 = S0.useClass(Glux)
          for (let i = 0; i < 3; i++) {
             const E1 = S1.create()
             expect({
@@ -325,7 +325,7 @@ describe('field customizations', () => {
             }
          }
 
-         const S1 = S0.useClass(Glux, null)
+         const S1 = S0.useClass(Glux)
          for (let i = 0; i < 1; i++) {
             const E1 = S1.create()
             expect({
