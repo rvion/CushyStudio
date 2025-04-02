@@ -49,7 +49,7 @@ export type SelectorToken =
    | StepHasID // #id
    | StepHasTag // %tag
    // LOGIC -------------------------------------------------------------------
-   | StepBranches // {...|...|...}
+   | StepBranches // {or|...,...,...} {and|...,...,...}
    | StepHas // :has()
    // EXPERIMENTAL ------------------------------------------------------------
    | StepNot // !() 👉 weird semantic; possibly just a `:has-not()` in disguise
@@ -582,8 +582,7 @@ export class FieldSelector {
    }
 
    parseNot(): StepNot {
-      this.consumeCharOrThrow('!')
-      this.consumeCharOrThrow('(')
+      this.consumeCharOrThrow('!(')
       const steps: SelectorToken[] = []
       while (true) {
          if (this.peek() === ')') break
@@ -595,11 +594,7 @@ export class FieldSelector {
    }
 
    parseHas(): StepHas {
-      this.consumeCharOrThrow(':')
-      this.consumeCharOrThrow('h')
-      this.consumeCharOrThrow('a')
-      this.consumeCharOrThrow('s')
-      this.consumeCharOrThrow('(')
+      this.consumeCharOrThrow(':has(')
       const steps: SelectorToken[] = []
       while (true) {
          if (this.peek() === ')') break
