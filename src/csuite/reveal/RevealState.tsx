@@ -255,27 +255,31 @@ export class RevealState {
 
    // #region HIDE TRIGGERS
    get shouldHideOnAnchorBlur(): boolean {
-      return this.hideTriggers.blurAnchor ?? false
+      return this._EVALBOOL(this.hideTriggers.blurAnchor, null)
    }
 
    get shouldHideOnKeyboardEscape(): boolean {
-      return this.hideTriggers.escapeKey ?? false
+      return this._EVALBOOL(this.hideTriggers.escapeKey, null)
    }
 
    get shouldHideOnAnchorClick(): boolean {
-      return this.hideTriggers.clickAnchor ?? false
+      return this._EVALBOOL(this.hideTriggers.clickAnchor, null)
    }
 
    get shouldHideOnAnchorOrTooltipMouseLeave(): boolean {
-      return this.hideTriggers.mouseOutside ?? false
+      return this._EVALBOOL(this.hideTriggers.mouseOutside, null)
    }
 
    get shouldHideOnBackdropClick(): boolean {
-      return this.hideTriggers.backdropClick ?? false
+      return this._EVALBOOL(this.hideTriggers.backdropClick, null)
    }
 
    get shouldHideOnShellClick(): boolean {
-      return this.hideTriggers.shellClick ?? false
+      return this._EVALBOOL(this.hideTriggers.shellClick, null)
+   }
+
+   get shouldHideOnTabKey(): boolean {
+      return this._EVALBOOL(this.hideTriggers.tabKey, null)
    }
 
    private _EVALBOOL(
@@ -648,7 +652,7 @@ export class RevealState {
 
    get hasBackdrop(): boolean {
       // 🔴
-      return this.p.hasBackdrop ?? this.hideTriggers.backdropClick ?? false
+      return this.p.hasBackdrop ?? this.shouldHideOnBackdropClick
    }
 
    onFocusAnchor = (ev: FocusEvent): void => {
@@ -748,7 +752,7 @@ export class RevealState {
          )
             return // 🔶 tab should not close popups
 
-         if (this.hideTriggers.tabKey) this.close(reason)
+         if (this.shouldHideOnTabKey) this.close(reason)
          // 🔴 if in grid context, do not stop propagation and do not focusNextElement so the grid focus the next cell (which have tabIndex=-1) itself
          // (or maybe call .selectCell ourselves to keep the grid selection in sync with our own?)
          // see ev.preventGridDefault() in https://github.com/adazzle/react-data-grid/blob/main/website/demos/CellNavigation.tsx#L136

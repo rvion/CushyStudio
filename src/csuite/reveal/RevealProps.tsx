@@ -43,7 +43,16 @@ export type RevealShowTrigger =
 // ❓ |  () => ...
 // ❓ |  { chick: ..., hover: ..., focus: ... }
 
-export type RevealHideTriggers = { [key in RevealHideTrigger]?: boolean }
+export type RevealHideTriggers = {
+   [key in RevealHideTrigger]?:
+      | boolean
+      | ((
+           reveal: RevealState,
+           Reveal: typeof RevealState,
+           event: Maybe<SyntheticEvent>,
+        ) => boolean | undefined)
+}
+
 export type RevealHideTrigger =
    | 'mouseOutside' //
    | 'escapeKey'
