@@ -130,7 +130,7 @@ const BuilderStringImpl = (): BuilderStringMixin =>
             normalize: (v) => v?.toLowerCase()?.trim(),
             inputType: inputType ?? 'email',
             minLength: 1,
-            ...(rest as any) /* ping @domi; uiui type error here */,
+            ...(rest as any),
             check: (v) => {
                const configuredError = config.check?.(v)
                if (configuredError != null) return configuredError
