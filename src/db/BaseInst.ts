@@ -10,9 +10,11 @@ import { nanoid } from 'nanoid'
 
 import { quickBench } from './quickBench'
 
-export abstract class BaseInst<TABLE extends TableInfo<keyof KyselyTables>> {
-   declare dataObservabilityConfig: { [key in keyof TABLE['$T']]?: AnnotationMapEntry } | undefined
+export interface BaseInst<TABLE extends TableInfo<keyof KyselyTables>> {
+   dataObservabilityConfig?: { [key in keyof TABLE['$T']]?: AnnotationMapEntry } | undefined
+}
 
+export abstract class BaseInst<TABLE extends TableInfo<keyof KyselyTables>> {
    @observable.ref accessor data: TABLE['$T']
 
    constructor(
