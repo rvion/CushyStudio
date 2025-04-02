@@ -22,7 +22,7 @@ const config: UserConfigExport = {
          'src/**/*.test.tsx',
          // '!src/cushy-forms/**/*',
       ],
-      globalSetup: ['./src/vitest.setup.ts'],
+      globalSetup: ['./src/setup.vitest.ts'],
 
       // environmentMatchGlobs: [
       //    // Frontend tests
@@ -31,6 +31,7 @@ const config: UserConfigExport = {
       //    ['**/*.{test,spec}.ts', 'node'],
       // ],
       setupFiles: [
+         './src/setup.vitest.ts',
          // './src/back/testing/setupTestsAfterEnv.ts',
          // './src/front/setupTestsAfterEnv_front.ts',
       ],
