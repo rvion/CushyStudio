@@ -155,7 +155,7 @@ export const ui_tint = (ui: Z.Builder, def?: Tint): UI_Tint => {
    )
 }
 
-export const run_tint = (ui: ReturnType<typeof ui_tint>['::Value']): Tint => {
+export const run_tint = (ui: ReturnType<typeof ui_tint>['z$Value']): Tint => {
    return {
       // l
       lightness: ui.l?.lightness,

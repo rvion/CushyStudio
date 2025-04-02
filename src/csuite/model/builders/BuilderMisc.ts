@@ -9,15 +9,15 @@ import { CSchema } from '../CSchema'
 import { defineSchemaBuilderMixin } from './defineSchemaBuilderMixin'
 
 export type BuilderMiscMixin = {
-   size_(config?: Field_size['::Config']): Z.Size
-   size(config?: Field_size['::Config']): Z.Size
-   seed(config?: Field_seed['::Config']): Z.Seed
-   color(config?: Field_color['::Config']): Z.Color
-   stringColor(config?: Field_string['::Config']): Z.String
-   matrix(config: Field_matrix['::Config']): Z.Matrix
-   markdown(config: Field_markdown['::Config'] | string): Z.Markdown
-   header(config: Field_markdown['::Config'] | string): Z.Markdown
-   pixel(config?: Omit<Field_number['::Config'], 'mode' | 'parse' | 'format'>): Z.Number
+   size_(config?: Field_size['z$Config']): Z.Size
+   size(config?: Field_size['z$Config']): Z.Size
+   seed(config?: Field_seed['z$Config']): Z.Seed
+   color(config?: Field_color['z$Config']): Z.Color
+   stringColor(config?: Field_string['z$Config']): Z.String
+   matrix(config: Field_matrix['z$Config']): Z.Matrix
+   markdown(config: Field_markdown['z$Config'] | string): Z.Markdown
+   header(config: Field_markdown['z$Config'] | string): Z.Markdown
+   pixel(config?: Omit<Field_number['z$Config'], 'mode' | 'parse' | 'format'>): Z.Number
    // tuple: Tuple
 }
 
@@ -45,7 +45,7 @@ const BuilderMiscImpl = (): BuilderMiscMixin =>
          return CSchema.new(Field_seed, config)
       },
 
-      color(config: Field_color['::Config'] = {}): Z.Color {
+      color(config: Field_color['z$Config'] = {}): Z.Color {
          return CSchema.new(Field_color, config)
       },
 
@@ -60,7 +60,7 @@ const BuilderMiscImpl = (): BuilderMiscMixin =>
        * @deprecated
        * @see {@link color} for a better color field based on colorjs.io
        */
-      stringColor(config: Field_string['::Config'] = {}): Z.String {
+      stringColor(config: Field_string['z$Config'] = {}): Z.String {
          config.inputType ??= 'color'
          return CSchema.new(Field_string, config)
       },
@@ -85,7 +85,7 @@ const BuilderMiscImpl = (): BuilderMiscMixin =>
          )
       },
 
-      pixel(config: Omit<Field_number['::Config'], 'mode' | 'parse' | 'format'> = {}): Z.Number {
+      pixel(config: Omit<Field_number['z$Config'], 'mode' | 'parse' | 'format'> = {}): Z.Number {
          return CSchema.new(Field_number, {
             mode: 'int',
             ...config,

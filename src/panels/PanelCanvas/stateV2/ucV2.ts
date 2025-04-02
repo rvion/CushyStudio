@@ -6,9 +6,9 @@ import { usePanel } from '../../../router/usePanel'
 import { layer$, type Layer$ } from './Layer$'
 import { mask$, type Mask$, type Masks$ } from './Masks$'
 
-export const useUCV2 = (): UC2$['::Field'] => usePanel().usePersistentModel('StateV2', (b) => uc2$(b))
+export const useUCV2 = (): UC2$['z$Field'] => usePanel().usePersistentModel('StateV2', (b) => uc2$(b))
 
-export const masksChannel: Channel<Masks$['::Field']> = new Channel()
+export const masksChannel: Channel<Masks$['z$Field']> = new Channel()
 
 // #region UC2
 /**

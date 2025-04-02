@@ -8,7 +8,7 @@ import { bang } from '../../utils/bang'
 export type ChannelOrChannelId<T> = Channel<T> | ChannelId
 export type ChannelId = string
 export interface Channel<T> {
-   '::Type': T
+   z$Type: T
 }
 
 export class Channel<T> {

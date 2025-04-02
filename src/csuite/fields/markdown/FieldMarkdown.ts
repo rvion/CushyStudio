@@ -8,14 +8,14 @@ import { Field } from '../../model/Field'
 import { registerFieldClass } from '../WidgetUI.DI'
 
 // #region CONFIG TYPE
-export type Field_markdown_config = Field_markdown['::Config']
+export type Field_markdown_config = Field_markdown['z$Config']
 type Field_markdown_ownConfig = {
    markdown: string | ((self: Field_markdown) => string)
    inHeader?: boolean
 }
 
 // #region SERIAL TYPE
-export type Field_markdown_serial = Field_markdown['::Serial']
+export type Field_markdown_serial = Field_markdown['z$Serial']
 type Field_markdown_ownSerial = { $: 'markdown' }
 
 // #region VALUE TYPE
@@ -24,15 +24,15 @@ export type Field_markdown_unchecked = Field_markdown_value
 
 // #region STATE TYPE
 export interface Field_markdown {
-   '::Type': 'markdown'
-   '::OwnConfig': Field_markdown_ownConfig
-   '::OwnSerial': Field_markdown_ownSerial
-   '::Value': Field_markdown_value
-   '::Setvalue': Field_markdown_value
-   '::Unchecked': Field_markdown_unchecked
-   '::Child': never
-   '::Opts': unknown
-   '::OwnPatch': Patch<'markdown'>
+   z$Type: 'markdown'
+   z$OwnConfig: Field_markdown_ownConfig
+   z$OwnSerial: Field_markdown_ownSerial
+   z$Value: Field_markdown_value
+   z$Setvalue: Field_markdown_value
+   z$Unchecked: Field_markdown_unchecked
+   z$Child: never
+   z$Opts: unknown
+   z$OwnPatch: Patch<'markdown'>
 }
 export class Field_markdown extends Field {
    // #region TYPE

@@ -167,7 +167,7 @@ export class PanelState<PROPS extends object = any> {
       uid: string,
       init: ((ui: Builder) => SCHEMA) | SCHEMA,
       opts?: { log?: boolean },
-   ): SCHEMA['::Field'] => {
+   ): SCHEMA['z$Field'] => {
       return useMemoAction(() => {
          let schema: SCHEMA = typeof init === 'function' ? init(cushy.forms.builder) : init
          const log = opts?.log ? logForPersistentModel : logVoid
@@ -192,7 +192,7 @@ export class PanelState<PROPS extends object = any> {
          // get or create panel store to hold/persist the entity
          const storeName = `entity-${uid}`
          let store: PanelPersistentStore<any> = this.stores.get(storeName) as PanelPersistentStore<
-            SCHEMA['::Serial'] | false
+            SCHEMA['z$Serial'] | false
          >
          if (store == null) {
             log(`    | creating store (${storeName})`)

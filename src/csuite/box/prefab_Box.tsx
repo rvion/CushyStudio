@@ -24,7 +24,7 @@ export const ui_Box = (
          shadow: UI_Tint
          border: UI_Tint
          hover: Z.Bool
-      }>['::Config'],
+      }>['z$Config'],
       'multi' | 'items'
    >,
 ): UI_Box => {
@@ -44,7 +44,7 @@ export const ui_Box = (
    )
 }
 
-export const run_Box = (ui: UI_Box['::Value']): Box => {
+export const run_Box = (ui: UI_Box['z$Value']): Box => {
    const box: Box = { hover: ui.hover }
    if (ui.base) box.base = run_tint(ui.base)
    if (ui.text) box.text = run_tint(ui.text)

@@ -513,7 +513,7 @@ export class STATE {
          onSerialChange: (form) => writeJSON('settings/civitai.json', form.zSerial),
       },
    )
-   get favbar(): $schemaFavbar['::Field'] {
+   get favbar(): $schemaFavbar['z$Field'] {
       return this.preferences.interface.zFields.favBar
    }
    // favbar = cushyFactory.document(
@@ -607,10 +607,6 @@ export class STATE {
       this.dndHandler = new CushyDnDHandler()
       // 🔴 ensure getters are called at least once so we upsert the two core virtual hosts
       // 💬 2024-10-26 rvion: this is just bad
-      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-      // this.virtualHostBase
-      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-      // this.virtualHostFull
       // eslint-disable-next-line @typescript-eslint/no-unused-expressions
       this.standardHost
 

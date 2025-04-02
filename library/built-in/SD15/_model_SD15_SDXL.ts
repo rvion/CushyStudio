@@ -12,7 +12,7 @@ export type $prefabModelSD15andSDXL = Z.Group<{
 export const prefabModelSD15andSDXL = (
    p: {
       ckpt_name?: Comfy.Slots['CheckpointLoaderSimple.ckpt_name']
-      extra?: $schemaModelExtras['::Value']
+      extra?: $schemaModelExtras['z$Value']
    } = {},
 ): $prefabModelSD15andSDXL => {
    const b = getBuilder()
@@ -51,7 +51,7 @@ export const prefabModelSD15andSDXL = (
    )
 }
 
-export function evalModelSD15andSDXL(doc: $prefabModelSD15andSDXL['::Value']): {
+export function evalModelSD15andSDXL(doc: $prefabModelSD15andSDXL['z$Value']): {
    ckpt: Comfy.Signal['MODEL']
    vae: Comfy.Signal['VAE']
    clip: Comfy.Signal['CLIP']

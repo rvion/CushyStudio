@@ -54,23 +54,23 @@ type Field_bool_unchecked = Field_bool_value | undefined
 
 // #region TYPES
 export interface Field_bool extends Field {
-   ['::Type']: 'bool'
-   ['::OwnConfig']: Field_bool_ownConfig
-   ['::OwnSerial']: Field_bool_ownSerial
-   ['::Value']: Field_bool_value
-   ['::Setvalue']: Field_bool_value
-   ['::Unchecked']: Field_bool_unchecked
-   ['::Child']: never
-   ['::Opts']: unknown
-   ['::OwnPatch']: Patch<'bool'>
+   z$Type: 'bool'
+   z$OwnConfig: Field_bool_ownConfig
+   z$OwnSerial: Field_bool_ownSerial
+   z$Value: Field_bool_value
+   z$Setvalue: Field_bool_value
+   z$Unchecked: Field_bool_unchecked
+   z$Child: never
+   z$Opts: unknown
+   z$OwnPatch: Patch<'bool'>
 }
 
 export class Field_bool extends Field {
    // #region TYPE
    static readonly type: 'bool' = 'bool'
-   private static readonly unsetSerial: Field_bool['::Serial'] = { $: 'bool' }
+   private static readonly unsetSerial: Field_bool['z$Serial'] = { $: 'bool' }
    static readonly codeForTypescriptValue = (config: Field_bool_ownConfig): string => 'boolean'
-   static override migrateSerial(serial: object): Maybe<Field_bool['::Serial']> {
+   static override migrateSerial(serial: object): Maybe<Field_bool['z$Serial']> {
       if (isProbablySerialBool(serial)) {
          if ('val' in serial) {
             const recoveredVal = serial.val
@@ -82,9 +82,9 @@ export class Field_bool extends Field {
    }
 
    static generateSerial(
-      value: Maybe<Field_bool['::Value']>,
-      config: Field_bool['::Config'],
-   ): Field_bool['::Serial'] {
+      value: Maybe<Field_bool['z$Value']>,
+      config: Field_bool['z$Config'],
+   ): Field_bool['z$Serial'] {
       if (value == null && config.default == null) return this.unsetSerial
 
       return {
@@ -100,14 +100,14 @@ export class Field_bool extends Field {
       parent: Field | null,
       schema: CSchema<any /* Field_bool */>,
       initialMountKey: string,
-      serial?: Field_bool['::Serial'],
+      serial?: Field_bool['z$Serial'],
    ) {
       super(repo, root, parent, schema, initialMountKey, serial)
       this.init(serial)
    }
 
    // #region SERIAL
-   protected zSetOwnSerial(next: Field_bool['::Serial']): void {
+   protected zSetOwnSerial(next: Field_bool['z$Serial']): void {
       if (next.value == null) {
          const def = this.defaultValue
          if (def != null) next = produce(next, (draft) => void (draft.value = def))

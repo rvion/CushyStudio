@@ -38,7 +38,7 @@ describe('model links', () => {
          },
       )
 
-      const DEFAULT_SERIAL: (typeof S)['::Serial'] = {
+      const DEFAULT_SERIAL: (typeof S)['z$Serial'] = {
          $: 'group',
          values_: {
             int: { $: 'number', value: 0 },

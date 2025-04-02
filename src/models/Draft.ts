@@ -262,7 +262,7 @@ export class DraftL extends BaseInst<TABLES['draft']> {
       }
 
       // ----------------------------------------
-      // 🔴 2023-11-30 rvion:: TEMPORPARY HACKS
+      // 🔴 2023-11-30 rvion: TEMPORPARY HACKS
       this.st.focusedStepID = null
       this.st.focusedStepOutput = null
       // ----------------------------------------

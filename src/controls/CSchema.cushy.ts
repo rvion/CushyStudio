@@ -8,12 +8,12 @@ export { CSchema } from '../csuite/model/CSchema'
 declare global {
    // eslint-disable-next-line @typescript-eslint/no-namespace
    namespace CSuite {
-      type LocoSchemaExtension<$ extends { '::Schema': CSchema<any> }> = {
-         addRequirementOnComfyManagerModel(modelName: KnownModel_Name | KnownModel_Name[]): $['::Schema']
-         addRequirements(requirements: Maybe<Requirements | Requirements[]>): $['::Schema']
+      type LocoSchemaExtension<$ extends { z$Schema: CSchema<any> }> = {
+         addRequirementOnComfyManagerModel(modelName: KnownModel_Name | KnownModel_Name[]): $['z$Schema']
+         addRequirements(requirements: Maybe<Requirements | Requirements[]>): $['z$Schema']
       }
 
-      export interface CSchemaExtensions<$ extends { '::Schema': CSchema<any> }>
+      export interface CSchemaExtensions<$ extends { z$Schema: CSchema<any> }>
          extends LocoSchemaExtension<$> {}
    }
 }

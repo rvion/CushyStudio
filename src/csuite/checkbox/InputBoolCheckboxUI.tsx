@@ -16,6 +16,7 @@ export const InputBoolCheckboxUI = obs(function InputBoolCheckboxUI_(p: BoolButt
    // const chroma = getInputBoolChroma(isActive)
    // const contrast = getInputBoolContrast(isActive)
    const theme = cushy.preferences.theme.zValue
+
    return (
       <Frame //Container (Makes it so we follow Fitt's law and neatly contains everything)
          // hoverable

@@ -6,7 +6,7 @@ import { Frame } from '../../../csuite/frame/Frame'
 import { UCMenuEntryContainerUI } from './UCMenuEntryContainerUI'
 
 type UCMenuLayerEntryUIProps = {
-   layer: Layer$['::Field']
+   layer: Layer$['z$Field']
    index: number
    active?: boolean
    children?: React.ReactNode

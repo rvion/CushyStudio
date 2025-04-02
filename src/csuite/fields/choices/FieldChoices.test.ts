@@ -11,7 +11,7 @@ describe('FieldChoices', () => {
       it('works when only specifying branches', () => {
          type Model = Z.Choices<{ foo: Z.String; bar: Z.Number }>
          const schema = b.choices({ foo: b.string(), bar: b.int() })
-         const serial: Model['::Serial'] = {
+         const serial: Model['z$Serial'] = {
             $: 'choices',
             branches: { bar: true },
          }
@@ -29,7 +29,7 @@ describe('FieldChoices', () => {
       it('works when only specifying values', () => {
          type Model = Z.Choices<{ foo: Z.String; bar: Z.Number }>
          const schema = b.choices({ foo: b.string(), bar: b.int() })
-         const serial: Model['::Serial'] = {
+         const serial: Model['z$Serial'] = {
             $: 'choices',
             values: { bar: { $: 'number', value: 0 } },
          }
@@ -133,7 +133,7 @@ describe('FieldChoices', () => {
                   ],
                },
             },
-         } satisfies (typeof Multi)['::Serial']
+         } satisfies (typeof Multi)['z$Serial']
 
          E1.zSetSerial(serial)
          expect(E1.zSerial === serial).toBeTruthy()
@@ -165,7 +165,7 @@ describe('FieldChoices', () => {
 
       it('should assign the serial if the branch is active', () => {
          const E1 = Multi.create()
-         const serial: (typeof Multi)['::Serial'] = {
+         const serial: (typeof Multi)['z$Serial'] = {
             $: 'choices',
             branches: { baz: true },
             values: { baz: { $: 'str', value: '🔵' } },
@@ -223,12 +223,12 @@ describe('FieldChoices', () => {
 
          it('should keep the serial when we disable children via setSerial', () => {
             const E1 = MultiNoDefault.create()
-            const activeSerial: (typeof E1)['::Serial'] = {
+            const activeSerial: (typeof E1)['z$Serial'] = {
                $: 'choices',
                branches: { baz: true },
                values: { baz: { $: 'str', value: '🔵' } },
             }
-            const unactiveSerial: (typeof E1)['::Serial'] = {
+            const unactiveSerial: (typeof E1)['z$Serial'] = {
                $: 'choices',
                branches: {},
                values: { baz: { $: 'str', value: '🟢' } },

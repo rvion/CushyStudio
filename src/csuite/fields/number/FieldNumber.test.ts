@@ -12,14 +12,14 @@ const b = simpleBuilder
 describe('field number', () => {
    describe('create', () => {
       it('should load the value from the serial', () => {
-         const serial: Field_number['::Serial'] = { $: 'number', value: 8 }
+         const serial: Field_number['z$Serial'] = { $: 'number', value: 8 }
          const schema = b.number({ default: 5 })
          const document = schema.create(serial)
          expect(document.zValue).toBe(8)
       })
 
       it('should keep an invalid value from the serial', () => {
-         const serial: Field_number['::Serial'] = { $: 'number', value: 'invalid' }
+         const serial: Field_number['z$Serial'] = { $: 'number', value: 'invalid' }
          const schema = b.number({ default: 5 })
          const document = schema.create(serial)
          expect(document.zValue_unchecked).toBeNull() // 'invalid'
@@ -27,7 +27,7 @@ describe('field number', () => {
       })
 
       it('should parse previously serialized value', () => {
-         const serial: Field_number['::Serial'] = { $: 'number', value: '8' }
+         const serial: Field_number['z$Serial'] = { $: 'number', value: '8' }
          const schema = b.number({ default: 5 })
          const document = schema.create(serial)
          expect(document.zSerial).toEqual({
@@ -142,7 +142,7 @@ describe('field number', () => {
       })
 
       it('should only change the serial reference if something changes', () => {
-         const serial: Field_number['::Serial'] = { $: 'number', value: 8 }
+         const serial: Field_number['z$Serial'] = { $: 'number', value: 8 }
          const schema = b.number({ default: 5 })
          const document = schema.create(serial)
          expect(document.zValue).toBe(8)
@@ -159,7 +159,7 @@ describe('field number', () => {
 
       it('should preserve the reference when changed within a group', () => {
          const schema = b.fields({ num: b.number({ default: 5 }) })
-         const serial: Z.Group<{ num: Z.Number }>['::Serial'] = {
+         const serial: Z.Group<{ num: Z.Number }>['z$Serial'] = {
             $: 'group',
             values_: { num: { $: 'number', value: 8 } },
          }

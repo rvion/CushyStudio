@@ -37,7 +37,7 @@ export class MigrationEngine {
             const field = document.zGetFieldAt(anomaly.path)
             if (!isFieldString(field)) return // console.log(`   > field at ${anomaly.path} is not a string`)
             if (anomaly.got.$ !== 'number') return // console.log(`   >  prevSerial.$ is not a 'number'`)
-            const oldVal = (anomaly.got as Field_number['::Serial']).value
+            const oldVal = (anomaly.got as Field_number['z$Serial']).value
             if (typeof oldVal !== 'number') return // console.log(`   >  prevSerial.value is not a number`, anomaly.got)
             return { field, oldVal }
          },
