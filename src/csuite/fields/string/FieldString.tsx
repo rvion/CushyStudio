@@ -81,18 +81,14 @@ type Field_string_ownSerial = {
 // | 💡 {T:"str",val:"coucou",id:"dsafasdfsdafas"}
 // | 💡 ["str","dsafasdfsdafas","coucou"],
 
-// #region VALUE TYPE
-type Field_string_value = string
-type Field_string_unchecked = Field_string_value | undefined
-
 // #region Field
 export interface Field_string {
    ['ҨType']: 'str'
    ['ҨOwnConfig']: Field_string_ownConfig
    ['ҨOwnSerial']: Field_string_ownSerial
-   ['ҨValue']: Field_string_value
-   ['ҨSetvalue']: Field_string_value
-   ['ҨUnchecked']: Field_string_unchecked
+   ['ҨValue']: string
+   ['ҨSetvalue']: string
+   ['ҨUnchecked']: string | undefined
    ['ҨChild']: never
    ['ҨOpts']: unknown
    ['ҨOwnPatch']: Patch<'str'>
@@ -182,11 +178,11 @@ export class Field_string extends Field {
    }
 
    // #region VALUE
-   get zValue(): this['ҨValue'] {
+   get zValue(): string {
       return this.zValue_or_fail
    }
 
-   set zValue(next: this['ҨValue'] | undefined) {
+   set zValue(next: string | undefined) {
       // Do we want to add that to implicitly convert non strings to string ?
       // convenient, but can be a source of bugs / unexpected behaviours.
       const nextStrVal = typeof next === 'string' ? next : JSON.stringify(next)
@@ -201,17 +197,17 @@ export class Field_string extends Field {
       })
    }
 
-   get zValue_or_fail(): Field_string_value {
+   get zValue_or_fail(): string {
       const val = this.zValue_unchecked
       if (val == null) throw new Error('Field_string.zValue_or_fail: not set')
       return val
    }
 
-   get zValue_or_zero(): Field_string_value {
+   get zValue_or_zero(): string {
       return this.zValue_unchecked ?? ''
    }
 
-   get zValue_unchecked(): Field_string_unchecked {
+   get zValue_unchecked(): string | undefined {
       return this.zSerial.value
    }
 
