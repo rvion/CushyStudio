@@ -44,11 +44,7 @@ export const WidgetListExtUI = obs(function WidgetListExtUI_<T extends CSchema>(
          ) : (
             <WidgetListExt_KonvaBoardUI field={listExt} />
          )}
-         {/* {p.widget.value.items.map((e) => (
-                <div tw='whitespace-pre-wrap w-96'>{JSON.stringify(e)}</div>
-            ))} */}
          <WidgetListExt_ValuesUI field={listExt} />
-         {/* <pre>{readableStringify(listExt.Items.items[0]!.Shape.serial, 1)}</pre> */}
       </div>
    )
 })

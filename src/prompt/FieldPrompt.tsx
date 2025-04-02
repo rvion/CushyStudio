@@ -183,10 +183,6 @@ export class Field_prompt extends Field {
    // #region value
    get zValue(): Field_prompt_value {
       return this
-      // return {
-      //     text: this.serial.val ?? this.config.default ?? '',
-      //     tree: this.ast,
-      // }
    }
 
    set zValue(next: Field_prompt_value) {

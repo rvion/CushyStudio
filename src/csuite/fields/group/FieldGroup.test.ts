@@ -97,17 +97,7 @@ describe('FieldGroup', () => {
          }),
       })
       const E1 = S1.create()
-      expect(E1.zFields.baz.zFields.qux).toEqual(E1.zFields.baz.zFields.qux)
-      // |      ^   ^
-      // |     capital letter automatically added the the field
-      // |
-      // | 🟢 AFTER : E1.Baz.Qux
-      // | ❌ BEFORE: E1.fields.baz.fields.qux
-      // |               ~~~~~~     ~~~~~~
-      // |
-      // | this is SO GOOD because capital letters
-      // | are displayed first in the autocompletion,
-      // | which is what we want on group fields
+      expect(E1.baz.qux).toEqual(E1.zFields.baz.zFields.qux)
    })
 
    // it is applies to class hierarchies

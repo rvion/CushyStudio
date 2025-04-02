@@ -89,8 +89,6 @@ export class Field_number extends Field {
       serial?: Field_number['ҨSerial'],
    ) {
       super(repo, root, parent, schema, initialMountKey, serial)
-      // /* 😂 */ console.log(`[🤠] ${getUIDForMemoryStructure(serial)} (FieldNumber#constructor ❌)`)
-      // /* 😂 */ console.log(`[🤠] ${getUIDForMemoryStructure(this.serial)} (FieldNumber#constructor ❌)`)
       this.init(serial)
    }
 

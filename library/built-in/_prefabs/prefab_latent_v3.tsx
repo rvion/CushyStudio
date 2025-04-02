@@ -152,15 +152,3 @@ export const run_latent_v3 = async (p: {
    // return everything
    return { latent, width, height }
 }
-
-// mountROOT: form.linked((self) => self.consume(chan)!), //
-// mountROOT2: form.linked(chan.getOrThrow), //
-// mountA: form.linked((self) => self.consume(chan)!.fields.a),
-// test: form.selectOne({
-//     choices: (self) => {
-//         // case 2: LOG (B+3) 🟢
-//         const x = self.consume(chan)
-//         const b = x?.fields.b.value ?? 0
-//         return []
-//     },
-// }),

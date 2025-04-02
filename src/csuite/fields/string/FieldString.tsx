@@ -171,7 +171,6 @@ export class Field_string extends Field {
 
       // 2. ASSIGN
       // assign given serial (or default one)
-      // this.serial = next
       this.zAssignNewSerial(next)
 
       // 3. RECONCILIATION

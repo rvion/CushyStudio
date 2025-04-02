@@ -96,7 +96,7 @@ export const DraftHeaderUI = obs(function DraftHeader({
                      setValue={(val) => draft.update({ canvasToolCategory: val ? val : null })}
                      placeholder='Unified Canvas Category'
                   />
-                  {/* {cushy.preferences.theme.fields.labelLayout.renderSimple({ label: 'Label' })} */}
+                  {/* {cushy.preferences.theme.labelLayout.renderSimple({ label: 'Label' })} */}
                </div>
             </div>
          </Frame>

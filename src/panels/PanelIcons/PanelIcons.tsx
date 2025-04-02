@@ -1,7 +1,6 @@
 import type { NO_PROPS } from '../../csuite/types/NO_PROPS'
 
 import { runInAction } from 'mobx'
-
 import { useMemo } from 'react'
 import { FixedSizeGrid } from 'react-window'
 
@@ -55,7 +54,6 @@ export const PanelIconUI = obs(function PanelIconUI_(p: NO_PROPS) {
    return (
       <div tw='flex h-full w-full flex-col'>
          <PanelHeaderUI>
-            {/* {form.fields.query.header()} */}
             <SpacerUI />
             <Frame // TODO(bird_d): (FIX-FIELD) Should use a "row" component here? Need a component so I don't have to keep adding the theming over and over for this
                align

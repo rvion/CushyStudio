@@ -527,7 +527,7 @@ export class STATE {
    //     {
    //         name: 'SideBar Conf',
    //         serial: () => readJSON('settings/sidebar.json'),
-   //         onSerialChange: (form) => writeJSON('settings/sidebar.json', form.serial),
+   //         onSerialChange: (form) => writeJSON('settings/sidebar.json', form.zSerial),
    //     },
    // )
 

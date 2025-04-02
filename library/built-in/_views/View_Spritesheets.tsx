@@ -45,7 +45,7 @@ const SpriteSheetUI = obs(function SpriteSheet(p: { imageID: MediaImageID | null
       {
          name: 'Spritesheet Showcase',
          // initialSerial: () => cushy.readJSON<FormSerial>('settings/spritesheet.json'),
-         // onSerialChange: (form) => cushy.writeJSON('settings/spritesheet.json', form.serial),
+         // onSerialChange: (form) => cushy.writeJSON('settings/spritesheet.json', form.zSerial),
       },
    )
    const uist = useLocalObservable(() => ({ step: 0 }))

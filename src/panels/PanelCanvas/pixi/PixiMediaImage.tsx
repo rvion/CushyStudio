@@ -6,7 +6,6 @@ import type { Layer$ } from '../stateV2/Layer$'
 import { extend } from '@pixi/react'
 // import { Sprite, Text } from '@pixi/react/lib/components'
 import { makeAutoObservable } from 'mobx'
-
 import {
    Assets,
    type Container,
@@ -156,14 +155,14 @@ export const PixiMediaImage = obs(function DraggableSpriteUI_(p: DraggableSprite
          />
 
          {/* <pixiText //
-            text={xxx.placement.X.value.toString()}
-            x={xxx.placement.X.value}
-            y={xxx.placement.Y.value - 100}
+            text={xxx.placement.X.zValue.toString()}
+            x={xxx.placement.X.zValue}
+            y={xxx.placement.Y.zValue - 100}
          />
          <pixiText //
             text={uc.viewportInfos.x.toString()}
-            x={xxx.placement.X.value}
-            y={xxx.placement.Y.value - 50}
+            x={xxx.placement.X.zValue}
+            y={xxx.placement.Y.zValue - 50}
          /> */}
       </>
    )

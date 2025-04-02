@@ -204,7 +204,6 @@ export class Field_group<T extends SchemaDict> extends Field {
 
    // #region SERIAL
    protected zSetOwnSerial(next: Field_group_serial<T>): void {
-      // setOwnSerial(next) is just here to call `this.serial = next`
       // with some extra stuff. it's almost a regular field action, execpt
       // it's internal, and has a few extra responsibilities (like fixing external serials)
       // so it's efficient and avoids producing intermediary serials.
@@ -215,7 +214,7 @@ export class Field_group<T extends SchemaDict> extends Field {
       //       - 1.2 add various missing expected properties
       //             (sometimes, they are marked optional, but it's convenient to add them early here)
       //
-      //   - 2. ASSIGN SERIAL (yup, just call `this.assignNewSerial(next)`, or use the setter alias `this.serial = ...`)
+      //   - 2. ASSIGN SERIAL (yup, just call `this.assignNewSerial(next)`, or use the setter alias `this.zSerial = ...`)
       //
       //   - 3. RECONCILIATION (finally, reconcile the children)
       //        they may produce new versions, but that's OKAY.
@@ -265,9 +264,7 @@ export class Field_group<T extends SchemaDict> extends Field {
    override zAcknowledgeNewChildSerial(mountKey: string, newChildSerial: any): boolean {
       // fast path: abort when exactly the same
       if (this.zSerial.values_[mountKey] === newChildSerial) return false
-      // console.log(`[🤠] ACK`, getUIDForMemoryStructure(newChildSerial), getUIDForMemoryStructure(this.serial), this.serial)
       return this.zPatchSerial((draft) => void ((draft.values_ as any)[mountKey] = newChildSerial))
-      // console.log(`[🤠] ACK`, getUIDForMemoryStructure(newChildSerial), getUIDForMemoryStructure(this.serial), this.serial)
    }
 
    /** all [key,value] pairs */

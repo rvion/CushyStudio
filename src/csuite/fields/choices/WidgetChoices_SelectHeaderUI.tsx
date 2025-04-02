@@ -39,18 +39,6 @@ export const WidgetChoices_SelectHeaderUI = obs(function WidgetChoices_SelectLin
             OptionLabelUI={(v) => (
                <div tw='flex flex-1 justify-between'>
                   <div tw='flex-1'>{v.label}</div>
-                  {/* 👇 TODO: clean this */}
-                  {/* {v.key in widget.serial.values_ && (
-                            <div
-                                tw='btn btn-square btn-sm'
-                                onClick={(ev) => {
-                                    ev.preventDefault()
-                                    ev.stopPropagation()
-                                }}
-                            >
-                                <span className='material-symbols-outlined'>delete</span>
-                            </div>
-                        )} */}
                </div>
             )}
             equalityCheck={(a, b) => a.key === b.key}

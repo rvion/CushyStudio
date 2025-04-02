@@ -51,9 +51,8 @@ export const QuickForm = obs(function QuickForm_<T extends SchemaDict>(p: QuickF
                )
             }
             if (Array.isArray(s)) {
-               // 🔴 this syntax [foo.fields.myField, { optional: true }]
                // is not supported at type level yet (but works)
-               // It will probably be replaced by _(foo.fields.myField, { optional: true }) anyway
+               // It will probably be replaced by _(foo.myField, { optional: true }) anyway
                // because it's easier to type (_ being injected in Fields)
                const [field, props] = s
                seen.add(field)

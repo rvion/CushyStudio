@@ -405,7 +405,7 @@ export abstract class Field {
     */
    zSet(x: this['ҨSetvalue']): this {
       if (isProbablySomeFieldSerialOf(x, this.zType)) this.zSetSerial(x as this['ҨSerial'])
-      else if ((x as any) instanceof Field) this.zSetSerial((x as any).serial as this['ҨSerial'])
+      else if ((x as any) instanceof Field) this.zSetSerial((x as Field).zSerial as this['ҨSerial'])
       else this.zSetValue(x)
       return this
    }
@@ -813,14 +813,6 @@ export abstract class Field {
       this.zSetOwnSerial(validSerial)
       return { problems: this.zSerialProblems }
    }
-
-   // private copyCommonSerialFields(s: Maybe<FieldSerial_CommonProperties>): void {
-   //     if (s == null) return
-   //     if (s._version != null) this.serial._version = s._version
-   //     if (s.collapsed != null) this.serial.collapsed = s.collapsed
-   //     if (s.custom != null) this.serial.custom = s.custom
-   //     if (s.lastUpdatedAt != null) this.serial.lastUpdatedAt = s.lastUpdatedAt
-   // }
 
    /** unified api to allow setting serial from value */
    zSetValue(val: this['ҨValue']): this {

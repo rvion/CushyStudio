@@ -144,12 +144,6 @@ export class Field_seed extends Field {
    // #region value
    get zValue(): Field_seed_value {
       return this.zValue_or_fail
-      // const seeder = this.config.seeder ?? getGlobalSeeder()
-      // const count = seeder.count
-      // const mode = this.serial.mode ?? this.config.defaultMode ?? 'randomize'
-      // return mode === 'randomize' //
-      //     ? Math.floor(Math.random() * 9_999_999)
-      //     : this.serial.val ?? this.config.default ?? 0
    }
 
    set zValue(val: number) {

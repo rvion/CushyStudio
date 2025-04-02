@@ -236,7 +236,6 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field {
          (key: keyof T & string) => {
             console.log(`[🤠🦖] startDynamicBehaviour  => setBranchTo("${key}")`)
             this.enableBranch(key)
-            // console.log(`[🤠🦖]`, this.serial)
          },
          { fireImmediately: true },
       )

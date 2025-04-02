@@ -417,15 +417,10 @@ export class Field_optional<out T extends CSchema = CSchema> extends Field {
    get isActive(): boolean {
       return this.zSerial.y != null
    }
+
    set isActive(value: boolean) {
       this.setActive(value)
    }
-   // get isInactive(): boolean {
-   //    return this.serial.n != null
-   // }
-   // set isInactive(value: boolean) {
-   //    this.setActive(!value)
-   // }
 
    /**
     * similar to reset,

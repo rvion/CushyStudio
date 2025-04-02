@@ -22,9 +22,7 @@ export const cmd_copyImage: Command<MediaImageL> = command({
    label: 'Copy Image',
    ctx: ctx_image,
    combos: 'mod+c',
-   action: (image) =>
-      /* { format: image.format, quality: form_foo.fields.quality.value } */
-      image.copyToClipboard_viaCanvas(),
+   action: (image) => image.copyToClipboard_viaCanvas(),
 })
 
 // first we define command;

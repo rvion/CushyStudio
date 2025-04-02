@@ -363,19 +363,6 @@ describe('FieldChoices', () => {
       })
    })
 
-   // STRUCTURAL SHARING --------------
-   it.skip('generate a new serial for each field', () => {
-      // const E1 = Multi.create()
-      // const E2 = Multi.create(E1.serial)
-      // // same shape
-      // expect(E1.items.length).toBe(3)
-      // expect(E1.serial).toEqual(E2.serial)
-      // expect(E1.at(1)!.serial).toEqual(E2.at(1)!.serial)
-      // // different refs
-      // expect(E1.serial === E2.serial).toBe(false)
-      // expect(E1.at(1)!.serial === E2.at(1)!.serial).toBe(false)
-   })
-
    // EFFECTS -------------------------
    it.skip('doesnt apply serial effect nor value effect on instanciation', () => {
       // 🔴 TODO
