@@ -23,6 +23,7 @@ import { Field_matrix } from '../csuite/fields/matrix/FieldMatrix'
 import { Field_optional } from '../csuite/fields/optional/FieldOptional'
 import { Field_orbit } from '../csuite/fields/orbit/FieldOrbit'
 import { WidgetSelectOneUI } from '../csuite/fields/selectOne/WidgetSelectOneUI'
+import { setBuilder } from '../csuite/model/b'
 import { BuilderBoolDescriptors, type BuilderBoolMixin } from '../csuite/model/builders/BuilderBoolTypes'
 import { BuilderChoicesDescriptors, type BuilderChoicesMixin } from '../csuite/model/builders/BuilderChoices'
 import { BuilderDateDescriptors, type BuilderDateMixin } from '../csuite/model/builders/BuilderDateTypes'
@@ -380,7 +381,7 @@ export const cushyFactory: CushyFactory = new Factory<CushySchemaBuilder>(builde
  *
  * @since 2024-10-11
  */
-export const b = builder
+setBuilder(builder)
 
 export interface CushySchemaBuilder
    extends BuilderStringMixin,
