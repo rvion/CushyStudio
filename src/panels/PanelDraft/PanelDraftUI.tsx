@@ -2,7 +2,6 @@ import type { DraftL } from '../../models/Draft'
 import type { PanelState } from '../../router/PanelState'
 
 import { toJS } from 'mobx'
-
 import { useLayoutEffect, useRef, useState } from 'react'
 
 import { openFolderInOS } from '../../app/layout/openExternal'
@@ -199,7 +198,7 @@ export const DraftUI = obs(function Panel_Draft_(p: { draft: Maybe<DraftL> }) {
    const fpath = draft.file.fPath
    let OUT = (
       <draftContext.Provider value={draft} key={draft.id}>
-         [[{Object.keys(draft.UIProps).join(', ')}]]
+         {/* [[{Object.keys(draft.UIProps).join(', ')}]] */}
          {/* <DraftHeaderUI
                 draft={draft}
                 children={justify.root.UI({
