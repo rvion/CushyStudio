@@ -2,11 +2,13 @@ import type { Field_string } from './FieldString'
 
 import { InputStringUI } from '../../input-string/InputStringUI'
 
-export const WidgetString_SmallInput = obs(function WidgetStringUI_(p: {
+export const WidgetString_SmallInput = obs(function WidgetStringUI_({
+   field,
+   readonly,
+}: {
    field: Field_string
    readonly?: boolean
 }) {
-   const field = p.field
    const config = field.zConfig
 
    // prettier-ignore
@@ -18,11 +20,10 @@ export const WidgetString_SmallInput = obs(function WidgetStringUI_(p: {
         // 3. if none of the above, use mountKye
         field.zMountKey
 
-   // return '🟢'
    return (
       <InputStringUI
          tw={['w-full', field.zMustDisplayErrors && 'rsx-field-error']}
-         icon={p.field.zConfig.innerIcon}
+         icon={config.innerIcon}
          type={config.inputType}
          placeholder={placeholder}
          pattern={config.pattern}
@@ -31,7 +32,7 @@ export const WidgetString_SmallInput = obs(function WidgetStringUI_(p: {
          setValue={(value) => {
             field.zValue = value
          }}
-         disabled={p.readonly ?? p.field.zConfig.readonly}
+         disabled={readonly ?? config.readonly}
          // clearable={config.clearable}
          autoResize={config.autoResize}
          buffered={
