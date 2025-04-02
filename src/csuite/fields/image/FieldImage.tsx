@@ -39,32 +39,32 @@ export type Field_image_value = MediaImageL
 
 // #region STATE
 export interface Field_image {
-   ['ҨType']: 'image'
-   ['ҨOwnConfig']: Field_image_ownConfig
-   ['ҨOwnSerial']: Field_image_ownSerial
-   ['ҨValue']: Field_image_value
-   ['ҨUnchecked']: Field_image_value | undefined
-   ҨField: Field_image
-   ['ҨChild']: never
+   ['::Type']: 'image'
+   ['::OwnConfig']: Field_image_ownConfig
+   ['::OwnSerial']: Field_image_ownSerial
+   ['::Value']: Field_image_value
+   ['::Unchecked']: Field_image_value | undefined
+   ['::Field']: Field_image
+   ['::Child']: never
 }
 export class Field_image extends Field {
    // #region static
    static readonly type: 'image' = 'image'
-   static readonly unsetSerial: Field_image['ҨSerial'] = { $: 'image' }
+   static readonly unsetSerial: Field_image['::Serial'] = { $: 'image' }
    public static readonly patchedSerialPaths: readonly string[] = Object.freeze([
       'imageID',
       'imageHash',
       'size',
    ])
    static generateSerial(
-      value: Maybe<Field_image['ҨValue']>,
-      config: Field_image['ҨConfig'],
-   ): Field_image['ҨSerial'] {
+      value: Maybe<Field_image['::Value']>,
+      config: Field_image['::Config'],
+   ): Field_image['::Serial'] {
       if (value == null && config.default == null) return this.unsetSerial
       return { $: 'image', imageID: value?.id ?? config.default?.id }
    }
    static migrateSerial(): undefined {}
-   static codeForTypescriptValue(config: Field_image['ҨConfig']): string {
+   static codeForTypescriptValue(config: Field_image['::Config']): string {
       return `MediaImageL`
    }
 
@@ -75,7 +75,7 @@ export class Field_image extends Field {
       parent: Field | null,
       schema: CSchema<Field_image>,
       initialMountKey: string,
-      serial?: Field_image['ҨSerial'],
+      serial?: Field_image['::Serial'],
    ) {
       super(repo, root, parent, schema, initialMountKey, serial)
       this.init(serial)
@@ -86,7 +86,7 @@ export class Field_image extends Field {
       return this.zSerial.imageID != null
    }
 
-   protected zSetOwnSerial(next: Field_image['ҨSerial']): void {
+   protected zSetOwnSerial(next: Field_image['::Serial']): void {
       // apply default if unset + default in config
       const def = this.zConfig.default
       if (this.zSerial.imageID == null && def != null) {

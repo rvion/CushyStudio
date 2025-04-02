@@ -102,7 +102,7 @@ export type FieldCtorProps<TYPES extends Field = any> = [
    parent: Field | null,
    schema: CSchema<TYPES>,
    initialMountKey: string,
-   serial?: TYPES['ҨSerial'],
+   serial?: TYPES['::Serial'],
 ]
 
 export type FieldCtorProps_ALT<TYPES extends Field = any> = [
@@ -111,65 +111,24 @@ export type FieldCtorProps_ALT<TYPES extends Field = any> = [
    parent: Field | null,
    schema: CSchema<any>,
    initialMountKey: string,
-   serial?: TYPES['ҨSerial'],
+   serial?: TYPES['::Serial'],
 ]
 
 type PathObject = [string, Maybe<PathObject>]
 
-/**
- * * private is too private
- * * symbols are too unpractical
- * * '$' is shown too early in the completion
- * * various utf8 characters used in the codebase as key
- *
- * metric to appreciate the char:
- *
- *    - is recognizable
- *    - does not look like a leter
- *    - is the same width as letter 'a' on most font (including default vscode one)
- *    - is placed at the end of the completion list
- *    - is not a common character (must not have been used in the codebase)
- *    - is written from left to right so selection works proely
- *
- * character tested:
- *
- *    - japanese chars > cool but too wide
- *    - syriac chars > many cool things that look like emojis but weird width
- *
- * good candidates:
- *
- * picked:
- *    - ⵜ (removed because too sad)
- *    - ϟ
- *
- * https://en.wikipedia.org/wiki/Theta
- * greek letters:
- *    - Ξ
- *    - Ω
- *    - π
- *    - ϟ 🟢
- *    - φ 🟢
- *
- *  https://en.wikipedia.org/wiki/O-hook
- * cyrilic letters
- *    - ж 🟢
- *    - Ҩ 🟢
- *    - ю
- */
-
 export interface Field {
-   ҨType: CATALOG.AllFieldTypes
-   ҨOwnConfig: unknown
-   ҨOwnSerial: unknown
-   ҨSerial: FieldSerialFor<this>
-   ҨConfig: FieldConfigFor<this>
-   ҨValue: unknown
-   ҨSetvalue: unknown
-   ҨUnchecked: unknown
-   ҨChild: unknown
-   ҨOpts: unknown
-   ҨOwnPatch: Patch_Common<this['ҨType']>
-   ҨSchema: CSchema<this>
+   ['::Type']: CATALOG.AllFieldTypes
+   ['::OwnConfig']: unknown
+   ['::OwnSerial']: unknown
+   ['::Serial']: FieldSerialFor<this>
+   ['::Config']: FieldConfigFor<this>
+   ['::Value']: unknown
+   ['::Setvalue']: unknown
+   ['::Unchecked']: unknown
+   ['::Child']: unknown
+   ['::Opts']: unknown
+   ['::OwnPatch']: Patch_Common<this['::Type']>
+   ['::Schema']: CSchema<this>
 }
 export abstract class Field {
    // 2025-02-11 new addition
@@ -184,7 +143,7 @@ export abstract class Field {
    readonly zUid: FieldId
 
    /** widget serial is the full serialized representation of that widget  */
-   @observable.ref accessor zSerial: this['ҨSerial']
+   @observable.ref accessor zSerial: this['::Serial']
 
    /**
     * singleton repository for the project
@@ -208,7 +167,7 @@ export abstract class Field {
    /** schema used to instanciate this widget */
    zSchema: CSchema<this>
 
-   get zOpts2(): this['ҨOpts'] {
+   get zOpts2(): this['::Opts'] {
       return this.zConfig.opts!
    }
 
@@ -226,7 +185,7 @@ export abstract class Field {
       /** schema used to instanciate this widget */
       schema: CSchema<any /* ❓ */>,
       initialMountKey: string,
-      serial?: any /* ❓ */, // this['ҨSerial'],
+      serial?: any /* ❓ */, // this['::Serial'],
    ) {
       this.zUid = mkNewFieldId()
       this.zRepo = repo
@@ -243,12 +202,12 @@ export abstract class Field {
     * Retrieved by looking in prototype for static `type` attribute.
     * @undecorated
     */
-   get zType(): this['ҨType'] {
+   get zType(): this['::Type'] {
       return (this.constructor as FieldConstructor<this>).type
    }
 
    /** @undecorated */
-   private get zMigrateSerial_(): SerialMigrationFunction<this['ҨSerial']> {
+   private get zMigrateSerial_(): SerialMigrationFunction<this['::Serial']> {
       return (this.constructor as FieldConstructor<this>).migrateSerial
    }
 
@@ -256,18 +215,18 @@ export abstract class Field {
     * widget value is the simple/easy-to-use representation of that widget
     * @undecorated
     */
-   abstract zValue: this['ҨValue']
+   abstract zValue: this['::Value']
 
    // 💬 2024-09-09 rvion:
    // | we can't actually use the following code to share get value() implementation
    // | because of mobx. Mobx force getters and setters to live on the same prototype.
    // |
    // | ```ts
-   // | get value(): K['ҨValue'] {
+   // | get value(): K['::Value'] {
    // |     return this.zValue_or_fail
    // | }
    // |
-   // | set value(_newValue: K['ҨValue']) {
+   // | set value(_newValue: K['::Value']) {
    // |     throw new Error(`❌ field_${this.type}.value = ... failed: setter not implemented`)
    // | }
    // | ```
@@ -280,7 +239,7 @@ export abstract class Field {
     * @see {@link zValue_or_zero}
     * @see {@link zValue_unchecked}
     */
-   abstract zValue_or_fail: this['ҨValue']
+   abstract zValue_or_fail: this['::Value']
 
    /**
     * Should do its best to return a value,
@@ -293,11 +252,11 @@ export abstract class Field {
     * @see {@link zValue_unchecked}
     *
     **/
-   abstract zValue_or_zero: this['ҨValue']
+   abstract zValue_or_zero: this['::Value']
 
    /**
      * this method
-     *  - Always returns the advertized type (`Field['ҨUnchecked']`).
+     *  - Always returns the advertized type (`Field['::Unchecked']`).
      *  - Never crashes
      *
      * @since 2024-09-03
@@ -306,7 +265,7 @@ export abstract class Field {
      * @see {@link zValue_or_zero}
 
      */
-   abstract zValue_unchecked: this['ҨUnchecked']
+   abstract zValue_unchecked: this['::Unchecked']
 
    /**
     * Returns true if the given field has the same value as this field
@@ -356,10 +315,10 @@ export abstract class Field {
     * for special cases
     * @undecorated
     */
-   protected zGenerateOwnPatches(referenceField: this): this['ҨOwnPatch'][] {
+   protected zGenerateOwnPatches(referenceField: this): this['::OwnPatch'][] {
       if (this.zIsValueEqual(referenceField)) return []
 
-      return this.zPatchedSerialPaths.flatMap((serialPath): Patch<this['ҨType']>[] => {
+      return this.zPatchedSerialPaths.flatMap((serialPath): Patch<this['::Type']>[] => {
          const thisValue = _get(this.zSerial, serialPath)
          const referenceValue = _get(referenceField.zSerial, serialPath)
 
@@ -372,7 +331,7 @@ export abstract class Field {
                   fieldType: this.zType,
                   fieldPath: this.zPath,
                   serialPath,
-               } as PatchRemove<this['ҨType']>,
+               } as PatchRemove<this['::Type']>,
             ]
          }
          if (referenceValue === undefined) {
@@ -383,7 +342,7 @@ export abstract class Field {
                   fieldPath: this.zPath,
                   serialPath,
                   value: thisValue,
-               } as PatchAdd<this['ҨType'], unknown>,
+               } as PatchAdd<this['::Type'], unknown>,
             ]
          }
 
@@ -394,7 +353,7 @@ export abstract class Field {
                fieldPath: this.zPath,
                serialPath,
                value: thisValue,
-            } as PatchReplace<this['ҨType'], unknown>,
+            } as PatchReplace<this['::Type'], unknown>,
          ]
       })
    }
@@ -403,15 +362,15 @@ export abstract class Field {
     * generic implementation; must be overriden for every non-leaves
     * @undecorated (single action setter inside)
     */
-   zSet(x: this['ҨSetvalue']): this {
-      if (isProbablySomeFieldSerialOf(x, this.zType)) this.zSetSerial(x as this['ҨSerial'])
-      else if ((x as any) instanceof Field) this.zSetSerial((x as Field).zSerial as this['ҨSerial'])
+   zSet(x: this['::Setvalue']): this {
+      if (isProbablySomeFieldSerialOf(x, this.zType)) this.zSetSerial(x as this['::Serial'])
+      else if ((x as any) instanceof Field) this.zSetSerial((x as Field).zSerial as this['::Serial'])
       else this.zSetValue(x)
       return this
    }
 
    /** @undecorated (pure getter function) */
-   zGetSetValue(): this['ҨSetvalue'] | undefined {
+   zGetSetValue(): this['::Setvalue'] | undefined {
       // console.log(`[💀 getSetValue] `, this.path)
       return this.zValue
    }
@@ -444,7 +403,7 @@ export abstract class Field {
    }
 
    /** @undecorated (manual runInAction inside) */
-   protected zApplyOwnPatches(patches: this['ҨOwnPatch'][]): void {
+   protected zApplyOwnPatches(patches: this['::OwnPatch'][]): void {
       if (patches.length === 0) return
       runInAction(() => {
          const nextState = produce(this.zSerial, (draft) => {
@@ -483,7 +442,7 @@ export abstract class Field {
     * @stability beta
     * @undecorated (base function does nothing)
     */
-   static migrateSerial(serial: Field['ҨSerial']): any {
+   static migrateSerial(serial: Field['::Serial']): any {
       return serial
    }
 
@@ -617,7 +576,7 @@ export abstract class Field {
     */
    zSetSerial(
       /** this serial may be from a previous schema; we need to be able to handle properly */
-      serial: Maybe<this['ҨSerial']>,
+      serial: Maybe<this['::Serial']>,
    ): void {
       if (serial === this.zSerial) return
       this.zRunInTransaction(() => {
@@ -632,7 +591,7 @@ export abstract class Field {
     * This function can only be called by `setOwnSerialWithValidationAndMigration`
     * which itself can only be called by `init` and `setSerial`
     */
-   protected abstract zSetOwnSerial(serial: this['ҨSerial']): void
+   protected abstract zSetOwnSerial(serial: this['::Serial']): void
 
    /**
      * contains the list of all serial problems that occured during the last setSerial
@@ -665,7 +624,7 @@ export abstract class Field {
     //    C.2. global via generated zod-or-similar json schema
 
     */
-   zSetOwnSerialWithValidationAndMigrationAndFixes(serialish: UNVALIDATED<Maybe<this['ҨSerial']>>): {
+   zSetOwnSerialWithValidationAndMigrationAndFixes(serialish: UNVALIDATED<Maybe<this['::Serial']>>): {
       problems: { msg: string; data: any }[]
    } {
       const wasNull = serialish == null
@@ -802,7 +761,7 @@ export abstract class Field {
          return serial
          // TODO
       }
-      const validSerial = ensureValid<this['ҨSerial']>(serial)
+      const validSerial = ensureValid<this['::Serial']>(serial)
 
       // #region 9. set the now valid serial
       // 💬 2024-09-11 rvion: at this point, we should be able to guarantee that
@@ -815,7 +774,7 @@ export abstract class Field {
    }
 
    /** unified api to allow setting serial from value */
-   zSetValue(val: this['ҨValue']): this {
+   zSetValue(val: this['::Value']): this {
       this.zValue = val
       return this
    }
@@ -825,14 +784,14 @@ export abstract class Field {
       existingChild: Maybe<Field>
       correctChildSchema: SCHEMA
       /** the target child to clone/apply into child */
-      targetChildSerial: Maybe<SCHEMA['ҨSerial']>
+      targetChildSerial: Maybe<SCHEMA['::Serial']>
       /**
        * ONLY CALLED FOR NEW CHILD
        *
        * must attach/register both
        *  - child into parent where it belongs
        *  - child.serial into parent.serial where it belongs  */
-      attach(child: SCHEMA['ҨField']): void
+      attach(child: SCHEMA['::Field']): void
    }): void {
       let child = p.existingChild
       if (child != null && child.zSchema === p.correctChildSchema) {
@@ -964,12 +923,12 @@ export abstract class Field {
     * shorthand access to schema.config
     * @undecorated (static, no need for mobx)
     */
-   get zConfig(): this['ҨConfig'] {
+   get zConfig(): this['::Config'] {
       return this.zSchema.config
    }
 
    /** @undecorated (not an action; pure; defer to single computed) */
-   zGetValue(mode: VALUE_MODE): this['ҨValue'] | this['ҨUnchecked'] {
+   zGetValue(mode: VALUE_MODE): this['::Value'] | this['::Unchecked'] {
       if (mode === 'fail') return this.zValue_or_fail
       if (mode === 'zero') return this.zValue_or_zero
       if (mode === 'unchecked') return this.zValue_unchecked
@@ -1035,7 +994,7 @@ export abstract class Field {
       return current
    }
 
-   zGetChildByKey(key: string): Maybe<this['ҨChild']> {
+   zGetChildByKey(key: string): Maybe<this['::Child']> {
       // TODO: more efficient overrides
       return this.zChildrenAll.find((f) => f.zMountKey === key)
    }
@@ -1098,12 +1057,12 @@ export abstract class Field {
    }
 
    /** return a cloned/detached value object you can use anywhere without care */
-   zToValueJSON(): this['ҨValue'] {
+   zToValueJSON(): this['::Value'] {
       return JSON.parse(JSON.stringify(this.zValue))
    }
 
    /** return a clone/detached serial object you can use anywhere without care */
-   zToSerialJSON(): this['ҨSerial'] {
+   zToSerialJSON(): this['::Serial'] {
       return this.zSerial // JSON.parse(JSON.stringify(this.serial))
    }
 
@@ -1157,7 +1116,7 @@ export abstract class Field {
     * 🔶 some widget like `WidgetPrompt` would not work with such logic
     * 🔶 some widget like `Optional` have no simple way to retrieve the default value
     */
-   // abstract readonly defaultValue: this['schema']['ҨValue'] |
+   // abstract readonly defaultValue: this['schema']['::Value'] |
 
    private $FieldSym: typeof FieldSym = FieldSym // DO NOT REMOVE
 
@@ -1229,7 +1188,7 @@ export abstract class Field {
     * You can either return a new value, or patch the initial value
     * use `deleteFieldCustomData` instead to replace the value by null or undefined.
     */
-   zUpdateFieldCustom(fn: (x: Maybe<this['ҨValue']>) => this['zCustom']): this {
+   zUpdateFieldCustom(fn: (x: Maybe<this['::Value']>) => this['zCustom']): this {
       const prev = this.zValue
       const next = fn(prev) ?? prev
       return this.zPatchInTransaction((draft) => {
@@ -1446,7 +1405,7 @@ export abstract class Field {
    }
 
    // BUMP ----------------------------------------------------
-   private z_extraSerialChangesFunction: ((self: Field) => void)[] = [] // 🔶 cannot (but probably need not) type self as K['ҨField'] due to variance issues
+   private z_extraSerialChangesFunction: ((self: Field) => void)[] = [] // 🔶 cannot (but probably need not) type self as K['::Field'] due to variance issues
    zOnSerialChanges(fn: (self: this) => void): this {
       this.z_extraSerialChangesFunction.push(fn as any)
       return this
@@ -1694,7 +1653,7 @@ export abstract class Field {
    /**
     * equivalent to `runInTransaction(() => patchSerial(() => {....}))`
     */
-   zPatchInTransaction(fn: (draft: this['ҨSerial'], tct: Transaction) => undefined): this {
+   zPatchInTransaction(fn: (draft: this['::Serial'], tct: Transaction) => undefined): this {
       this.zRunInTransaction((tct) => this.zPatchSerial((draft) => fn(draft, tct)))
       return this
    }
@@ -1703,7 +1662,7 @@ export abstract class Field {
     * DO NOT OVERRIDE.
     * @internal
     */
-   protected zAssignNewSerial(next: this['ҨSerial']): void {
+   protected zAssignNewSerial(next: this['::Serial']): void {
       const tct = this.zRepo.tct
       if (tct == null)
          throw new Error(
@@ -1732,11 +1691,11 @@ export abstract class Field {
     */
    zPatchSerial(
       //
-      fn: (draft: this['ҨSerial']) => undefined,
+      fn: (draft: this['::Serial']) => undefined,
       /*
-       * cowe uld allow K['ҨSerial'] and hand it back to the caller
+       * cowe uld allow K['::Serial'] and hand it back to the caller
        * to match immerjs API
-       * | fn: (serial: K['ҨSerial']) => undefined  | K['ҨSerial']
+       * | fn: (serial: K['::Serial']) => undefined  | K['::Serial']
        */
    ): boolean {
       if (this.zRepo.tct == null)
@@ -1794,7 +1753,7 @@ export abstract class Field {
    /** this function MUST be called at the end of every widget constructor */
    protected init(
       //
-      serial?: this['ҨSerial'],
+      serial?: this['::Serial'],
    ): void {
       // /* 😂 */ console.log(`[🤠] ${getUIDForMemoryStructure(serial)} (field.init)`)
 
@@ -1825,7 +1784,7 @@ export abstract class Field {
       return r.zGetFieldAt(this.zPath) as this
    }
 
-   zCloneWithConfig(config: Partial<this['ҨConfig']>, opts?: WithConfigOptions): this {
+   zCloneWithConfig(config: Partial<this['::Config']>, opts?: WithConfigOptions): this {
       return this.zSchema.withConfig(config, opts).create(this.zSerial) as this
    }
 
@@ -1855,14 +1814,14 @@ export abstract class Field {
    // ['🤭caht'] = 1 // 🔶
    // ['-caht'] = 1; // 🔶
    // ['/chat'] = 1; // 🔶
-   // ['ҨChat'] = 1; // 🟢
+   // ['::Chat'] = 1; // 🟢
    // ['ܔchat'] = 1;
    get zHasSnapshot(): boolean {
       return this.zSerial.snapshot != null
    }
 
    /** update current field snapshot */
-   zSaveSnapshot(): this['ҨSerial'] {
+   zSaveSnapshot(): this['::Serial'] {
       const snapshot = produce(this.zSerial, (draft) => {
          // a bad person would say: "Yo, Dawg; I heard you liked snapshots. So I put a snapshot in your snapshot, so you can snapshot while snapshotting"
          // but it's wrong. we don't want snapshotception.

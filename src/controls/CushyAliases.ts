@@ -50,7 +50,7 @@ declare global {
 
       // #region core types
       type Shared<T extends Field>                    = CSchema<Field_shared<T>>
-      type SharedAlt<S extends CSchema>               = CSchema<Field_shared<S['ҨField']>>
+      type SharedAlt<S extends CSchema>               = CSchema<Field_shared<S['::Field']>>
       type Group<T extends SchemaDict>                = CSchema<Field_group<T> & MAGICFIELDS<T>>
       type Record<T extends SchemaDict>               = CSchema<Field_group<T> & MAGICFIELDS<T>>
       type Group_<T extends SchemaDict = SchemaDict>  = CSchema<Field_group<T>>
@@ -104,7 +104,7 @@ declare global {
 
       // Fields
       type FShared<T extends Field>                    = Field_shared<T>
-      type FSharedAlt<S extends CSchema>               = Field_shared<S['ҨField']>
+      type FSharedAlt<S extends CSchema>               = Field_shared<S['::Field']>
       type FGroup<T extends SchemaDict>                = Field_group<T> & MAGICFIELDS<T>
       type FRecord<T extends SchemaDict>               = Field_group<T> & MAGICFIELDS<T>
       type FEmpty                                      = Field_group<NO_PROPS>

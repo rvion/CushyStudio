@@ -28,8 +28,8 @@ import { UnifiedMask } from './UnifiedMask'
 import { UnifiedSelection } from './UnifiedSelection'
 
 export class UnifiedCanvas {
-   activeLayer: Layer$['ҨField'] | null = null
-   selectLayer(layer: Layer$['ҨField']): void {
+   activeLayer: Layer$['::Field'] | null = null
+   selectLayer(layer: Layer$['::Field']): void {
       this.activeLayer = layer
    }
    app: Application<Renderer> | null = null
@@ -219,7 +219,7 @@ export class UnifiedCanvas {
 
    constructor(
       public st: STATE,
-      public ucv2: UC2$['ҨField'],
+      public ucv2: UC2$['::Field'],
    ) {
       this.stage = new Konva.Stage({ container: this.containerDiv, width: 512, height: 512 })
 

@@ -30,7 +30,7 @@ export type Field_selectMany_config_simplified_<KEY extends SelectKey> = Field_s
 >
 
 // #region CONFIG
-export type Field_selectMany_config<VALUE, KEY extends SelectKey> = Field_selectMany<VALUE, KEY>['ҨConfig']
+export type Field_selectMany_config<VALUE, KEY extends SelectKey> = Field_selectMany<VALUE, KEY>['::Config']
 type Field_selectMany_ownConfig<
    /** the final object that will be accessible as value */
    VALUE,
@@ -112,7 +112,7 @@ export type Field_selectMany_config_simplified<VALUE, KEY extends SelectKey> = O
 type Omit2<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>
 
 // SERIAL
-export type Field_selectMany_serial<KEY extends SelectKey> = Field_selectMany<unknown, KEY>['ҨSerial']
+export type Field_selectMany_serial<KEY extends SelectKey> = Field_selectMany<unknown, KEY>['::Serial']
 type Field_selectMany_ownSerial<KEY extends SelectKey> = {
    $: 'selectMany'
    query?: string
@@ -130,15 +130,15 @@ export interface Field_selectMany<
    VALUE extends unknown,
    KEY extends SelectKey,
 > extends Field {
-   ['ҨType']: 'selectMany'
-   ['ҨOwnConfig']: Field_selectMany_ownConfig<VALUE, KEY>
-   ['ҨOwnSerial']: Field_selectMany_ownSerial<KEY>
-   ['ҨValue']: Field_selectMany_value<VALUE>
-   ['ҨSetvalue']: VALUE[] | KEY[]
-   ['ҨUnchecked']: Field_selectMany_unchecked<VALUE>
-   ['ҨChild']: never
-   ['ҨOpts']: unknown
-   ['ҨOwnPatch']: Patch<'selectMany'>
+   ['::Type']: 'selectMany'
+   ['::OwnConfig']: Field_selectMany_ownConfig<VALUE, KEY>
+   ['::OwnSerial']: Field_selectMany_ownSerial<KEY>
+   ['::Value']: Field_selectMany_value<VALUE>
+   ['::Setvalue']: VALUE[] | KEY[]
+   ['::Unchecked']: Field_selectMany_unchecked<VALUE>
+   ['::Child']: never
+   ['::Opts']: unknown
+   ['::OwnPatch']: Patch<'selectMany'>
 }
 
 // #region STATE
@@ -179,9 +179,9 @@ export class Field_selectMany<
    }
 
    static generateSerial<VALUE, KEY extends SelectKey>(
-      value: Maybe<Field_selectMany<VALUE, KEY>['ҨValue']>,
-      config: Field_selectMany<VALUE, KEY>['ҨConfig'],
-   ): Field_selectMany<VALUE, KEY>['ҨSerial'] {
+      value: Maybe<Field_selectMany<VALUE, KEY>['::Value']>,
+      config: Field_selectMany<VALUE, KEY>['::Config'],
+   ): Field_selectMany<VALUE, KEY>['::Serial'] {
       if (value == null && config.default == null) return this.unsetSerial
 
       const defaultSelectedKeys = Array.isArray(config.default)
@@ -446,7 +446,7 @@ export class Field_selectMany<
       return this
    }
 
-   override zGetSetValue(): this['ҨSetvalue'] | undefined {
+   override zGetSetValue(): this['::Setvalue'] | undefined {
       // console.log(`[💀 getSetValue] `, this.path)
       return this.selectedKeys
    }

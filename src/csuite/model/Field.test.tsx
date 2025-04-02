@@ -10,24 +10,24 @@ import { Field } from './Field'
 type Field_dummy_serial = { $: string; value?: string; deepValue?: { str: string; num: number } }
 
 interface Field_dummy extends Field {
-   ['ҨType']: any
-   ['ҨOwnConfig']: {}
-   ['ҨOwnSerial']: Field_dummy_serial
-   ['ҨValue']: string
-   ['ҨSetvalue']: string
-   ['ҨUnchecked']: Maybe<string>
-   ['ҨChild']: never
-   ['ҨOpts']: unknown
-   ['ҨOwnPatch']: Patch
+   ['::Type']: any
+   ['::OwnConfig']: {}
+   ['::OwnSerial']: Field_dummy_serial
+   ['::Value']: string
+   ['::Setvalue']: string
+   ['::Unchecked']: Maybe<string>
+   ['::Child']: never
+   ['::Opts']: unknown
+   ['::OwnPatch']: Patch
 }
 
 class Field_dummy extends Field {
    static readonly codeForTypescriptValue = (): string => '0'
    static readonly patchedSerialPaths: readonly string[] = Object.freeze(['value'])
    static generateSerial(
-      value: Maybe<Field_dummy['ҨValue']>,
-      config: Field_dummy['ҨConfig'],
-   ): Field_dummy['ҨSerial'] {
+      value: Maybe<Field_dummy['::Value']>,
+      config: Field_dummy['::Config'],
+   ): Field_dummy['::Serial'] {
       if (value == null) return this.unsetSerial
 
       return {

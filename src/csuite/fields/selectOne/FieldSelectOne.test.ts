@@ -41,8 +41,8 @@ describe('FieldSelectOne', () => {
 
    it('can be created and set from a serial', () => {
       const S = b.selectOneString(['a', 'b', 'c'], { default: 'b' })
-      const ser1: (typeof S)['ҨSerial'] = { $: 'selectOne', val: 'c' }
-      const ser2: (typeof S)['ҨSerial'] = { $: 'selectOne', val: 'a' }
+      const ser1: (typeof S)['::Serial'] = { $: 'selectOne', val: 'c' }
+      const ser2: (typeof S)['::Serial'] = { $: 'selectOne', val: 'a' }
       const E = S.create(ser1)
 
       expectJSON(E.zValue).toEqual('c')

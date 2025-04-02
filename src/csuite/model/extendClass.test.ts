@@ -40,8 +40,8 @@ describe('field customizations', () => {
          // const z: CSchema<CSchema<F>> = 0 as any
          const S1 = b.bool().useClass(F, null)
          const E1 = S1.create()
-         E1 satisfies CSchema<CSchema<F>['ҨField']>['ҨField']
-         E1 satisfies CSchema<CSchema<CSchema<F>['ҨField']>['ҨField']>['ҨField']
+         E1 satisfies CSchema<CSchema<F>['::Field']>['::Field']
+         E1 satisfies CSchema<CSchema<CSchema<F>['::Field']>['::Field']>['::Field']
 
          expect(E1.zValue).toBe(false)
          expect(E1.inverse).toBe(true)
@@ -50,7 +50,7 @@ describe('field customizations', () => {
       it('works with external class', () => {
          const S0 = b.fields({ foo: b.int({ default: 10 }) })
 
-         type T0 = Field_group<{ foo: Z.Number }>['ҨSubfields']
+         type T0 = Field_group<{ foo: Z.Number }>['::Subfields']
 
          interface Foo2 extends MAGICFIELDS<T0> {}
          class Foo2 extends Field_group<T0> {
@@ -111,7 +111,6 @@ describe('field customizations', () => {
          // 💬 2025-02-06 rvion:
          // until we pick a better default for MagicFields, I can't find an other way
          // than just having it merged at the final subclass.
-         // from a practical standpoint, it's probably ok since we anyway need to merge the ҨField for now.
          interface MyFooCollection extends MAGICFIELDS<FooStuff> {  } // prettier-ignore
          class MyFooCollection extends MyCollection<FooStuff> {
             static schema = (b: SimpleBuilder): CSchema<MyFooCollection> =>

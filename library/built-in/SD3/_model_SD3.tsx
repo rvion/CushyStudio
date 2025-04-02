@@ -31,7 +31,7 @@ export const prefabModelSD3 = (): $prefabModelSD3 => {
       ])
 }
 
-export function eval_model_SD3(doc: $prefabModelSD3['ҨValue']): {
+export function eval_model_SD3(doc: $prefabModelSD3['::Value']): {
    ckpt: Comfy.Signal['MODEL']
    vae: Comfy.Signal['VAE']
    clip: Comfy.Signal['CLIP']

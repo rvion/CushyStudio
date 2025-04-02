@@ -12,24 +12,28 @@ export type SchemaDictWithPaths = Record<string, SchemaWithSerialPath>
 export type TravelEdge = Tagged<string, 'TravelKey'>
 export type UNVALIDATED<T> = T | unknown
 export type FieldConstructor<FIELD extends Field> = {
-   readonly type: FIELD['ҨType']
-   readonly migrateSerial: SerialMigrationFunction<FIELD['ҨSerial']>
+   readonly type: FIELD['::Type']
+   readonly migrateSerial: SerialMigrationFunction<FIELD['::Serial']>
 
    /** various codegen utilities */
-   codeForTypescriptValue(config: FIELD['ҨConfig'], codegenOpts: CodegenOpts): string
+   codeForTypescriptValue(config: FIELD['::Config'], codegenOpts: CodegenOpts): string
 
    /**
     * regular traversal (for real "chilcren"; i.e. sub schemas from the config that will
     * most probably be instanciated as child when instanciating the field
     */
-   getChildren(config: FIELD['ҨConfig']): SchemaDictWithPaths
+   getChildren(config: FIELD['::Config']): SchemaDictWithPaths
 
    /** extra traversal you may want to implement following very specific rules */
-   getTravels(config: FIELD['ҨConfig']): SchemaDictWithPaths
+   getTravels(config: FIELD['::Config']): SchemaDictWithPaths
 
    readonly patchedSerialPaths: readonly string[]
 
-   generateSerial(value: Maybe<FIELD['ҨValue']>, config: FIELD['ҨConfig']): FIELD['ҨSerial']
+   generateSerial(
+      //
+      value: Maybe<FIELD['::Value']>,
+      config: FIELD['::Config'],
+   ): FIELD['::Serial']
 
    new (
       // 💬 2024-08-20 rvion:
@@ -39,7 +43,7 @@ export type FieldConstructor<FIELD extends Field> = {
       parent: Field | null,
       schema: CSchema<any /* ❌ FIELD */>,
       initialMountKey: string,
-      serial?: Maybe<any /* ❌ FIELD['ҨSerial'] */>,
+      serial?: Maybe<any /* ❌ FIELD['::Serial'] */>,
    ): FIELD
 }
 

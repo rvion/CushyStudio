@@ -192,9 +192,9 @@ export class AutoBuilder {
                   // #region enums
                   else if (field.isEnum) {
                      // console.log(`[👗] 🌈 Enum: ${field.type}`, { field })
-                     const enumFn: Maybe<(p: Field_enum<any>['ҨConfig']) => void> = (formBuilder.enum as any)[
-                        field.slotName
-                     ]
+                     const enumFn: Maybe<(p: Field_enum<any>['::Config']) => void> = (
+                        formBuilder.enum as any
+                     )[field.slotName]
                      if (enumFn == null) {
                         console.log(`[👗] ❌ Unknown enum: ${field.typeName}`)
                         continue

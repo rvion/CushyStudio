@@ -176,7 +176,7 @@ export abstract class BaseInst<TABLE extends TableInfo<keyof KyselyTables>> {
          {}, // receiving object
          toJS(this.data), // original object
          {
-            // 2023-11-30 rvion:: no need to set the createdAt and updatedAt
+            // 2023-11-30 rvion: no need to set the createdAt and updatedAt
             // they'll be taken care of by the create functio below
             id: nanoid(), // overrides
             ...t,

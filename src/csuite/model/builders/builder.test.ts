@@ -1,14 +1,11 @@
 import { describe, expect, it } from 'vitest'
 
-import { Field_bool } from '../../src/csuite/fields/bool/FieldBool'
-import { CSchema } from '../../src/csuite/model/CSchema'
+import { Field_bool } from '../../fields/bool/FieldBool'
+import { CSchema } from '../CSchema'
 
 describe('can create models without going through builder', () => {
    it('work', () => {
-      //
-      // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
       class Bar extends Field_bool {
-         ҨField!: Bar
          coucou(): string {
             return 'monde'
          }

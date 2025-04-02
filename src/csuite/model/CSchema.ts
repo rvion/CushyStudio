@@ -33,25 +33,25 @@ import { getGlobalRepository, type Repository } from './Repository'
 
 declare global {
    namespace CSuite {
-      export interface CSchemaExtensions<$ extends { ['ҨSchema']: CSchema<any> }> {}
+      export interface CSchemaExtensions<$ extends { ['::Schema']: CSchema<any> }> {}
    }
 }
 
 // export interface CSchema<out FIELD extends Field = Field>
 export interface CSchema<out FIELD extends Field = Field>
-   extends CSuite.CSchemaExtensions<{ ['ҨSchema']: CSchema<FIELD> }> {
-   ҨField: FIELD
-   ҨType: FIELD['ҨType']
-   ҨOwnConfig: FIELD['ҨOwnConfig']
-   ҨOwnSerial: FIELD['ҨOwnSerial']
-   ҨSerial: FIELD['ҨSerial']
-   ҨConfig: FIELD['ҨConfig']
-   ҨValue: FIELD['ҨValue']
-   ҨSetvalue: FIELD['ҨSetvalue']
-   ҨUnchecked: FIELD['ҨUnchecked']
-   ҨChild: FIELD['ҨChild']
-   ҨOpts: FIELD['ҨOpts']
-   ҨOwnPatch: FIELD['ҨOwnPatch']
+   extends CSuite.CSchemaExtensions<{ ['::Schema']: CSchema<FIELD> }> {
+   ['::Field']: FIELD
+   ['::Type']: FIELD['::Type']
+   ['::OwnConfig']: FIELD['::OwnConfig']
+   ['::OwnSerial']: FIELD['::OwnSerial']
+   ['::Serial']: FIELD['::Serial']
+   ['::Config']: FIELD['::Config']
+   ['::Value']: FIELD['::Value']
+   ['::Setvalue']: FIELD['::Setvalue']
+   ['::Unchecked']: FIELD['::Unchecked']
+   ['::Child']: FIELD['::Child']
+   ['::Opts']: FIELD['::Opts']
+   ['::OwnPatch']: FIELD['::OwnPatch']
 }
 
 export type WithConfigOptions = {
@@ -110,7 +110,7 @@ export class CSchema<out FIELD extends Field = Field> {
    }
    // ------------------------------------------------------------------------------------
 
-   static new<T extends Field>(fieldConstructor: FieldConstructor<T>, config: T['ҨConfig']): CSchema<T> {
+   static new<T extends Field>(fieldConstructor: FieldConstructor<T>, config: T['::Config']): CSchema<T> {
       const configHash = schemaConfigHash([fieldConstructor.type, fieldConstructor, config])
       const prev = CSchema.Cache.get(configHash)
       // console.log(`[> ${prev == null ? '❌ NEW' : '🟢 OLD'}]`, configHash)
@@ -129,7 +129,7 @@ export class CSchema<out FIELD extends Field = Field> {
       /** field constructor (class or function, see FieldConstructor definition)  */
       public fieldConstructor: FieldConstructor<FIELD>,
       /** config of the field to instanciate */
-      public readonly config: FIELD['ҨConfig'],
+      public readonly config: FIELD['::Config'],
    ) {}
 
    /**
@@ -148,7 +148,7 @@ export class CSchema<out FIELD extends Field = Field> {
     * ```ts
     * // 👉 using an external class require it to properly extend your field shape
     * //                 VVVVVVVVVVV VVVVVVVVVVVVVVVVVVVVVVVVVV
-    * class Foo1 extends Field_group<T0['ҨField']['ҨSubfields']> {
+    * class Foo1 extends Field_group<T0['::Field']['::Subfields']> {
     *     static HELLO = 'WORLD'
     *     volatile = 12
     *     constructor(...args:FieldCtorProps){ // 👈 constructor is only required if you want
@@ -194,18 +194,18 @@ export class CSchema<out FIELD extends Field = Field> {
 
       /**
        * if your custom class require opts, you MUST pass them here.
-       * to make your custom class require ['ҨOpts'], do that:
+       * to make your custom class require ['::Opts'], do that:
        *
        * ```ts
        * export class Example extends Field_group<{ name: Z.string}> {
-       *    override ['ҨOpts']!: {whatever: string}
+       *    override ['::Opts']!: {whatever: string}
        *    static schema = (b: Z.Builder): Z.Schema<Example> =>
        *       b.fields({ name: b.string() }).useClass(Example, { whatever: 'you want' })
        * }
        * ```
        */
-      ...[opts]: IsUnknown<CUSTOM['ҨOpts']> extends false //
-         ? [opts: CastUnknown<CUSTOM['ҨOpts'], null>]
+      ...[opts]: IsUnknown<CUSTOM['::Opts']> extends false //
+         ? [opts: CastUnknown<CUSTOM['::Opts'], null>]
          : [opts?: null]
    ): CSchema<CUSTOM> {
       if (this.config.classToUse != null) throw new Error('already have a custom class')
@@ -246,23 +246,23 @@ export class CSchema<out FIELD extends Field = Field> {
    // ⏸️ fieldConstructor: FieldConstructor<FIELD>
 
    /** type of the field to instanciate */
-   get type(): FIELD['ҨType'] {
+   get type(): FIELD['::Type'] {
       return this.fieldConstructor.type
    }
 
    // ⏸️ /** config of the field to instanciate */
-   // ⏸️ config: FIELD['ҨConfig']
+   // ⏸️ config: FIELD['::Config']
 
    // ------------------------------------------------------------
    // LabelExtraUI?: CovariantFC<{ field: FIELD }>
 
    // ------------------------------------------------------------
    // Clone/Fork
-   withConfig(config: Partial<FIELD['ҨConfig']>, opts?: WithConfigOptions): this {
+   withConfig(config: Partial<FIELD['::Config']>, opts?: WithConfigOptions): this {
       const { onValueChange, onDispose, onInit, onSerialChange, ...rest } = config
       const mergedConfig = objectAssignTsEfficient_t_pt(
          potatoClone(this.config),
-         rest as Partial<FIELD['ҨConfig']>,
+         rest as Partial<FIELD['::Config']>,
       )
 
       ;(['onValueChange', 'onDispose', 'onInit', 'onSerialChange'] as const).forEach((key) => {
@@ -308,7 +308,7 @@ export class CSchema<out FIELD extends Field = Field> {
       })
    }
 
-   publishValueToChannel(chan: Channel<FIELD['ҨValue']> | ChannelId): this {
+   publishValueToChannel(chan: Channel<FIELD['::Value']> | ChannelId): this {
       return this.withConfig({
          publications: [...(this.config.publications ?? []), { chan, hoist: true, produce: (s) => s.zValue }],
       })
@@ -328,7 +328,7 @@ export class CSchema<out FIELD extends Field = Field> {
       return this.config.reactions ?? []
    }
 
-   // 🔴 not sure why FIELD['ҨConfig'] cannot be equated to FieldConfigFor<FIELD>
+   // 🔴 not sure why FIELD['::Config'] cannot be equated to FieldConfigFor<FIELD>
    private get konfig(): FieldConfigFor<FIELD> {
       return this.config as any
    }
@@ -365,7 +365,7 @@ export class CSchema<out FIELD extends Field = Field> {
     */
    create(
       // when unspecified, an empty serial is used
-      serial?: Maybe<FIELD['ҨSerial']>,
+      serial?: Maybe<FIELD['::Serial']>,
       /** when unspecified, the global repository will be used */
       repository_?: Repository,
    ): FIELD {
@@ -376,7 +376,7 @@ export class CSchema<out FIELD extends Field = Field> {
    // ------------------------------------------------------------------------
    // 💬 2025-03-25 rvion:
    // 🔴 this was caching serial too agressively
-   // | get defaultSerial(): FIELD['ҨSerial'] {
+   // | get defaultSerial(): FIELD['::Serial'] {
    // |    const serial = this.fieldConstructor.generateSerial(undefined, this.config)
    // |    Object.defineProperty(this, 'defaultSerial', { value: serial })
    // |    return serial
@@ -394,10 +394,10 @@ export class CSchema<out FIELD extends Field = Field> {
 
    private ___empty: Maybe<{
       hash: string
-      serial: FIELD['ҨSerial']
+      serial: FIELD['::Serial']
       stable: boolean | null
    }>
-   get defaultSerial(): FIELD['ҨSerial'] {
+   get defaultSerial(): FIELD['::Serial'] {
       const serial = this.fieldConstructor.generateSerial(undefined, this.config)
       // first call
       if (this.___empty == null) {
@@ -422,7 +422,7 @@ export class CSchema<out FIELD extends Field = Field> {
    }
    // ------------------------------------------------------------------------
 
-   generateSerial(value: Maybe<FIELD['ҨValue']>): FIELD['ҨSerial'] {
+   generateSerial(value: Maybe<FIELD['::Value']>): FIELD['::Serial'] {
       if (value === undefined) return this.defaultSerial
 
       return this.fieldConstructor.generateSerial(value, this.config)
@@ -437,7 +437,7 @@ export class CSchema<out FIELD extends Field = Field> {
     */
    createDraft(
       //
-      serial_?: FIELD['ҨSerial'],
+      serial_?: FIELD['::Serial'],
       /** when unspeficied, the global repository will be used */
       repository_?: Repository,
    ): DraftLike<FIELD> {
@@ -491,7 +491,7 @@ export class CSchema<out FIELD extends Field = Field> {
 
    addCheck(
       /** the check function you want to add */
-      check_: NonNullable<FIELD['ҨConfig']['check']>,
+      check_: NonNullable<FIELD['::Config']['check']>,
 
       /**
        * a list of explicit dependencies this function should be cache against

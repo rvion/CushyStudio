@@ -10,7 +10,7 @@ import { Field, type KeyedField } from '../../model/Field'
 import { isProbablySomeFieldSerial, registerFieldClass } from '../WidgetUI.DI'
 
 // #region Config
-export type Field_optional_config<T extends CSchema = CSchema> = Field_optional<T>['ҨConfig']
+export type Field_optional_config<T extends CSchema = CSchema> = Field_optional<T>['::Config']
 type Field_optional_ownConfig<T extends CSchema = CSchema> = {
    /**
     * @recommended
@@ -30,47 +30,46 @@ type Field_optional_ownConfig<T extends CSchema = CSchema> = {
 }
 
 // #region Serial
-export type Field_optional_serial<T extends CSchema = CSchema> = Field_optional<T>['ҨSerial']
+export type Field_optional_serial<T extends CSchema = CSchema> = Field_optional<T>['::Serial']
 type Field_optional_ownSerial<T extends CSchema = CSchema> = Field_optional_ownSerialV2<T>
 
 // ------------------------------------------------------------------------
 // before 2025-02-24, the optional serial was like that:
 // it was bad because people doing postgres queries on serial had to use
 // trickery like that:
-// `(jsonb_path_query_first(json, '$.values_.?${fieldName} \\? (@.active == true).child') ->> 'value') :: bool`,
 type Field_optional_ownSerialV1<T extends CSchema = CSchema> = {
    $: 'optional'
-   child?: Maybe<T['ҨSerial']>
+   child?: Maybe<T['::Serial']>
    active?: boolean
 }
 // ------------------------------------------------------------------------
 // adter 2025-02-24, the optional serial is like that:
 type Field_optional_ownSerialV2<T extends CSchema = CSchema> = {
    $: 'optional'
-   y?: T['ҨSerial'] | undefined // when active
-   n?: T['ҨSerial'] | undefined // when not active
+   y?: T['::Serial'] | undefined // when active
+   n?: T['::Serial'] | undefined // when not active
 }
 // ------------------------------------------------------------------------
 
 // #region Value
 export type Field_optional_value<T extends CSchema = CSchema> =
    // Value from the child field
-   | T['ҨValue']
+   | T['::Value']
    // Set value (inactive)
    | null
-export type Field_optional_SetValue<T extends CSchema = CSchema> = T['ҨSetvalue'] | undefined | null
+export type Field_optional_SetValue<T extends CSchema = CSchema> = T['::Setvalue'] | undefined | null
 
 // #region Types
 export interface Field_optional<T extends CSchema = CSchema> {
-   ['ҨType']: 'optional'
-   ['ҨOwnConfig']: Field_optional_ownConfig<T>
-   ['ҨOwnSerial']: Field_optional_ownSerial<T>
-   ['ҨValue']: Field_optional_value<T>
-   ['ҨSetvalue']: Field_optional_SetValue<T>
-   ['ҨUnchecked']: Field_optional_value<T>
-   ['ҨChild']: T['ҨField']
-   ['ҨOpts']: unknown
-   ['ҨOwnPatch']: Patch<'optional'>
+   ['::Type']: 'optional'
+   ['::OwnConfig']: Field_optional_ownConfig<T>
+   ['::OwnSerial']: Field_optional_ownSerial<T>
+   ['::Value']: Field_optional_value<T>
+   ['::Setvalue']: Field_optional_SetValue<T>
+   ['::Unchecked']: Field_optional_value<T>
+   ['::Child']: T['::Field']
+   ['::Opts']: unknown
+   ['::OwnPatch']: Patch<'optional'>
 }
 
 export function isOptionalSerialV1(serial: object): serial is Field_optional_ownSerialV1 {
@@ -92,12 +91,12 @@ export function isOptionalSerialV2(serial: object): serial is Field_optional_own
 export class Field_optional<out T extends CSchema = CSchema> extends Field {
    // #region Type
    static readonly type: 'optional' = 'optional'
-   static override migrateSerial(prev: object): Maybe<Field_optional['ҨSerial']> {
+   static override migrateSerial(prev: object): Maybe<Field_optional['::Serial']> {
       // for now, code here is not executed
       if (isOptionalSerialV1(prev)) {
          const { $, active, child, ...rest } = prev
 
-         const serial: Field_optional['ҨSerial'] = { $: 'optional', ...rest }
+         const serial: Field_optional['::Serial'] = { $: 'optional', ...rest }
          const child_ = child ?? undefined
          if (active) serial.y = child_
          else serial.n = child_
@@ -132,11 +131,11 @@ export class Field_optional<out T extends CSchema = CSchema> extends Field {
       }
       return OUT
    }
-   static unsetSerial: Field_optional['ҨSerial'] = { $: 'optional' }
+   static unsetSerial: Field_optional['::Serial'] = { $: 'optional' }
    static generateSerial(
-      value: Maybe<Field_optional<CSchema>['ҨValue']>,
-      config: Field_optional<CSchema>['ҨConfig'],
-   ): Field_optional<CSchema>['ҨSerial'] {
+      value: Maybe<Field_optional<CSchema>['::Value']>,
+      config: Field_optional<CSchema>['::Config'],
+   ): Field_optional<CSchema>['::Serial'] {
       // use default
       if (value === undefined) {
          const startActive = config.startActive
@@ -195,7 +194,7 @@ export class Field_optional<out T extends CSchema = CSchema> extends Field {
       // | // Only setting child serial is supported since 2024-09-11
       // | // it implies active true
       // | if (next.child != null && next.active == null) {
-      // |     next = produce(next, (draft: this['ҨSerial']) => {
+      // |     next = produce(next, (draft: this['::Serial']) => {
       // |         draft.active = true
       // |     })
       // | }
@@ -222,7 +221,7 @@ export class Field_optional<out T extends CSchema = CSchema> extends Field {
    }
 
    /** must always be run within a runInTransaction */
-   private __initializeChild(targetChildSerial: Maybe<T['ҨSerial']>): void {
+   private __initializeChild(targetChildSerial: Maybe<T['::Serial']>): void {
       this.zRECONCILE({
          mountKey: 'child',
          existingChild: this.child,
@@ -275,9 +274,9 @@ export class Field_optional<out T extends CSchema = CSchema> extends Field {
    }
 
    // #region Children
-   @observable.ref accessor child!: T['ҨField']
+   @observable.ref accessor child!: T['::Field']
 
-   getChildIfActive(): Maybe<T['ҨField']> {
+   getChildIfActive(): Maybe<T['::Field']> {
       return this.isActive ? this.child : null
    }
 
@@ -293,7 +292,7 @@ export class Field_optional<out T extends CSchema = CSchema> extends Field {
       return didChange
    }
 
-   get childOrThrow(): T['ҨField'] {
+   get childOrThrow(): T['::Field'] {
       if (this.child == null) throw new Error('❌ optional active but child is null')
       return this.child
    }
@@ -325,7 +324,7 @@ export class Field_optional<out T extends CSchema = CSchema> extends Field {
       }
       return this
    }
-   override zGetSetValue(): this['ҨSetvalue'] | undefined {
+   override zGetSetValue(): this['::Setvalue'] | undefined {
       // console.log(`[💀 getSetValue] `, this.path)
       return this.child.zGetSetValue()
    }

@@ -31,7 +31,7 @@ export type FieldStringInputType =
     | 'color'
 
 // #region CONFIG TYPE
-export type Field_string_config = Field_string['ҨConfig']
+export type Field_string_config = Field_string['::Config']
 type Field_string_ownConfig = {
    /**
     * used:
@@ -69,7 +69,7 @@ type Field_string_ownConfig = {
 }
 
 // #region SERIAL TYPE
-export type Field_string_serial = Field_string['ҨSerial']
+export type Field_string_serial = Field_string['::Serial']
 type Field_string_ownSerial = {
    $: 'str'
    value?: string | undefined
@@ -83,28 +83,28 @@ type Field_string_ownSerial = {
 
 // #region Field
 export interface Field_string {
-   ['ҨType']: 'str'
-   ['ҨOwnConfig']: Field_string_ownConfig
-   ['ҨOwnSerial']: Field_string_ownSerial
-   ['ҨValue']: string
-   ['ҨSetvalue']: string
-   ['ҨUnchecked']: string | undefined
-   ['ҨChild']: never
-   ['ҨOpts']: unknown
-   ['ҨOwnPatch']: Patch<'str'>
+   ['::Type']: 'str'
+   ['::OwnConfig']: Field_string_ownConfig
+   ['::OwnSerial']: Field_string_ownSerial
+   ['::Value']: string
+   ['::Setvalue']: string
+   ['::Unchecked']: string | undefined
+   ['::Child']: never
+   ['::Opts']: unknown
+   ['::OwnPatch']: Patch<'str'>
 }
 
 // #region STATE
 export class Field_string extends Field {
    // #region Type
    static readonly type: 'str' = 'str'
-   private static readonly unsetSerial: Field_string['ҨSerial'] = { $: 'str' }
+   private static readonly unsetSerial: Field_string['::Serial'] = { $: 'str' }
    static readonly codeForTypescriptValue = (config: Field_string_ownConfig): string => {
       if (config.inputType == null) return 'string'
       if (config.inputType === 'text') return 'string'
       return `Z.FL_string_${config.inputType}`
    }
-   static override migrateSerial(serial: object): Maybe<Field_string['ҨSerial']> | void {
+   static override migrateSerial(serial: object): Maybe<Field_string['::Serial']> | void {
       if (isProbablySerialString(serial)) {
          // recover from previous version of string serial
          if ('val' in serial) {
@@ -116,9 +116,9 @@ export class Field_string extends Field {
    }
 
    static generateSerial(
-      value: Maybe<Field_string['ҨValue']>,
-      config: Field_string['ҨConfig'],
-   ): Field_string['ҨSerial'] {
+      value: Maybe<Field_string['::Value']>,
+      config: Field_string['::Config'],
+   ): Field_string['::Serial'] {
       if (value == null && config.default == null) return this.unsetSerial
 
       const selectedVal = value ?? (typeof config.default === 'function' ? config.default() : config.default)
@@ -136,7 +136,7 @@ export class Field_string extends Field {
       parent: Field | null,
       schema: CSchema<Field_string>,
       initialMountKey: string,
-      serial?: Field_string['ҨSerial'],
+      serial?: Field_string['::Serial'],
    ) {
       super(repo, root, parent, schema, initialMountKey, serial)
       this.init(serial)
@@ -144,7 +144,7 @@ export class Field_string extends Field {
 
    // #region SERIAL
    // 🟢
-   protected zSetOwnSerial(next: Field_string['ҨSerial']): void {
+   protected zSetOwnSerial(next: Field_string['::Serial']): void {
       // 💬 2024-09-10 rvion:
       // | we CAN'T do this:
       // | ```

@@ -23,7 +23,7 @@ export type Field_matrix_cell = {
 }
 
 // CONFIG
-export type Field_matrix_config = Field_matrix['ҨConfig']
+export type Field_matrix_config = Field_matrix['::Config']
 type Field_matrix_ownConfig = {
    default?: { row: string; col: string }[]
    rows: string[]
@@ -31,7 +31,7 @@ type Field_matrix_ownConfig = {
 }
 
 // SERIAL
-export type Field_matrix_serial = Field_matrix['ҨSerial']
+export type Field_matrix_serial = Field_matrix['::Serial']
 type Field_matrix_ownSerial = {
    $: 'matrix'
    /** only contains cells that are ONs */
@@ -44,15 +44,15 @@ export type Field_matrix_unchecked = Field_matrix_value | undefined
 
 // TYPES
 export interface Field_matrix {
-   ['ҨType']: 'matrix'
-   ['ҨOwnConfig']: Field_matrix_ownConfig
-   ['ҨOwnSerial']: Field_matrix_ownSerial
-   ['ҨValue']: Field_matrix_value
-   ['ҨSetvalue']: Field_matrix_value
-   ['ҨUnchecked']: Field_matrix_unchecked
-   ['ҨChild']: never
-   ['ҨOpts']: unknown
-   ['ҨOwnPatch']: Patch<'matrix'>
+   ['::Type']: 'matrix'
+   ['::OwnConfig']: Field_matrix_ownConfig
+   ['::OwnSerial']: Field_matrix_ownSerial
+   ['::Value']: Field_matrix_value
+   ['::Setvalue']: Field_matrix_value
+   ['::Unchecked']: Field_matrix_unchecked
+   ['::Child']: never
+   ['::Opts']: unknown
+   ['::OwnPatch']: Patch<'matrix'>
 }
 
 // STATE

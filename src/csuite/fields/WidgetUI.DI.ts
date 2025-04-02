@@ -52,9 +52,9 @@ export const getFieldListClass = (): typeof Field_list<any> => getFieldClass('li
 export const getFieldSelectOneClass = (): typeof Field_selectOne<any, string> =>
    getFieldClass('selectOne') as any
 
-export const registerFieldClass = <T extends { ['ҨType']: CATALOG.AllFieldTypes }>(
+export const registerFieldClass = <T extends { ['::Type']: CATALOG.AllFieldTypes }>(
    //
-   type: T['ҨType'],
+   type: T['::Type'],
    kls: { new (...args: any[]): T },
 ): void => {
    KNOWN_FIELDS[type] = kls as any
@@ -81,8 +81,8 @@ export const isSchemaDate = _checkIfIsSchemaOf<Field_date<any>>('date')
 
 function _checkIfIsSchemaOf<F extends Field>(
    /** widget type to check */
-   type: F['ҨType'],
-   predicate?: (schema: F['ҨConfig']) => boolean,
+   type: F['::Type'],
+   predicate?: (schema: F['::Config']) => boolean,
 ): (widget: any) => widget is CSchema<F> {
    return (widget): widget is CSchema<F> => {
       if (widget == null) return false
@@ -117,7 +117,7 @@ export const isFieldDateOptional = _checkIfIsOptionalOf<Z.SDatePlain>('date')
 
 function _checkIfIs<F extends Field>(
    /** widget type to check */
-   type: F['ҨType'],
+   type: F['::Type'],
    predicate?: (field: F) => boolean,
 ): (field: any) => field is F {
    return (field): field is F => {
@@ -130,10 +130,10 @@ function _checkIfIs<F extends Field>(
 }
 
 function _checkIfIsOptionalOf<S extends CSchema>(
-   type: S['ҨType'],
-   predicate?: (field: S['ҨField']) => boolean,
+   type: S['::Type'],
+   predicate?: (field: S['::Field']) => boolean,
 ): (field: any) => field is Field_optional<S> {
-   const checkChild = _checkIfIs<S['ҨField']>(type, predicate)
+   const checkChild = _checkIfIs<S['::Field']>(type, predicate)
 
    return (field): field is Field_optional<S> => {
       if (!isFieldOptional(field)) return false
@@ -179,9 +179,9 @@ export const isProbablySomeFieldSerialOf = (
 
 function isProbablySerialOf<F extends Field>(
    /** widget type to check */
-   type: F['ҨSerial']['$'],
-): (serial: any) => serial is F['ҨSerial'] {
-   return (serial): serial is F['ҨSerial'] => {
+   type: F['::Serial']['$'],
+): (serial: any) => serial is F['::Serial'] {
+   return (serial): serial is F['::Serial'] => {
       // not null
       if (serial == null) return false
       // serial should be an object

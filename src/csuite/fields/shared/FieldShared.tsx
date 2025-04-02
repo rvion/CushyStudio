@@ -26,32 +26,32 @@ type Field_shared_ownSerial = {
 }
 
 // #region VALUE TYPE
-export type Field_shared_value<F extends Field = Field> = F['ҨValue']
-export type Field_shared_unchecked<F extends Field = Field> = Maybe<F['ҨUnchecked']>
+export type Field_shared_value<F extends Field = Field> = F['::Value']
+export type Field_shared_unchecked<F extends Field = Field> = Maybe<F['::Unchecked']>
 
 // #region Field
 export interface Field_shared<F extends Field = Field> {
-   ['ҨType']: 'shared'
-   ['ҨOwnConfig']: Field_shared_ownConfig<F>
-   ['ҨOwnSerial']: Field_shared_ownSerial
-   ['ҨValue']: Field_shared_value<F>
-   ['ҨSetvalue']: Field_shared_value<F>
-   ['ҨUnchecked']: Field_shared_unchecked<F>
-   ['ҨChild']: F
-   ['ҨOpts']: unknown
-   ['ҨOwnPatch']: Patch<'shared'>
+   ['::Type']: 'shared'
+   ['::OwnConfig']: Field_shared_ownConfig<F>
+   ['::OwnSerial']: Field_shared_ownSerial
+   ['::Value']: Field_shared_value<F>
+   ['::Setvalue']: Field_shared_value<F>
+   ['::Unchecked']: Field_shared_unchecked<F>
+   ['::Child']: F
+   ['::Opts']: unknown
+   ['::OwnPatch']: Patch<'shared'>
 }
 
 // #region STATE
 export class Field_shared<out F extends Field = Field> extends Field {
    // #region TYPE
    static readonly type: 'shared' = 'shared'
-   private static readonly unsetSerial: Field_shared['ҨSerial'] = { $: 'shared' }
+   private static readonly unsetSerial: Field_shared['::Serial'] = { $: 'shared' }
    static override migrateSerial(): undefined {}
-   static codeForTypescriptValue = (config: Field_shared<Field>['ҨConfig'], opts: CodegenOpts): string => {
+   static codeForTypescriptValue = (config: Field_shared<Field>['::Config'], opts: CodegenOpts): string => {
       return `Z.Shared<${config.schema.codeForTypescriptValue(opts)}>`
    }
-   static generateSerial(): Field_shared['ҨSerial'] {
+   static generateSerial(): Field_shared['::Serial'] {
       return Field_shared.unsetSerial
    }
 
@@ -62,14 +62,14 @@ export class Field_shared<out F extends Field = Field> extends Field {
       parent: Field | null,
       schema: CSchema<Field_shared<F>>,
       initialMountKey: string,
-      serial?: Field_shared<F>['ҨSerial'],
+      serial?: Field_shared<F>['::Serial'],
    ) {
       super(repo, root, parent, schema, initialMountKey, serial)
       this.init(serial)
    }
 
    // #region UI
-   protected zSetOwnSerial(_next: this['ҨSerial']): void {}
+   protected zSetOwnSerial(_next: this['::Serial']): void {}
 
    get zIsOwnSet(): boolean {
       return this.child.zIsSet

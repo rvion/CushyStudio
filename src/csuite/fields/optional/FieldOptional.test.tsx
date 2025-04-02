@@ -158,7 +158,7 @@ describe('FieldOptional', () => {
          it('should create the field and use the serial without patching it', () => {
             const patchSerial = vitest.spyOn(Field_optional.prototype, 'zPatchSerial')
             const S = b.number_().optional()
-            const serial: Field_optional_serial<Field_number['ҨSchema']> = {
+            const serial: Field_optional_serial<Field_number['::Schema']> = {
                $: 'optional',
                y: { $: 'number', value: 42 },
             }

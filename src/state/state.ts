@@ -513,7 +513,7 @@ export class STATE {
          onSerialChange: (form) => writeJSON('settings/civitai.json', form.zSerial),
       },
    )
-   get favbar(): $schemaFavbar['ҨField'] {
+   get favbar(): $schemaFavbar['::Field'] {
       return this.preferences.interface.zFields.favBar
    }
    // favbar = cushyFactory.document(

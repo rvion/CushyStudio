@@ -44,24 +44,24 @@ export type Field_orbit_unchecked = {
 
 // STATE
 export interface Field_orbit {
-   ['ҨType']: 'orbit'
-   ['ҨOwnConfig']: Field_orbit_ownConfig
-   ['ҨOwnSerial']: Field_orbit_ownSerial
-   ['ҨValue']: Field_orbit_value
-   ['ҨUnchecked']: Field_orbit_unchecked
-   ҨField: Field_orbit
-   ['ҨChild']: never
+   ['::Type']: 'orbit'
+   ['::OwnConfig']: Field_orbit_ownConfig
+   ['::OwnSerial']: Field_orbit_ownSerial
+   ['::Value']: Field_orbit_value
+   ['::Unchecked']: Field_orbit_unchecked
+   ['::Field']: Field_orbit
+   ['::Child']: never
 }
 export class Field_orbit extends Field {
    // #region types
    static readonly type: 'orbit' = 'orbit'
-   static readonly unsetSerial: Field_orbit['ҨSerial'] = { $: 'orbit' }
+   static readonly unsetSerial: Field_orbit['::Serial'] = { $: 'orbit' }
    static migrateSerial(): undefined {}
    public static readonly patchedSerialPaths: readonly string[] = Object.freeze(['azimuth', 'elevation'])
    static generateSerial(
-      value: Maybe<Field_orbit['ҨValue']>,
-      config: Field_orbit['ҨConfig'],
-   ): Field_orbit['ҨSerial'] {
+      value: Maybe<Field_orbit['::Value']>,
+      config: Field_orbit['::Config'],
+   ): Field_orbit['::Serial'] {
       if (value == null && config.default == null) return this.unsetSerial
       const selectedVal = value ?? config.default
       return {
@@ -70,7 +70,7 @@ export class Field_orbit extends Field {
          elevation: selectedVal?.elevation,
       }
    }
-   static codeForTypescriptValue(config: Field_orbit['ҨConfig']): string {
+   static codeForTypescriptValue(config: Field_orbit['::Config']): string {
       return `number`
    }
 
@@ -81,7 +81,7 @@ export class Field_orbit extends Field {
       parent: Field | null,
       schema: CSchema<Field_orbit>,
       initialMountKey: string,
-      serial?: Field_orbit['ҨSerial'],
+      serial?: Field_orbit['::Serial'],
    ) {
       super(repo, root, parent, schema, initialMountKey, serial)
       this.init(serial)
@@ -94,7 +94,7 @@ export class Field_orbit extends Field {
       return true
    }
 
-   protected zSetOwnSerial(next: Field_orbit['ҨSerial']): void {
+   protected zSetOwnSerial(next: Field_orbit['::Serial']): void {
       // assign default
       if (this.zSerial.azimuth == null) {
          const def = this.zConfig.default

@@ -40,24 +40,24 @@ export type Field_number_unchecked = Field_number_value | null | undefined
 
 // #region TYPES
 export interface Field_number {
-   ['ҨType']: 'number'
-   ['ҨOwnConfig']: Field_number_ownConfig
-   ['ҨOwnSerial']: Field_number_ownSerial
-   ['ҨValue']: Field_number_value
-   ['ҨSetvalue']: Field_number_value
-   ['ҨUnchecked']: Field_number_unchecked
-   ['ҨChild']: never
-   ['ҨOpts']: unknown
-   ['ҨOwnPatch']: Patch<'number'>
+   ['::Type']: 'number'
+   ['::OwnConfig']: Field_number_ownConfig
+   ['::OwnSerial']: Field_number_ownSerial
+   ['::Value']: Field_number_value
+   ['::Setvalue']: Field_number_value
+   ['::Unchecked']: Field_number_unchecked
+   ['::Child']: never
+   ['::Opts']: unknown
+   ['::OwnPatch']: Patch<'number'>
 }
 
 // #region STATE
 export class Field_number extends Field {
    // #region TYPE
    static readonly type: 'number' = 'number'
-   static readonly unsetSerial: Field_number['ҨSerial'] = { $: 'number' }
-   static readonly codeForTypescriptValue = (config: Field_number['ҨConfig']): string => 'number'
-   static override migrateSerial(serial: object): Maybe<Field_number['ҨSerial']> {
+   static readonly unsetSerial: Field_number['::Serial'] = { $: 'number' }
+   static readonly codeForTypescriptValue = (config: Field_number['::Config']): string => 'number'
+   static override migrateSerial(serial: object): Maybe<Field_number['::Serial']> {
       // migrate from string with number typed as string
       if (isProbablySerialString(serial)) {
          const prop = serial.value
@@ -68,9 +68,9 @@ export class Field_number extends Field {
    }
 
    static generateSerial(
-      value: Maybe<Field_number['ҨValue']>,
-      config: Field_number['ҨConfig'],
-   ): Field_number['ҨSerial'] {
+      value: Maybe<Field_number['::Value']>,
+      config: Field_number['::Config'],
+   ): Field_number['::Serial'] {
       if (value == null && config.default == null) return this.unsetSerial
 
       return {
@@ -86,14 +86,14 @@ export class Field_number extends Field {
       parent: Field | null,
       schema: CSchema<Field_number>,
       initialMountKey: string,
-      serial?: Field_number['ҨSerial'],
+      serial?: Field_number['::Serial'],
    ) {
       super(repo, root, parent, schema, initialMountKey, serial)
       this.init(serial)
    }
 
    // #region SERIAL
-   protected zSetOwnSerial(next: Field_number['ҨSerial']): void {
+   protected zSetOwnSerial(next: Field_number['::Serial']): void {
       if (next.value == null) {
          const def = this.defaultValue
          if (def != null) next = produce(next, (draft) => void (draft.value = def))

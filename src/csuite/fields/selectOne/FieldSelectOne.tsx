@@ -36,7 +36,7 @@ export type Field_selectOne_config_simplified_<KEY extends SelectKey> = PartialO
 
 // #region CONFIG
 export type Field_selectOne_config_<KEY extends SelectKey> = Field_selectOne_config<KEY, KEY>
-export type Field_selectOne_config<VALUE, KEY extends SelectKey> = Field_selectOne<VALUE, KEY>['ҨConfig']
+export type Field_selectOne_config<VALUE, KEY extends SelectKey> = Field_selectOne<VALUE, KEY>['::Config']
 type Field_selectOne_ownConfig<
    //
    VALUE,
@@ -98,7 +98,7 @@ type Field_selectOne_ownConfig<
 }
 
 // #region SERIAL
-export type Field_selectOne_serial<KEY extends SelectKey> = Field_selectOne<unknown, KEY>['ҨSerial']
+export type Field_selectOne_serial<KEY extends SelectKey> = Field_selectOne<unknown, KEY>['::Serial']
 type Field_selectOne_ownSerial<KEY extends SelectKey> = {
    $: 'selectOne'
    query?: string
@@ -142,15 +142,15 @@ export interface Field_selectOne<
    VALUE extends unknown,
    KEY extends SelectKey,
 > {
-   ['ҨType']: 'selectOne'
-   ['ҨOwnConfig']: Field_selectOne_ownConfig<VALUE, KEY>
-   ['ҨOwnSerial']: Field_selectOne_ownSerial<KEY>
-   ['ҨValue']: VALUE
-   ['ҨSetvalue']: VALUE | KEY
-   ['ҨUnchecked']: Field_selectOne_unchecked<VALUE>
-   ['ҨChild']: never
-   ['ҨOpts']: unknown
-   ['ҨOwnPatch']: Patch<'selectOne'>
+   ['::Type']: 'selectOne'
+   ['::OwnConfig']: Field_selectOne_ownConfig<VALUE, KEY>
+   ['::OwnSerial']: Field_selectOne_ownSerial<KEY>
+   ['::Value']: VALUE
+   ['::Setvalue']: VALUE | KEY
+   ['::Unchecked']: Field_selectOne_unchecked<VALUE>
+   ['::Child']: never
+   ['::Opts']: unknown
+   ['::OwnPatch']: Patch<'selectOne'>
 }
 export class Field_selectOne<
    //
@@ -187,9 +187,9 @@ export class Field_selectOne<
    }
 
    static generateSerial(
-      value: Maybe<Field_selectOne<any, any>['ҨValue']>,
-      config: Field_selectOne<any, any>['ҨConfig'],
-   ): Field_selectOne<any, any>['ҨSerial'] {
+      value: Maybe<Field_selectOne<any, any>['::Value']>,
+      config: Field_selectOne<any, any>['::Config'],
+   ): Field_selectOne<any, any>['::Serial'] {
       if (value == null && config.default == null) return this.unsetSerial
 
       return {
@@ -416,7 +416,7 @@ export class Field_selectOne<
       return this
    }
 
-   override zGetSetValue(): this['ҨSetvalue'] | undefined {
+   override zGetSetValue(): this['::Setvalue'] | undefined {
       // console.log(`[💀 getSetValue] `, this.path)
       return this.selectedId
    }

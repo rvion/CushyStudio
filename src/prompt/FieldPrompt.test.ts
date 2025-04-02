@@ -8,12 +8,12 @@ describe('FieldPrompt', () => {
    // 💬 2025-03-21 rvion: hacky way of testing the prompt
    const b = new (class SimpleBuilderWithPrompt extends SimpleBuilder {
       /** prompt, defaulting to '' */
-      prompt(config: Field_prompt['ҨConfig'] = {}): Z.Prompt {
+      prompt(config: Field_prompt['::Config'] = {}): Z.Prompt {
          const def = config.default ?? ''
          return this.prompt_({ default: def, ...config })
       }
 
-      prompt_(config: Field_prompt['ҨConfig'] = {}): Z.Prompt {
+      prompt_(config: Field_prompt['::Config'] = {}): Z.Prompt {
          return CSchema.new<Field_prompt>(Field_prompt, config)
       }
    })()

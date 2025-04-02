@@ -2,7 +2,7 @@ import type { FieldAnomaly } from '../migration/Anomaly'
 import type { Field } from './Field'
 
 /** helper to define widget serial types */
-export type FieldSerialFor<F extends Field> = FieldSerial_CommonProperties & F['ҨOwnSerial']
+export type FieldSerialFor<F extends Field> = FieldSerial_CommonProperties & F['::OwnSerial']
 
 /** common properties we expect to see in a widget serial */
 export type FieldSerial_CommonProperties = {

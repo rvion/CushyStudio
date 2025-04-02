@@ -13,7 +13,7 @@ import { getGlobalSeeder, type Seeder } from './Seeder'
 type SeedMode = 'randomize' | 'fixed' | 'last'
 
 // #region Config
-export type Field_seed_config = Field_seed['ҨConfig']
+export type Field_seed_config = Field_seed['::Config']
 type Field_seed_ownConfig = {
    default?: number
    defaultMode?: SeedMode
@@ -23,7 +23,7 @@ type Field_seed_ownConfig = {
 }
 
 // #region Serial
-export type Field_seed_serial = Field_seed['ҨSerial']
+export type Field_seed_serial = Field_seed['::Serial']
 type Field_seed_ownSerial = {
    $: 'seed'
    val?: number
@@ -36,15 +36,15 @@ export type Field_seed_unchecked = Field_seed_value | undefined
 
 // #region Types
 export interface Field_seed {
-   ['ҨType']: 'seed'
-   ['ҨOwnConfig']: Field_seed_ownConfig
-   ['ҨOwnSerial']: Field_seed_ownSerial
-   ['ҨValue']: Field_seed_value
-   ['ҨSetvalue']: Field_seed_value
-   ['ҨUnchecked']: Field_seed_unchecked
-   ['ҨChild']: never
-   ['ҨOpts']: unknown
-   ['ҨOwnPatch']: Patch<'seed'>
+   ['::Type']: 'seed'
+   ['::OwnConfig']: Field_seed_ownConfig
+   ['::OwnSerial']: Field_seed_ownSerial
+   ['::Value']: Field_seed_value
+   ['::Setvalue']: Field_seed_value
+   ['::Unchecked']: Field_seed_unchecked
+   ['::Child']: never
+   ['::Opts']: unknown
+   ['::OwnPatch']: Patch<'seed'>
 }
 
 // STATE
@@ -55,9 +55,9 @@ export class Field_seed extends Field {
    static override migrateSerial(): undefined {}
    static readonly codeForTypescriptValue = (config: Field_seed_config): string => 'Z.Seed'
    static generateSerial(
-      value: Maybe<Field_seed['ҨValue']>,
-      config: Field_seed['ҨConfig'],
-   ): Field_seed['ҨSerial'] {
+      value: Maybe<Field_seed['::Value']>,
+      config: Field_seed['::Config'],
+   ): Field_seed['::Serial'] {
       if (value == null) return this.unsetSerial
 
       return {

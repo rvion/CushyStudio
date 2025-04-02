@@ -47,7 +47,7 @@ export type BoardDataSchema<SCHEMA extends CSchema> = {
 
 // ------------------------------------------------------------------------------------------------------------------------
 export interface Field_board<SCHEMA extends CSchema> extends MAGICFIELDS<BoardDataSchema<SCHEMA>> {
-   ['ҨOpts']: Field_board_config<SCHEMA>
+   ['::Opts']: Field_board_config<SCHEMA>
 }
 export class Field_board<SCHEMA extends CSchema> extends Field_group<BoardDataSchema<SCHEMA>> {
    // built-in mechanism to inject schema-level opts without having to redefine the constructor

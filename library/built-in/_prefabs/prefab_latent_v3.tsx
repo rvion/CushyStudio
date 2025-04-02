@@ -80,7 +80,7 @@ export function ui_latent_v3(p: { size?: Field_size_config } = {}): UI_LatentV3 
 
 export const run_latent_v3 = async (p: {
    //
-   opts: ReturnType<typeof ui_latent_v3>['ҨValue']
+   opts: ReturnType<typeof ui_latent_v3>['::Value']
    vae: Comfy.Signal['VAE']
 }): Promise<{
    latent: Comfy.Signal['LATENT']

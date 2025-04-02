@@ -9,5 +9,5 @@ import type { AnomalysolutionID } from './AnomalySolution'
 export type AnomalySolutionChoosen<CONFIG extends CSchema> = {
    // suggestionID: AnomalySuggestionID
    solutionID: AnomalysolutionID
-   config: CONFIG['ҨSerial']
+   config: CONFIG['::Serial']
 }

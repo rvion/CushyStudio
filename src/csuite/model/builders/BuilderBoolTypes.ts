@@ -3,9 +3,9 @@ import { CSchema } from '../CSchema'
 import { defineSchemaBuilderMixin } from './defineSchemaBuilderMixin'
 
 export type BuilderBoolMixin = {
-   bool_(config?: Field_bool['ҨConfig']): Z.Bool
-   boolean(config?: Field_bool['ҨConfig'] | boolean): Z.Bool
-   bool(config?: Field_bool['ҨConfig'] | boolean): Z.Bool
+   bool_(config?: Field_bool['::Config']): Z.Bool
+   boolean(config?: Field_bool['::Config'] | boolean): Z.Bool
+   bool(config?: Field_bool['::Config'] | boolean): Z.Bool
 }
 
 const BuilderBoolImpl = (): BuilderBoolMixin =>
@@ -14,14 +14,14 @@ const BuilderBoolImpl = (): BuilderBoolMixin =>
        * boolean without default
        * @since 2024-09-04
        */
-      bool_(config: Field_bool['ҨConfig'] = {}): Z.Bool {
+      bool_(config: Field_bool['::Config'] = {}): Z.Bool {
          return CSchema.new(Field_bool, config)
       },
 
       /**
        * @deprecated; use `bool`
        */
-      boolean(config: Field_bool['ҨConfig'] | boolean = {}): Z.Bool {
+      boolean(config: Field_bool['::Config'] | boolean = {}): Z.Bool {
          if (typeof config === 'boolean') config = { default: config }
          return this.bool(config)
       },
@@ -29,10 +29,10 @@ const BuilderBoolImpl = (): BuilderBoolMixin =>
       /**
        * boolean with default to false, unless default specified otherwise
        */
-      bool(config: Field_bool['ҨConfig'] | boolean = {}): Z.Bool {
+      bool(config: Field_bool['::Config'] | boolean = {}): Z.Bool {
          if (typeof config === 'boolean') config = { default: config }
          const def = config.default ?? false
-         return this.bool_({ default: def, ...config } as Field_bool['ҨConfig']) // 2024-12-20 domi: not sure why I have a type error without explicit cast
+         return this.bool_({ default: def, ...config } as Field_bool['::Config']) // 2024-12-20 domi: not sure why I have a type error without explicit cast
       },
    })
 

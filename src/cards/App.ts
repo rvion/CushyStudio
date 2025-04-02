@@ -37,7 +37,7 @@ export type CustomViewRef<PARAMS> = {
    id: CushyViewID
 }
 
-export type $ExtractFormValueType<FIELDS extends SchemaDict> = { [k in keyof FIELDS]: FIELDS[k]['ҨValue'] }
+export type $ExtractFormValueType<FIELDS extends SchemaDict> = { [k in keyof FIELDS]: FIELDS[k]['::Value'] }
 
 export type CustomView<T = any> = {
    preview: (t: T) => ReactNode
@@ -78,7 +78,7 @@ export type App<FIELD extends Field> = {
    run: (
       //
       runtime: Runtime<NoInfer<FIELD>>,
-      value: NoInfer<FIELD>['ҨValue'],
+      value: NoInfer<FIELD>['::Value'],
       context: DraftExecutionContext,
       field: NoInfer<FIELD>,
    ) => void | Promise<void>

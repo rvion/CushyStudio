@@ -27,7 +27,7 @@ export type AnomalySolution<
    config: (b: Z.Builder) => CONFIG
    action: (p: {
       document: Field
-      config: CONFIG['ҨField']
+      config: CONFIG['::Field']
       anomaly: FieldAnomaly
       data: NonNullable<DATA>
    }) => 'SUCCESS' | 'FAILURE'
