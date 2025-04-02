@@ -43,12 +43,12 @@ async function getCommits(
    if (startCommit) {
       logOptions.from = startCommit
       // Note: 'from' will include commits after the specified commit up to HEAD
-   } else if (startDate) {
-      logOptions.since = startDate
+   }
+   if (startDate) {
+      logOptions['--since'] = startDate
    }
 
    const log = await git.log(logOptions)
-
    return log.all.map((commit) => ({
       ...commit,
       files: commit.message ? commit.message.split('\n') : [],
@@ -108,17 +108,19 @@ function formatDate(dateStr: string): string {
 // Main Function
 async function main(): Promise<void> {
    // === Configuration ===
+   const startDate = '2025-03-01' // Optional: Specify if needed
    const config: Config = {
       loco: {
          path: path.resolve('/Users/loco/dev/monoloco'),
          sharedSubfolderPath: 'src/cushy-forms/src/csuite',
-         startDate: '2024-10-27', // Optional: Specify if needed
-         startCommit: 'a2f6e2fcdcb3099cd242896da1aa92bd9ed08792',
+         startDate,
+         // startCommit: 'a2f6e2fcdcb3099cd242896da1aa92bd9ed08792',
       },
       cushy: {
          path: path.resolve('/Users/loco/dev/CushyStudio'),
          sharedSubfolderPath: 'src/csuite',
-         startCommit: '078412c7c92191fd7063e51f8ee6998473f02338',
+         startDate,
+         // startCommit: '078412c7c92191fd7063e51f8ee6998473f02338',
       },
    }
 
@@ -156,7 +158,8 @@ async function main(): Promise<void> {
    let targetName: string
    let targetSharedSubfolder: string
 
-   if (analysis1.commitCount <= analysis2.commitCount) {
+   // eslint-disable-next-line no-constant-condition
+   if (analysis1.commitCount <= analysis2.commitCount || true /* 🔴 */) {
       targetCodebase = gitLoco
       targetAnalysis = analysis1
       targetName = 'monoloco'
@@ -225,7 +228,7 @@ async function main(): Promise<void> {
 
       // Write to file
       fs.writeFileSync(filePath, fileContent, 'utf8')
-      console.log(chalk.green(`Created diff file: ${filename}`))
+      console.log(chalk.green(`Created diff file: ${filePath}`))
    }
 
    console.log(chalk.green(`\nAll relevant diff files have been generated in ${outputDir}`))
