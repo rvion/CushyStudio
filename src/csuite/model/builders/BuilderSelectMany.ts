@@ -27,7 +27,7 @@ export type BuilderSelectManyMixin = {
    selectManyOptionValues<const V extends string>(options: SelectOption_<V>[], config?: Field_selectMany_config_simplified_<V>): Z.Many_<V>;
 }
 
-const emptyArray = Object.freeze([])
+const emptyArray: any[] = Object.freeze([]) as any
 const BuilderSelectManyImpl = (
    _defaultSelectManyConfig: Partial<Field_selectMany_config<any, any>> = {},
 ): BuilderSelectManyMixin =>

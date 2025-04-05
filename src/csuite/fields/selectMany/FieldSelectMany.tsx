@@ -41,7 +41,7 @@ type Field_selectMany_ownConfig<
     * 🔶 the *IDs* of the options selected by default
     * true: all options selected
     */
-   default?: KEY[] | KEY
+   default?: KEY[]
    /**
     * list of all keys
     * 👉 you can use a lambda if you want the option to to dynamic
@@ -164,9 +164,9 @@ export class Field_selectMany<
    }
 
    static generateSerial(
-      setValue_: Maybe<Field_selectMany<AnySelectValue, SelectKey>['$setValue']>,
-      config: Field_selectMany<any, any>['$config'],
-   ): Field_selectMany<any, any>['$serial'] {
+      setValue_: Maybe<Field_selectMany<AnySelectValue, SelectKey>['{setValue}']>,
+      config: Field_selectMany<any, any>['{config}'],
+   ): Field_selectMany<any, any>['{serial}'] {
       // always use `setValue_` if provided, or `config.default` otherwise
       const setValue =
          setValue_ != null //

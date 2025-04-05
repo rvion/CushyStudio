@@ -150,7 +150,7 @@ const useDoc = (): Field => {
                ]),
                selectManyErr: b.selectManyStrings(
                   ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten'],
-                  { default: 'WRONG' },
+                  { default: ['WRONG'] },
                ),
             }),
             boolean: b.group({
