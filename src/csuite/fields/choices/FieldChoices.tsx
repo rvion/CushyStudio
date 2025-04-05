@@ -638,7 +638,7 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field {
    get zValue(): Field_choices_value<T> {
       const value = new Proxy({} as any, this.makeValueProxy('fail'))
       void this.zSerial
-      Object.defineProperty(this, 'zValue_or_fail', {
+      Object.defineProperty(this, 'zValue', {
          get: () => {
             void this.zSerial
             return value
