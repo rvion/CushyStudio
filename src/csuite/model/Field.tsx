@@ -24,7 +24,7 @@ import { produce, setAutoFreeze } from 'immer'
 import _get from 'lodash/get'
 import _set from 'lodash/set'
 import _unset from 'lodash/unset'
-import { computed, isObservable, observable, runInAction } from 'mobx'
+import { computed, isObservable, observable, reaction, runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
 import { type FC, type ReactNode, useMemo } from 'react'
 
@@ -497,6 +497,8 @@ export abstract class Field {
     * and other similar stuff that may need to be cleaned up to
     * avoid memory leak.
     * @undecorated (will only be called at disposal time; no need to react on additions)
+    *
+    * todo: make lazy; will save an empty array per field.
     */
    protected zDisposeFns: (() => void)[] = []
 
@@ -1755,6 +1757,18 @@ export abstract class Field {
 
    private zHasBeenInitialized: boolean = false
 
+   private zSetupReactions(): void {
+      if (this.zConfig.reactions == null) return
+      for (const r of this.zConfig.reactions) {
+         const cleanupFn = reaction(
+            () => r.expr(this),
+            (val) => r.effect(val, this),
+            { fireImmediately: true },
+         )
+         this.zDisposeFns.push(cleanupFn)
+      }
+   }
+
    /** this function MUST be called at the end of every widget constructor */
    protected init(
       //
@@ -1766,6 +1780,7 @@ export abstract class Field {
       if (this.zHasBeenInitialized)
          return console.error(`[🔶] Field.init has already been called => ABORTING`)
       this.zHasBeenInitialized = true
+      this.zSetupReactions()
 
       // 2. ...
       this.zRunInTransaction((tct) => {
