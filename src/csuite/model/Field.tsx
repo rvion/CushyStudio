@@ -1918,41 +1918,39 @@ export abstract class Field {
       this.zTouched = false
    }
 
-      // ---------------------------------------------------------------------------
-      private _callbacks: { [key in FieldEvent_]?: ((field: any) => void)[] } = {}
+   // ---------------------------------------------------------------------------
+   private _callbacks: { [key in FieldEvent_]?: ((field: any) => void)[] } = {}
 
-      /** @internal */
-      zInternalRunCallbacksForEvent(event: FieldEvent_): void {
-         if (this._callbacks[event] == null) return
-         for (const cb of this._callbacks[event]!) {
-            cb(this)
-         }
-      }
-      zOn(event: FieldEvent_, cb: CovariantFn<[field: this], void>): void {
-         if (this._callbacks[event] == null) this._callbacks[event] = []
-         this._callbacks[event]?.push(cb)
-      }
-
-      zOff(event: FieldEvent_, cb: CovariantFn<[field: this], void>): void {
-         if (this._callbacks[event] == null) return console.warn(`[🔶] Field.off: no callbacks for ${event}`)
-         const i = this._callbacks[event]?.indexOf(cb)
-         if (i === -1) return console.warn(`[🔶] Field.off callback not found for ${event}`)
-         this._callbacks[event]?.splice(i, 1)
-      }
-
-      /**
-       * this function allow to register temporary events callbacks
-       * on a field that last while the component is mounted
-       */
-      zReactUseEvent(event: FieldEvent_, cb: CovariantFn<[field: this], void>, deps: DependencyList): void {
-         const cbStable = useCallback(cb, deps)
-         useEffect(() => {
-            this.zOn(event, cbStable)
-            return (): void => this.zOff(event, cbStable)
-         }, [cbStable, event])
+   /** @internal */
+   zInternalRunCallbacksForEvent(event: FieldEvent_): void {
+      if (this._callbacks[event] == null) return
+      for (const cb of this._callbacks[event]!) {
+         cb(this)
       }
    }
+   zOn(event: FieldEvent_, cb: CovariantFn<[field: this], void>): void {
+      if (this._callbacks[event] == null) this._callbacks[event] = []
+      this._callbacks[event]?.push(cb)
+   }
 
+   zOff(event: FieldEvent_, cb: CovariantFn<[field: this], void>): void {
+      if (this._callbacks[event] == null) return console.warn(`[🔶] Field.off: no callbacks for ${event}`)
+      const i = this._callbacks[event]?.indexOf(cb)
+      if (i === -1) return console.warn(`[🔶] Field.off callback not found for ${event}`)
+      this._callbacks[event]?.splice(i, 1)
+   }
+
+   /**
+    * this function allow to register temporary events callbacks
+    * on a field that last while the component is mounted
+    */
+   zReactUseEvent(event: FieldEvent_, cb: CovariantFn<[field: this], void>, deps: DependencyList): void {
+      const cbStable = useCallback(cb, deps)
+      useEffect(() => {
+         this.zOn(event, cbStable)
+         return (): void => this.zOff(event, cbStable)
+      }, [cbStable, event])
+   }
 }
 
 // #region Mixins

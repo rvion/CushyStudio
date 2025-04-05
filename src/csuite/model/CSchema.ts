@@ -10,6 +10,7 @@ import type { Klass } from './KlassToUse'
 import type { Channel, ChannelId } from './pubsub/Channel'
 import type { FieldPublication } from './pubsub/FieldPublication'
 import type { FieldReaction } from './pubsub/FieldReaction'
+import type { FieldSubscription } from './pubsub/FieldSubscriptions'
 
 import { runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -366,22 +367,20 @@ export class CSchema<out FIELD extends Field = Field> {
       })
    }
 
-   private static PublishValueFn = <T extends { value: any }>(s: T): T['value'] => s.value
+   private static PublishValueFn = <T extends { zValue: any }>(s: T): T['zValue'] => s.zValue
    publishValueToChannel(
-      chan: Channel<FIELD['value']> | ChannelId,
-      opts?: Partial<FieldPublication<FIELD['value'], FIELD>>,
+      chan: Channel<FIELD['{value}']> | ChannelId,
+      opts?: Partial<FieldPublication<FIELD['{value}'], FIELD>>,
    ): this {
+      const extraPublication: FieldPublication<any, FIELD> = {
+         chan,
+         on: FieldEvent.TrackAsCreatedOrUpdated,
+         hoist: true,
+         produce: CSchema.PublishValueFn,
+         ...opts,
+      }
       return this.withConfig({
-         publications: [
-            ...(this.config.publications ?? []),
-            {
-               chan,
-               on: 'tct.trackAsCreated+Updated',
-               hoist: true,
-               produce: CSchema.PublishValueFn,
-               ...opts,
-            },
-         ],
+         publications: [...(this.config.publications ?? []), extraPublication],
       })
    }
 
@@ -402,7 +401,7 @@ export class CSchema<out FIELD extends Field = Field> {
       return this.config as any
    }
 
-   get publications(): Publication<any, FIELD>[] {
+   get publications(): FieldPublication<any, FIELD>[] {
       return this.konfig.publications ?? []
    }
 
@@ -411,9 +410,14 @@ export class CSchema<out FIELD extends Field = Field> {
          reactions: [...(this.config.reactions ?? []), { expr, effect }],
       })
    }
-   addSubscription<T>(channel: Channel<T> | ChannelId, effect: (arg: T, self: FIELD) => void): this {
+   addSubscription<T>(
+      //
+      channel: Channel<T> | ChannelId,
+      effect: (arg: T, self: FIELD) => void,
+   ): this {
+      const extraSubscription: FieldSubscription<FIELD, any> = { channel, effect }
       return this.withConfig({
-         subscriptions: [...(this.config.subscriptions ?? []), { channel, effect }],
+         subscriptions: [...(this.config.subscriptions ?? []), extraSubscription],
       })
    }
 
