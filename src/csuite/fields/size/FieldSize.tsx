@@ -69,7 +69,6 @@ export interface Field_size {
 export class Field_size extends Field {
    static readonly type: 'size' = 'size'
    static override migrateSerial(serial: object): void {}
-   private static readonly unsetSerial: Field_size_serial = { $: 'size' }
    static readonly codeForTypescriptValue = (config: Field_size_config): string => 'Z.CushySize'
    get zIsOwnSet(): boolean {
       const ser = this.zSerial
@@ -81,13 +80,13 @@ export class Field_size extends Field {
       )
    }
 
+   private static readonly unsetSerial: Field_size_serial = { $: 'size' }
    static generateSerial(
-      value: Maybe<Field_size['{value}']>,
+      setValue: Maybe<Field_size['{setValue}']>,
       config: Field_size['{config}'],
    ): Field_size['{serial}'] {
-      if (value == null && config.default == null) return this.unsetSerial
-
-      const selectedVal = value ?? config.default
+      if (setValue == null && config.default == null) return this.unsetSerial
+      const selectedVal = setValue ?? config.default
       return {
          $: 'size',
          width: selectedVal?.width,

@@ -98,7 +98,6 @@ export interface Field_string {
 export class Field_string extends Field {
    // #region Type
    static readonly type: 'str' = 'str'
-   private static readonly unsetSerial: Field_string['{serial}'] = { $: 'str' }
    static readonly codeForTypescriptValue = (config: Field_string_ownConfig): string => {
       if (config.inputType == null) return 'string'
       if (config.inputType === 'text') return 'string'
@@ -115,18 +114,15 @@ export class Field_string extends Field {
       }
    }
 
+   private static readonly unsetSerial: Field_string['{serial}'] = { $: 'str' }
    static generateSerial(
-      value: Maybe<Field_string['{value}']>,
+      setValue: Maybe<Field_string['{setValue}']>,
       config: Field_string['{config}'],
    ): Field_string['{serial}'] {
-      if (value == null && config.default == null) return this.unsetSerial
-
-      const selectedVal = value ?? (typeof config.default === 'function' ? config.default() : config.default)
-
-      return {
-         $: 'str',
-         value: selectedVal,
-      }
+      if (setValue == null && config.default == null) return this.unsetSerial
+      const selectedVal =
+         setValue ?? (typeof config.default === 'function' ? config.default() : config.default)
+      return { $: 'str', value: selectedVal }
    }
 
    // #region CTOR

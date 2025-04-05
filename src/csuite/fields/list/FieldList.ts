@@ -125,7 +125,6 @@ export interface Field_list<T extends CSchema> {
 export class Field_list<T extends CSchema> extends Field {
    // #region TYPE
    static readonly type: 'list' = 'list'
-   private static readonly unsetSerial: Field_list_serial<any> = { $: 'list' }
    static readonly codeForTypescriptValue = (
       config: Field_list_config<CSchema>,
       opts: CodegenOpts,
@@ -163,21 +162,22 @@ export class Field_list<T extends CSchema> extends Field {
       return schemaDict
    }
 
+   private static readonly unsetSerial: Field_list_serial<any> = { $: 'list' }
    static generateSerial(
-      value: Maybe<Field_list<CSchema>['{value}']>,
+      setValue: Maybe<Field_list<CSchema>['{setValue}']>,
       config: Field_list_config<CSchema>,
    ): Field_list_serial<CSchema> {
-      if (value == null && config.defaultLength == null) return this.unsetSerial
+      if (setValue == null && config.defaultLength == null) return this.unsetSerial
 
-      const length = Math.max(config.defaultLength ?? 0, value?.length ?? 0)
+      const length = Math.max(config.defaultLength ?? 0, setValue?.length ?? 0)
 
       return {
          $: 'list',
          items_: Array(length)
             .fill(undefined)
             .map((_, ix) => {
-               if (value != null && ix < value.length) {
-                  const itemValue = value[ix]
+               if (setValue != null && ix < setValue.length) {
+                  const itemValue = setValue[ix]
                   const schema = typeof config.element === 'function' ? config.element(ix) : config.element
                   return schema.generateSerial(itemValue)
                }
@@ -188,7 +188,7 @@ export class Field_list<T extends CSchema> extends Field {
             }),
          keys: Array(length)
             .fill(undefined)
-            .map((_, ix) => Field_list.zGenerateListItemKey(ix)),
+            .map((_, ix) => Field_list.generateId(ix)),
       }
    }
 

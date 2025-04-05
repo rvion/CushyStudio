@@ -133,11 +133,11 @@ export class Field_optional<out T extends CSchema = CSchema> extends Field {
    }
    static unsetSerial: Field_optional['{serial}'] = { $: 'optional' }
    static generateSerial(
-      value: Maybe<Field_optional<CSchema>['{value}']>,
+      setValue: Maybe<Field_optional<CSchema>['{setValue}']>,
       config: Field_optional<CSchema>['{config}'],
    ): Field_optional<CSchema>['{serial}'] {
       // use default
-      if (value === undefined) {
+      if (setValue === undefined) {
          const startActive = config.startActive
          if (startActive == null) return this.unsetSerial
 
@@ -148,12 +148,12 @@ export class Field_optional<out T extends CSchema = CSchema> extends Field {
 
       // user want to explicity generate a serial fo
       // r a null value
-      if (value == null) {
+      if (setValue == null) {
          return { $: 'optional', n: config.schema.generateSerial(undefined) }
       }
 
       // user want to generate a serial for a non-null value
-      return { $: 'optional', y: config.schema.generateSerial(value) }
+      return { $: 'optional', y: config.schema.generateSerial(setValue) }
    }
 
    // #region Ctor

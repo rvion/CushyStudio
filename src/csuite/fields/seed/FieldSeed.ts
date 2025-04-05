@@ -51,19 +51,16 @@ export interface Field_seed {
 export class Field_seed extends Field {
    // #region type
    static readonly type: 'seed' = 'seed'
-   private static readonly unsetSerial: Field_seed_serial = { $: 'seed' }
    static override migrateSerial(): undefined {}
    static readonly codeForTypescriptValue = (config: Field_seed_config): string => 'Z.Seed'
+
+   private static readonly unsetSerial: Field_seed_serial = { $: 'seed' }
    static generateSerial(
-      value: Maybe<Field_seed['{value}']>,
+      setValue: Maybe<Field_seed['{setValue}']>,
       config: Field_seed['{config}'],
    ): Field_seed['{serial}'] {
-      if (value == null) return this.unsetSerial
-
-      return {
-         $: 'seed',
-         val: value,
-      }
+      if (setValue == null) return this.unsetSerial
+      return { $: 'seed', val: setValue, mode: config.defaultMode }
    }
 
    // #region Ctor

@@ -6,7 +6,11 @@ export type Patch_Common<FieldType extends CATALOG.AllFieldTypes = CATALOG.AllFi
    fieldType: FieldType
 }
 
-export type Patch<FieldType extends CATALOG.AllFieldTypes = CATALOG.AllFieldTypes, TValue = unknown> =
+// prettier-ignore
+export type Patch<
+   FieldType extends CATALOG.AllFieldTypes = CATALOG.AllFieldTypes,
+   TValue = unknown,
+> =
    | PatchAdd<FieldType, TValue>
    | PatchReplace<FieldType, TValue>
    | PatchRemove<FieldType>

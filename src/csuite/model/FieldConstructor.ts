@@ -31,7 +31,7 @@ export type FieldConstructor<FIELD extends Field> = {
 
    generateSerial(
       //
-      value: Maybe<FIELD['{value}']>,
+      setValue: Maybe<FIELD['{setValue}']>,
       config: FIELD['{config}'],
    ): FIELD['{serial}']
 

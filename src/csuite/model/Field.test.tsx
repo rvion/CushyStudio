@@ -7,7 +7,7 @@ import { describe, expect, it } from 'vitest'
 import { CSchema } from './CSchema'
 import { Field } from './Field'
 
-type Field_dummy_serial = { $: string; value?: string; deepValue?: { str: string; num: number } }
+type Field_dummy_serial = { value?: string; deepValue?: { str: string; num: number } }
 
 interface Field_dummy extends Field {
    '{type}': any
@@ -25,15 +25,11 @@ class Field_dummy extends Field {
    static readonly codeForTypescriptValue = (): string => '0'
    static readonly patchedSerialPaths: readonly string[] = Object.freeze(['value'])
    static generateSerial(
-      value: Maybe<Field_dummy['{value}']>,
+      setValue: Maybe<Field_dummy['{setValue}']>,
       config: Field_dummy['{config}'],
    ): Field_dummy['{serial}'] {
-      if (value == null) return this.unsetSerial
-
-      return {
-         $: 'dummy',
-         value,
-      }
+      if (setValue == null) return this.unsetSerial
+      return { $: 'dummy', value: setValue }
    }
 
    override get zValue(): string {

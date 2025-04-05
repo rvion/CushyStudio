@@ -6,7 +6,7 @@ import type { Repository } from '../../model/Repository'
 import type { SelectValueSlots } from '../../select/SelectState'
 import type { TabPositionConfig } from '../choices/TabPositionConfig'
 import type { CanThrow } from './CanCrash'
-import type { SelectKey } from './SelectOneKey'
+import type { AnySelectValue, SelectKey } from './SelectOneKey'
 import type { SelectOption } from './SelectOption'
 
 import { computed } from 'mobx'
@@ -24,7 +24,10 @@ export type SelectOneSkin = 'select' | 'tab' | 'roll'
 // 💬 2024-08-21 rvion:
 // | it shouldn't be complicated; I've done it a few times, it wasn't that hard.
 
-export type Field_selectOne_config_simplified<VALUE, KEY extends SelectKey> = PartialOmit<
+export type Field_selectOne_config_simplified<
+   VALUE extends AnySelectValue,
+   KEY extends SelectKey,
+> = PartialOmit<
    Field_selectOne_config<VALUE, KEY>,
    'choices' | 'getIdFromValue' | 'getOptionFromId' | 'getValueFromId'
 >
@@ -35,11 +38,20 @@ export type Field_selectOne_config_simplified_<KEY extends SelectKey> = PartialO
 >
 
 // #region CONFIG
-export type Field_selectOne_config_<KEY extends SelectKey> = Field_selectOne_config<KEY, KEY>
-export type Field_selectOne_config<VALUE, KEY extends SelectKey> = Field_selectOne<VALUE, KEY>['{config}']
+export type Field_selectOne_config_<
+   //
+   KEY extends SelectKey,
+> = Field_selectOne_config<KEY, KEY>
+
+export type Field_selectOne_config<
+   //
+   VALUE extends AnySelectValue,
+   KEY extends SelectKey,
+> = Field_selectOne<VALUE, KEY>['{config}']
+
 type Field_selectOne_ownConfig<
    //
-   VALUE,
+   VALUE extends AnySelectValue,
    KEY extends SelectKey,
 > = {
    /** 🔶 the *ID* of the option selected by default */
@@ -102,7 +114,8 @@ type Field_selectOne_ownConfig<
 }
 
 // #region SERIAL
-export type Field_selectOne_serial<KEY extends SelectKey> = Field_selectOne<unknown, KEY>['{serial}']
+export type Field_selectOne_serial<KEY extends SelectKey> = Field_selectOne<AnySelectValue, KEY>['{serial}']
+
 type Field_selectOne_ownSerial<KEY extends SelectKey> = {
    $: 'selectOne'
    query?: string
@@ -136,8 +149,8 @@ type Field_selectOne_ownSerial<KEY extends SelectKey> = {
 }
 
 // #region VALUE
-export type Field_selectOne_value<VALUE extends any> = VALUE
-export type Field_selectOne_unchecked<VALUE extends any> = Field_selectOne_value<VALUE> | undefined
+export type Field_selectOne_value<VALUE extends AnySelectValue> = VALUE
+export type Field_selectOne_unchecked<VALUE extends AnySelectValue> = Field_selectOne_value<VALUE> | undefined
 
 // #region TYPES
 export type Field_selectOne_<VALUE extends SelectKey> = Field_selectOne<VALUE, VALUE>
@@ -150,7 +163,7 @@ export interface Field_selectOne<
    '{ownConfig}': Field_selectOne_ownConfig<VALUE, KEY>
    '{ownSerial}': Field_selectOne_ownSerial<KEY>
    '{value}': VALUE
-   '{setValue}': VALUE | KEY | { $$KEY: KEY } | { $$VALUE: KEY }
+   '{setValue}': VALUE | KEY | { $$KEY: KEY } | { $$VALUE: VALUE }
    '{unchecked}': Field_selectOne_unchecked<VALUE>
    '{child}': never
    '{opts}': unknown
@@ -163,7 +176,6 @@ export class Field_selectOne<
 > extends Field {
    // #region TYPE
    static readonly type: 'selectOne' = 'selectOne'
-   private static readonly unsetSerial: Field_selectOne_serial<any> = { $: 'selectOne' }
    static readonly codeForTypescriptValue = (config: Field_selectOne_config<any, any>): string => {
       if (config.choices != null && Array.isArray(config.choices)) {
          return `Z.SelectOne<${config.choices.map((i) => JSON.stringify(i)).join(' | ')}>`
@@ -190,16 +202,63 @@ export class Field_selectOne<
       }
    }
 
-   static generateSerial(
-      value: Maybe<Field_selectOne<any, any>['{value}']>,
-      config: Field_selectOne<any, any>['{config}'],
-   ): Field_selectOne<any, any>['{serial}'] {
-      if (value == null && config.default == null) return this.unsetSerial
+   private static readonly unsetSerial: Field_selectOne_serial<any> = { $: 'selectOne' }
+   static generateSerial<VALUE extends AnySelectValue = any, KEY extends SelectKey = any>(
+      setValue_: Maybe<Field_selectOne<VALUE, KEY>['{setValue}']>,
+      config: Field_selectOne<VALUE, KEY>['{config}'],
+   ): Field_selectOne<VALUE, KEY>['{serial}'] {
+      // always use `setValue_` if provided, or `config.default` otherwise
+      const setValue =
+         setValue_ === undefined //
+            ? config.default
+            : setValue_
 
-      return {
-         $: 'selectOne',
-         val: value != null ? config.getIdFromValue(value) : config.default,
+      // case undefined --------------------------------------------------------
+      if (setValue === undefined) {
+         return this.unsetSerial
       }
+
+      // case null -------------------------------------------------------------
+      if (setValue === null) {
+         // attempt to use null as key
+         if (this.isProbablyValidKey(null)) return { $: 'selectOne', val: null as KEY }
+
+         // attempt to use null as value
+         const key = config.getIdFromValue(null as VALUE)
+         if (this.isProbablyValidKey(key)) return { $: 'selectOne', val: key }
+
+         throw new Error('❌ null is neither a valid `key` nor `value` for given schema')
+      }
+
+      // case { $$KEY: KEY } ---------------------------------------------------
+      if (
+         typeof setValue === 'object' &&
+         setValue != null &&
+         '$$KEY' in setValue &&
+         this.isProbablyValidKey<SelectKey>(setValue.$$KEY)
+      )
+         return { $: 'selectOne', val: setValue.$$KEY }
+
+      // case { $$KEY: VALUE } --------------------------------------------------
+      if (
+         typeof setValue === 'object' && //
+         setValue != null &&
+         '$$VALUE' in setValue
+      ) {
+         const key = config.getIdFromValue(setValue.$$VALUE as VALUE)
+         if (this.isProbablyValidKey(key)) return { $: 'selectOne', val: key }
+      }
+
+      // case KEY
+      if (this.isProbablyValidKey<SelectKey>(setValue)) {
+         return { $: 'selectOne', val: setValue as KEY }
+      }
+
+      // case VALUE
+      const key = config.getIdFromValue(setValue as VALUE)
+      if (this.isProbablyValidKey(key)) return { $: 'selectOne', val: key }
+
+      throw new Error('❌ given setValue is invalid for given FSelectOne schema')
    }
 
    // #region CTOR
@@ -416,7 +475,7 @@ export class Field_selectOne<
 
    // KEY extends SelectKey
    // see: src/cushy-forms/src/csuite/fields/selectOne/SelectOneKey.ts,
-   private isProbablyValidKey(val: unknown): val is KEY {
+   private static isProbablyValidKey<KEY>(val: unknown): val is KEY {
       if (val === null) return true
       if (typeof val === 'string') return true
       if (typeof val === 'number') return true
@@ -429,7 +488,7 @@ export class Field_selectOne<
    override zSet(valOrKey: this['{setValue}']): this {
       if (typeof valOrKey === 'object' && valOrKey != null && '$$KEY' in valOrKey) this.selectedId = valOrKey.$$KEY as KEY // prettier-ignore
       if (typeof valOrKey === 'object' && valOrKey != null && '$$VALUE' in valOrKey) this.zValue = valOrKey.$$VALUE as VALUE // prettier-ignore
-      if (this.isProbablyValidKey(valOrKey)) this.selectedId = valOrKey
+      if (Field_selectOne.isProbablyValidKey<KEY>(valOrKey)) this.selectedId = valOrKey
       else this.zValue = valOrKey as VALUE
       return this
    }

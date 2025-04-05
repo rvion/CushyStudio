@@ -379,7 +379,7 @@ export class CSchema<out FIELD extends Field = Field> {
       return this.instanciate(repository, null, null, '$', serial)
    }
 
-   createFromValue(value?: FIELD['{value}'], repository_?: Repository): FIELD {
+   createFrom(value?: FIELD['{setValue}'], repository_?: Repository): FIELD {
       return this.create(this.generateSerial(value), repository_)
    }
 
@@ -432,9 +432,8 @@ export class CSchema<out FIELD extends Field = Field> {
    }
    // ------------------------------------------------------------------------
 
-   generateSerial(value: Maybe<FIELD['{value}']>): FIELD['{serial}'] {
+   generateSerial(value: Maybe<FIELD['{setValue}']>): FIELD['{serial}'] {
       if (value === undefined) return this.defaultSerial
-
       return this.fieldConstructor.generateSerial(value, this.config)
    }
 

@@ -55,7 +55,6 @@ export interface Field_number {
 export class Field_number extends Field {
    // #region TYPE
    static readonly type: 'number' = 'number'
-   static readonly unsetSerial: Field_number['{serial}'] = { $: 'number' }
    static readonly codeForTypescriptValue = (config: Field_number['{config}']): string => 'number'
    static override migrateSerial(serial: object): Maybe<Field_number['{serial}']> {
       // migrate from string with number typed as string
@@ -67,16 +66,14 @@ export class Field_number extends Field {
       }
    }
 
+   static readonly unsetSerial: Field_number['{serial}'] = { $: 'number' }
    static generateSerial(
-      value: Maybe<Field_number['{value}']>,
+      setValue: Maybe<Field_number['{setValue}']>,
       config: Field_number['{config}'],
    ): Field_number['{serial}'] {
-      if (value == null && config.default == null) return this.unsetSerial
-
-      return {
-         $: 'number',
-         value: value ?? config.default,
-      }
+      if (setValue == null && config.default == null) return this.unsetSerial
+      const value = setValue ?? config.default
+      return { $: 'number', value }
    }
 
    // #region CTOR

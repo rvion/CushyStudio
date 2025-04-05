@@ -35,7 +35,7 @@ type Field_group_ownConfig<T extends SchemaDict> = {
 
    /** @default @false */
    presetButtons?: boolean
-   default?: T['{value}']
+   default?: T['{setValue}']
 
    // 🔶 TODO 1: remove summary from here and move it to the base field config directly
    // 🟢 TODO 2: stop passing values to that function, only pass the field directly
@@ -90,7 +90,6 @@ export type MAGICFIELDS<T extends { [key: string]: { '{field}': any } }> = {
 
 export class Field_group<T extends SchemaDict> extends Field {
    static readonly type: 'group' = 'group'
-   private static readonly unsetSerial: Field_group_serial<any> = { $: 'group', values_: {} }
    static override migrateSerial(): undefined {}
    static codeForTypescriptValue = (config: Field_group_config<SchemaDict>, opts: CodegenOpts): string => {
       const schemaDict = Field_group.getSchemaDict(config)
@@ -120,8 +119,9 @@ export class Field_group<T extends SchemaDict> extends Field {
       }
       return OUT
    }
+   private static readonly unsetSerial: Field_group_serial<any> = { $: 'group', values_: {} }
    static generateSerial(
-      value: Maybe<Field_group<any>['{value}']>,
+      setValue: Maybe<Field_group<any>['{setValue}']>,
       config: Field_group<any>['{config}'],
    ): Field_group<any>['{serial}'] {
       const configItems = typeof config.items === 'function' ? config.items() : config.items
@@ -130,10 +130,12 @@ export class Field_group<T extends SchemaDict> extends Field {
       return {
          $: 'group',
          values_: Object.fromEntries(
-            Object.entries(configItems).map(([k, schema]) => [
-               k,
-               (schema as CSchema).generateSerial(value?.[k] ?? config.default?.[k]),
-            ]),
+            Object.entries(configItems).map(([childKey, childSchema_]) => {
+               const childSchema = childSchema_ as CSchema
+               const childSetValue = setValue?.[childKey] ?? config.default?.[childKey]
+               const childSerial = childSchema.generateSerial(childSetValue)
+               return [childKey, childSerial]
+            }),
          ) as any,
       }
    }
@@ -244,7 +246,7 @@ export class Field_group<T extends SchemaDict> extends Field {
                if (isNew) {
                   const hasDefault = this.zConfig.default != null && fName in this.zConfig.default
                   if (hasDefault) {
-                     child.value = this.zConfig.default![fName as keyof T['{value}']]
+                     child.set(this.zConfig.default![fName as keyof T['{setValue}']])
                   }
                }
             },

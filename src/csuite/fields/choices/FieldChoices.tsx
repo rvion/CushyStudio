@@ -181,24 +181,31 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field {
    }
 
    static generateSerial(
-      value: Maybe<Field_choices<SchemaDict>['{value}']>,
+      setValue: Maybe<Field_choices<SchemaDict>['{setValue}']>,
       config: Field_choices<SchemaDict>['{config}'],
    ): Field_choices<SchemaDict>['{serial}'] {
-      const configItems = typeof config.items === 'function' ? config.items() : config.items
+      const configItems =
+         typeof config.items === 'function' //
+            ? config.items()
+            : config.items
+
       const defaultBranches =
-         typeof config.default === 'string' ? { [config.default]: null } : (config.default ?? {})
-      const branches = Object.keys(value ?? defaultBranches).filter((k) =>
-         Object.prototype.hasOwnProperty.call(configItems, k),
-      )
+         typeof config.default === 'string' //
+            ? { [config.default]: null }
+            : (config.default ?? {})
+
+      const branches_ = Object.keys(setValue ?? defaultBranches)
+      const branches = branches_.filter((k) => Object.prototype.hasOwnProperty.call(configItems, k))
 
       return {
          $: 'choices',
          branches: Object.fromEntries(branches.map((k) => [k, true])) as ActiveBranchesByName<SchemaDict>,
          values: Object.fromEntries(
-            branches.map((k) => {
-               const configItem = configItems[k] as CSchema
-
-               return [k, configItem.generateSerial(value?.[k])]
+            branches.map((childKey) => {
+               const childSchema = configItems[childKey] as CSchema
+               const childSetValue = setValue?.[childKey]
+               const childSerial = childSchema.generateSerial(childSetValue)
+               return [childKey, childSerial]
             }),
          ) as Field_choices<SchemaDict>['{serial}']['values'],
       }

@@ -54,7 +54,6 @@ export interface Field_date<VALUE> {
 export class Field_date<out VALUE> extends Field {
    // #region static
    static readonly type: 'date' = 'date'
-   private static readonly unsetSerial: Field_date_serial = { $: 'date' }
    static readonly codeForTypescriptValue = (config: Field_date<unknown>['{config}']): string =>
       config.codeForTypescriptValue ?? 'Date'
    // #region migration
@@ -80,17 +79,15 @@ export class Field_date<out VALUE> extends Field {
       return null
    }
 
+   private static readonly unsetSerial: Field_date_serial = { $: 'date' }
    static generateSerial(
-      value: Maybe<Field_date<any>['{value}']>,
+      setValue: Maybe<Field_date<any>['{setValue}']>,
       config: Field_date<any>['{config}'],
    ): Field_date<any>['{serial}'] {
       const defaultValue = typeof config.default === 'function' ? config.default() : config.default
-      if (value == null && defaultValue == null) return this.unsetSerial
-
-      return {
-         $: 'date',
-         value: config.serialize(value ?? defaultValue),
-      }
+      if (setValue == null && defaultValue == null) return this.unsetSerial
+      const value = config.serialize(setValue ?? defaultValue)
+      return { $: 'date', value }
    }
 
    // #region Ctor

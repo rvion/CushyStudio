@@ -3,6 +3,7 @@
 // | solve the nullability problem, and much more.
 
 export type SelectKey = string | null | boolean | number
+export type AnySelectValue = unknown
 
 export function convertSelectKeyToReactKey(key: SelectKey): string {
    return key === null //
