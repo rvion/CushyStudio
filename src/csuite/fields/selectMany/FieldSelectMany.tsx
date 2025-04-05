@@ -5,14 +5,15 @@ import type { Patch } from '../../model/Patch'
 import type { Repository } from '../../model/Repository'
 import type { SelectValueSlots } from '../../select/SelectState'
 import type { TabPositionConfig } from '../choices/TabPositionConfig'
-import type { SelectKey } from '../selectOne/SelectOneKey'
+import type { AnySelectValue, SelectKey } from '../selectOne/SelectOneKey'
 import type { SelectOption } from '../selectOne/SelectOption'
+
+import { computed } from 'mobx'
 
 import { csuiteConfig } from '../../config/configureCsuite'
 import { extractConfigMessage, extractConfigValue } from '../../errors/extractConfig'
 import { Field } from '../../model/Field'
 import { isProbablySerialSelectMany, registerFieldClass } from '../WidgetUI.DI'
-import { computed } from 'mobx'
 
 export type SelectManyAppearance = 'select' | 'tab' | 'list'
 
@@ -119,13 +120,8 @@ export type Field_selectMany_serial<KEY extends SelectKey> = Field_selectMany<un
 type Field_selectMany_ownSerial<KEY extends SelectKey> = {
    $: 'selectMany'
    query?: string
-   // 💬 2024-08-20 rvion: TODO: rename as keys ?
    values?: KEY[]
 }
-
-// VALUE
-export type Field_selectMany_value<VALUE extends any> = VALUE[]
-export type Field_selectMany_unchecked<VALUE extends any> = Field_selectMany_value<VALUE>
 
 // TYPES
 export interface Field_selectMany<
@@ -136,9 +132,9 @@ export interface Field_selectMany<
    '{type}': 'selectMany'
    '{ownConfig}': Field_selectMany_ownConfig<VALUE, KEY>
    '{ownSerial}': Field_selectMany_ownSerial<KEY>
-   '{value}': Field_selectMany_value<VALUE>
-   '{setValue}': VALUE[] | KEY[]
-   '{unchecked}': Field_selectMany_unchecked<VALUE>
+   '{value}': VALUE[]
+   '{setValue}': VALUE[] | KEY[] | { $$KEYS: KEY[] } | { $$VALUES: VALUE[] }
+   '{unchecked}': VALUE[]
    '{child}': never
    '{opts}': unknown
    '{ownPatch}': Patch<'selectMany'>
@@ -181,22 +177,69 @@ export class Field_selectMany<
       }
    }
 
-   static generateSerial<VALUE, KEY extends SelectKey>(
-      value: Maybe<Field_selectMany<VALUE, KEY>['{value}']>,
-      config: Field_selectMany<VALUE, KEY>['{config}'],
-   ): Field_selectMany<VALUE, KEY>['{serial}'] {
-      if (value == null && config.default == null) return this.unsetSerial
+   static generateSerial(
+      setValue_: Maybe<Field_selectMany<AnySelectValue, SelectKey>['$setValue']>,
+      config: Field_selectMany<any, any>['$config'],
+   ): Field_selectMany<any, any>['$serial'] {
+      // always use `setValue_` if provided, or `config.default` otherwise
+      const setValue =
+         setValue_ != null //
+            ? setValue_
+            : config.default
 
-      const defaultSelectedKeys = Array.isArray(config.default)
-         ? config.default
-         : config.default != null
-           ? [config.default]
-           : []
-
-      return {
-         $: 'selectMany',
-         values: value != null ? value.map((v) => config.getIdFromValue(v)) : defaultSelectedKeys,
+      // case undefined --------------------------------------------------------
+      if (setValue == undefined) {
+         return this.unsetSerial
       }
+
+      if (Array.isArray(setValue)) {
+         // case empty array ---------------------------------------------------
+         if (setValue.length === 0) {
+            return { $: 'selectMany', values: [] }
+         }
+
+         // case array of keys -------------------------------------------------
+         else if (this.isProbablyValidKey<SelectKey>(setValue[0]!)) {
+            return { $: 'selectMany', values: setValue as SelectKey[] }
+         }
+         //
+         else {
+            // case array of values --------------------------------------------
+            const keys = (setValue as AnySelectValue[]).map(config.getIdFromValue)
+            if (this.isProbablyValidKey<SelectKey>(keys[0])) {
+               return { $: 'selectMany', values: keys }
+            }
+
+            // case ERROR 1-----------------------------------------------------
+            else {
+               throw new Error('invalid setValue for Field_selectMany schema')
+            }
+         }
+      }
+      //
+      else if (typeof setValue === 'object' && setValue != null) {
+         // case { $$KEYS } ----------------------------------------------------
+         if (setValue != null && '$$KEYS' in setValue) {
+            const keys = setValue.$$KEYS as SelectKey[]
+            return { $: 'selectMany', values: keys }
+         }
+
+         // case { $$VALUES } --------------------------------------------------
+         else if (setValue != null && '$$VALUES' in setValue) {
+            const keys = (setValue.$$VALUES as AnySelectValue[]).map(config.getIdFromValue)
+            if (Field_selectMany.isProbablyValidKey<SelectKey>(keys[0]!)) {
+               return { $: 'selectMany', values: keys }
+            }
+
+            // case ERROR 2 --------------------------------------------------------
+            else {
+               throw new Error(`FieldSelectMany.set: invalid value ${JSON.stringify(setValue)}`)
+            }
+         }
+      }
+
+      // case ERROR 3 --------------------------------------------------------------
+      throw new Error(`FieldSelectMany.set: invalid value ${JSON.stringify(setValue)}`)
    }
 
    // #region UI
@@ -444,7 +487,7 @@ export class Field_selectMany<
 
    // KEY extends SelectKey
    // see: src/cushy-forms/src/csuite/fields/selectOne/SelectOneKey.ts,
-   private isProbablyValidKey(val: unknown): val is KEY {
+   private static isProbablyValidKey<KEY>(val: unknown): val is KEY {
       if (val === null) return true
       if (typeof val === 'string') return true
       if (typeof val === 'number') return true
@@ -454,10 +497,26 @@ export class Field_selectMany<
       return false
    }
 
-   override zSet(valOrKey: VALUE[] | KEY[]): this {
-      if (valOrKey.length === 0) this.selectedKeys = []
-      else if (this.isProbablyValidKey(valOrKey[0])) this.selectedKeys = valOrKey as KEY[]
-      else this.zValue = valOrKey as VALUE[]
+   override zSet(valOrKey: this['{setValue}']): this {
+      if (Array.isArray(valOrKey)) {
+         // empty array
+         if (valOrKey.length === 0) this.selectedKeys = []
+         //
+         else if (Field_selectMany.isProbablyValidKey<KEY>(valOrKey[0])) {
+            this.selectedKeys = valOrKey as KEY[]
+         } else this.zValue = valOrKey as VALUE[]
+      }
+      //
+      else if (typeof valOrKey === 'object' && valOrKey != null) {
+         if (valOrKey != null && '$$KEYS' in valOrKey) {
+            this.selectedKeys = valOrKey.$$KEYS as KEY[]
+         } else if (valOrKey != null && '$$VALUES' in valOrKey) {
+            this.zValue = valOrKey.$$VALUES as VALUE[] // prettier-ignore
+         } else {
+            throw new Error(`FieldSelectMany.set: invalid value ${JSON.stringify(valOrKey)}`)
+         }
+      }
+
       return this
    }
 
@@ -466,13 +525,13 @@ export class Field_selectMany<
       return this.selectedKeys
    }
 
-   get zValue(): Field_selectMany_value<VALUE> {
+   get zValue(): VALUE[] {
       return this.zValue_or_fail
    }
 
-   zValue_or_fail: Field_selectMany_value<VALUE> = new Proxy([], this.makeValueProxy())
-   zValue_or_zero: Field_selectMany_value<VALUE> = this.zValue_or_fail
-   zValue_unchecked: Field_selectMany_value<VALUE> = this.zValue_or_fail
+   zValue_or_fail: VALUE[] = new Proxy([], this.makeValueProxy())
+   zValue_or_zero: VALUE[] = this.zValue_or_fail
+   zValue_unchecked: VALUE[] = this.zValue_or_fail
 
    private makeValueProxy(): ProxyHandler<never> {
       return {
@@ -542,7 +601,7 @@ export class Field_selectMany<
       }
    }
 
-   set zValue(next: Field_selectMany_value<VALUE>) {
+   set zValue(next: VALUE[]) {
       this.selectedKeys = next.map((val) => this.zConfig.getIdFromValue(val))
    }
 
