@@ -19,9 +19,7 @@ export class RevealStateLazy {
    /**
     * stack of RevealStateLazy, from root,
     * including self as last item
-    *
-    * @since 2024-10-11
-    * */
+    */
    readonly tower: RevealStateLazy[]
    readonly towerContext: { tower: RevealStateLazy[] }
 

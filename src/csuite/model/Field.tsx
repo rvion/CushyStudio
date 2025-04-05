@@ -234,7 +234,6 @@ export abstract class Field {
    /**
     * crashes if the value is not set.
     * this method will NOT try to conjure any intented value.
-    * @since 2024-09-03
     *
     * @see {@link zValue_or_zero}
     * @see {@link zValue_unchecked}
@@ -246,7 +245,6 @@ export abstract class Field {
     * conjuring some default value if necessary
     * but you may THROW if zero does not exists
     * 🔶 do not return null, unless the type allows you to
-    * @since 2024-09-03
     *
     * @see {@link zValue_or_fail}
     * @see {@link zValue_unchecked}
@@ -258,8 +256,6 @@ export abstract class Field {
      * this method
      *  - Always returns the advertized type (`Field['{unchecked}']`).
      *  - Never crashes
-     *
-     * @since 2024-09-03
      *
      * @see {@link zValue_or_fail}
      * @see {@link zValue_or_zero}
@@ -438,7 +434,6 @@ export abstract class Field {
    }
 
    /**
-    * @since 2024-08-30
     * @stability beta
     * @undecorated (base function does nothing)
     */
@@ -446,18 +441,12 @@ export abstract class Field {
       return serial
    }
 
-   /**
-    * @since 2025-02-13
-    * should be overritten by every parent field.
-    */
+   /** should be overritten by every parent field. */
    static getChildren(config: any): SchemaDictWithPaths {
       return {}
    }
 
-   /**
-    * @since 2025-02-24
-    * should be overritten by every parent field.
-    */
+   /** should be overritten by every parent field. */
    static getTravels(config: any): SchemaDictWithPaths {
       if (config.getCustomTravels != null)
          return {
@@ -504,8 +493,6 @@ export abstract class Field {
 
    /**
     * lifecycle method, is called
-    *
-    * @since 2024-07-05
     * @undecorated (this.repo.runInTransaction already wrapped in runInAction)
     */
    zDisposeTree(): void {
@@ -553,8 +540,6 @@ export abstract class Field {
    /**
     * if your field need to wait for the document to be ready;
     * this observable getter does that.
-    *
-    * @since 2024-09-04
     */
    get zIsDocumentReady(): boolean {
       return this.zRoot.zReady
@@ -601,21 +586,18 @@ export abstract class Field {
    protected abstract zSetOwnSerial(serial: this['{serial}']): void
 
    /**
-     * contains the list of all serial problems that occured during the last setSerial
-     * it only contains the **LAST** setSerial problems
-     * => this list will be emptied everytime we call setSerial
-     *
-     * @see {@link zRecordSerialProblem}
-     * @since 2024-09-11
-
-     */
+    * contains the list of all serial problems that occured during the last setSerial
+    * it only contains the **LAST** setSerial problems
+    * => this list will be emptied everytime we call setSerial
+    *
+    * @see {@link zRecordSerialProblem}
+    */
    zSerialProblems: { msg: string; data: any }[] = []
 
    /**
     * Append a problem to the serialProblems list
     *
     * @see {@link zSerialProblems}
-    * @since 2024-09-11
     */
    zRecordSerialProblem = (msg: string, data: any): void => {
       this.zSerialProblems.push({ msg, data })
@@ -851,7 +833,6 @@ export abstract class Field {
 
    /**
     * returns true if we can either `setOn` and `setOff` this field
-    * @since 2024-09-03
     */
    @computed get zCanBeToggledWithinParent(): boolean {
       // if (isFieldOptional(this)) return true
@@ -865,7 +846,6 @@ export abstract class Field {
    /**
     * if parent can be toggled, sets the parent ON
     * throws otherwise
-    * @since 2024-09-03
     * @undecorated (single child action)
     */
    zEnableSelfWithinParent(): void {
@@ -881,7 +861,6 @@ export abstract class Field {
    /**
     * if parent can be toggled, sets the parent OFF
     * throws otherwise
-    * @since 2024-09-03
     * @undecorated (single child action)
     */
    zDisableSelfWithinParent(): void {
@@ -952,7 +931,6 @@ export abstract class Field {
    }
 
    /**
-    * @since 2024-06-20
     * @status broken
     * return a short summary of changes from default
     */
@@ -1222,7 +1200,6 @@ export abstract class Field {
    }
 
    /**
-    * @since 2024-09-04
     * @category Validation
     */
    zValidate(): Result<this, ValidationError> {
@@ -1241,7 +1218,6 @@ export abstract class Field {
    /**
     * helper function to chain things
     *
-    * @since 2024-09-04
     * @category Validation
     * @see {@link validationOrThrow}
     */
@@ -1254,7 +1230,6 @@ export abstract class Field {
    /**
     * helper function to chain things
     *
-    * @since 2024-09-04
     * @category Validation
     * @see {@link zValidateOrNull}
     */
@@ -1272,7 +1247,6 @@ export abstract class Field {
     * an error is a problem with severity error.
     *
     * @category Validation
-    * @since 2024-09-04
     */
    get zIsValid(): boolean {
       return this.zAllErrorsIncludingChildrenErrors.length === 0
@@ -1366,7 +1340,6 @@ export abstract class Field {
    // -----------------------------------------------------------------------|
    /**
     * returns the list of all ancestors, NOT including self
-    * @since 2024-07-08
     */
    @computed get zAncestors(): Field[] {
       const result: Field[] = []
@@ -1380,7 +1353,6 @@ export abstract class Field {
 
    /**
     * returns the list of all ancestors, including self
-    * @since 2024-07-08
     */
    @computed get zAncestorsIncludingSelf(): Field[] {
       const result: Field[] = []
@@ -1577,7 +1549,6 @@ export abstract class Field {
 
    // #region CHILDREN
    /**
-    * @since 2024-12-11
     * return the serial path from the root to this field serial.
     * somewhat an internal method; usage should remain as low as possible.
     * @undecorated
@@ -1612,7 +1583,6 @@ export abstract class Field {
     * if you just want to traverse the "active" part of the tree,
     * use `childrenActive` instead
     *
-    * @since 2024-09-09
     * @remarks was previously named `subFields`
     * @undecorated (placeholder made to be overriden)
     */
@@ -1625,7 +1595,6 @@ export abstract class Field {
     * use-cases: render, toValue, toSerial, various traversal, etc.
     *
     *
-    * @since 2024-09-11
     * @remarks expected to be overriden in every field that have children that can be toggled,
     * like FIeldChoice, FieldOptional
     */

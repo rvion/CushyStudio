@@ -70,7 +70,6 @@ const BuilderSelectManyImpl = (
        * work with both static and dynamic select;
        *
        * @see {@link selectMany} or other variants for more advanced use cases.
-       * @since 2024-08-26
        */
       selectManyString<const K extends string>(
          p: readonly K[],
@@ -93,9 +92,6 @@ const BuilderSelectManyImpl = (
          return this.selectManyString(p, config)
       },
 
-      /**
-       * @since 2024-10-18
-       */
       selectManyDynamicStrings<const K extends string>(
          p: (self: Field_selectMany_<K>) => readonly K[],
          config: Field_selectMany_config_simplified_<K> = {},
@@ -117,7 +113,6 @@ const BuilderSelectManyImpl = (
        * you'll actually need in the callback.
        *
        * @see {@link selectMany} or other variants for more advanced use cases.
-       * @since 2024-08-26
        */
       selectManyOptions<const O extends SelectOptionNoVal<string>>(
          options: readonly O[],
@@ -159,13 +154,11 @@ const BuilderSelectManyImpl = (
       },
 
       /**
-       * @since 2024-08-26
        * value is the option id (`option.id`)
        * NO NEED to specify the value in the given options.
        * If you specify the value, it will be IGNORED.
        *
        * @see {@link selectMany} or other variants for more advanced use cases.
-       * @since 2024-08-26
        */
       selectManyOptionIds<const O extends SelectOptionNoVal<string>>(
          options: readonly O[],
@@ -194,12 +187,10 @@ const BuilderSelectManyImpl = (
       },
 
       /**
-       * @since 2024-08-26
        * value is the option value
        * you NEED to specify the value in the given options.
        *
        * @see {@link selectMany} or other variants for more advanced use cases.
-       * @since 2024-08-26
        */
       selectManyOptionValues<const V extends string>(
          options: SelectOption_<V>[],

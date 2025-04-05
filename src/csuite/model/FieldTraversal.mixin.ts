@@ -8,7 +8,6 @@ export type TraversalMixin = typeof TraversalMixinImpl
 export type TraverseSignal = 'stop' | 'abort' | void
 
 export const TraversalMixinImpl = defineFieldMixin({
-   /** @since 2024-10-07 */
    zTraverse(
       fn: (c: Field) => TraverseSignal,
       p: {
@@ -26,31 +25,6 @@ export const TraversalMixinImpl = defineFieldMixin({
       return this.zTraverseDepthFirst(fn)
    },
 
-   // 💬 2024-12-04 rvion: legacy non-abortable traversals
-
-   // | /** @since 2024-10-07 */
-   // | traverseDepthFirst(fn: (c: Field) => TraverseSignal): void {
-   // |     runInAction(() => {
-   // |         const shouldEnterChildren = fn(this)
-   // |         if (shouldEnterChildren === 'stop') return
-   // |         for (const child of this.childrenActive) {
-   // |             child.traverseDepthFirst(fn)
-   // |         }
-   // |     })
-   // | },
-
-   // |  /** @since 2024-10-07 */
-   // |  traverseAllDepthFirst(fn: (c: Field) => TraverseSignal): void {
-   // |      runInAction(() => {
-   // |          const shouldEnterChildren = fn(this)
-   // |          if (shouldEnterChildren === 'stop') return
-   // |          for (const child of this.childrenAll) {
-   // |              child.traverseAllDepthFirst(fn)
-   // |          }
-   // |      })
-   // |  },
-
-   /** @since 2024-10-07 */
    zTraverseDepthFirst(fn: (c: Field) => TraverseSignal): void {
       runInAction(() => {
          const stack: Field[] = [this]
@@ -72,7 +46,6 @@ export const TraversalMixinImpl = defineFieldMixin({
       })
    },
 
-   /** @since 2024-10-07 */
    zTraverseAllDepthFirst(fn: (c: Field) => TraverseSignal): void {
       runInAction(() => {
          const stack: Field[] = [this]
@@ -94,7 +67,6 @@ export const TraversalMixinImpl = defineFieldMixin({
       })
    },
 
-   /** @since 2024-10-07 */
    zTraverseBreadthFirst(fn: (c: Field) => TraverseSignal): void {
       runInAction(() => {
          const queue: Field[] = [this]
@@ -108,7 +80,6 @@ export const TraversalMixinImpl = defineFieldMixin({
          }
       })
    },
-   /** @since 2024-10-07 */
    zTraverseAlltraverseBreadthFirst(fn: (c: Field) => TraverseSignal): void {
       runInAction(() => {
          const queue: Field[] = [this]

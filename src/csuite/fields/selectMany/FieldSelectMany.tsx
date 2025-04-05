@@ -22,8 +22,6 @@ export type SelectManyAppearance = 'select' | 'tab' | 'list'
  * already imply the mapping logic. (variant for when key === value)
  *
  * (same as `Field_selectMany_config_simplified` for when value is the same as key)
- *
- * @since 2024-08-26
  */
 
 export type Field_selectMany_config_simplified_<KEY extends SelectKey> = Field_selectMany_config_simplified<
@@ -79,34 +77,22 @@ type Field_selectMany_ownConfig<
       self: Field_selectMany<VALUE, KEY>,
    ) => React.ReactNode
 
-   /**
-    * @since 2024-06-24
-    * allow to wrap the list of values if they take more than 1 SLH (standard line height)
-    */
+   /** allow to wrap the list of values if they take more than 1 SLH (standard line height) */
    wrap?: boolean
    wrapButton?: boolean
 
-   /**
-    * @since 2024-06-24
-    * @deprecated use global csuite config instead
-    */
+   /** @deprecated use global csuite config instead */
    tabPosition?: TabPositionConfig
    placeholder?: string
    minLength?: ErrorConfigValue<number>
 }
 
-/**
- * for when key === value is a string
- *
- * @since 2024-08-23
- */
+/** for when key === value is a string */
 export type Field_selectMany_config_<KEY extends SelectKey> = Field_selectMany_config<KEY, KEY>
 
 /**
  * for when all mappers are deductibles because the builder function
  * already imply the mapping logic.
- *
- * @since 2024-08-26
  */
 export type Field_selectMany_config_simplified<VALUE, KEY extends SelectKey> = Omit2<
    Field_selectMany_config<VALUE, KEY>,
@@ -452,16 +438,10 @@ export class Field_selectMany<
       return this.zSerial.values?.includes(key) ?? false
    }
 
-   /**
-    * @since 2024-09-03
-    */
    hasKey(key: KEY): boolean {
       return this.possibleKeys.includes(key)
    }
 
-   /**
-    * @since 2024-09-03
-    */
    hasValue(value: VALUE): boolean {
       const valueId = this.zConfig.getIdFromValue(value)
       return this.hasKey(valueId)
@@ -469,14 +449,10 @@ export class Field_selectMany<
 
    /**
     * alias to `hasValue`
-    * @since 2024-09-03
     * @see {@link hasValue}
     */
    has = this.hasValue
 
-   /**
-    * @since 2024-09-03
-    */
    pushValue(...values: VALUE[]): void {
       this.zRunInTransaction(() => {
          for (const value of values) {

@@ -33,7 +33,6 @@ export class Repository {
    /* 📌 FULL-CLEAR ---------------------------------------------------- */
    /**
     * fully clear the entity-map + reset stats
-    * @since 2024-07-08
     * @stability unstable
     */
    reset(): void {

@@ -335,9 +335,6 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field {
       return this._[this.firstActiveBranchName]
    }
 
-   /**
-    * @since 2024-09-11
-    */
    private isValidBranchName(branchName: string): branchName is keyof T & string {
       if (this.allPossibleChoices.includes(branchName)) return true
       return false
@@ -346,7 +343,6 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field {
    /**
     * return all branches that should be active by default.
     * more practical/consise/efficient that relying on isBranchActiveByDefault
-    * @since 2024-09-11
     */
    @computed private get branchesActiveByDefault(): (keyof T & string)[] {
       const def = this.zConfig.default

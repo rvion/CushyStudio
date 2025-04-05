@@ -74,8 +74,6 @@ const BuilderSelectOneImpl = (
        * simplest way to build a quick enum select,
        * work with both static and dynamic select;
        *
-       * @since 2024-08-26
-       *
        * 👉 if you use dyanmic selections, just make sure
        * there is at least one value in the array.
        */
@@ -95,8 +93,6 @@ const BuilderSelectOneImpl = (
       /**
        * simplest way to build a quick enum select WITHOUT DEFAULT,
        * work with both static and dynamic select;
-       *
-       * @since 2024-09-16
        *
        * 👉 if you use dyanmic selections, just make sure
        * there is at least one value in the array.
@@ -206,7 +202,6 @@ const BuilderSelectOneImpl = (
       },
 
       /**
-       * @since 2024-08-26
        * value is the option id (`option.id`)
        * NO NEED to specify the value in the given options.
        * If you specify the value, it will be IGNORED.
@@ -245,7 +240,6 @@ const BuilderSelectOneImpl = (
       },
 
       /**
-       * @since 2024-08-26
        * value is the option value
        * you NEED to specify the value in the given options.
        */

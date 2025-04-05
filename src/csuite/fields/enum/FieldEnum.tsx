@@ -19,10 +19,7 @@ export type Field_enum_ownConfig<O extends ComfyUnionValue> = {
    extraDefaults?: string[]
    filter?: (v: ComfyUnionValue) => boolean
    appearance?: 'select' | 'tab'
-   /**
-    * @since 2024-07-22
-    * allow to wrap the list of values if they take more than 1 SLH (standard line height)
-    */
+   /** allow to wrap the list of values if they take more than 1 SLH (standard line height) */
    wrap?: boolean
 }
 

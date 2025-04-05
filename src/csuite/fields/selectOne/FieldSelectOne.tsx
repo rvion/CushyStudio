@@ -93,16 +93,10 @@ type Field_selectOne_ownConfig<
    SlotAnchorContentUI?: React.FC<{}>
    appearance?: SelectOneSkin
 
-   /**
-    * @since 2024-06-24
-    * allow to wrap the list of values if they take more than 1 SLH (standard line height)
-    */
+   /** allow to wrap the list of values if they take more than 1 SLH (standard line height) */
    wrap?: boolean
 
-   /**
-    * @since 2024-06-24
-    * @deprecated use global csuite config instead
-    */
+   /** @deprecated use global csuite config instead */
    tabPosition?: TabPositionConfig
    placeholder?: string
 

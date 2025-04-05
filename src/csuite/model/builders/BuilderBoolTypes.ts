@@ -12,7 +12,6 @@ const BuilderBoolImpl = (): BuilderBoolMixin =>
    defineSchemaBuilderMixin<BuilderBoolMixin>({
       /**
        * boolean without default
-       * @since 2024-09-04
        */
       bool_(config: Field_bool['{config}'] = {}): Z.Bool {
          return CSchema.new(Field_bool, config)

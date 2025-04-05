@@ -130,8 +130,6 @@ export class Factory<BUILDER extends IBuilder = IBuilder> {
 
    /**
     * same as `use` but dispose the document when the component unmount.
-    *
-    * @since 2024-09-19
     * @see {@link use}
     */
    useDisposable<SCHEMA extends CSchema>(
@@ -156,7 +154,6 @@ export class Factory<BUILDER extends IBuilder = IBuilder> {
    /**
     * same as `useDraft` but dispose the document when the component unmount.
     *
-    * @since 2024-09-19
     * @see {@link useDraft}
     * @see {@link use}
     */

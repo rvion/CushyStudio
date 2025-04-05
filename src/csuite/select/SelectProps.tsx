@@ -91,16 +91,10 @@ export type SelectProps<OPTION> = {
    // className?: string // use revealProps.anchorProps.className instead
    // style?: React.CSSProperties // use revealProps.anchorProps.style instead
 
-   /**
-    * wride doc
-    * @since 2024-10-17
-    */
+   /** wride doc */
    showSelectAllNone?: boolean
 
-   /**
-    * Implement the selection of ALL values, when the user did not type any search filter
-    * @since 2024-10-17
-    */
+   /** Implement the selection of ALL values, when the user did not type any search filter */
    onSelectAll?: (filterText: string) => void
 
    /**

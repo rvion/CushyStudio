@@ -37,10 +37,7 @@ export const AnomalyMixinImpl = defineFieldMixin({
       }
    },
 
-   /**
-    * hoist anomalies from all descendants.
-    * @since 2024-10-07
-    */
+   /** hoist anomalies from all descendants. */
    zHoistAnomalies(): void {
       const basePath = this.zPath
       const basePathExt = this.zPathExt

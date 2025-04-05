@@ -165,7 +165,6 @@ export class CushySchemaBuilder /* implements IBuilder */ {
    //  * Allow to instanciate a field early, so you can re-use it in multiple places
    //  * or access it's instance to dynamically change some other field schema.
    //  *
-   //  * @since 2024-06-27
    //  * @stability unstable
    //  */
    // with<const SCHEMA1 extends CSchema, SCHEMA2 extends CSchema>(
@@ -382,8 +381,6 @@ export const cushyFactory: CushyFactory = new Factory<CushySchemaBuilder>(builde
 /**
  * zod does it with z, and is kinda praised for it's practicallity.
  * So why don't we try it too
- *
- * @since 2024-10-11
  */
 setBuilder(builder)
 

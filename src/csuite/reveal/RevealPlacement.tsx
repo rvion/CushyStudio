@@ -5,7 +5,6 @@ import {
 
 export type RevealPlacement =
    /** ---------------------------------------------------------------------------
-    * @since 2024-07-23
     * will clamp the revealed content above the dom of the given element.
     */
    | 'above'

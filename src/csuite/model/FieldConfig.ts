@@ -19,7 +19,6 @@ export interface FieldConfig_CommonProperties<out FIELD extends Field> {
 
    readonly uiui?: RENDERER.UIConf<FIELD>
    /**
-    * @since 2024-05-20
     * @stability beta
     * Icon name from the icon library.
     *   - "mdi..." for Material design icons - 7000+ icons https://pictogrammers.com/library/mdi/)
@@ -32,7 +31,6 @@ export interface FieldConfig_CommonProperties<out FIELD extends Field> {
    // ❌ | icon?: IconName | CovariantFn<FIELD, IconName> // IconName
 
    /**
-    * @since 2024-05-19
     * @stability beta
     * Appearance box props
     */
@@ -71,14 +69,12 @@ export interface FieldConfig_CommonProperties<out FIELD extends Field> {
     * if the version is not the samed as store in the serial
     *
     * Note: serial param is unknown on purpose: it hasn't been sanitized yet, we need to be extra careful
-    * @since 2024-05-14
     * @stability beta
     */
    beforeInit?(serial: unknown /* FIELD['{serial}'] */): FIELD['{serial}']
    version?: string
 
    /**
-    * @since 2024-05-14
     * @stability beta
     * This function will be executed either on every widget instanciation.
     */
@@ -93,7 +89,6 @@ export interface FieldConfig_CommonProperties<out FIELD extends Field> {
 
    /**
     * will be called before disposing the tree
-    * @since 2024-07-11
     * @status NOT IMPLEMENTED
     * @experimental
     */
@@ -174,7 +169,6 @@ export interface FieldConfig_CommonProperties<out FIELD extends Field> {
     * you probably DON'T want to specify this manually.
     * you can use the <schema>.useClass(...) method instead
     *
-    * @since 2024-08-14
     * @stability beta
     */
    classToUse?: Klass<FIELD>
@@ -186,7 +180,6 @@ export interface FieldConfig_CommonProperties<out FIELD extends Field> {
     * you probably DON'T want to specify this manually.
     * you can use the <schema>.publishToChannel(...) method instead
     *                          ^^^^^^^^^^^^^^^^
-    * @since 2024-05-01
     * @stability beta
     */
    publications?: Publication<any, FIELD>[]

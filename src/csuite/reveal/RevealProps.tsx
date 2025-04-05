@@ -105,7 +105,6 @@ export type RevealProps = {
    /** so you can check if the reveal is part of the same semantic group */
    revealGroup?: string
 
-   /** @since 2024-07-23 */
    relativeTo?: `#${string}` | 'mouse' | 'anchor'
 
    // placement
@@ -118,7 +117,6 @@ export type RevealProps = {
    enterable?: boolean
 
    // components / slots -------------------------------------------------------------
-   /** @since 2024-07-23 */
    shell?: FC<RevealShellProps> | KnownShells
    content: FC<RevealContentProps> // | null
    children?: React.ReactNode //, React.ReactNode]

@@ -366,7 +366,6 @@ export class CSchema<out FIELD extends Field = Field> {
     * 💬 2024-09-04 rvion:
     * | I think it's an acceptable behaviour for the default `create` function.
     *
-    * @since 2024-01-01-ish
     * @category Create Document
     */
    create(
@@ -437,13 +436,7 @@ export class CSchema<out FIELD extends Field = Field> {
       return this.fieldConstructor.generateSerial(value, this.config)
    }
 
-   /**
-    * create a `document` from a given schema, but reduce its API surface to be `Draft`-like.
-    *
-    * @since 2024-09-02
-    * @category Create Document
-    * @category Validation
-    */
+   /** create a `document` from a given schema, but reduce its API surface to be `Draft`-like. */
    createDraft(
       //
       serial_?: FIELD['{serial}'],

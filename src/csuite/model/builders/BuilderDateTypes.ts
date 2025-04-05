@@ -41,7 +41,6 @@ const BuilderDateImpl = (): BuilderDateMixin =>
        * 👉 automatically null as default if the field is nullable.
        * see {@link date_} if you don't want that behaviour.
        *
-       * @since 2024-08-27
        */
       date(config: Field_date_config_specific<Date> = {}): Z.SDate {
          return CSchema.new(Field_date<Date>, {
@@ -73,8 +72,6 @@ const BuilderDateImpl = (): BuilderDateMixin =>
        *
        * A Temporal.PlainTime object represents a wall-clock time that is
        * not associated with a particular date or time zone, e.g. 7:39 PM.
-       *
-       * @since 2024-08-27
        *
        * 👉 automatically null as default if the field is nullable.
        * see {@link datePlain_} if you don't want that behaviour.
@@ -109,8 +106,6 @@ const BuilderDateImpl = (): BuilderDateMixin =>
        *
        * 👉 automatically null as default if the field is nullable.
        * see {@link dateTimeZoned_} if you don't want that behaviour.
-       *
-       * @since 2024-08-27
        */
       dateTimeZoned(config: Field_date_config_specific<Temporal.ZonedDateTime> = {}): Z.DateTimeZoned {
          return CSchema.new(Field_date<Temporal.ZonedDateTime>, {
