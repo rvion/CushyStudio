@@ -26,6 +26,7 @@ import type { MediaImageL } from '../models/MediaImage'
 import type { ProjectL } from '../models/Project'
 import type { StepL } from '../models/Step'
 import type { PreferenceMode } from '../panels/PanelPreferences/PanelPreferences'
+import type { Field_prompt } from '../prompt/FieldPrompt'
 import type { Database } from '../supa/database.types'
 import type { CleanedEnumResult } from '../types/EnumUtils'
 import type { StepOutput } from '../types/StepOutput'
@@ -153,6 +154,8 @@ export class STATE {
    actionTags: ActionTagMethodList = []
    importer: ComfyImporter
    field: CATALOG.AllFields = KNOWN_FIELDS
+
+   activePrompt?: Field_prompt = undefined
 
    _updateTime(): void {
       const now = Date.now()
@@ -450,10 +453,7 @@ export class STATE {
    }
 
    comfyUIIframeRef = createRef<HTMLIFrameElement>()
-   // dndVisualRef = createRef<HTMLDivElement>()
    dndHandler: CushyDnDHandler
-   mousePosition: { x: number; y: number } = { x: 0, y: 0 }
-
    expandNodes: boolean = false
 
    showConfettiAndBringFun = async (): Promise<void> => {

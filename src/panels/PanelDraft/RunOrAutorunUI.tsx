@@ -15,7 +15,6 @@ export const RunOrAutorunUI = obs(function RunOrAutorunUI_(p: { className?: stri
                <div tw='p-2'>
                   <div>ms to wait after a change</div>
                   <InputNumberUI
-                     //
                      mode='int'
                      value={draft.st.project.data.autostartDelay}
                      onValueChange={(value) => draft.st.project.update({ autostartDelay: value })}
@@ -28,7 +27,6 @@ export const RunOrAutorunUI = obs(function RunOrAutorunUI_(p: { className?: stri
                   />
                   <div>max ms to wait before running anyway</div>
                   <InputNumberUI
-                     //
                      mode='int'
                      value={draft.st.project.data.autostartMaxDelay}
                      onValueChange={(val) => {
@@ -47,10 +45,8 @@ export const RunOrAutorunUI = obs(function RunOrAutorunUI_(p: { className?: stri
             <Button tw='!gap-0 !px-0.5' icon={IKONS.mdiTimer} suffixIcon={IKONS.mdiChevronDown} />
          </RevealUI>
          <Button
-            // tw='h-input'
             look='success'
             tooltip='Run the current draft. (create a step)'
-            // size='xs'
             expand
             className='self-start'
             icon={icon}
@@ -66,8 +62,6 @@ export const RunOrAutorunUI = obs(function RunOrAutorunUI_(p: { className?: stri
             icon={IKONS.mdiAnimationPlay}
             tooltip='Auto-start (restart when idle if change happened)'
             look='success'
-            // size='xs'
-            // tw='h-input'
             square
             loading={draft.shouldAutoStart}
             active={draft.shouldAutoStart}

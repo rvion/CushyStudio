@@ -84,8 +84,15 @@ export const compilePrompt = (p: {
                console.log(`[❌] invalid wildcard`)
                return false
             }
-            const picked = chooseRandomly(node.name, p.seed ?? Math.floor(Math.random() * 99999999), options)
-            if (p.printWildcards ?? true) debugText.push(picked)
+            if (node.index != null) {
+               const picked = options[node.index]
+               if (p.printWildcards ?? true) debugText.push(`${node.index} | ${picked}`)
+               set(picked)
+               return false
+            }
+            const index = p.seed ?? Math.floor(Math.random() * 99999999)
+            const picked = chooseRandomly(node.name, index, options)
+            if (p.printWildcards ?? true) debugText.push(`${index} | ${picked}`)
             set(picked)
             return false
          }
@@ -113,6 +120,16 @@ export const compilePrompt = (p: {
             return false
             // 🔴 clip = next._CLIP
             // 🔴 ckpt = next._MODEL
+         }
+
+         if (toktype === 'Choice') {
+            // const index = node
+            // const options = node.expressions
+            // if (index > options.length || index < 0) {
+            // return false
+            // }
+            set(node.value)
+            return false
          }
          return true
       },

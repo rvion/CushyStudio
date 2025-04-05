@@ -302,7 +302,11 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field {
       return super.zIsCollapsible
    }
 
-   @computed get choicesWithLabels(): { key: keyof T & string; label: string; icon?: Maybe<IconName> }[] {
+   @computed get choicesWithLabels(): {
+      key: keyof T & string
+      label: string
+      icon?: Maybe<IconName>
+   }[] {
       return this.allPossibleChoices.map((key) => {
          const schema = bang(this.getSchemaForBranch(key))
          return {

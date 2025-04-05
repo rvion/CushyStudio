@@ -1,15 +1,17 @@
-import type { FieldId } from '../csuite/model/FieldId'
-import type { Field_prompt } from './FieldPrompt'
-import type { Prompt_Lora } from './grammar/grammar.practical'
+import type { FieldId } from '../../csuite/model/FieldId'
+import type { Field_prompt } from '../FieldPrompt'
 
 import { EditorState } from '@codemirror/state'
-import { basicSetup, EditorView } from 'codemirror'
+import { EditorView } from 'codemirror'
 import { makeAutoObservable, observable, reaction } from 'mobx'
-
 import { createRef, useLayoutEffect, useMemo } from 'react'
 
-import { PromptLang } from './cm-lang/LANG'
-import { PromptAST } from './grammar/grammar.practical'
+import { Frame } from '../../csuite/frame/Frame'
+import { BasicShelfUI } from '../../csuite/shelf/ShelfUI'
+import { PromptLang } from '../cm-lang/LANG'
+import { basicSetup } from '../cm-lang/SETUP'
+import { type Prompt_Lora, PromptAST } from '../grammar/grammar.practical'
+import { GrammarChoiceUI } from './components/GrammarChoiceUI'
 
 type X = { id: FieldId; label?: string }
 
@@ -18,7 +20,6 @@ export const PromptEditorUI = obs(function PromptEditorUI_(p: { promptID: Field_
    // 1. retrieve the widget to get the inital value
    // |  the widget won't be used afterwise unless we programmatically do stuff with it
    const field = cushy.repository.getFieldByID(p.promptID) as Field_prompt | undefined
-   const initialText = field?.text ?? ''
 
    // 2. create a self-contained state to play with prompt-lang
    // | completely independent from the widget thing
@@ -119,18 +120,20 @@ export const PromptEditorUI = obs(function PromptEditorUI_(p: { promptID: Field_
                })
             }
          })(field),
-      [],
+      [cushy.activePrompt],
    )
 
    // mount
    useLayoutEffect(() => {
       if (uist.mountRef.current) uist.mount(uist.mountRef.current)
-   }, [])
+   }, [cushy.activePrompt])
+   // const theme = cushy.preferences.theme.zValue
 
    return (
-      <div tw='flex flex-col gap-1 p-2'>
-         {/* <MessageInfoUI title='instructions'> select the [from] to change the to widget </MessageInfoUI> */}
-         {/* <div className='flex flex-wrap'>
+      <div tw='flex flex-1 flex-row overflow-auto'>
+         <Frame className='ͼo' base={{ contrast: -0.05 }} tw='flex h-full flex-grow flex-col gap-1'>
+            {/* <MessageInfoUI title='instructions'> select the [from] to change the to widget </MessageInfoUI> */}
+            {/* <div className='flex flex-wrap'>
             {cushy.repository.getWidgetsByType<Field_prompt>('prompt').map((widget) => (
                <ToggleButtonUI //
                   toggleGroup='prompt-link'
@@ -142,8 +145,8 @@ export const PromptEditorUI = obs(function PromptEditorUI_(p: { promptID: Field_
             ))}
          </div> */}
 
-         <div ref={uist.mountRef}></div>
-         {/* <Button onClick={() => uist.setInternalText(uist.linkedText + '!')}>add "!"</Button>
+            <div tw='h-full' ref={uist.mountRef}></div>
+            {/* <Button onClick={() => uist.setInternalText(uist.linkedText + '!')}>add "!"</Button>
          <SelectUI<X>
             value={() => ({ id: p.promptID, label: 'current' })}
             getLabelText={(i) => i.label ?? i.id}
@@ -161,6 +164,12 @@ export const PromptEditorUI = obs(function PromptEditorUI_(p: { promptID: Field_
                return allPrompts.map((i) => ({ id: i.id, label: i.text ?? '' }))
             }}
          /> */}
+         </Frame>
+         <BasicShelfUI anchor='right'>
+            {uist.ast.findAll('Choice').map((choice, choiceIndex) => {
+               return <GrammarChoiceUI view={uist.editorView} choice={choice} index={choiceIndex} />
+            })}
+         </BasicShelfUI>
       </div>
    )
 })

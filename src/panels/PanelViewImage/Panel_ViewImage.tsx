@@ -39,9 +39,10 @@ export type PanelViewImageProps = {
 }
 
 export const PanelViewImageUI = obs(function PanelViewImage(p: PanelViewImageProps) {
-   const img: Maybe<MediaImageL> = p.imageID //
-      ? cushy.db.media_image.get(p.imageID)
-      : cushy.db.media_image.last()
+   const img: Maybe<MediaImageL> =
+      p.imageID != null //
+         ? cushy.db.media_image.get(p.imageID)
+         : cushy.db.media_image.last()
    const url = img?.url
    // 🛝 const background = st.galleryConf.value.galleryBgColor ?? undefined
 

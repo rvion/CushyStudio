@@ -22,12 +22,12 @@ export const ShellPopoverUI = obs(function ShellPopoverUI_(p: RevealShellProps) 
             // we need some class to check that we're indeed focusing on a child of the popup
             '_ShellForFocusEvents',
          ]}
-         // roundness={cushy.preferences.theme.value.global.roundness}
+         // roundness={cushy.preferences.theme.zValue.global.roundness}
          border={
             locked ? { hue: 0, contrast: 0.2, chromaBlend: 500 } : undefined
-            // cushy.preferences.theme.value.global.border
+            // cushy.preferences.theme.zValue.global.border
          }
-         // dropShadow={cushy.preferences.theme.value.global.shadow}
+         // dropShadow={cushy.preferences.theme.zValue.global.shadow}
          // onContextMenu={uist.open}
          onClick={(ev) => reveal.onShellClick(ev)}
          onMouseEnter={(ev: React.MouseEvent<HTMLDivElement, MouseEvent>) => reveal.onMouseEnterTooltip(ev)}

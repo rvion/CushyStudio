@@ -170,7 +170,7 @@ if (import.meta.hot) {
 //       if (field.type == 'choices') {
 //          return p.children
 //       }
-//       return <uy.Decorations.Pad {...p} />
+//       return <uy.decorations.Pad {...p} />
 //    },
 // })
 // ui.set('@number', { Header: uy.number.simple, Body: null })

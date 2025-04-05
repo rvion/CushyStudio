@@ -3,7 +3,6 @@ import type { RevealPlacement } from '../reveal/RevealPlacement'
 import type { ReactNode } from 'react'
 
 import { runInAction } from 'mobx'
-
 import { useEffect, useMemo } from 'react'
 
 import { Button } from '../button/Button'

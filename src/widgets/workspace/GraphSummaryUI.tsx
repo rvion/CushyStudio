@@ -19,7 +19,7 @@ export const GraphSummaryUI = obs(function GraphSummaryUI_(p: { graph: ComfyWork
             <ButtonDownloadFilesUI graph={graph} />
             <ButtonOpenInComfyUI graph={graph} />
          </div>
-         <div className='overflow-auto'>
+         <div>
             {graph.size === 0 && <div>Empty Graph</div>}
             {graph.pendingNodes.length > 0 && <div>+{graph.pendingNodes.length} nodes remaining</div>}
             {graph.nodesByUpdatedAt.map((n, ix) => (
@@ -29,9 +29,7 @@ export const GraphSummaryUI = obs(function GraphSummaryUI_(p: { graph: ComfyWork
                      <span>{n.statusEmoji}</span>
                   </RevealUI>
                   <NodeRefUI size={1.1} label={ix.toString()} node={n} />
-                  <span tw='overflow-hidden text-ellipsis whitespace-nowrap text-sm'>
-                     {n.$schema.nameInComfy}
-                  </span>
+                  <span tw='text-ellipsis whitespace-nowrap text-sm'>{n.$schema.nameInComfy}</span>
                </div>
             ))}
          </div>

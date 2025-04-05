@@ -52,7 +52,7 @@ export function ui_cnet(): UI_cnet {
    const applyDuringUpscale = b.linkedFromSharedUID(
       'full-yolo-applyDuringUpscale',
       b.bool({
-         tooltip: 'Use the controlnet conditioning for the upscale pass if enabled',
+         description: 'Use the controlnet conditioning for the upscale pass if enabled',
          label2: 'Apply during upscale',
          label: false,
          default: false,
@@ -64,20 +64,20 @@ export function ui_cnet(): UI_cnet {
          label: 'ControlNets',
          icon: IKONS.mdiCompass,
          // box: { base: { hue: 90, chroma: 0.1 } },
-         tooltip: `Instructional resources:\nhttps://github.com/lllyasviel/ControlNet\nhttps://stable-diffusion-art.com/controlnet/`,
+         description: `Instructional resources:\nhttps://github.com/lllyasviel/ControlNet\nhttps://stable-diffusion-art.com/controlnet/`,
          element: () =>
             b.group({
                label: 'Controlnet Image',
                items: {
                   image: b.image({}),
                   mask: ui_mask()
+                     .withConfig({ description: 'Applies controlnet only to the masked area.' })
                      .addRequirements([
                         {
                            type: 'customNodesByNameInCushy',
                            nodeName: 'Advanced-ControlNet.ACN_AdvancedControlNetApply',
                         },
-                     ])
-                     .withConfig({ tooltip: 'Applies controlnet only to the masked area.' }),
+                     ]),
                   resize: b.bool({ default: true }),
                   applyDuringUpscale: applyDuringUpscale,
                   cnets: b.choices(
@@ -138,7 +138,7 @@ export async function run_cnet(
    const cnetList = opts // opts?.controlNetList
    const args: Cnet_args = { ...ctx }
 
-   if (cnetList) {
+   if (cnetList.length > 0) {
       for (const cnetImage of cnetList) {
          let image: Comfy.Signal['IMAGE'] = (await run.loadImageAnswer(cnetImage.image))._IMAGE
          const mask = await run_mask(cnetImage.mask)

@@ -2,6 +2,7 @@ import type { Field_bool } from './FieldBool'
 
 import { InputBoolUI } from '../../checkbox/InputBoolUI'
 import { SpacerUI } from '../../components/SpacerUI'
+import { WidgetTooltipUI } from '../number/WidgetNumberUI'
 
 export const WidgetBoolUI = obs(function WidgetBoolUI_(p: { field: Field_bool }) {
    const field = p.field
@@ -28,6 +29,8 @@ export const WidgetBoolUI = obs(function WidgetBoolUI_(p: { field: Field_bool })
                p.field.zTouch()
             }}
             toggleGroup={field.zUid}
+            // toggleGroup={'field-bool'}
+            tooltip={<WidgetTooltipUI field={field} />}
          />
 
          <SpacerUI />

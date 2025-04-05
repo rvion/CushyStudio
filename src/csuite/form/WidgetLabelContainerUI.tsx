@@ -13,7 +13,7 @@ export type WidgetLabelContainerProps = {
 }
 
 export const WidgetLabelContainerUI = obs(function WidgetLabelContainerUI_(p: WidgetLabelContainerProps) {
-   // const theme = cushy.preferences.theme.value
+   // const theme = cushy.preferences.theme.zValue
    return (
       <Frame
          // NOTE(bird_d): tooltips should be on the interact-able component, not the label
@@ -21,7 +21,7 @@ export const WidgetLabelContainerUI = obs(function WidgetLabelContainerUI_(p: Wi
          // tooltipPlacement={p.tooltipPlacement ?? 'topStart'}
          className={p.className}
          // hover={1}
-         expand
+         // expand
          tw={[
             'UI-WidgetLabelContainer', //
             'COLLAPSE-PASSTHROUGH',

@@ -3,6 +3,7 @@ import type { Field_choices } from './FieldChoices'
 
 import { csuiteConfig } from '../../config/configureCsuite'
 import { SelectUI } from '../../select/SelectUI'
+import { WidgetTooltipUI } from '../number/WidgetNumberUI'
 
 export const WidgetChoices_HeaderSelectUI = obs(function WidgetChoices_HeaderSelectUI_<
    T extends SchemaDict,
@@ -40,7 +41,7 @@ export const WidgetChoices_HeaderSelectUI = obs(function WidgetChoices_HeaderSel
             // )}
             equalityCheck={(a, b) => a.key === b.key}
             multiple={field.zConfig.multi ?? false}
-            // closeOnPick={false}
+            closeOnPick={true}
             resetQueryOnPick={false}
             onOptionToggled={(v) => {
                // 🔴 DUBIOUS
@@ -48,6 +49,7 @@ export const WidgetChoices_HeaderSelectUI = obs(function WidgetChoices_HeaderSel
                field.toggleBranch(v.key)
                p.field.zTouch()
             }}
+            tooltip={<WidgetTooltipUI field={field} />}
          />
       </div>
    )

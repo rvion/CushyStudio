@@ -1,5 +1,4 @@
 import { makeAutoObservable } from 'mobx'
-
 import { useMemo } from 'react'
 
 import { useCSuite } from '../../csuite/ctx/useCSuite'

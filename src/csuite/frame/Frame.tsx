@@ -24,7 +24,7 @@ import { frameMode } from './frameMode'
 import { tooltipStuff } from './tooltip'
 
 export type FrameProps = {
-   ref?: React.Ref<HTMLDivElement>
+   ref?: React.Ref<HTMLDivElement | null>
    //
    as?: string
 
@@ -33,7 +33,7 @@ export type FrameProps = {
 
    container?: boolean | string | React.HTMLAttributes<HTMLDivElement>
 
-   tooltip?: string
+   tooltip?: string | React.ReactNode
    tooltipPlacement?: RevealPlacement
 
    /** should be moved to Box props soon */
@@ -92,29 +92,29 @@ export const Frame = obs(function Frame_(p: FrameProps) {
 
    // prettier-ignore
    const {
-            ref,
-            as,                                                 // html
+      ref,
+      as,                                                 // html
 
-            align, active, disabled,                            // built-in state & style modifiers
-            icon, iconSize, suffixIcon, loading,                // addons
-            expand, square, size,                               // size
+      align, active, disabled,                            // built-in state & style modifiers
+      icon, iconSize, suffixIcon, loading,                // addons
+      expand, square, size,                               // size
 
-            look,                                               // style: 1/4: frame templates
-            base, hover, border, text, textShadow, shadow,      // style: 2/4: frame overrides
-            roundness,
-            boxShadow, dropShadow,                              // style: 3/4: css
-            style, className,                                   // style: 4/4: css, className
+      look,                                               // style: 1/4: frame templates
+      base, hover, border, text, textShadow, shadow,      // style: 2/4: frame overrides
+      roundness,
+      boxShadow, dropShadow,                              // style: 3/4: css
+      style, className,                                   // style: 4/4: css, className
 
-            container, row, line, col, wrap,                    // layout
+      container, row, line, col, wrap,                    // layout
 
-            hovered: hovered__,                                 // state
-            onMouseDown, onMouseEnter, onClick, triggerOnPress, // interactions
-            tooltip, tooltipPlacement,
+      hovered: hovered__,                                 // state
+      onMouseDown, onMouseEnter, onClick, triggerOnPress, // interactions
+      tooltip, tooltipPlacement,
 
-            noColorStuff: noColorStuff__,
-            // remaining properties
-            ...rest
-        } = p
+      noColorStuff: noColorStuff__,
+      // remaining properties
+      ...rest
+   } = p
 
    const enableTriggerOnPress = true // (bird_d): Assuming this is for triggering onMouseDown on various components?
 

@@ -31,6 +31,7 @@ export const InputBoolCheckboxUI = obs(function InputBoolCheckboxUI_(p: BoolButt
             ev.stopPropagation()
             p.onValueChange(!isActive)
          }}
+         tooltip={p.tooltip}
          {...rest}
          role='checkbox'
          aria-checked={isActive}

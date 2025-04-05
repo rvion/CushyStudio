@@ -1,7 +1,4 @@
 import type { App } from '../../../src/cards/App'
-import type { Field_group } from '../../../src/csuite/fields/group/FieldGroup'
-import type { Field_list } from '../../../src/csuite/fields/list/FieldList'
-import type { IconName } from '../../../src/csuite/icons/IconName'
 import type { CushySDXLSchema } from './_cushySDXLSchema'
 
 export const _cushySDXLLayout: App<CushySDXLSchema>['layout'] = (field, set) => {
@@ -54,7 +51,7 @@ export const _cushySDXLLayout: App<CushySDXLSchema>['layout'] = (field, set) => 
    //                               : item.fields.name.value}
    //                         </span>
    //                         <div tw='flex-none'>
-   //                            <uy.IkonOf name={conditioningIcon} />
+   //                            <uy.ikonOf name={conditioningIcon} />
    //                         </div>
    //                         <div tw='w-2' />
    //                         <div tw='flex-none'>
@@ -123,7 +120,78 @@ export const _cushySDXLLayout: App<CushySDXLSchema>['layout'] = (field, set) => 
    // // already handled by its parent
    // set(field.positive.prompts, { collapsible: false, Head: false, Header: false })
    // set(field.negative.prompts, { collapsible: false, Head: false, Header: false })
-
+   // ui.set<Field_list<Z.Group<{ enabled: Z.Bool; name: Z.String; prompt: Z.Prompt }>>>(
+   //    '@list..@prompt^^',
+   //    {
+   //       Header: false,
+   //       Body: observer((p) => {
+   //          const promptGroup = p.field.parent?.value
+   //          const activePrompt = p.field.items[promptGroup.activeIndex]
+   //          return (
+   //             <>
+   //                <uy.list.BlenderLike<typeof p.field> //
+   //                   activeIndex={promptGroup.activeIndex}
+   //                   field={p.field}
+   //                   renderItem={(item, index) => {
+   //                      const conditioningIcon: IconName =
+   //                         index == 0 ? 'mdiArrowDown' : 'mdiFormatListGroupPlus'
+   //                      return (
+   //                         <uy.misc.Frame
+   //                            tw='flex items-center'
+   //                            hover
+   //                            key={item.id}
+   //                            onMouseDown={() => {
+   //                               promptGroup.activeIndex = index
+   //                               cushy.activePrompt = p.field.items[promptGroup.activeIndex]?.value.prompt
+   //                            }}
+   //                         >
+   //                            <span
+   //                               tw={[
+   //                                  'line-clamp-1 w-full flex-grow px-1',
+   //                                  !item.fields.enabled.value && 'opacity-50',
+   //                               ]}
+   //                            >
+   //                               {item.fields.name.value == ''
+   //                                  ? item.fields.prompt.text
+   //                                  : item.fields.name.value}
+   //                            </span>
+   //                            <div tw='flex-none'>
+   //                               <uy.ikonOf name={conditioningIcon} />
+   //                            </div>
+   //                            <div tw='w-2' />
+   //                            <div tw='flex-none'>
+   //                               {/* <InputNumberUI
+   //                         // TODO(bird_d/ui/logic): Implement showing strength based on the conditioning type, should only appear on blend/add/etc. concate doesn't need it for example.
+   //                         mode='float'
+   //                         hideSlider
+   //                         onValueChange={() => {}}
+   //                         value={ree}
+   //                      /> */}
+   //                               <uy.misc.Checkbox
+   //                                  square // TODO(bird_d/ui): Buttons like this, where there's only an icon, should just automatically apply square if there's no text/children.
+   //                                  toggleGroup='prompt'
+   //                                  value={item.fields.enabled.value}
+   //                                  onValueChange={(v) => (item.fields.enabled.value = v)}
+   //                                  tooltip='Whether or not the prompt effects the generation'
+   //                               />
+   //                            </div>
+   //                         </uy.misc.Frame>
+   //                      )
+   //                   }}
+   //                />
+   //                <uy.misc.Button
+   //                   hover
+   //                   tw='w-full !content-start !items-center !justify-start !border-none !bg-transparent py-[15px] pl-3.5 text-center'
+   //                   icon={promptGroup.showEditor ? 'mdiChevronDown' : 'mdiChevronRight'}
+   //                   onMouseDown={(e) => {
+   //                      if (e.button != 0) {
+   //                         return
+   //                      }
+   //                      promptGroup.showEditor = !promptGroup.showEditor
+   //                   }}
+   //                >
+   //                   Editor
+   //                </uy.misc.Button>
    // set('', (ui2) => {
    //    if (ui2.field.parent?.parent === field.positive.prompts) return { Head: false }
    //    if (ui2.field.parent?.parent === field.negative.prompts) return { Head: false }
@@ -153,7 +221,7 @@ export const _cushySDXLLayout: App<CushySDXLSchema>['layout'] = (field, set) => 
    //    let should = ui2.field.path.startsWith(field.Sampler.path + '.')
    //    should = ui2.field.depth >= 2
    //    if (should) {
-   //       if (ui2.field.isOfType('group', 'list', 'choices')) return { Title: uy.Title.h4 }
+   //       if (ui2.field.isOfType('group', 'list', 'choices')) return { Title: uy.title.h4 }
    //       if (!ui2.field.isOfType('optional', 'list', 'shared')) return { Shell: uy.shell.Right }
    //    }
    // })

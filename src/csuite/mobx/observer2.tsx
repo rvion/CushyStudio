@@ -1,6 +1,8 @@
-import { observer } from 'mobx-react-lite'
-import type React from 'react'
 import type { PropsOf } from '../types/PropsOf'
+import type React from 'react'
+
+// eslint-disable-next-line no-restricted-imports
+import { observer } from 'mobx-react-lite'
 
 export type FC_<P> = React.FunctionComponent<P> & {
    with(p: Partial<P> | ((t: P) => Partial<P>)): React.FunctionComponent<P>

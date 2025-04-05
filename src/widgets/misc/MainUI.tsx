@@ -1,13 +1,11 @@
 import type { DragDropManager } from 'dnd-core'
 
 import { runInAction } from 'mobx'
-
 import { useMemo } from 'react'
 import { useDragDropManager } from 'react-dnd'
 import { ToastContainer } from 'react-toastify'
 
 import { CushyUI } from '../../app/layout/AppUI'
-import { TargetBox } from '../../importers/TargetBox'
 import { STATE } from '../../state/state'
 import { asAbsolutePath } from '../../utils/fs/pathUtils'
 
@@ -19,9 +17,7 @@ export const MainUI = obs(function MainUI_() {
    return (
       <>
          <ToastContainer />
-         <TargetBox>
-            <CushyUI />
-         </TargetBox>
+         <CushyUI />
       </>
    )
 })

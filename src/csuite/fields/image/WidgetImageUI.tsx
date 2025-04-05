@@ -5,7 +5,6 @@ import { nanoid } from 'nanoid'
 import { createMediaImage_fromBlobObject } from '../../../models/createMediaImage_fromWebFile'
 import { FPath } from '../../../models/FPath'
 import { PanelGalleryUI } from '../../../panels/PanelGallery/PanelGalleryUI'
-import { useImageDrop } from '../../../widgets/galleries/dnd'
 import { ImageUIDumb } from '../../../widgets/galleries/ImageUI'
 import { Button } from '../../button/Button'
 import { SpacerUI } from '../../components/SpacerUI'
@@ -13,19 +12,29 @@ import { Frame } from '../../frame/Frame'
 import { Ikon } from '../../icons/iconHelpers'
 import { ResizableFrame } from '../../resizableFrame/resizableFrameUI'
 import { RevealUI } from '../../reveal/RevealUI'
-import { useDragDropRefForReact19 } from '../../utils/dnd'
 
 export const WidgetSelectImageUI = obs(function WidgetSelectImageUI_(p: {
    //
    field: Field_image
 }) {
    const field = p.field
-   const [dropStyle, dropRef__] = useImageDrop(cushy, (imageL) => {
-      field.zValue = imageL
+   const [isOver, dropRef] = uy.dnd.useDropZone({
+      config: { shallow: true },
+      Image: {
+         onDrop: (item, monitor) => {
+            field.zValue = item
+         },
+         onHover: (item, monitor) => {
+            cushy.dndHandler.setContent({
+               icon: IKONS.mdiImage,
+               label: 'Drop Image',
+               suffixIcon: IKONS.mdiMenuOpen,
+            })
+         },
+      },
    })
-   const dropRef = useDragDropRefForReact19(dropRef__)
 
-   const image = field.zValueUnchecked
+   const image = field.zValue
    // ⏸️ const suggestionsRaw = p.field.config.assetSuggested
    // ⏸️ const suggestions: RelativePath[] =
    // ⏸️     suggestionsRaw == null ? [] : Array.isArray(suggestionsRaw) ? suggestionsRaw : [suggestionsRaw]
@@ -35,9 +44,7 @@ export const WidgetSelectImageUI = obs(function WidgetSelectImageUI_(p: {
          border
          tw='w-full text-sm'
          currentSize={size}
-         onResize={(val) => {
-            field.size = val
-         }}
+         onResize={(val) => void (field.size = val)}
          snap={16}
          base={{ contrast: -0.025 }}
          header={
@@ -118,7 +125,9 @@ export const WidgetSelectImageUI = obs(function WidgetSelectImageUI_(p: {
          }
       >
          <div
-            style={dropStyle}
+            style={{
+               opacity: isOver ? '75%' : '100%',
+            }}
             ref={dropRef}
             className='DROP_IMAGE_HANDLER'
             tw='_WidgetSelectImageUI flex h-full w-full flex-1 items-center justify-center'

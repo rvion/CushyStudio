@@ -70,10 +70,10 @@ export const PanelCanvasHeaderUI = obs(function PanelCanvasHeaderUI_(p: {}) {
                toggleGroup='canvas'
                icon={canvas.snapToGrid ? IKONS.mdiMagnetOn : IKONS.mdiMagnet}
                value={canvas.snapToGrid}
+               tooltip='Enable Snapping'
                onValueChange={(v) => {
                   canvas.snapToGrid = !canvas.snapToGrid
                }}
-               tooltip='Enable Snapping'
             />
          </div>
          <div tw='flex items-end justify-end'>

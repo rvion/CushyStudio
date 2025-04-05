@@ -1949,6 +1949,10 @@ export abstract class Field {
          return (): void => this.zOff(event, cbStable)
       }, [cbStable, event])
    }
+
+   get zDescription(): string | undefined {
+      return this.zConfig.description
+   }
 }
 
 // #region Mixins

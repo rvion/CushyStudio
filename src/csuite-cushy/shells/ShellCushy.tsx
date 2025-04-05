@@ -90,7 +90,7 @@ export const ShellCushyLeftUI = obs(function ShellCushyLeft(p: RenderPropsCompil
          HEADER={
             <>
                {/* prettier-ignore */}
-               <WidgetLabelContainerUI tooltip={field.zConfig.tooltip} justify>
+               <WidgetLabelContainerUI tooltip={field.zDescription} justify>
                   {renderFCOrNode(p.Indent,      { depth: field.zDepth })}
                   {renderFCOrNode(p.DragKnob,    { field })}
                   {renderFCOrNode(p.Icon,        { field, className: 'mr-1' })}
@@ -117,7 +117,7 @@ export const ShellCushyList1UI = obs(function ShellCushyList1(p: RenderPropsComp
          HEADER={
             <>
                {/* prettier-ignore */}
-               <WidgetLabelContainerUI tooltip={field.zConfig.tooltip} justify>
+               <WidgetLabelContainerUI tooltip={field.zDescription} justify>
                   {renderFCOrNode(p.Indent,      { depth: field.zDepth })}
                   {renderFCOrNode(p.DragKnob,    { field })}
                   {renderFCOrNode(p.Caret,       { field, placeholder: true })}
@@ -143,7 +143,7 @@ export const ShellCushyRightUI = obs(function ShellCushyRight(p: RenderPropsComp
          HEADER={
             <>
                <WidgetLabelContainerUI //
-                  tooltip={field.zConfig.tooltip}
+                  tooltip={field.zDescription}
                   justify
                >
                   {renderFCOrNode(p.Indent /*    */, { depth: field.zDepth })}
@@ -174,7 +174,7 @@ export const ShellCushyFluidUI = obs(function ShellCushyFluid(p: RenderPropsComp
          HEADER={
             <>
                <WidgetLabelContainerUI //
-                  tooltip={field.zConfig.tooltip}
+                  tooltip={field.zDescription}
                   justify={false}
                >
                   {renderFCOrNode(p.Indent, /*    */ { depth: field.zDepth })}

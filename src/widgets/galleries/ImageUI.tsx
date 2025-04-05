@@ -6,6 +6,7 @@ import { RevealUI } from '../../csuite/reveal/RevealUI'
 import { useDragDropRefForReact19 } from '../../csuite/utils/dnd'
 import { ImageDropdownMenuUI } from '../../panels/ImageDropdownUI'
 import { useImageDrag } from './dnd'
+import { useDragItem } from './dndGeneric'
 import { ImageErrorDisplayUI } from './ImageErrorDisplayUI'
 
 export const ImageUI = obs(function ImageUI_({
@@ -87,9 +88,7 @@ export const ImageUIDumb = obs(function ImageUIDumb_({
    className?: string
 }) {
    const image = typeof img === 'string' ? cushy.db.media_image.get(img) : img
-   const [{ opacity }, dragRef_, dragPreview_] = useImageDrag(image! /* 🔴 */)
-   const dragRef = useDragDropRefForReact19(dragRef_)
-   const dragPreview = useDragDropRefForReact19(dragPreview_)
+   // const [{ opacity }, dragRef, dragPreview] = useImageDragNew(image! /* 🔴 */)
 
    if (!image) {
       return (
@@ -106,6 +105,8 @@ export const ImageUIDumb = obs(function ImageUIDumb_({
          />
       )
    }
+
+   const [{ opacity }, dragRef, dragPreview] = useDragItem(image)
 
    return (
       <RevealUI //

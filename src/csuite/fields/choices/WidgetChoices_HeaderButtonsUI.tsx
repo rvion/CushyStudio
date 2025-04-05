@@ -4,6 +4,7 @@ import type { Field_choices } from './FieldChoices'
 import { Button } from '../../button/Button'
 import { InputBoolUI } from '../../checkbox/InputBoolUI'
 import { useCSuite } from '../../ctx/useCSuite'
+import { WidgetTooltipUI } from '../number/WidgetNumberUI'
 import { getJustifyContent } from './TabPositionConfig'
 
 // ============================================================================================================
@@ -30,6 +31,8 @@ export const WidgetChoices_HeaderButtonsUI = obs(function WidgetChoices_HeaderBu
                   display='button'
                   mode={p.field.isMulti ? 'checkbox' : 'radio'}
                   text={c.label ?? c.key}
+                  // TODO(bird_d/tooltips) didn't work
+                  // tooltip={<WidgetTooltipUI field={field} />}
                   onValueChange={(value) => {
                      // 🔴 DUBIOUS
                      if (p.field.zCanBeToggledWithinParent) p.field.zEnableSelfWithinParent()

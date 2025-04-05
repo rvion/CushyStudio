@@ -23,12 +23,12 @@ export function extra2(): $extra2 {
    return b.choices(
       {
          gaussianSplat: b.empty({ icon: IKONS.mdiDotsHexagon }),
-         summary: b.empty({ icon: IKONS.mdiLanguageMarkdown, tooltip: 'outputs a markdown summary about the execution and outputs' }), // prettier-ignore
+         summary: b.empty({ icon: IKONS.mdiLanguageMarkdown, description: 'outputs a markdown summary about the execution and outputs' }), // prettier-ignore
          displayAsBeerCan: b.empty({ icon: IKONS.mdiBeerOutline }),
          displayAsSpriteSheet: b.empty({ icon: IKONS.mdiMovie }),
          watermark: ui_watermark_v1(),
          fancyWatermark: b.empty({ icon: IKONS.mdiWatermark }),
-         makeAVideo: b.empty({ icon: IKONS.mdiMessageVideo, tooltip: 'generate a video from all the generated images in that step ' }), // prettier-ignore
+         makeAVideo: b.empty({ icon: IKONS.mdiMessageVideo, description: 'generate a video from all the generated images in that step ' }), // prettier-ignore
       },
       { /* appearance: 'tab', */ icon: IKONS.mdiAlien },
    )

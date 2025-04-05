@@ -1,6 +1,7 @@
 import { Button } from '../../csuite/button/Button'
 import { InputBoolCheckboxUI } from '../../csuite/checkbox/InputBoolCheckboxUI'
 import { InputBoolUI } from '../../csuite/checkbox/InputBoolUI'
+import { MenuDivider } from '../../csuite/dropdown/MenuDivider'
 import { WidgetBoolUI } from '../../csuite/fields/bool/WidgetBoolUI'
 import { WidgetChoices_BodyUI } from '../../csuite/fields/choices/WidgetChoices_BodyUI'
 import { WidgetChoices_HeaderButtonsUI } from '../../csuite/fields/choices/WidgetChoices_HeaderButtonsUI'
@@ -29,16 +30,17 @@ import { WidgetString_summary } from '../../csuite/fields/string/WidgetString_su
 import { WidgetString_TextareaInput } from '../../csuite/fields/string/WidgetString_TextareaInput'
 import { type WidgetLabelCaretProps, WidgetLabelCaretUI } from '../../csuite/form/WidgetLabelCaretUI'
 import { WidgetLabelIconPlacholderUI, WidgetLabelIconUI } from '../../csuite/form/WidgetLabelIconUI'
-import { Frame } from '../../csuite/frame/Frame'
+import { Frame, type FrameProps } from '../../csuite/frame/Frame'
 import { IkonOf } from '../../csuite/icons/iconHelpers'
 import { InputNumberUI } from '../../csuite/input-number/InputNumberUI'
 import { MessageErrorUI } from '../../csuite/messages/MessageErrorUI'
 import { MessageInfoUI } from '../../csuite/messages/MessageInfoUI'
 import { MessageWarningUI } from '../../csuite/messages/MessageWarningUI'
 import { ResizableFrame } from '../../csuite/resizableFrame/resizableFrameUI'
-import { exhaust } from '../../csuite/utils/exhaust'
 import { WidgetPromptCollapsibleUI } from '../../prompt/widgets/WidgetPromptCollapsibleUI'
 import { WidgetPromptUI } from '../../prompt/widgets/WidgetPromptUI'
+import { useDropZone } from '../../widgets/galleries/dndGeneric'
+import { POPUP } from '../../widgets/misc/SimplePopUp'
 import { ColoredMarginUI } from '../catalog/Decorations/ColoredMarginUI'
 import { WidgetCardUI } from '../catalog/Decorations/WidgetCardUI'
 import { WidgetPadUI } from '../catalog/Decorations/WidgetPadUI'
@@ -82,6 +84,7 @@ const catalog_caret = {
 }
 
 const catalog_misc = {
+   PopUp: POPUP,
    Frame: Frame,
    Button: Button,
    Checkbox: InputBoolCheckboxUI,
@@ -130,12 +133,17 @@ const catalog_shell = {
 }
 // #region fields
 
+const catalog_Menu = {
+   Divider: MenuDivider,
+}
+
 const catalog_size = {
    line: WigetSize_LineUI,
    block: WigetSize_BlockUI,
 }
 
 const catalog_number = {
+   def: WidgetNumberUI /** inline WidgetNumber */,
    input: WidgetNumberUI /** inline WidgetNumber */,
    simple: WidgetNumberSimpleUI,
 }
@@ -191,6 +199,52 @@ const catalog_group = {
    inline: WidgetGroup_InlineUI,
 }
 
+const catalog_Layout = {
+   Col: obs(function ColumnUI_(p: FrameProps) {
+      const theme = cushy.preferences.theme.zValue
+      return (
+         <Frame
+            col
+            border={p.align ? theme.global.border : undefined}
+            roundness={theme.global.roundness}
+            dropShadow={p.align ? theme.global.shadow : undefined}
+            expand={p.expand ?? true}
+            {...p}
+         />
+      )
+   }),
+   Row: obs(function ColumnUI_(p: FrameProps) {
+      const theme = cushy.preferences.theme.zValue
+      return (
+         <Frame
+            row
+            border={p.align ? theme.global.border : undefined}
+            roundness={theme.global.roundness}
+            dropShadow={p.align ? theme.global.shadow : undefined}
+            expand={p.expand ?? true}
+            {...p}
+         />
+      )
+   }),
+   Box: obs(function ColumnUI_(p: FrameProps) {
+      const theme = cushy.preferences.theme.zValue
+      return (
+         <Frame
+            col
+            border={theme.global.border}
+            roundness={theme.global.roundness}
+            dropShadow={theme.global.shadow}
+            expand={p.expand ?? true}
+            {...p}
+         />
+      )
+   }),
+}
+
+const catalog_dnd = {
+   useDropZone: useDropZone,
+}
+
 export const widgetsCatalog /* WidgetsCatalog */ = {
    // misc
    wrappers: catalog_wrappers,
@@ -199,7 +253,10 @@ export const widgetsCatalog /* WidgetsCatalog */ = {
    caret: catalog_caret,
    misc: catalog_misc,
    title: catalog_Title,
-   Indent: catalog_Indent,
+   indent: catalog_Indent,
+   layout: catalog_Layout,
+   dnd: catalog_dnd,
+   menu: catalog_Menu,
 
    // inputs
    inputs: catalog_inputs,
@@ -231,197 +288,3 @@ if (import.meta.hot) {
    import.meta.hot.accept()
    ;(window as any).uy = widgetsCatalog
 }
-
-// #region ⏸️ per-type DSL
-
-// export type WidgetsCatalogProps = {
-//    shell:
-//       | ['Default', PropsOf<typeof ShellCushyLeftUI>]
-//       | ['Left', PropsOf<typeof ShellCushyLeftUI>]
-//       | ['Right', PropsOf<typeof ShellCushyRightUI>]
-//       | ['FluidUI', PropsOf<typeof ShellCushyFluidUI>]
-//       | ['Inline', PropsOf<typeof ShellInlineUI>]
-//       | ['Simple', PropsOf<typeof ShellSimpleUI>]
-//       | ['HeaderOnly', PropsOf<typeof ShellHeaderOnlyUI>]
-//       | ['BodyOnly', PropsOf<typeof ShellBodyOnlyUI>]
-//       | ['Mobile', PropsOf<typeof ShellMobileUI>]
-//       | ['Noop', PropsOf<typeof ShellNoop>]
-//       | ['List1', PropsOf<typeof ShellCushyList1UI>]
-//    wrappers: 'foo' | 'bar'
-// }
-
-// #region ⏸️ type index
-// ⚡️ export type Catalog_wrappers = typeof catalog_wrappers
-// ⚡️ export type Catalog_icons = typeof catalog_icons
-// ⚡️ export type Catalog_message = typeof catalog_message
-// ⚡️ export type Catalog_caret = typeof catalog_caret
-// ⚡️ export type Catalog_misc = typeof catalog_misc
-// ⚡️ export type Catalog_Title = typeof catalog_Title
-// ⚡️ export type Catalog_Indent = typeof catalog_Indent
-// ⚡️ export type Catalog_inputs = typeof catalog_inputs
-// ⚡️ export type Catalog_shell = typeof catalog_shell
-// ⚡️ export type Catalog_size = typeof catalog_size
-// ⚡️ export type Catalog_number = typeof catalog_number
-// ⚡️ export type Catalog_enum = typeof catalog_enum
-// ⚡️ export type Catalog_boolean = typeof catalog_boolean
-// ⚡️ export type Catalog_choices = typeof catalog_choices
-// ⚡️ export type Catalog_selectOne = typeof catalog_selectOne
-// ⚡️ export type Catalog_selectMany = typeof catalog_selectMany
-// ⚡️ export type Catalog_string = typeof catalog_string
-// ⚡️ export type Catalog_list = typeof catalog_list
-// ⚡️ export type Catalog_prompt = typeof catalog_prompt
-// ⚡️ export type Catalog_group = typeof catalog_group
-// ⚡️ type CatalogPerTypeIndex = {
-// ⚡️    size: Catalog_size
-// ⚡️    number: Catalog_number
-// ⚡️    enum: Catalog_enum
-// ⚡️    bool: Catalog_boolean // name❓
-// ⚡️    choices: Catalog_choices
-// ⚡️    selectOne: Catalog_selectOne
-// ⚡️    selectMany: Catalog_selectMany
-// ⚡️    str: Catalog_string // name❓
-// ⚡️    list: Catalog_list
-// ⚡️    prompt: Catalog_prompt
-// ⚡️    group: Catalog_group
-// ⚡️    // missing catalogs
-// ⚡️    color: Record<never, never>
-// ⚡️    image: Record<never, never>
-// ⚡️    markdown: Record<never, never>
-// ⚡️    optional: Record<never, never>
-// ⚡️    custom: Record<never, never>
-// ⚡️    date: Record<never, never>
-// ⚡️    matrix: Record<never, never>
-// ⚡️    orbit: Record<never, never>
-// ⚡️    seed: Record<never, never>
-// ⚡️    shared: Record<never, never>
-// ⚡️ }
-// ⚡️ export type CatalogPerType<T extends CATALOG.AllFieldTypes> = CatalogPerTypeIndex[T]
-
-// #region ⏸️ runtime index
-
-// V1
-// export function getSubcatalogForType(type: CATALOG.AllFieldTypes) {
-//    if (type === 'size') return catalog_size
-//    if (type === 'number') return catalog_number
-//    if (type === 'enum') return catalog_enum
-//    if (type === 'bool') return catalog_boolean // name❓
-//    if (type === 'choices') return catalog_choices
-//    if (type === 'selectOne') return catalog_selectOne
-//    if (type === 'selectMany') return catalog_selectMany
-//    if (type === 'str') return catalog_string // name❓
-//    if (type === 'list') return catalog_list
-//    if (type === 'prompt') return catalog_prompt
-//    if (type === 'group') return catalog_group
-//    // missing catalogs
-//    if (type === 'color') return {}
-//    if (type === 'image') return {}
-//    if (type === 'markdown') return {}
-//    if (type === 'optional') return {}
-//    if (type === 'custom') return {}
-//    if (type === 'date') return {}
-//    if (type === 'matrix') return {}
-//    if (type === 'orbit') return {}
-//    if (type === 'seed') return {}
-//    if (type === 'shared') return {}
-//    exhaust(type)
-// }
-
-// V2
-// ⏸️ export const catalogPerType: { [key in CATALOG.AllFieldTypes]: object } = {
-// ⏸️    size: catalog_size,
-// ⏸️    number: catalog_number,
-// ⏸️    enum: catalog_enum,
-// ⏸️    bool: catalog_boolean, // name❓
-// ⏸️    choices: catalog_choices,
-// ⏸️    selectOne: catalog_selectOne,
-// ⏸️    selectMany: catalog_selectMany,
-// ⏸️    str: catalog_string, // name❓
-// ⏸️    list: catalog_list,
-// ⏸️    prompt: catalog_prompt,
-// ⏸️    group: catalog_group,
-// ⏸️    // missing catalogs
-// ⏸️    color: {},
-// ⏸️    image: {},
-// ⏸️    markdown: {},
-// ⏸️    optional: {},
-// ⏸️    custom: {},
-// ⏸️    date: {},
-// ⏸️    matrix: {},
-// ⏸️    orbit: {},
-// ⏸️    seed: {},
-// ⏸️    shared: {},
-// ⏸️ }
-
-// #region ⏸️ Manual types
-
-/* {
-   Misc: {
-      Frame: FC<FrameProps>
-      Button: FC<ButtonProps>
-      Checkbox: FC<BoolButtonProps>
-   }
-   Decorations: {
-      Card: FC<WidgetCardProps>
-   }
-   // shells
-   Shell: {
-      Noop: FC<CompiledRenderProps>
-      Simple: FC<CompiledRenderProps>
-      Mobile: FC<CompiledRenderProps>
-      Left: FC<CompiledRenderProps>
-      Right: FC<CompiledRenderProps>
-      FluidUI: FC<CompiledRenderProps>
-      Inline: FC<CompiledRenderProps>
-      //
-      List1: FC<CompiledRenderProps>
-   }
-
-   Title: {
-      h1: FC<WidgetTitleProps>
-      h2: FC<WidgetTitleProps>
-      h3: FC<WidgetTitleProps>
-      h4: FC<WidgetTitleProps>
-      default: FC<WidgetTitleProps>
-   }
-
-   Indent: {
-      indentWithLiness: FC<WidgetIndentProps>
-      indentNoLiness: FC<WidgetIndentProps>
-   }
-
-   // quick form system
-   QuickForm: (p: QuickFormProps) => React.JSX.Element
-
-   // fields
-   number: {
-      def: FC<{ field: Field_number }>
-   }
-
-   choices: {
-      TabbedInline: FC<{ field: Field_choices<any> }>
-      Buttons: FC<{ field: Field_choices<any> }>
-      SelectHeaderUI: FC<{ field: Field_choices<any> }>
-   }
-
-   string: {
-      input: FC<{ field: Field_string }>
-      summary: FC<{ field: Field_string }>
-      textarea: FC<{ field: Field_string }>
-   }
-
-   list: {
-      BlenderLike: typeof BlenderListUI
-   }
-   // optional:{
-   //    toggleButton: FC<{ field: Field_string }>
-   // }
-   group: {
-      Tabbed: typeof WidgetGroup_TabUI
-      controls: typeof WidgetGroup_LineUI
-      group: typeof WidgetGroup_BlockUI
-      inline: typeof WidgetGroup_InlineUI
-   }
-} */
-
-// QuickForm: QuickForm,
-// #region global stuff

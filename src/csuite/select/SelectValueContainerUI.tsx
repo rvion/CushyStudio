@@ -1,5 +1,7 @@
 import { useCallback, useState } from 'react'
 
+import { Frame } from '../frame/Frame'
+
 /**
  * this container is used to wrap the list of values in their dense inline form.
  * it is used inline
@@ -40,15 +42,16 @@ export const SelectValueOverflowUI = obs(function SelectValueOverflowUI(p: { val
    if (p.valuesCount <= 1) return null
 
    return (
-      <div
-         tw='box lh-inside-2 minw-inside h-inside absolute right-0 top-0 w-fit whitespace-nowrap rounded-badge border border-sky-200 bg-sky-100 px-1 text-center  shadow-md'
-         title={`${p.valuesCount} valeurs`}
+      <Frame
+         base={0}
+         tw='box minw-inside h-inside absolute right-0 top-0 w-fit whitespace-nowrap px-1 text-center  shadow-md'
+         tooltip={`${p.valuesCount} valeurs`}
          style={{
             marginTop: 'calc((var(--input-height) - var(--inside-height)) / 2 - 1px)',
             marginRight: '2px',
          }}
       >
          {p.valuesCount}
-      </div>
+      </Frame>
    )
 })

@@ -12,7 +12,7 @@ import {
 import { NativeTypes } from 'react-dnd-html5-backend'
 
 import { createMediaImage_fromFileObject } from '../../models/createMediaImage_fromWebFile'
-import { ItemTypes } from './DnDItemTypes'
+import { LegacyItemTypes } from './DnDItemTypes'
 
 export const useImageDrag = (
    image: MediaImageL,
@@ -24,8 +24,32 @@ export const useImageDrag = (
 ] =>
    useDrag(
       () => ({
-         type: ItemTypes.Image,
+         type: LegacyItemTypes.Image,
          item: { image },
+         collect: (monitor): { opacity: number } => {
+            if (cushy.dndHandler.visible) {
+               if (cushy.dndHandler.label === undefined || cushy.dndHandler.icon) {
+                  cushy.dndHandler.setDragContent({ icon: IKONS.mdiImage })
+               }
+            }
+            return { opacity: monitor.isDragging() ? 0.5 : 1 }
+         },
+      }),
+      [image],
+   )
+
+export const useImageDragNew = (
+   image: MediaImageL,
+): [
+   //
+   { opacity: number },
+   ConnectDragSource,
+   ConnectDragPreview,
+] =>
+   useDrag(
+      () => ({
+         type: 'Image',
+         item: image,
          collect: (monitor): { opacity: number } => {
             if (cushy.dndHandler.visible) {
                if (cushy.dndHandler.label === undefined || cushy.dndHandler.icon) {
@@ -41,6 +65,38 @@ export const useImageDrag = (
 type Drop1 = { image: MediaImageL }
 type Drop2 = { files: (File & { path: AbsolutePath })[] }
 
+// type DropItem = | {type: ItemTypes }
+
+// export const useDropZoneWithMatch = <T extends { type: ItemTypes; data: any }>({
+//    accept,
+
+//    onDrop,
+// }: {
+//    accept: T['type'][]
+
+//    onDrop: (
+//       item: T,
+
+//       match: (cases: { [K in T['type']]: (data: Extract<T, { type: K }>['data']) => void }) => void,
+//    ) => void
+// }): void => {
+//    accept.forEach((type) => {
+//       const simulatedItem = {
+//          type,
+//          data: type === ItemTypes.Image ? { url: } : 'example text',
+//       } as T
+
+//       const match = (cases: { [K in T['type']]: (data: Extract<T, { type: K }>['data']) => void }): void => {
+//          if (type in cases) {
+//             cases[type](simulatedItem.data)
+//          } else {
+//             throw new Error(`Unhandled type: ${type}`)
+//          }
+//       }
+
+//       onDrop(simulatedItem, match)
+//    })
+// }
 export const useImageDrop = (
    st: STATE,
    fn: (image: MediaImageL) => void,
@@ -49,7 +105,7 @@ export const useImageDrop = (
       // 1. Accepts both custom Image and native files drops.
       accept: [
          //
-         ItemTypes.Image,
+         LegacyItemTypes.Image,
          NativeTypes.FILE,
       ],
 
@@ -79,7 +135,7 @@ export const useImageDrop = (
       drop(item: Drop1 | Drop2, monitor): void {
          cushy.dndHandler.visible = false
 
-         if (monitor.getItemType() == ItemTypes.Image) {
+         if (monitor.getItemType() == LegacyItemTypes.Image) {
             const image: MediaImageL = (item as Drop1).image
             return fn(image)
          }
@@ -106,7 +162,7 @@ export const useImageDrop = (
 /** Used for the Draft panel to allow drag and dragging in to the panel's area, and having a pop-up menu with the available slots that can consume it. (Image Widgets/Fields) */
 export const useImageSlotDrop = (dropAction: (image: MediaImageL) => void): [boolean, ConnectDropTarget] => {
    return useDrop<Drop1, void, boolean>(() => ({
-      accept: [ItemTypes.Image],
+      accept: [LegacyItemTypes.Image],
       collect(monitor): boolean {
          if (!monitor.isOver()) {
             cushy.dndHandler.setContent({})

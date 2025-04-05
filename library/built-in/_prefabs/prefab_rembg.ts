@@ -1,7 +1,7 @@
 import type { OutputFor } from './_prefabs'
 
 export type UI_rembg_v1 = Z.Choices<{
-   // RemBG: X.XEmpty
+   // RemBG: Z.Empty
    isnetAnime: Z.Empty
    isnetGeneralUse: Z.Empty
    silueta: Z.Empty

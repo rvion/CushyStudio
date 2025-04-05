@@ -1,6 +1,8 @@
 import { useEffect } from 'react'
 
 import { Button } from '../../csuite/button/Button'
+import { SpacerUI } from '../../csuite/components/SpacerUI'
+import { DrawNodeGraphUI } from '../../widgets/graph/DrawNodeGraphUI'
 import { DrawWorkflowUI } from '../../widgets/graph/DrawWorkflowUI'
 
 export const PlaygroundGraphUI = obs(function PlaygroundGraphUI_(p: {}) {
@@ -10,16 +12,14 @@ export const PlaygroundGraphUI = obs(function PlaygroundGraphUI_(p: {}) {
    useEffect(update, [JSON.stringify(cushy.autolayoutOpts), workflow.id])
 
    return (
-      <div tw='h-full'>
+      <div tw='flex flex-1 select-none flex-col'>
          <div tw='flex items-center gap-1'>
             <Button onClick={update}>update</Button>
+            <SpacerUI />
             {form.zRenderAsConfigBtn({ title: 'Graph Conf' })}
          </div>
-         {form.UI()}
-         <DrawWorkflowUI //
-            spline={form.zValue.spline}
-            workflow={workflow}
-         />
+         {/* {form.UI()} */}
+         <DrawNodeGraphUI workflow={workflow} />
       </div>
    )
 })

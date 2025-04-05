@@ -73,6 +73,7 @@ export const WidgetSelectMany_SelectUI = obs(function WidgetSelectMany_SelectUI_
          />
          {field.zConfig.wrapButton && (
             <InputBoolFlipButtonUI
+               toggleGroup={field.zUid}
                tooltip='Wrap items'
                tw='self-start'
                icon={p.field.wrap ? IKONS.mdiWrapDisabled : IKONS.mdiWrap}
@@ -82,7 +83,6 @@ export const WidgetSelectMany_SelectUI = obs(function WidgetSelectMany_SelectUI_
                   p.field.zTouch()
                }}
                onBlur={() => p.field.zTouch()}
-               toggleGroup={p.field.zUid}
             />
          )}
       </div>

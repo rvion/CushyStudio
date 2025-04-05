@@ -14,8 +14,8 @@ export type $CushySD15UI = Z.Group<{
    sampler: UI_Sampler_Advanced
    customSave: Z.Maybe<UI_customSave>
    // controlnets: UI_cnet
-   // ipAdapter: X.XOptional<UI_IPAdapterV2>
-   // faceID: X.XOptional<UI_IPAdapterFaceIDV2>
+   // ipAdapter: Z.Optional<UI_IPAdapterV2>
+   // faceID: Z.Optional<UI_IPAdapterFaceIDV2>
    extra: $extra1
    extra2: $extra2
 }>

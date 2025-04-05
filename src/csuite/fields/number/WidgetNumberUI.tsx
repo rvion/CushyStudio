@@ -1,3 +1,4 @@
+import type { Field } from '../../model/Field'
 import type { Field_number } from './FieldNumber'
 
 import { InputNumberUI } from '../../input-number/InputNumberUI'
@@ -24,11 +25,24 @@ export const WidgetNumberUI = obs(function WidgetNumberUI_(p: {
          step={step}
          suffix={finalConfig.suffix}
          text={finalConfig.text}
-         onValueChange={(next) => {
-            field.zValue = next
-         }}
+         onValueChange={(next) => void (field.zValue = next)}
          onBlur={() => field.zTouch()}
          forceSnap={finalConfig.forceSnap}
+         tooltip={<WidgetTooltipUI field={field} />}
       />
+   )
+})
+
+export const WidgetTooltipUI = obs(function WidgetTooltipUI_({ field }: { field: Field }) {
+   return (
+      <div tw='py-1 px-2'>
+         <div tw='flex flex-col'>
+            <span>{field.zLabelText}</span>
+            {field.zDescription ? <span>{field.zDescription}</span> : <></>}
+            {cushy.preferences.interface.developerOptions.showDeveloperTooltips.zValue && (
+               <span tw='opacity-75'>{field.zPath}</span>
+            )}
+         </div>
+      </div>
    )
 })

@@ -1,5 +1,4 @@
 import { action, runInAction } from 'mobx'
-
 import { useRef } from 'react'
 
 import { Button } from '../../csuite/button/Button'

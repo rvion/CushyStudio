@@ -11,7 +11,7 @@ export const PublishAppBtnUI = obs(function PublishAppBtnUI_({
    loading,
    icon,
    square,
-   tooltip,
+   tooltip: tooltip,
    onClick,
 
    // rest

@@ -3,6 +3,7 @@ import type * as Lezer from '@lezer/common'
 import type { SyntaxNode } from '@lezer/common'
 import type { EditorView } from 'codemirror'
 
+import { bang } from '../../csuite/utils/bang'
 import { parser } from './grammar.parser'
 
 type KnownNodeNames = keyof typeof GrammarTerms
@@ -12,8 +13,12 @@ type KnownNodeNames = keyof typeof GrammarTerms
 type CLASSES = {
     Prompt:             Prompt_Prompt
     Lora:               Prompt_Lora
+    Choice:             Prompt_Choice
+   //  ChoiceWildCard:     Prompt_ChoiceWildCard
+   //  ChoiceName:         Prompt_ChoiceName
     Identifier:         Prompt_Identifier
     Number:             Prompt_Number
+    Index:              Prompt_Index
     Separator:          Prompt_Separator
     Content:            Prompt_Content
     WeightedExpression: Prompt_WeightedExpression
@@ -29,6 +34,35 @@ type CLASSES = {
     Wildcard:           Prompt_Wildcard
 
 }
+
+export type Prompt_expression =
+   | Prompt_WeightedExpression
+   | Prompt_Permutations
+   | Prompt_Lora
+   | Prompt_Choice
+   | Prompt_Wildcard
+   | Prompt_Embedding
+   | Prompt_Artist
+   | Prompt_Tag
+   | Prompt_Separator
+   | Prompt_Break
+   | Prompt_Comment
+   | Prompt_Identifier
+   | Prompt_String
+
+type Prompt_choiceEntry =
+   | Prompt_WeightedExpression
+   | Prompt_Permutations
+   | Prompt_Lora
+   | Prompt_Choice
+   | Prompt_Wildcard
+   | Prompt_Embedding
+   | Prompt_Artist
+   | Prompt_Tag
+   | Prompt_Identifier
+   | Prompt_String
+
+// type Prompt_choiceSelection = Prompt_Number | Prompt_ChoiceWildCard
 
 // 1. wrap text
 export class PromptAST {
@@ -62,8 +96,12 @@ export class PromptAST {
         Lora              : Prompt_Lora,
         Identifier        : Prompt_Identifier,
         Number            : Prompt_Number,
+        Index             : Prompt_Index,
         Separator         : Prompt_Separator,
         Content           : Prompt_Content,
+        Choice            : Prompt_Choice,
+      //   ChoiceWildCard    : Prompt_ChoiceWildCard,
+      //   ChoiceName        : Prompt_ChoiceName,
         WeightedExpression: Prompt_WeightedExpression,
         Break             : Prompt_Break,
         Comment           : Prompt_Comment,
@@ -249,6 +287,12 @@ abstract class ManagedNode<Name extends KnownNodeNames = any> {
       if (index != null) return this.getChildren(kind)[index] // slow
       return this.childrens.find((child) => child.$kind === kind) as Maybe<CLASSES[T]>
    }
+   getChildOrCrash = <T extends KnownNodeNames>(kind: T, index?: number): CLASSES[T] => {
+      if (index != null) return bang(this.getChildren(kind)[index]) // slow
+      const item = this.childrens.find((child) => child.$kind === kind) as Maybe<CLASSES[T]>
+      if (item == null) throw new Error(`[❌] child "${kind}" not found`)
+      return item
+   }
    getChildren = <T extends KnownNodeNames>(kind: T): CLASSES[T][] => {
       return this.childrens.filter((child) => child.$kind === kind) as CLASSES[T][]
    }
@@ -329,6 +373,16 @@ export class Prompt_Wildcard extends ManagedNode<'Wildcard'> {
          ''
       )
    }
+
+   get index(): Maybe<number> {
+      const indexAST = this.getChild('Index')
+
+      if (indexAST) {
+         if (indexAST.number != null) return indexAST.number
+      }
+
+      return null
+   }
 }
 
 export class Prompt_Identifier extends ManagedNode<'Identifier'> {
@@ -348,6 +402,48 @@ export class Prompt_Number extends ManagedNode<'Number'> {
 
    setNumber = (value: number): void => {
       this.setText(value.toString())
+   }
+}
+
+export class Prompt_Index extends ManagedNode<'Index'> {
+   $kind: 'Index' = 'Index' as const
+
+   get number(): Maybe<number> {
+      if (this.text == '[?]') {
+         return null
+      }
+      return parseInt(this.text.slice(1, -1))
+   }
+
+   set number(value: number) {
+      this.setText(`[${Math.floor(value)}]`)
+   }
+
+   /** When called with a max number and the value within the bracket is '?', it will return a random number up to max-1. For example, indexAST.number(array.length) */
+   getIndex = (max?: number): Maybe<number> => {
+      if (this.isRandom()) {
+         return max ? Math.floor(Math.random() * max) : 0
+      }
+      return parseInt(this.text.slice(1, -1))
+   }
+
+   // setNumber = (value: number): void => {
+   // this.setText(Math.floor(value).toString())
+   // }
+   isBypass = (): boolean => {
+      return this.text == '[_]'
+   }
+
+   setBypass = (): void => {
+      this.setText('[_]')
+   }
+
+   isRandom = (): boolean => {
+      return this.text == '[?]'
+   }
+
+   setRandom = (): void => {
+      this.setText('[?]')
    }
 }
 
@@ -410,6 +506,87 @@ export class Prompt_Artist extends ManagedNode<'Artist'> {
 
 export class Prompt_ArtistName extends ManagedNode<'ArtistName'> {
    $kind: 'ArtistName' = 'ArtistName' as const
+}
+
+// export class Prompt_ChoiceWildCard extends ManagedNode<'ChoiceWildCard'> {
+//    $kind: 'ChoiceWildCard' = 'ChoiceWildCard' as const
+// }
+
+// export class Prompt_ChoiceName extends ManagedNode<'ChoiceName'> {
+//    $kind: 'ChoiceName' = 'ChoiceName' as const
+
+//    get content(): string {
+//       return this.text.slice(1, -1)
+//    }
+// }
+export class Prompt_Choice extends ManagedNode<'Choice'> {
+   $kind: 'Choice' = 'Choice' as const
+
+   get name(): Maybe<string> {
+      // const name = this.getChild('ChoiceName')
+      // if (name) {
+      //    return name.content
+      // }
+      return (
+         this.getChild('Identifier')?.text ?? //
+         this.getChild('String')?.content ??
+         null
+      )
+   }
+
+   pickRandomly = (): string => {
+      const choices = this.getChildren('Content')
+      const randomIndex = Math.floor(Math.random() * choices.length)
+      return choices[randomIndex]!.text
+   }
+
+   get indexAST(): Maybe<Prompt_Index> {
+      return this.getChild('Index')
+   }
+
+   // get nth(): number {
+   // const indexAST = this.getChild('Index')!
+   // if (indexAST.isRandom()) {
+   //    return Math.floor(Math.random() * this.expressions.length)
+   // }
+   // return indexAST.getIndex(this.expressions.length)
+   // }
+
+   get expressions(): Maybe<Prompt_expression[]> {
+      // return this.childrens.slice(this.getChild('Permutations') != null ? 2 : 1)
+      return this.getChild('Permutations')?.getChild('Content')?.childrens as Prompt_expression[]
+   }
+
+   get value(): string {
+      const indexAST = this.indexAST
+      if (!indexAST || this.expressions == null) {
+         return '?>Choice: Should not get this'
+      }
+
+      if (this.indexAST?.isBypass()) {
+         return ''
+      }
+
+      const index = indexAST.getIndex(this.expressions.length)
+      if (index == null || this.expressions.length < index) {
+         return '❌ invalid choice picked'
+      }
+
+      const option = this.expressions[index]
+      if (option === undefined) {
+         return 'Invalid choice for ' + this.text
+      }
+
+      if (option.$kind == 'Choice') {
+         return option.value
+      }
+
+      if (option.$kind == 'String') {
+         return option.content
+      }
+
+      return option.text
+   }
 }
 
 export class Prompt_Unknown extends ManagedNode<any> {

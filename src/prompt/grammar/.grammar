@@ -3,17 +3,28 @@
 expression[@isGroup=Expression] {
   WeightedExpression |
   Permutations |
-
   Lora |
+  Choice |
   Wildcard |
   Embedding |
   Artist |
   Tag |
-
   Separator |
   Break |
-
   Comment |
+  Identifier |
+  String
+}
+
+choiceEntry[@isGroup=ChoiceEntry] {
+  WeightedExpression |
+  Permutations |
+  Lora |
+  Choice |
+  Wildcard |
+  Embedding |
+  Artist |
+  Tag |
   Identifier |
   String
 }
@@ -33,18 +44,20 @@ TagName {  Identifier | String }
 // Lora { @specialize<Identifier, "lora"> ":" LoraName  }
 // Lora { "@" loraName ( "[" Number ("," Number)? "]" )?   }
 Lora { "<lora:" loraName (":" Number ("," Number)? )? ">" }
-
-
 loraName { Identifier | String  }
 
 // WILDCARD
-Wildcard { "?" wildcardName }
+// (bird_d/conversation/prompting): @rvion We could make a convention that there's a variant of rules that do things from a global/database, 
+// and then a local. Which the user defines in that specific prompt itself.
+// Convention could be that > Means some sort of "inline" variant of a rule. Where the user can "program" something themselves quickly, for only that prompt.
+Wildcard { "?" wildcardName Index?} // Pulls from the global wildcard
+Choice { "?>" wildcardName? Index Permutations} // Allows a user-defined "wildcard"
+
 wildcardName { Identifier | String  }
 
 // EMBEDDING
 Embedding { @specialize<Identifier, "embedding"> ":" embeddingName }
 embeddingName { Identifier | String  }
-
 
 // ARTIST
 Artist { @specialize<Identifier, "artist"> ":" ArtistName }
@@ -54,11 +67,12 @@ ArtistName { Identifier | String  }
   space { @whitespace+ }
   Break { "break" }
   // EmbeddingWord { "embedding" }
-  Identifier { ($[A-Za-z0-9._\\\/\-] )+ }
+  Identifier { ($[A-Za-z0-9._\/\-] )+ }
   String { '"' !["]* '"' }
   Separator { "," }
   Comment { ";" ![\n]* }
   Number { "-"? $[0-9.]+ }
+  Index { "[" "-"? $[0-9?_]+ "]" }
   // WeightedExpression {"{}"}
   @precedence { Comment, Break, Identifier }
   // @precedence { Comment, Break, Identifier, Number } // 🔴

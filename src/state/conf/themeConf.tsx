@@ -9,7 +9,6 @@ import { ui_theme_text, type UI_Theme_Text } from '../../csuite/kolor/prefab_Tex
 import { ui_tint, type UI_Tint } from '../../csuite/kolor/prefab_Tint'
 import { readJSON, writeJSON } from '../jsonUtils'
 
-// --------------
 export type ThemeConf = {
    labelLayout: Z.XSelectOne_<FormGlobalLayoutMode>
    base: Z.Color
@@ -58,17 +57,12 @@ export class Theme extends Field_group<ThemeConf> {
                ),
                // 1. colors
                base: b.color({
-                  tooltip: 'main color of the CushyStudio UI',
+                  description: 'main color of the CushyStudio UI',
                   default: '#242528',
-                  // presets: [
-                  //     { label: 'Dark', icon: IKONS.mdiLightSwitch, apply: (w) => (w.value = '#1E212B') },
-                  //     { label: 'Light', icon: IKONS.mdiLightSwitch, apply: (w) => (w.value = '#F4F5FB') },
-                  //     { label: 'Moonlight', icon: IKONS.mdiMoonFull, apply: (w) => (w.value = 'oklch(32.1% 0.01 268.4)') },
-                  // ],
                }),
                appbar: b
                   .color({
-                     tooltip: 'color or the app shell (appbar, footer, tabset separator, etc.)',
+                     description: 'color or the app shell (appbar, footer, tabset separator, etc.)',
                      default: '#313338',
                   })
                   .optional(false),

@@ -15,17 +15,17 @@ import { run_prompt } from '../_prefabs/prefab_prompt'
 export function _evalPrompt(
    text: string,
    // ui: Field_group_value<{
-   //    positive: X.XGroup<{
-   //       prompts: X.XList<X.XOptional<X.XPrompt>>
+   //    positive: Z.Group<{
+   //       prompts: Z.List<Z.Optional<Z.Prompt>>
    //    }>
-   //    negative: X.XList<X.XOptional<X.XPrompt>>
+   //    negative: Z.List<Z.Optional<Z.Prompt>>
    //    model: $prefabModelSD15andSDXL
    //    latent: UI_LatentV3
    //    sampler: UI_Sampler_Advanced
    //    customSave: UI_customSave
    //    controlnets: UI_cnet
-   //    ipAdapter: X.XOptional<UI_IPAdapterV2>
-   //    faceID: X.XOptional<UI_IPAdapterFaceIDV2>
+   //    ipAdapter: Z.Optional<UI_IPAdapterV2>
+   //    faceID: Z.Optional<UI_IPAdapterFaceIDV2>
    //    extra: $extra1
    //    extra2: $extra2
    // }>,

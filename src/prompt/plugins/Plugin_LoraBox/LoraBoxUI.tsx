@@ -187,7 +187,6 @@ export const LoraBoxUI = obs(function LoraBoxUI_(p: {
                   }}
                />
                <Button
-                  //
                   tooltip='Open associated URL in external browser'
                   icon={IKONS.mdiOpenInNew}
                   onClick={() => openExternal(associatedUrl)}

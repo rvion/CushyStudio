@@ -40,7 +40,7 @@ type InputNumberProps = {
    placeholder?: string
    forceSnap?: boolean
    className?: string
-   tooltip?: string
+   tooltip?: React.ReactNode
 } & {
    // 💬 2024-09-30 rvion:
    // Temporarilly, let's just accept the two we use manually,
@@ -263,9 +263,9 @@ export const InputNumberUI = obs(function InputNumberUI_(p: InputNumberProps) {
          className={p.className}
          // unsure about the amount of code we had to use for that prop
          dropShadow={dropShadow ? dropShadow : undefined}
-         tooltip={p.tooltip}
          roundness={p.roundness ?? theme.global.roundness}
          disabled={p.disabled}
+         tooltip={p.tooltip}
          tw={[
             'UI-InputNumber',
             'h-input relative',

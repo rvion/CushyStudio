@@ -171,26 +171,26 @@ export class CushySchemaBuilder /* implements IBuilder */ {
    //     /** the schema of the field you'll want to re-use the in second part */
    //     injected: SCHEMA1,
    //     children: (shared: SCHEMA1['{field}']) => SCHEMA2,
-   // ): X.XLink<SCHEMA1, SCHEMA2> {
+   // ): Z.Link<SCHEMA1, SCHEMA2> {
    //     return CSchema.new<Field_link<SCHEMA1, SCHEMA2>>(Field_link, { share: injected, children })
    // }
 
-   // linked<T extends Field>(field: T): X.XShared<T> {
+   // linked<T extends Field>(field: T): Z.Shared<T> {
    //     return CSchema.new<Field_shared<T>>(Field_shared<any /* 🔴 */>, { field })
    // }
 
    // /** see also: `fields` for a more practical api */
-   // group<T extends SchemaDict>(config: Field_group_config<T> = {}): X.XGroup<T> {
+   // group<T extends SchemaDict>(config: Field_group_config<T> = {}): Z.Group<T> {
    //     return CSchema.new<Field_group<T>>(Field_group, config) as any
    // }
 
    // /** Convenience function for `group({ border: false, label: false, collapsed: false })` */
-   // column<T extends SchemaDict>(config: Field_group_config<T> = {}): X.XGroup<T> {
+   // column<T extends SchemaDict>(config: Field_group_config<T> = {}): Z.Group<T> {
    //     return CSchema.new<Field_group<T>>(Field_group, { border: false, label: false, collapsed: false, ...config }) as any
    // }
 
    // /** Convenience function for `group({ border: false, label: false, collapsed: false, layout:'H' })` */
-   // row<T extends SchemaDict>(config: Field_group_config<T> = {}): X.XGroup<T> {
+   // row<T extends SchemaDict>(config: Field_group_config<T> = {}): Z.Group<T> {
    //     return CSchema.new<Field_group<T>>(Field_group, {
    //         border: false,
    //         label: false,
@@ -201,29 +201,29 @@ export class CushySchemaBuilder /* implements IBuilder */ {
    // }
 
    // /** simpler way to create `group` */
-   // fields<T extends SchemaDict>(fields: T, config: Omit<Field_group_config<T>, 'items'> = {}): X.XGroup<T> {
+   // fields<T extends SchemaDict>(fields: T, config: Omit<Field_group_config<T>, 'items'> = {}): Z.Group<T> {
    //     return CSchema.new<Field_group<T>>(Field_group, { items: fields, ...config }) as any
    // }
 
-   // choice<T extends { [key: string]: CSchema }>(config: Omit<Field_choices_config<T>, 'multi'>): X.XChoice<T> {
+   // choice<T extends { [key: string]: CSchema }>(config: Omit<Field_choices_config<T>, 'multi'>): Z.Choice<T> {
    //     return CSchema.new<Field_choices<T>>(Field_choices, { multi: false, ...config })
    // }
 
-   // choices<T extends { [key: string]: CSchema }>(config: Omit<Field_choices_config<T>, 'multi'>): X.XChoices<T> {
+   // choices<T extends { [key: string]: CSchema }>(config: Omit<Field_choices_config<T>, 'multi'>): Z.Choices<T> {
    //     return CSchema.new<Field_choices<T>>(Field_choices, { multi: true, ...config })
    // }
 
    // choiceV2<T extends { [key: string]: CSchema }>(
    //     items: Field_choices_config<T>['items'],
    //     config: Omit<Field_choices_config<NoInfer<T>>, 'multi' | 'items'> = {},
-   // ): X.XChoice<T> {
+   // ): Z.Choice<T> {
    //     return CSchema.new<Field_choices<T>>(Field_choices, { multi: false, items, ...config })
    // }
 
    // choicesV2<T extends { [key: string]: CSchema }>(
    //     items: Field_choices_config<T>['items'],
    //     config: Omit<Field_choices_config<T>, 'multi' | 'items'> = {},
-   // ): X.XChoices<T> {
+   // ): Z.Choices<T> {
    //     return CSchema.new<Field_choices<T>>(Field_choices, { items, multi: true, appearance: 'tab', ...config })
    // }
 
@@ -231,10 +231,10 @@ export class CushySchemaBuilder /* implements IBuilder */ {
    // tabs<T extends { [key: string]: CSchema }>(
    //     items: Field_choices_config<T>['items'],
    //     config: Omit<Field_choices_config<NoInfer<T>>, 'multi' | 'items'> = {},
-   // ): X.XChoices<T> {
+   // ): Z.Choices<T> {
    //     return CSchema.new<Field_choices<T>>(Field_choices, { items, multi: false, ...config, appearance: 'tab' })
    // }
-   // empty(config: Field_group_config<NO_PROPS> = {}): X.XEmpty {
+   // empty(config: Field_group_config<NO_PROPS> = {}): Z.Empty {
    //     return CSchema.new<Field_group<NO_PROPS>>(Field_group, config)
    // }
 

@@ -136,6 +136,6 @@ export type SelectProps<OPTION> = {
    slotResultsListUI?: React.FC<{ select: AutoCompleteSelectState<OPTION> }>
    slotOptionUI?: React.FC<SelectOptionProps<OPTION>>
 
-   tooltip?: string
+   tooltip?: string | React.ReactNode
    frameProps?: FrameProps
 }

@@ -111,6 +111,28 @@ export const FavBarUI = obs(function FavBarUI_(p: { direction?: 'row' | 'column'
                <span tw='truncate'>SD3</span>
             </Button>
             <Button
+               tw='my-0.5 flex flex-shrink-0 items-center justify-center self-center'
+               tooltip='Weaver'
+               base={{ hue: 90, chromaBlend: 2, contrast: 0.2 }}
+               style={{
+                  width: tempSize,
+                  height: tempSize,
+                  background: `url(${cushy.db.cushy_app.get('library/built-in/app-Weaver/cushyWeaver.tsx:0')?.illustrationPathWithFileProtocol})`,
+                  backgroundSize: 'cover',
+                  textShadow: '0 1px 10px black',
+                  fontWeight: 'bold',
+                  color: 'white',
+                  fontSize: '1rem',
+               }}
+               onClick={() =>
+                  cushy.db.cushy_app
+                     .get('library/built-in/app-Weaver/cushyWeaver.tsx:0')
+                     ?.openLastOrCreateDraft()
+               }
+            >
+               <span tw='truncate'>Weaver</span>
+            </Button>
+            <Button
                tw='my-0.5 flex flex-shrink-0 items-center justify-center self-center truncate'
                tooltip='Cascade'
                base={{ hue: 210, chromaBlend: 2, contrast: 0.2 }}

@@ -31,6 +31,7 @@ export const SelectUI = obs(function SelectUI_<T>(p: SelectProps<T>) {
                'ANCHOR-REVEAL',
                p.hasErrors && 'rsx-field-error',
             ]}
+            tooltip={p.tooltip}
          >
             <AnchorContentComp select={select} fullyShrinkable={fullyShrinkable} />
          </Frame>
