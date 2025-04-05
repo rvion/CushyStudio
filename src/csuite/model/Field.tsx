@@ -53,7 +53,7 @@ import { autofixSerial_20240703 } from './autofix/autofixSerial_20240703'
 import { autofixSerial_20240711 } from './autofix/autofixSerial_20240711'
 import { CSchema, type WithConfigOptions } from './CSchema'
 import { type CushyOnlyMixin, CushyOnlyMixinDescriptors } from './CushyOnly.mixin'
-import { mkNewFieldId } from './FieldId'
+import { mkNewFieldId_v1 } from './FieldId'
 import { type TraversalMixin, TraversalMixinDescriptors } from './FieldTraversal.mixin'
 import {
    isPatchAdd,
@@ -187,7 +187,7 @@ export abstract class Field {
       initialMountKey: string,
       serial?: any /* ❓ */, // this['{serial}'],
    ) {
-      this.zUid = mkNewFieldId()
+      this.zUid = mkNewFieldId_v1()
       this.zRepo = repo
       this.zRoot = root ?? this
       this.zParent = parent
