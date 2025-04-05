@@ -18,8 +18,8 @@ export const UCMenuLayerEntryUI = obs(function UCMenuLayerEntryUI_(p: UCMenuLaye
    const inputHeight = cushy.preferences.interface.zValue.inputHeight
    const isVisible: boolean = p.layer.visible.zValue
    const image = p.layer.content.matchExhaustive({
-      aiGeneration: (t) => t.zFields.image.zValue_or_zero,
-      image: (t) => t.zValue_or_zero,
+      aiGeneration: (t) => t.zFields.image.zValueOrZero,
+      image: (t) => t.zValueOrZero,
    })
 
    // TEMP

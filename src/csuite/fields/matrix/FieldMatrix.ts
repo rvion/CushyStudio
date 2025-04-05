@@ -117,19 +117,15 @@ export class Field_matrix extends Field {
    // #region VALUE
    /** list of all active cells */
    get zValue(): Field_matrix_value {
-      return this.zValue_or_fail
-   }
-
-   get zValue_or_fail(): Field_matrix_value {
-      if (this.zSerial.selected == null) throw new Error('Field_matrix.zValue_or_fail: field not set')
+      if (this.zSerial.selected == null) throw new Error('Field_matrix.zValue: field not set')
       return this.zSerial.selected
    }
 
-   get zValue_or_zero(): Field_matrix_value {
+   get zValueOrZero(): Field_matrix_value {
       return this.zSerial.selected ?? []
    }
 
-   get zValue_unchecked(): Field_matrix_unchecked {
+   get zValueUnchecked(): Field_matrix_unchecked {
       return this.zSerial.selected
    }
 

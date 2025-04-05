@@ -96,15 +96,10 @@ export class Field_markdown extends Field {
    get zHasChanges(): boolean {
       return false
    }
-   // the whole markdown field is legacy
-   // this is why most of the attributes make no sense.
-   get zValue_or_fail(): Field_markdown_value {
+   get zValueOrZero(): Field_markdown_value {
       return this.zSerial
    }
-   get zValue_or_zero(): Field_markdown_value {
-      return this.zSerial
-   }
-   get zValue_unchecked(): Field_markdown_unchecked {
+   get zValueUnchecked(): Field_markdown_unchecked {
       return this.zSerial
    }
 

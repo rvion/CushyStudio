@@ -83,11 +83,11 @@ export const UCMenuUI = obs(function UCMenuUI_(p: {}) {
                                     cushy.layout.open('Draft', { draftID: x.draftId.zValue.id })
                                  }}
                                  body={
-                                    x.draftId.zValue_unchecked?.id && (
+                                    x.draftId.zValueUnchecked?.id && (
                                        <UCDraftImagePickerHorizontalUI
                                           size={32}
                                           onCLick={(img) => (x.image.zValue = img)}
-                                          draftID={x.draftId.zValue_unchecked.id}
+                                          draftID={x.draftId.zValueUnchecked.id}
                                        />
                                     )
                                  }

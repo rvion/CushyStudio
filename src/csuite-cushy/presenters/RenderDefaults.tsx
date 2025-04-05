@@ -144,7 +144,7 @@ function resetDefaultRules() {
                   const img = children.find((x) => x.zType === 'image') as Z.FImage | undefined
                   return (
                      <div tw='flex'>
-                        {str?.zValue_unchecked ?? item.zSummary}
+                        {str?.zValueUnchecked ?? item.zSummary}
                         {img && <img src={img.zValue.url} tw='h-widget w-widget' />}
                      </div>
                   )

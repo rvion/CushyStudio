@@ -62,7 +62,7 @@ export class GalleryConf extends Field_group<GalleryConf_data> {
    }
 
    @computed get imageToDisplay(): MediaImageL[] {
-      const conf = this.zValue_unchecked
+      const conf = this.zValueUnchecked
       const out = cushy.db.media_image.select(
          (query) => {
             let x =

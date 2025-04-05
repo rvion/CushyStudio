@@ -601,11 +601,6 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field {
 
    // #region VALUE
 
-   /** results, but only for active branches */
-   get zValue(): Field_choices_value<T> {
-      return this.zValue_or_fail
-   }
-
    override zSet(val: Field_choices_SetValue<T>): this {
       this.zRunInTransaction(() => {
          for (const branch of this.allPossibleChoices) {
@@ -639,7 +634,8 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field {
       })
    }
 
-   get zValue_or_fail(): Field_choices_value<T> {
+   /** results, but only for active branches */
+   get zValue(): Field_choices_value<T> {
       const value = new Proxy({} as any, this.makeValueProxy('fail'))
       void this.zSerial
       Object.defineProperty(this, 'zValue_or_fail', {
@@ -650,10 +646,10 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field {
       })
       return value
    }
-   get zValue_or_zero(): Field_choices_value<T> {
+   get zValueOrZero(): Field_choices_value<T> {
       const value = new Proxy({} as any, this.makeValueProxy('zero'))
       void this.zSerial
-      Object.defineProperty(this, 'zValue_or_zero', {
+      Object.defineProperty(this, 'zValueOrZero', {
          get: () => {
             void this.zSerial
             return value
@@ -661,10 +657,10 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field {
       })
       return value
    }
-   get zValue_unchecked(): Field_choices_unchecked<T> {
+   get zValueUnchecked(): Field_choices_unchecked<T> {
       const value = new Proxy({} as any, this.makeValueProxy('unchecked'))
       void this.zSerial
-      Object.defineProperty(this, 'zValue_unchecked', {
+      Object.defineProperty(this, 'zValueUnchecked', {
          get: () => {
             void this.zSerial
             return value

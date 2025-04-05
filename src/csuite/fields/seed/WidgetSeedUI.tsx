@@ -8,7 +8,7 @@ import { InputNumberUI } from '../../input-number/InputNumberUI'
 
 export const WidgetSeedUI = obs(function WidgetSeedUI_(p: { field: Field_seed }) {
    const field = p.field
-   const val = field.zValue_or_zero
+   const val = field.zValueOrZero
    const csuite = useCSuite()
 
    return (

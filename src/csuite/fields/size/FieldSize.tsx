@@ -215,10 +215,6 @@ export class Field_size extends Field {
       }
    }
 
-   get zValue(): Field_size_value {
-      return this.zValue_or_fail
-   }
-
    set zValue(val: Field_size_value) {
       // ugly code;
       if (
@@ -235,9 +231,9 @@ export class Field_size extends Field {
       })
    }
 
-   get zValue_or_fail(): Field_size_value {
-      const serial = this.zValue_unchecked
-      if (!this.zIsOwnSet) throw new Error('Field_size.zValue_or_fail: field not set')
+   get zValue(): Field_size_value {
+      const serial = this.zValueUnchecked
+      if (!this.zIsOwnSet) throw new Error('Field_size.zValue: field not set')
       return {
          $: 'size',
          aspectRatio: bang(serial.aspectRatio),
@@ -247,7 +243,7 @@ export class Field_size extends Field {
       }
    }
 
-   get zValue_or_zero(): Field_size_value {
+   get zValueOrZero(): Field_size_value {
       return {
          $: 'size',
          aspectRatio: this.aspectRatio_or_zero,
@@ -257,7 +253,7 @@ export class Field_size extends Field {
       }
    }
 
-   get zValue_unchecked(): Field_size_unchecked {
+   get zValueUnchecked(): Field_size_unchecked {
       return this.zSerial
    }
 

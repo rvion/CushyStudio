@@ -499,20 +499,20 @@ describe('FieldList', () => {
       const E = S.create()
       E.zValue[0] = 'zero'
 
-      expect(E.zValue_unchecked[0]).toBe('zero')
-      expect(E.zValue_unchecked[1]).toBeUndefined()
-      expect(E.zValue_unchecked[2]).toBeUndefined()
-      expect(E.zValue_unchecked.map((x) => x)).toEqual(['zero', undefined, undefined])
+      expect(E.zValueUnchecked[0]).toBe('zero')
+      expect(E.zValueUnchecked[1]).toBeUndefined()
+      expect(E.zValueUnchecked[2]).toBeUndefined()
+      expect(E.zValueUnchecked.map((x) => x)).toEqual(['zero', undefined, undefined])
 
       expect(E.zValue[0]).toBe('zero')
       expect(() => E.zValue[1]).toThrow()
       expect(() => E.zValue[2]).toThrow()
       expect(() => E.zValue.map((x) => x)).toThrow()
 
-      expect(E.zValue_or_zero[0]).toBe('zero')
-      expect(E.zValue_or_zero[1]).toBe('')
-      expect(E.zValue_or_zero[2]).toBe('')
-      expect(E.zValue_or_zero.map((x) => x)).toEqual(['zero', '', ''])
+      expect(E.zValueOrZero[0]).toBe('zero')
+      expect(E.zValueOrZero[1]).toBe('')
+      expect(E.zValueOrZero[2]).toBe('')
+      expect(E.zValueOrZero.map((x) => x)).toEqual(['zero', '', ''])
    })
 
    describe('isValueEqual', () => {

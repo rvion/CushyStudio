@@ -7,7 +7,7 @@ export const WidgetNumberUI = obs(function WidgetNumberUI_(p: {
    config?: Field_number['zConfig']
 }) {
    const field = p.field
-   const value = field.zValue_or_zero
+   const value = field.zValueOrZero
    const finalConfig = p.config ? { ...field.zConfig, ...p.config } : field.zConfig
    const mode = finalConfig.mode
    const step = finalConfig.step ?? (mode === 'int' ? 1 : 0.1)

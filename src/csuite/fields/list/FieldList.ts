@@ -500,10 +500,10 @@ export class Field_list<T extends CSchema> extends Field {
     * see `src/csuite/model/TESTS/proxy.test.ts` if you're not scared
     */
 
-   get zValue_or_fail(): Field_list_value<T> {
+   get zValue(): Field_list_value<T> {
       const value = new Proxy([], this.makeValueProxy('fail'))
       void this.zSerial
-      Object.defineProperty(this, 'zValue_or_fail', {
+      Object.defineProperty(this, 'zValue', {
          get: () => {
             void this.zSerial
             return value
@@ -511,10 +511,10 @@ export class Field_list<T extends CSchema> extends Field {
       })
       return value
    }
-   get zValue_or_zero(): Field_list_value<T> {
+   get zValueOrZero(): Field_list_value<T> {
       const value = new Proxy([], this.makeValueProxy('zero'))
       void this.zSerial
-      Object.defineProperty(this, 'zValue_or_zero', {
+      Object.defineProperty(this, 'zValueOrZero', {
          get: () => {
             void this.zSerial
             return value
@@ -522,10 +522,10 @@ export class Field_list<T extends CSchema> extends Field {
       })
       return value
    }
-   get zValue_unchecked(): Field_list_unchecked<T> {
+   get zValueUnchecked(): Field_list_unchecked<T> {
       const value = new Proxy([], this.makeValueProxy('unchecked'))
       void this.zSerial
-      Object.defineProperty(this, 'zValue_unchecked', {
+      Object.defineProperty(this, 'zValueUnchecked', {
          get: () => {
             void this.zSerial
             return value
@@ -543,10 +543,6 @@ export class Field_list<T extends CSchema> extends Field {
          },
       })
       return value
-   }
-
-   get zValue(): Field_list_value<T> {
-      return this.zValue_or_fail
    }
 
    [Symbol.iterator](): IterableIterator<T['{field}']> {

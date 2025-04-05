@@ -139,10 +139,6 @@ export class Field_date<out VALUE> extends Field {
    }
 
    // #region value
-   get zValue(): Field_date_value<VALUE> {
-      return this.zValue_or_fail
-   }
-
    set zValue(next: Field_date_unchecked<VALUE> | Date) {
       const nextValue = next instanceof Date ? this.zConfig.dateToValue(next) : next
 
@@ -155,20 +151,20 @@ export class Field_date<out VALUE> extends Field {
       })
    }
 
-   get zValue_or_fail(): Field_date_value<VALUE> {
+   get zValue(): Field_date_value<VALUE> {
       if (this.isValidSelectedValue) {
          return this.selectedValue as Field_date_value<VALUE>
       }
 
-      throw new Error('Field_date: zValue_or_fail called on invalid value')
+      throw new Error('Field_date: zValue called on invalid value')
    }
 
-   get zValue_or_zero(): Field_date_value<VALUE> {
-      if (this.isValidSelectedValue && this.zValue_unchecked != null) return this.zValue_unchecked
+   get zValueOrZero(): Field_date_value<VALUE> {
+      if (this.isValidSelectedValue && this.zValueUnchecked != null) return this.zValueUnchecked
       return this.zConfig.dateToValue(new Date()) // ⚠️ zero value set to now ? Maybe new Date(0) would be saner
    }
 
-   get zValue_unchecked(): Field_date_unchecked<VALUE> {
+   get zValueUnchecked(): Field_date_unchecked<VALUE> {
       return this.selectedValue
    }
 

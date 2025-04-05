@@ -16,26 +16,26 @@ describe('FieldDate', () => {
          const field = b.date().create()
 
          expect(field).toBeDefined()
-         expect(field.zValue_unchecked).toBeUndefined()
+         expect(field.zValueUnchecked).toBeUndefined()
       })
 
       describe('default value', () => {
          it('should have the default value', () => {
             const field = b.date({ default: new Date(2025, 1, 3, 4, 5) }).create()
 
-            expect(field.zValue_unchecked).toEqual(new Date(2025, 1, 3, 4, 5))
+            expect(field.zValueUnchecked).toEqual(new Date(2025, 1, 3, 4, 5))
          })
 
          it('should have the default value specified by a function', () => {
             const field = b.date({ default: () => new Date(2025, 1, 3, 4, 5) }).create()
 
-            expect(field.zValue_unchecked).toEqual(new Date(2025, 1, 3, 4, 5))
+            expect(field.zValueUnchecked).toEqual(new Date(2025, 1, 3, 4, 5))
          })
 
          it('should set an invalid value if the default value is invalid', () => {
             const field = b.date({ default: new Date('INVALID') }).create()
 
-            expect(field.zValue_unchecked).toBeNull()
+            expect(field.zValueUnchecked).toBeNull()
             expect(field.zHasOwnErrors).toBeTruthy()
          })
       })
@@ -62,7 +62,7 @@ describe('FieldDate', () => {
             expect(newField.zOwnErrors).toEqual([
                { path: newField.zPath, message: 'Invalid date', severity: Severity.Error },
             ])
-            expect(newField.zValue_unchecked).toBeNull()
+            expect(newField.zValueUnchecked).toBeNull()
             expect(() => newField.zValue).toThrowError()
          })
       })
@@ -179,10 +179,10 @@ describe('FieldDate', () => {
          const d = new Date(2025, 1, 3, 4, 5)
          field.zValue = d
 
-         expect(field.zValue_unchecked).toEqual(d)
+         expect(field.zValueUnchecked).toEqual(d)
          expect(field.zValue).toEqual(d)
-         expect(field.zValue_or_fail).toEqual(d)
-         expect(field.zValue_or_zero).toEqual(d)
+         expect(field.zValue).toEqual(d)
+         expect(field.zValueOrZero).toEqual(d)
       })
 
       it('should set null', () => {
@@ -190,10 +190,10 @@ describe('FieldDate', () => {
 
          field.zValue = null as any as Date
 
-         expect(field.zValue_unchecked).toBeNull()
+         expect(field.zValueUnchecked).toBeNull()
          expect(() => field.zValue).toThrowError()
-         expect(() => field.zValue_or_fail).toThrowError()
-         expect(field.zValue_or_zero).toBeInstanceOf(Date)
+         expect(() => field.zValue).toThrowError()
+         expect(field.zValueOrZero).toBeInstanceOf(Date)
       })
 
       it('should set undefined', () => {
@@ -201,10 +201,10 @@ describe('FieldDate', () => {
 
          field.zValue = undefined as any as Date
 
-         expect(field.zValue_unchecked).toBeUndefined()
+         expect(field.zValueUnchecked).toBeUndefined()
          expect(() => field.zValue).toThrowError()
-         expect(() => field.zValue_or_fail).toThrowError()
-         expect(field.zValue_or_zero).toBeInstanceOf(Date)
+         expect(() => field.zValue).toThrowError()
+         expect(field.zValueOrZero).toBeInstanceOf(Date)
       })
 
       it('should patch the serial in a transaction if the value is valid', () => {
@@ -224,7 +224,7 @@ describe('FieldDate', () => {
 
          field.setValueFromString('3/2/25, 04:05 AM')
 
-         expect(field.zValue_unchecked).toEqual(new Date(2025, 2, 2, 4, 5))
+         expect(field.zValueUnchecked).toEqual(new Date(2025, 2, 2, 4, 5))
       })
 
       it('should trim the string', () => {
@@ -232,7 +232,7 @@ describe('FieldDate', () => {
 
          field.setValueFromString('  3/2/25, 04:05 AM  ')
 
-         expect(field.zValue_unchecked).toEqual(new Date(2025, 2, 2, 4, 5))
+         expect(field.zValueUnchecked).toEqual(new Date(2025, 2, 2, 4, 5))
       })
 
       it('should set an invalid date', () => {
@@ -240,7 +240,7 @@ describe('FieldDate', () => {
 
          field.setValueFromString('invalid')
 
-         expect(field.zValue_unchecked).toBeNull()
+         expect(field.zValueUnchecked).toBeNull()
       })
 
       it('should set null if the string is empty', () => {
@@ -248,7 +248,7 @@ describe('FieldDate', () => {
 
          field.setValueFromString('')
 
-         expect(field.zValue_unchecked).toBeNull()
+         expect(field.zValueUnchecked).toBeNull()
       })
 
       it('should set null if the string contains only spaces', () => {
@@ -256,7 +256,7 @@ describe('FieldDate', () => {
 
          field.setValueFromString('   ')
 
-         expect(field.zValue_unchecked).toBeNull()
+         expect(field.zValueUnchecked).toBeNull()
       })
 
       it('should set the serial even if the string is invalid', () => {
@@ -344,7 +344,7 @@ describe('FieldDate', () => {
          const field = b
             .date({
                check: (f) => {
-                  if (f.zValue_unchecked?.getFullYear() !== 2025) {
+                  if (f.zValueUnchecked?.getFullYear() !== 2025) {
                      return {
                         path: '$',
                         severity: Severity.Error,

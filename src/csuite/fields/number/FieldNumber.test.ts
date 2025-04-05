@@ -22,7 +22,7 @@ describe('field number', () => {
          const serial: Field_number['{serial}'] = { $: 'number', value: 'invalid' }
          const schema = b.number({ default: 5 })
          const document = schema.create(serial)
-         expect(document.zValue_unchecked).toBeNull() // 'invalid'
+         expect(document.zValueUnchecked).toBeNull() // 'invalid'
          expect(document.zHasOwnErrors).toBeTruthy()
       })
 
@@ -61,7 +61,7 @@ describe('field number', () => {
             const document = schema.create()
             const x = document.zValue
             document.zValue = null
-            expect(document.zValue_unchecked).toBeNull()
+            expect(document.zValueUnchecked).toBeNull()
          })
 
          it('should be on error', () => {
@@ -78,7 +78,7 @@ describe('field number', () => {
                const schema = b.number({ default: 5 })
                const document = schema.create()
                document.zValue = 'invalid'
-               expect(document.zValue_unchecked).toBeNull()
+               expect(document.zValueUnchecked).toBeNull()
                expect(document.zSerial.value).toBe('invalid')
             })
 
@@ -94,7 +94,7 @@ describe('field number', () => {
                const schema = b.number({ default: 5 })
                const document = schema.create()
                document.zValue = ' '
-               expect(document.zValue_unchecked).toBeNull()
+               expect(document.zValueUnchecked).toBeNull()
             })
          })
 

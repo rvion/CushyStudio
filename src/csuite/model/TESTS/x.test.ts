@@ -20,8 +20,8 @@ describe('default values', () => {
       it('should not throw time despite missing values', () => {
          const E1 = S1.create()
          expect(() => E1.zValue).toThrow()
-         expect(E1.zValue_unchecked).toBeUndefined()
-         expect(E1.zValue_or_zero).toBe(false)
+         expect(E1.zValueUnchecked).toBeUndefined()
+         expect(E1.zValueOrZero).toBe(false)
 
          const E2 = S2.create()
          expect(() => E2.zValue).not.toThrow()

@@ -8,7 +8,7 @@ export const WidgetString_TextareaInput = obs(function WidgetString_TextareaBody
    readonly?: boolean
 }) {
    const field = p.field
-   if (p.readonly) return <pre>{field.zValue_or_zero}</pre>
+   if (p.readonly) return <pre>{field.zValueOrZero}</pre>
 
    const theme = cushy.preferences.theme.zValue
    return (
@@ -23,7 +23,7 @@ export const WidgetString_TextareaInput = obs(function WidgetString_TextareaBody
             tw='csuite-input w-full !bg-transparent p-2'
             placeholder={field.zConfig.placeHolder}
             rows={3}
-            value={field.zValue_or_zero}
+            value={field.zValueOrZero}
             onChange={(ev) => {
                field.zValue = ev.target.value
             }}

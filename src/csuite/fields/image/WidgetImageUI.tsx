@@ -25,7 +25,7 @@ export const WidgetSelectImageUI = obs(function WidgetSelectImageUI_(p: {
    })
    const dropRef = useDragDropRefForReact19(dropRef__)
 
-   const image = field.zValue_unchecked
+   const image = field.zValueUnchecked
    // ⏸️ const suggestionsRaw = p.field.config.assetSuggested
    // ⏸️ const suggestions: RelativePath[] =
    // ⏸️     suggestionsRaw == null ? [] : Array.isArray(suggestionsRaw) ? suggestionsRaw : [suggestionsRaw]

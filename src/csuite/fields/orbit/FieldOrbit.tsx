@@ -174,30 +174,26 @@ export class Field_orbit extends Field {
    }
 
    // #region Value
-   get zValue(): Field_orbit_value {
-      return this.zValue_or_fail
-   }
-
    set zValue(val: Field_orbit_value) {
       this.azimuth = val.azimuth
       this.elevation = val.elevation
    }
 
-   get zValue_or_fail(): Field_orbit_value {
+   get zValue(): Field_orbit_value {
       const azimuth = this.azimuth_or_fail
       const elevation = this.elevation_or_fail
       const englishSummary = mkEnglishSummary(azimuth, elevation)
       return { azimuth, elevation, englishSummary }
    }
 
-   get zValue_or_zero(): Field_orbit_value {
+   get zValueOrZero(): Field_orbit_value {
       const azimuth = this.azimuth_or_zero
       const elevation = this.elevation_or_zero
       const englishSummary = mkEnglishSummary(azimuth, elevation)
       return { azimuth, elevation, englishSummary }
    }
 
-   get zValue_unchecked(): Field_orbit_unchecked {
+   get zValueUnchecked(): Field_orbit_unchecked {
       const azimuth = this.azimuth_unchecked
       const elevation = this.elevation_unchecked
       const englishSummary =

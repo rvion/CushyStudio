@@ -181,31 +181,27 @@ export class Field_prompt extends Field {
    }
 
    // #region value
-   get zValue(): Field_prompt_value {
-      return this
-   }
-
    set zValue(next: Field_prompt_value) {
       if (next !== this) throw new Error('not implemented')
       // do nothing, value it the instance itself
    }
 
-   get zValue_or_fail(): Field_prompt_value {
-      if (this.zSerial.val == null) throw new Error('Field_prompt.zValue_or_fail: not set')
+   get zValue(): Field_prompt_value {
+      if (this.zSerial.val == null) throw new Error('Field_prompt.zValue: not set')
       return this
    }
 
-   get zValue_unchecked(): Field_prompt_unchecked {
+   get zValueUnchecked(): Field_prompt_unchecked {
       return this
    }
 
    public zIsValueEqual(other: Field): boolean {
       if (other === this) return true
       if (!(other instanceof Field_prompt)) return false
-      return this.zValue_unchecked === other.zValue_unchecked
+      return this.zValueUnchecked === other.zValueUnchecked
    }
 
-   get zValue_or_zero(): Field_prompt_value {
+   get zValueOrZero(): Field_prompt_value {
       return this
    }
 

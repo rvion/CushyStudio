@@ -213,9 +213,15 @@ export abstract class Field {
    }
 
    /**
-    * field value is an easy-to-use representation of that field
-    * not guaranteed to be the serializable,
-    * [@see {@link zGetSetValue} for that]
+    * field.zValue is for an easy-to-use representation of that field
+    * - must crashes if the value is not set / missing
+    *    @see {@link zValueUnchecked} for an alternative
+    *
+    * - must NOT try to conjure any intented value.
+    *    @see {@link zValueOrZero} for an alternative
+    *
+    * - not guaranteed to be the serializable,
+    *    @see {@link zGetSetValue} for an alternative
     */
    abstract zValue: this['{value}']
 
@@ -225,7 +231,7 @@ export abstract class Field {
    // |
    // | ```ts
    // | get value(): K['{value}'] {
-   // |     return this.zValue_or_fail
+   // |     return this.zValue
    // | }
    // |
    // | set value(_newValue: K['{value}']) {
@@ -234,36 +240,27 @@ export abstract class Field {
    // | ```
 
    /**
-    * crashes if the value is not set.
-    * this method will NOT try to conjure any intented value.
-    *
-    * @see {@link zValue_or_zero}
-    * @see {@link zValue_unchecked}
-    */
-   abstract zValue_or_fail: this['{value}']
-
-   /**
     * Should do its best to return a value,
     * conjuring some default value if necessary
     * but you may THROW if zero does not exists
     * 🔶 do not return null, unless the type allows you to
     *
-    * @see {@link zValue_or_fail}
-    * @see {@link zValue_unchecked}
+    * @see {@link zValue}
+    * @see {@link zValueUnchecked}
     *
     **/
-   abstract zValue_or_zero: this['{value}']
+   abstract zValueOrZero: this['{value}']
 
    /**
      * this method
      *  - Always returns the advertized type (`Field['{unchecked}']`).
      *  - Never crashes
      *
-     * @see {@link zValue_or_fail}
-     * @see {@link zValue_or_zero}
+     * @see {@link zValue}
+     * @see {@link zValueOrZero}
 
      */
-   abstract zValue_unchecked: this['{unchecked}']
+   abstract zValueUnchecked: this['{unchecked}']
 
    /**
     * Returns true if the given field has the same value as this field
@@ -917,9 +914,9 @@ export abstract class Field {
 
    /** @undecorated (not an action; pure; defer to single computed) */
    zGetValue(mode: VALUE_MODE): this['{value}'] | this['{unchecked}'] {
-      if (mode === 'fail') return this.zValue_or_fail
-      if (mode === 'zero') return this.zValue_or_zero
-      if (mode === 'unchecked') return this.zValue_unchecked
+      if (mode === 'fail') return this.zValue
+      if (mode === 'zero') return this.zValueOrZero
+      if (mode === 'unchecked') return this.zValueUnchecked
       if (mode === 'set') return this.zGetSetValue()
       exhaust(mode)
    }

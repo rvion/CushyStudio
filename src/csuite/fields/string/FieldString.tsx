@@ -173,10 +173,6 @@ export class Field_string extends Field {
    }
 
    // #region VALUE
-   get zValue(): string {
-      return this.zValue_or_fail
-   }
-
    set zValue(next: string | undefined) {
       // Do we want to add that to implicitly convert non strings to string ?
       // convenient, but can be a source of bugs / unexpected behaviours.
@@ -192,24 +188,24 @@ export class Field_string extends Field {
       })
    }
 
-   get zValue_or_fail(): string {
-      const val = this.zValue_unchecked
-      if (val == null) throw new Error('Field_string.zValue_or_fail: not set')
+   get zValue(): string {
+      const val = this.zValueUnchecked
+      if (val == null) throw new Error('Field_string.zValue: not set')
       return val
    }
 
-   get zValue_or_zero(): string {
-      return this.zValue_unchecked ?? ''
+   get zValueOrZero(): string {
+      return this.zValueUnchecked ?? ''
    }
 
-   get zValue_unchecked(): string | undefined {
+   get zValueUnchecked(): string | undefined {
       return this.zSerial.value
    }
 
    public zIsValueEqual(other: Field): boolean {
       if (other === this) return true
       if (!(other instanceof Field_string)) return false
-      return this.zValue_unchecked === other.zValue_unchecked
+      return this.zValueUnchecked === other.zValueUnchecked
    }
 
    public static patchedSerialPaths: readonly string[] = Object.freeze(['value'])
@@ -278,7 +274,7 @@ export class Field_string extends Field {
       const out: Problem_Ext = []
 
       if (!this.zIsSet) return null
-      const value = this.zValue_or_zero
+      const value = this.zValueOrZero
 
       // check min
       const min = extractConfigValue(this.zConfig.minLength)

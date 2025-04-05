@@ -114,26 +114,22 @@ export class Field_bool extends Field {
 
    // #region CHILDREN
    // #region VALUE
-   get zValue(): boolean {
-      return this.zValue_or_fail
-   }
-
    set zValue(next: boolean) {
       if (this.zSerial.value === next) return
       this.zRunInTransaction(() => this.zPatchSerial((serial) => void (serial.value = next)))
    }
 
-   get zValue_or_fail(): boolean {
-      const val = this.zValue_unchecked
+   get zValue(): boolean {
+      const val = this.zValueUnchecked
       if (val == null) throw new Error('Field_bool.zValue_or_fail: not set')
       return val
    }
 
-   get zValue_or_zero(): boolean {
+   get zValueOrZero(): boolean {
       return this.zSerial.value ?? false
    }
 
-   get zValue_unchecked(): boolean | undefined {
+   get zValueUnchecked(): boolean | undefined {
       return this.zSerial.value
    }
 
@@ -143,7 +139,7 @@ export class Field_bool extends Field {
 
    override zIsValueEqual(other: Field): boolean {
       if (!(other instanceof Field_bool)) return false
-      return this.zValue_unchecked === other.zValue_unchecked
+      return this.zValueUnchecked === other.zValueUnchecked
    }
 
    // #region CHANGES
@@ -188,7 +184,7 @@ export class Field_bool extends Field {
    // #region SETTERS
    /** set value to true if false, and to false if true */
    toggle(): void {
-      this.zValue = !this.zValue_or_zero
+      this.zValue = !this.zValueOrZero
    }
 
    // #region MOCK

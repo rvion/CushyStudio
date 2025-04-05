@@ -74,26 +74,22 @@ export class Field_color extends Field {
       return this.zSerial.value !== undefined
    }
 
-   get zValue(): Field_color_value {
-      return this.zValue_or_fail
-   }
-
    set zValue(next: Field_color_value) {
       if (this.zSerial.value === next) return
       this.zRunInTransaction(() => this.zPatchSerial((draft) => void (draft.value = next)))
    }
 
-   get zValue_or_fail(): Field_color_value {
-      const val = this.zValue_unchecked
-      if (val == null) throw new Error('Field_color.zValue_or_fail: not set')
+   get zValue(): Field_color_value {
+      const val = this.zValueUnchecked
+      if (val == null) throw new Error('Field_color.zValue: not set')
       return val
    }
 
-   get zValue_or_zero(): Field_color_value {
+   get zValueOrZero(): Field_color_value {
       return this.zSerial.value ?? '#000000' /* <- zero */
    }
 
-   get zValue_unchecked(): Field_color_unchecked {
+   get zValueUnchecked(): Field_color_unchecked {
       return this.zSerial.value
    }
 

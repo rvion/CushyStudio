@@ -492,10 +492,6 @@ export class Field_selectOne<
       return this.selectedId
    }
 
-   get zValue(): CanThrow<VALUE> {
-      return this.zValue_or_fail
-   }
-
    set zValue(next: Field_selectOne_value<VALUE>) {
       this.selectedId = this.zConfig.getIdFromValue(next)
    }
@@ -505,16 +501,16 @@ export class Field_selectOne<
       this.zPatchInTransaction((draft) => void (draft.val = undefined))
    }
 
-   get zValue_or_fail(): CanThrow<VALUE> {
+   get zValue(): CanThrow<VALUE> {
       return this._getValueOrThrow(this.selectedId)
    }
 
    /** zero value may not exists */
-   get zValue_or_zero(): CanThrow<VALUE> {
+   get zValueOrZero(): CanThrow<VALUE> {
       return this._getValueOrThrow(this.selectedId ?? this.firstPossibleKey)
    }
 
-   get zValue_unchecked(): Field_selectOne_unchecked<VALUE> {
+   get zValueUnchecked(): Field_selectOne_unchecked<VALUE> {
       if (this.selectedId === undefined) return undefined
       const value = this.getValueFromId(this.selectedId)
       if (value === undefined) return undefined

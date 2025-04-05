@@ -502,12 +502,23 @@ export class Field_selectMany<
    }
 
    get zValue(): VALUE[] {
-      return this.zValue_or_fail
+      const value = new Proxy([], this.makeValueProxy())
+      void this.zSerial
+      Object.defineProperty(this, 'zValue', {
+         get: () => {
+            void this.zSerial
+            return value
+         },
+      })
+      return value
    }
 
-   zValue_or_fail: VALUE[] = new Proxy([], this.makeValueProxy())
-   zValue_or_zero: VALUE[] = this.zValue_or_fail
-   zValue_unchecked: VALUE[] = this.zValue_or_fail
+   get zValueOrZero(): VALUE[] {
+      return this.zValue
+   }
+   get zValueUnchecked(): VALUE[] {
+      return this.zValue
+   }
 
    private makeValueProxy(): ProxyHandler<never> {
       return {

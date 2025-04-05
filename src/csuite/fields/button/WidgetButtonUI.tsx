@@ -18,7 +18,7 @@ export const WidgetButtonUI = obs(function WidgetButtonUI_<K extends any>(p: {
          className='self-start'
          icon={p.field.zIcon}
          expand={p.field.zConfig.expand}
-         suffixIcon={p.field.zValue_unchecked ? IKONS.mdiCheck : IKONS._}
+         suffixIcon={p.field.zValueUnchecked ? IKONS.mdiCheck : IKONS._}
          onClick={() =>
             runInAction(() => {
                p.onClick?.()

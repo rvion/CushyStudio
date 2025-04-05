@@ -121,10 +121,6 @@ export class Field_image extends Field {
    }
 
    // #region value
-   get zValue(): MediaImageL {
-      return this.zValue_or_fail
-   }
-
    set zValue(next: MediaImageL) {
       if (this.zSerial.imageID === next.id) return
       this.zRunInTransaction(() => {
@@ -134,19 +130,19 @@ export class Field_image extends Field {
       })
    }
 
-   get zValue_or_zero(): MediaImageL {
+   get zValueOrZero(): MediaImageL {
       if (this.zSerial.imageID == null) return cushy.defaultImage
       return cushy.db.media_image.get(this.zSerial.imageID) ?? cushy.defaultImage
    }
 
-   get zValue_or_fail(): MediaImageL {
-      if (this.zSerial.imageID == null) throw new Error('Field_image.zValue_or_fail: not set')
+   get zValue(): MediaImageL {
+      if (this.zSerial.imageID == null) throw new Error('Field_image.zValue: not set')
       const image = cushy.db.media_image.get(this.zSerial.imageID)
-      if (image == null) throw new Error('Field_image.zValue_or_fail: not found')
+      if (image == null) throw new Error('Field_image.zValue: not found')
       return image
    }
 
-   get zValue_unchecked(): MediaImageL | undefined {
+   get zValueUnchecked(): MediaImageL | undefined {
       if (this.zSerial.imageID == null) return
       const image = cushy.db.media_image.get(this.zSerial.imageID)
       if (image == null) return

@@ -37,7 +37,7 @@ describe('FieldSelectOne', () => {
       const E = S.create()
 
       expect(E.zIsSet).toBeFalsy()
-      expectJSON(E.zValue_unchecked).toBeUndefined()
+      expectJSON(E.zValueUnchecked).toBeUndefined()
 
       E.zValue = 'a'
       expectJSON(E.zValue).toEqual('a')

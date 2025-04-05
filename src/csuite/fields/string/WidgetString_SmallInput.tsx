@@ -28,7 +28,7 @@ export const WidgetString_SmallInput = obs(function WidgetStringUI_({
          placeholder={placeholder}
          pattern={config.pattern}
          className={config.className}
-         getValue={() => field.zValue_or_zero}
+         getValue={() => field.zValueOrZero}
          setValue={(value) => {
             field.zValue = value
          }}

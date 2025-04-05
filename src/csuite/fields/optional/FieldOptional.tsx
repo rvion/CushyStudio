@@ -329,10 +329,6 @@ export class Field_optional<out T extends CSchema = CSchema> extends Field {
       return this.child.zGetSetValue()
    }
 
-   get zValue(): Field_optional_value<T> {
-      return this.zValue_or_fail
-   }
-
    set zValue(next: Field_optional_SetValue<T>) {
       if (next == null) {
          this.setActive(false)
@@ -343,23 +339,23 @@ export class Field_optional<out T extends CSchema = CSchema> extends Field {
       }
    }
 
-   get zValue_or_fail(): Field_optional_value<T> {
+   get zValue(): Field_optional_value<T> {
       if (this.zSerial.y === undefined && this.zSerial.n === undefined)
-         throw new Error('Field_optional.zValue_or_fail: not set')
+         throw new Error('Field_optional.zValue: not set')
       if (this.isActive === false) return null
-      return this.childOrThrow.zValue_or_fail
+      return this.childOrThrow.zValue
    }
 
-   get zValue_or_zero(): Field_optional_value<T> {
+   get zValueOrZero(): Field_optional_value<T> {
       if (this.zSerial.y === undefined && this.zSerial.n === undefined) return undefined
       if (this.isActive === false) return null
-      return this.childOrThrow.zValue_or_zero
+      return this.childOrThrow.zValueOrZero
    }
 
-   get zValue_unchecked(): Field_optional_value<T> {
+   get zValueUnchecked(): Field_optional_value<T> {
       if (this.zSerial.y === undefined && this.zSerial.n === undefined) return undefined
       if (this.isActive === false) return null
-      return this.childOrThrow.zValue_unchecked
+      return this.childOrThrow.zValueUnchecked
    }
 
    override zIsValueEqual(other: Field): boolean {

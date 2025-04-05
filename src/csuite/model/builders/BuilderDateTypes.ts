@@ -54,7 +54,7 @@ const BuilderDateImpl = (): BuilderDateMixin =>
                this,
                'date',
                (field: Field_date<Date>): Problem_Ext => {
-                  if (field.zValue_unchecked instanceof Date && isNaN(field.zValue_unchecked.getTime()))
+                  if (field.zValueUnchecked instanceof Date && isNaN(field.zValueUnchecked.getTime()))
                      return { path: field.zPath, severity: Severity.Error, message: 'Invalid date' }
                   return config.check?.(field)
                },

@@ -12,7 +12,7 @@ export const UCMaskMenuUI = obs(function UCMaskMenuUI_(p: {
    const inputHeight = cushy.preferences.interface.zValue.inputHeight
    const isVisible: boolean = p.mask.visible.zValue
    const imgField = p.mask.image
-   const image = imgField?.zValue_or_zero
+   const image = imgField?.zValueOrZero
 
    // TEMP
    // Do not use interface.value.inputHeight in the future. Have a separate option for layer size?

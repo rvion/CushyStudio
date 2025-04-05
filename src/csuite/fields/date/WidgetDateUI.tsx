@@ -56,9 +56,9 @@ export const WidgetDate_HeaderUI = obs(function WidgetDateUI_<VALUE>(p: {
             type='datetime-local'
             className={config.className}
             getValue={() =>
-               !field.zIsEnabledWithinParent || field.zValue_unchecked == null
+               !field.zIsEnabledWithinParent || field.zValueUnchecked == null
                   ? ''
-                  : field.format(field.zValue_unchecked)
+                  : field.format(field.zValueUnchecked)
             }
             setValue={(value) => {
                if (p.field.zCanBeToggledWithinParent) {

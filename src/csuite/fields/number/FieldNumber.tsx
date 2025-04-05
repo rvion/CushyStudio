@@ -140,11 +140,11 @@ export class Field_number extends Field {
    get zOwnTypeSpecificProblems(): Problem_Ext {
       if (!this.zIsSet) return null
 
-      if (typeof this.zValue_unchecked !== 'number') {
+      if (typeof this.zValueUnchecked !== 'number') {
          return csuiteConfig.i18n.err.number.notANumber
       }
 
-      const value = this.zValue_or_zero
+      const value = this.zValueOrZero
       // < MIN
       if (this.zConfig.min != null && value < this.zConfig.min) {
          return csuiteConfig.i18n.err.number.lessThanMin({ min: this.zConfig.min })
@@ -157,10 +157,6 @@ export class Field_number extends Field {
    }
 
    // #region VALUE
-   get zValue(): Field_number_value {
-      return this.zValue_or_fail
-   }
-
    set zValue(next: Field_number_value | string | null) {
       if (this.zSerial.value === next) return
 
@@ -178,32 +174,32 @@ export class Field_number extends Field {
       })
    }
 
-   get zValue_or_fail(): Field_number_value {
-      const val = this.zValue_unchecked
-      if (val == null) throw new Error('Field_number.zValue_or_fail: not set')
-      if (typeof val === 'string') throw new Error('Field_number.zValue_or_fail: invalid number')
+   get zValue(): Field_number_value {
+      const val = this.zValueUnchecked
+      if (val == null) throw new Error('Field_number.zValue: not set')
+      if (typeof val === 'string') throw new Error('Field_number.zValue: invalid number')
 
       return val
    }
 
-   get zValue_or_zero(): number {
+   get zValueOrZero(): number {
       if (typeof this.zSerial.value === 'string') return 0
       return this.zSerial.value ?? 0
    }
 
-   get zValue_unchecked(): Field_number_unchecked {
+   get zValueUnchecked(): Field_number_unchecked {
       if (typeof this.zSerial.value === 'string') return null
       return this.zSerial.value
    }
 
-   set zValue_unchecked(next: number | string | null | undefined) {
+   set zValueUnchecked(next: number | string | null | undefined) {
       this.zPatchSerial((serial) => void (serial.value = next))
    }
 
    override zIsValueEqual(other: Field): boolean {
       if (!(other instanceof Field_number)) return false
 
-      return this.zValue_unchecked === other.zValue_unchecked
+      return this.zValueUnchecked === other.zValueUnchecked
    }
 
    public static readonly patchedSerialPaths: readonly string[] = Object.freeze(['value'])

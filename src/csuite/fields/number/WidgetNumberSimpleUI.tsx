@@ -9,7 +9,7 @@ export const WidgetNumberSimpleUI = obs(function WidgetNumberSimpleUI_(p: {
 }) {
    const field = p.field
    const finalConfig = p.config ? { ...field.zConfig, ...p.config } : field.zConfig
-   const value = field.zValue_or_zero
+   const value = field.zValueOrZero
    const mode = finalConfig.mode
    const step = finalConfig.step ?? (mode === 'int' ? 1 : 0.1)
    // const contrast = useCSuite().inputContrast

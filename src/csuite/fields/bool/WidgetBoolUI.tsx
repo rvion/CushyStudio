@@ -21,7 +21,7 @@ export const WidgetBoolUI = obs(function WidgetBoolUI_(p: { field: Field_bool })
             icon={field.zIcon}
             text={field.zConfig.text ?? field.zConfig.label2}
             // value
-            value={field.zValue_or_zero}
+            value={field.zValueOrZero}
             onBlur={() => field.zTouch()}
             onValueChange={(value) => {
                field.zValue = value

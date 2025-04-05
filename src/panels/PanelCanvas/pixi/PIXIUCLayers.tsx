@@ -24,13 +24,13 @@ export const PIXIUCLayers = obs(function UCLayers_(p: { uc2: UC2$['{field}'] }) 
                   />
                ),
                aiGeneration: (x) =>
-                  x.image.zValue_or_zero ? (
+                  x.image.zValueOrZero ? (
                      <PixiMediaImage //
                         key={layer.zUid}
                         layer={layer}
                         onClick={() => uc1.selectLayer(layer)}
                         placement={placement}
-                        mediaImage={x.image.zValue_or_zero}
+                        mediaImage={x.image.zValueOrZero}
                      />
                   ) : null,
             })

@@ -101,24 +101,20 @@ export class Field_shared<out F extends Field = Field> extends Field {
       return this.child.zOwnTypeSpecificProblems
    }
 
-   get zValue(): Field_shared_value<F> {
-      return this.zValue_or_fail
-   }
-
    set zValue(val: Field_shared_value<F>) {
       this.child.zValue = val
    }
 
-   get zValue_or_fail(): Field_shared_value<F> {
-      return this.child.zValue_or_fail
+   get zValue(): Field_shared_value<F> {
+      return this.child.zValue
    }
 
-   get zValue_or_zero(): Field_shared_value<F> {
-      return this.child.zValue_or_zero
+   get zValueOrZero(): Field_shared_value<F> {
+      return this.child.zValueOrZero
    }
 
-   get zValue_unchecked(): Field_shared_unchecked<F> {
-      return this.childOrNull?.zValue_unchecked
+   get zValueUnchecked(): Field_shared_unchecked<F> {
+      return this.childOrNull?.zValueUnchecked
    }
 
    override zIsValueEqual(other: Field): boolean {

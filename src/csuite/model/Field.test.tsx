@@ -32,28 +32,25 @@ class Field_dummy extends Field {
       return { $: 'dummy', value: setValue }
    }
 
-   override get zValue(): string {
-      return this.zValue_or_fail
-   }
    set zValue(value: string) {
       this.zPatchInTransaction((draft) => {
          draft.value = value
       })
    }
 
-   override get zValue_or_fail(): string {
-      if (this.zValue_unchecked == null) throw new Error('Fail')
-      return this.zValue_unchecked
+   override get zValue(): string {
+      if (this.zValueUnchecked == null) throw new Error('Fail')
+      return this.zValueUnchecked
    }
-   override get zValue_or_zero(): string {
-      return this.zValue_unchecked ?? ''
+   override get zValueOrZero(): string {
+      return this.zValueUnchecked ?? ''
    }
-   override get zValue_unchecked(): Maybe<string> {
+   override get zValueUnchecked(): Maybe<string> {
       return this.zSerial.value
    }
 
    override zIsValueEqual(other: Field): boolean {
-      return this.zValue_unchecked === other.zValue_unchecked
+      return this.zValueUnchecked === other.zValueUnchecked
    }
    protected override zSetOwnSerial(serial: this['{serial}']): void {
       this.zAssignNewSerial(serial)
@@ -64,7 +61,7 @@ class Field_dummy extends Field {
    override zOwnTypeSpecificProblems: Problem_Ext
    override zOwnConfigSpecificProblems: Problem_Ext
    override get zIsOwnSet(): boolean {
-      return this.zValue_unchecked !== undefined
+      return this.zValueUnchecked !== undefined
    }
    static readonly type = 'dummy'
    private static readonly unsetSerial = { $: 'dummy' }

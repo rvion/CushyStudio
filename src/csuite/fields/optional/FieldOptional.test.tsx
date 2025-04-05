@@ -127,7 +127,7 @@ describe('FieldOptional', () => {
                      path: '$',
                   },
                ])
-               expect(E.zValue_unchecked).toBeUndefined()
+               expect(E.zValueUnchecked).toBeUndefined()
             })
          })
 
@@ -176,7 +176,7 @@ describe('FieldOptional', () => {
                   const E = S.create(serial)
 
                   expect(E.isActive).toBe(true)
-                  expect(E.zValue_unchecked).toBe(0)
+                  expect(E.zValueUnchecked).toBe(0)
                })
 
                it('should be inactive when the value is null', () => {
@@ -229,7 +229,7 @@ describe('FieldOptional', () => {
                         path: '$',
                      },
                   ])
-                  expect(E.zValue_unchecked).toBeUndefined()
+                  expect(E.zValueUnchecked).toBeUndefined()
                })
 
                it('should keep the null value', () => {

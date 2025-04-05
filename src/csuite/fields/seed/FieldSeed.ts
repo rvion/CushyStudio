@@ -139,10 +139,6 @@ export class Field_seed extends Field {
    }
 
    // #region value
-   get zValue(): Field_seed_value {
-      return this.zValue_or_fail
-   }
-
    set zValue(val: number) {
       if (this.zSerial.mode === 'fixed' && this.zSerial.val === val) return
       // 🔴 a moitié faux
@@ -151,23 +147,23 @@ export class Field_seed extends Field {
       })
    }
 
-   get zValue_or_fail(): number {
-      const val = this.zValue_unchecked
-      if (val == null) throw new Error('Field_seed.zValue_or_fail: not set')
+   get zValue(): number {
+      const val = this.zValueUnchecked
+      if (val == null) throw new Error('Field_seed.zValue: not set')
       return val
    }
 
-   get zValue_or_zero(): number {
-      return this.zValue_unchecked ?? 0
+   get zValueOrZero(): number {
+      return this.zValueUnchecked ?? 0
    }
 
-   get zValue_unchecked(): number | undefined {
+   get zValueUnchecked(): number | undefined {
       return this.computeValue()
    }
 
    override zIsValueEqual(other: Field): boolean {
       if (!(other instanceof Field_seed)) return false
-      return this.zValue_unchecked === other.zValue_unchecked
+      return this.zValueUnchecked === other.zValueUnchecked
    }
 
    private computeValue(): number | undefined {

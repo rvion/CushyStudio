@@ -138,30 +138,26 @@ export class Field_enum<O extends ComfyUnionValue> extends Field {
    }
 
    // #region value
-   get zValue(): Field_enum_value<O> {
-      return this.status.finalValue
-   }
-
    set zValue(next: Field_enum_value<O>) {
       if (this.zSerial.val === next) return
       this.zPatchInTransaction((draft) => void (draft.val = next))
    }
 
-   get zValue_or_fail(): Field_enum_value<O> {
+   get zValue(): Field_enum_value<O> {
       return this.status.finalValue /* 🔴 */
    }
 
-   get zValue_or_zero(): Field_enum_value<O> {
+   get zValueOrZero(): Field_enum_value<O> {
       return this.status.finalValue /* 🔴 */
    }
 
-   get zValue_unchecked(): Field_enum_value<O> {
+   get zValueUnchecked(): Field_enum_value<O> {
       return this.status.finalValue /* 🔴 */
    }
 
    override zIsValueEqual(other: Field): boolean {
       if (!(other instanceof Field_selectOne)) return false
-      return this.zValue_unchecked === other.zValue_unchecked
+      return this.zValueUnchecked === other.zValueUnchecked
    }
 }
 
