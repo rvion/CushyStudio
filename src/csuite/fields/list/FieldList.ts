@@ -12,6 +12,7 @@ import { isFieldSerial } from '../../model/FieldSerial'
 import { bang } from '../../utils/bang'
 import { clamp_or_min_or_zero } from '../../utils/clamp'
 import { registerFieldClass } from '../WidgetUI.DI'
+import { numberToListKey } from './FieldListId'
 import { hole, type HOLE } from './HOLE'
 
 // #region 🔶AUTO
@@ -144,7 +145,7 @@ export class Field_list<T extends CSchema> extends Field {
          return {
             $: 'list',
             items_: serialItems,
-            keys: serialItems.map(() => Field_list.generateId()),
+            keys: serialItems.map((_, ix) => Field_list.zGenerateListItemKey(ix)),
          }
       }
       return undefined
@@ -187,15 +188,29 @@ export class Field_list<T extends CSchema> extends Field {
             }),
          keys: Array(length)
             .fill(undefined)
-            .map(() => Field_list.generateId()),
+            .map((_, ix) => Field_list.zGenerateListItemKey(ix)),
       }
    }
 
    // static override getChild(config: Field_list_config<CSchema>, key: string): Maybe<CSchema> {
    //    return Field_group.getSchemaDict(config)[key]
    // }
-   protected static generateId(): Field_list_ItemID {
-      return nanoid(6) as string as Field_list_ItemID
+   protected static zGenerateListItemKey(
+      /**
+       * do not use this option when adding an element,
+       * except if you are generating a default serial or something like that
+       */
+      nth?: number,
+   ): Field_list_ItemID {
+      // by default, let's use a nanoid, so real collaborative edition, we'll
+      // avoid multiple people generating items with the same key on their respective
+      // devices
+      if (nth == null) return nanoid(8) as string as Field_list_ItemID
+
+      // wehn instanciating a field, let's do the oposite and use a simple number-ish
+      // string so we can guarantee the keys are always the same. this allow to cache
+      // the default empty serial
+      return numberToListKey(nth) // conflict ?
    }
 
    get zIsOwnSet(): boolean {
@@ -709,15 +724,18 @@ export class Field_list<T extends CSchema> extends Field {
          return void console.log(`[🔶] list.addItem: list is already at max length`)
 
       return this.zRunInTransaction(() => {
-         const itemId = p.itemKey ?? Field_list.generateId()
-         const at: number = p.at ?? this.items_.length
+         const itemId = p.itemKey ?? Field_list.zGenerateListItemKey()
+
+         // get position
+         let at: number = p.at ?? this.items_.length
+         if (at < 0) at = this.items_.length + at
+
          this.zPatchSerial((draft) => {
             if (draft.items_ == null || draft.keys == null) {
                if (at !== 0) throw new Error('❌ Field_list is not sparsed')
                draft.items_ = [hole]
                draft.keys = [itemId]
             } else {
-               if (at < 0 || at > this.items_.length) throw new Error('❌ at is out of bounds')
                draft.items_.splice(at, 0, hole)
                draft.keys.splice(at, 0, itemId)
             }
