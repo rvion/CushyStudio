@@ -8,8 +8,6 @@ type TransactionSummary = {
 }
 
 export class Transaction {
-   tower: Field[] = []
-
    constructor(
       public repo: Repository, // 🔴 Transaction mode is not used yet // public mode: TransactionMode,
    ) {}
