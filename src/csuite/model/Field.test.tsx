@@ -14,7 +14,7 @@ interface Field_dummy extends Field {
    '{ownConfig}': {}
    '{ownSerial}': Field_dummy_serial
    '{value}': string
-   '{setvalue}': string
+   '{setValue}': string
    '{unchecked}': Maybe<string>
    '{child}': never
    '{opts}': unknown

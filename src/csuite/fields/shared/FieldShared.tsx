@@ -35,7 +35,7 @@ export interface Field_shared<F extends Field = Field> {
    '{ownConfig}': Field_shared_ownConfig<F>
    '{ownSerial}': Field_shared_ownSerial
    '{value}': Field_shared_value<F>
-   '{setvalue}': Field_shared_value<F>
+   '{setValue}': Field_shared_value<F>
    '{unchecked}': Field_shared_unchecked<F>
    '{child}': F
    '{opts}': unknown

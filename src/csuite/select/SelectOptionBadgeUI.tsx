@@ -12,6 +12,7 @@ export const SelectDefaultOptionUI = obs(function SelectDefaultOptionUI_({
    // modified
    autoHue,
    children, // need to to override ?
+   hue,
 
    // rest
    ...rest
@@ -27,7 +28,9 @@ export const SelectDefaultOptionUI = obs(function SelectDefaultOptionUI_({
    }
    return (
       <BadgeUI //
-         autoHue={autoHue ?? label}
+         noColorStuff={hue === false}
+         autoHue={autoHue ?? (hue === false ? false : label)}
+         hue={hue === false ? null : hue}
          // 🚂 linkButton={link ? (): void => loco.router.goToURL(link()) : undefined}
          {...rest}
       >

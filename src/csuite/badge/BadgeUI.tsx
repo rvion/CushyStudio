@@ -10,7 +10,7 @@ export type BadgeProps = {
    /** oklch hue */
    chroma?: number
    contrast?: number
-   hue?: Maybe<number>
+   hue?: Maybe<number | false>
    /**
     * practical way to enforce consistent hue for a given string
     * pass anything you want to this prop, it will be hashed to a hue
@@ -53,14 +53,16 @@ export const BadgeUI = obs(function BadgeUI_({
             contrast: contrast ?? 0.1,
             chroma: chroma ?? 0.05,
             hue:
-               hue ??
-               (autoHue != null
-                  ? typeof autoHue === 'boolean'
-                     ? typeof children === 'string'
-                        ? hashStringToNumber(children)
-                        : undefined
-                     : hashStringToNumber(autoHue)
-                  : undefined),
+               hue == false
+                  ? undefined
+                  : (hue ??
+                    (autoHue != null
+                       ? typeof autoHue === 'boolean'
+                          ? typeof children === 'string'
+                             ? hashStringToNumber(children)
+                             : undefined
+                          : hashStringToNumber(autoHue)
+                       : undefined)),
          }}
          {...rest}
       >

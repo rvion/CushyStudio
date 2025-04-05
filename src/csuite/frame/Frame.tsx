@@ -212,7 +212,7 @@ export const Frame = obs(function Frame_(p: FrameProps) {
                // '[&>*:not(:last-child)]:!mr-[1px]',
             ],
             // Fixes scrolling when used as a container
-            p.container && 'overflow-clip',
+            Boolean(p.container) && 'overflow-clip',
             className,
          ]}
          // style={{ position: 'relative' }}

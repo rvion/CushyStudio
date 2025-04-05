@@ -41,7 +41,7 @@ export const WidgetSelectOne_SelectUI = obs(function WidgetSelectOne_SelectUI_<
                return t.label ?? makeLabelFromPrimitiveValue(t.id)
             }}
             //
-            OptionLabelUI={field.zConfig.OptionLabelUI}
+            OptionLabelUI={field.OptionLabelUI}
             getSearchQuery={() => field.query}
             setSearchQuery={(query) => (field.query = query)}
             disableLocalFiltering={field.zConfig.disableLocalFiltering}

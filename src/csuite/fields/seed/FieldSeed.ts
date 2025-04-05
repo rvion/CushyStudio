@@ -40,7 +40,7 @@ export interface Field_seed {
    '{ownConfig}': Field_seed_ownConfig
    '{ownSerial}': Field_seed_ownSerial
    '{value}': Field_seed_value
-   '{setvalue}': Field_seed_value
+   '{setValue}': Field_seed_value
    '{unchecked}': Field_seed_unchecked
    '{child}': never
    '{opts}': unknown

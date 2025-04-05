@@ -58,7 +58,7 @@ export interface Field_bool extends Field {
    '{ownConfig}': Field_bool_ownConfig
    '{ownSerial}': Field_bool_ownSerial
    '{value}': Field_bool_value
-   '{setvalue}': Field_bool_value
+   '{setValue}': Field_bool_value
    '{unchecked}': Field_bool_unchecked
    '{child}': never
    '{opts}': unknown

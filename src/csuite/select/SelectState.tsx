@@ -154,8 +154,13 @@ export class AutoCompleteSelectState<OPTION> {
       return Array.isArray(v) ? v : [v]
    }
 
-   getHue(option: OPTION): Maybe<number> {
-      if (option != null && typeof option === 'object' && 'hue' in option && typeof option.hue === 'number')
+   getHue(option: OPTION): Maybe<number | false> {
+      if (
+         option != null && //
+         typeof option === 'object' &&
+         'hue' in option &&
+         (typeof option.hue === 'number' || option.hue === false)
+      )
          return option.hue
    }
 

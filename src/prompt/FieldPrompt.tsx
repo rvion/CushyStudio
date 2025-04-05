@@ -175,7 +175,7 @@ export class Field_prompt extends Field {
       return this
    }
 
-   override zGetSetValue(): this['{setvalue}'] | undefined {
+   override zGetSetValue(): this['{setValue}'] | undefined {
       // console.log(`[💀 getSetValue] `, this.path)
       return this.zSerial.val
    }

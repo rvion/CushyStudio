@@ -58,7 +58,7 @@ export type Field_group_value<T extends SchemaDict> = {
 }
 
 export type Field_group_SetValue<T extends SchemaDict> = {
-   [k in keyof T]?: T[k]['{setvalue}']
+   [k in keyof T]?: T[k]['{setValue}']
 }
 
 export type Field_group_unchecked<T extends SchemaDict> = {
@@ -71,7 +71,7 @@ export interface Field_group<T extends SchemaDict = SchemaDict> {
    '{ownConfig}': Field_group_ownConfig<T>
    '{ownSerial}': Field_group_ownSerial<T>
    '{value}': Field_group_value<T>
-   '{setvalue}': Field_group_SetValue<T>
+   '{setValue}': Field_group_SetValue<T>
    '{unchecked}': Field_group_unchecked<T>
    '{child}': T[keyof T]['{field}']
    '{opts}': unknown
@@ -302,7 +302,7 @@ export class Field_group<T extends SchemaDict> extends Field {
       return Object.entries(fieldSchemas) as [keyof T & string, CSchema<any>][]
    }
    // #region VALUE
-   override zSet(x: this['{setvalue}']): this {
+   override zSet(x: this['{setValue}']): this {
       this.zRunInTransaction(() => {
          for (const key in x) {
             // set support partial values
@@ -435,7 +435,7 @@ export class Field_group<T extends SchemaDict> extends Field {
       }
    }
 
-   override zGetSetValue(): this['{setvalue}'] | undefined {
+   override zGetSetValue(): this['{setValue}'] | undefined {
       // console.log(`[💀 getSetValue] `, this.path)
       return this.zValue_set
    }

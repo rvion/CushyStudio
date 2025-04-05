@@ -32,7 +32,8 @@ export const WidgetSelectMany_SelectUI = obs(function WidgetSelectMany_SelectUI_
                if (t == null) return field.zConfig.placeholder ?? '<null>'
                return t.label ?? makeLabelFromPrimitiveValue(t.id)
             }}
-            OptionLabelUI={field.zConfig.OptionLabelUI}
+            label={field.zLabelText}
+            OptionLabelUI={field.OptionLabelUI}
             getSearchQuery={() => field.query}
             setSearchQuery={(query) => (field.query = query)}
             disableLocalFiltering={field.zConfig.disableLocalFiltering}

@@ -55,7 +55,19 @@ export const SelectPopupUI = obs(function SelectPopupUI_<OPTION>(p: SelectPopupP
 })
 
 export const FixedSlot = obs(function CreateSlot<OPTION>(p: { children?: React.ReactNode }) {
-   return <div className='h-input gap-1 px-2 text-base'>{p.children}</div>
+   return (
+      <div
+         tw={[
+            // 🚂 ?
+            'minh-input p-input',
+            'flex shrink-0 flex-wrap items-start gap-2 overflow-auto rounded-t-md',
+         ]}
+         // 🛋️
+         // className='h-input gap-1 px-2 text-base'
+      >
+         {p.children}
+      </div>
+   )
 })
 
 export const CreateButton = obs(function CreateButton<OPTION>(p: {

@@ -9,6 +9,29 @@ const b = simpleBuilder
 
 // ------------------------------------------------------------------------------
 describe('FieldSelectOne', () => {
+   describe('validation when values are invalid', () => {
+      it('detect errors when value candidate is an array', () => {
+         const serial: Z.OneOf_<any>['{serial}'] = { $: 'selectOne', val: '❌' }
+         //             VVVVVVVVVVVVVVVVV
+         const schema = b.selectOneString(['x', 'y', 'z'])
+         const entity = schema.create(serial)
+         expect(entity.zIsValid).toBeFalsy()
+         expect(entity.zAllErrorsIncludingChildrenErrors).toEqual([
+            { path: '$', message: 'selected value (id: ❌) not in choices' },
+         ])
+      })
+      it('detect errors when value candidate is a function', () => {
+         const serial: Z.OneOf_<any>['{serial}'] = { $: 'selectOne', val: '❌' }
+         //             VVVVVVVVVVVVVVVVVVVVVVVVVV
+         const schema = b.selectOneStringFn(() => ['x', 'y', 'z'])
+         const entity = schema.create(serial)
+         expect(entity.zIsValid).toBeFalsy()
+         expect(entity.zAllErrorsIncludingChildrenErrors).toEqual([
+            { path: '$', message: 'selected value (id: ❌) not in choices' },
+         ])
+      })
+   })
+
    it('works', () => {
       const S = b.selectOneString(['a', 'b', 'c'], { default: undefined })
       const E = S.create()

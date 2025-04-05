@@ -89,7 +89,7 @@ export type Field_choices_value<T extends SchemaDict = SchemaDict> = {
 }
 
 export type Field_choices_SetValue<T extends SchemaDict = SchemaDict> = {
-   [k in keyof T]?: T[k]['{field}']['{setvalue}']
+   [k in keyof T]?: T[k]['{field}']['{setValue}']
 }
 
 export type Field_choices_unchecked<T extends SchemaDict = SchemaDict> = {
@@ -102,7 +102,7 @@ export interface Field_choices<T extends SchemaDict = SchemaDict> {
    '{ownConfig}': Field_choices_ownConfig<T>
    '{ownSerial}': Field_choices_ownSerial<T>
    '{value}': Field_choices_value<T>
-   '{setvalue}': Field_choices_SetValue<T>
+   '{setValue}': Field_choices_SetValue<T>
    '{unchecked}': Field_choices_unchecked<T>
    '{child}': T[keyof T]['{field}']
    '{opts}': unknown
@@ -237,8 +237,10 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field {
       const disposeFn = reaction(
          () => dynamic(this),
          (key: keyof T & string) => {
-            console.log(`[🤠🦖] startDynamicBehaviour  => setBranchTo("${key}")`)
-            this.enableBranch(key)
+            if (this.isBranchDisabled(key)) {
+               console.log(`[🦖] dynamic choice => setBranchTo("${key}")`)
+               this.enableBranch(key)
+            }
          },
          { fireImmediately: true },
       )
@@ -609,7 +611,7 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field {
       })
       return this
    }
-   private _setBranchTo(branch: keyof T & string, to?: Maybe<T[keyof T]['{setvalue}']>): void {
+   private _setBranchTo(branch: keyof T & string, to?: Maybe<T[keyof T]['{setValue}']>): void {
       // case 1. branch should be DISABLED
       if (to == null) {
          if (this.isBranchEnabled(branch)) this.disableBranch(branch)
@@ -753,7 +755,7 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field {
       }
    }
 
-   override zGetSetValue(): this['{setvalue}'] | undefined {
+   override zGetSetValue(): this['{setValue}'] | undefined {
       // console.log(`[💀 getSetValue] `, this.path)
       return this.value_set
    }
@@ -901,11 +903,6 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field {
       }
       return def
    }
-
-   // sigh, nullable composition...
-   // matchExhaustive<R>(cases: {
-   //    [K in keyof T]: (field: T[K]['{field}']) => R
-   // }): [null] extends [R] ? "❌ match branches cannot return 'null'" : R
 
    matchExhaustive<R>(cases: {
       [K in keyof T]: (field: T[K]['{field}']) => R

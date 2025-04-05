@@ -87,7 +87,7 @@ export interface Field_string {
    '{ownConfig}': Field_string_ownConfig
    '{ownSerial}': Field_string_ownSerial
    '{value}': string
-   '{setvalue}': string
+   '{setValue}': string
    '{unchecked}': string | undefined
    '{child}': never
    '{opts}': unknown

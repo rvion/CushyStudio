@@ -23,6 +23,7 @@ export const WidgetChoices_SelectHeaderUI = obs(function WidgetChoices_SelectLin
          }}
       >
          <SelectUI<Entry>
+            label={field.zLabelText}
             key={`${isActive}`}
             tw='flex-grow'
             placeholder={p.field.zConfig.placeholder ?? csuiteConfig.i18n.ui.field.empty}

@@ -47,7 +47,7 @@ export interface CSchema<out FIELD extends Field = Field>
    '{serial}': FIELD['{serial}']
    '{config}': FIELD['{config}']
    '{value}': FIELD['{value}']
-   '{setvalue}': FIELD['{setvalue}']
+   '{setValue}': FIELD['{setValue}']
    '{unchecked}': FIELD['{unchecked}']
    '{child}': FIELD['{child}']
    '{opts}': FIELD['{opts}']
@@ -296,6 +296,12 @@ export class CSchema<out FIELD extends Field = Field> {
       })
    }
 
+   publishSelfLocallyToChannel(chan: Channel<FIELD> | ChannelId): this {
+      return this.withConfig({
+         publications: [...(this.config.publications ?? []), { chan, hoist: false, produce: (s) => s }],
+      })
+   }
+
    publishToChannel<T>(chan: Channel<T> | ChannelId, produce: (self: FIELD) => T): this {
       return this.withConfig({
          publications: [...(this.config.publications ?? []), { chan, hoist: true, produce }],
@@ -371,6 +377,10 @@ export class CSchema<out FIELD extends Field = Field> {
    ): FIELD {
       const repository = repository_ ?? getGlobalRepository()
       return this.instanciate(repository, null, null, '$', serial)
+   }
+
+   createFromValue(value?: FIELD['{value}'], repository_?: Repository): FIELD {
+      return this.create(this.generateSerial(value), repository_)
    }
 
    // ------------------------------------------------------------------------
@@ -573,11 +583,11 @@ export class CSchema<out FIELD extends Field = Field> {
       if (isSchemaString(node)) return `${uncasted} #>> '{{}}'`
       if (isSchemaNumber(node)) return `${uncasted}::float`
       if (isSchemaBool(node)) return `${uncasted}::boolean`
-      if (isSchemaDate(node)) return `${uncasted}::timestamp`
+      if (isSchemaDate(node)) return `(${uncasted} #>> '{{}}')::timestamp`
       if (isSchemaSelectMany(node)) return `${uncasted} #>> '{{}}'`
       if (isSchemaSelectOne(node)) return `${uncasted} #>> '{{}}'`
       // 🚂 if (isSchemaRelationship(node)) return `(${uncasted} #>> '{{}}')::uuid`
-      // 🚂 if (isSchemaRelationships(node)) return `${uncasted}::text[]::uuid[]`
+      // 🚂 if (isSchemaRelationships(node)) return `(${uncasted} #>> '{{}}')::text[]::uuid[]`
 
       console.log('🦫 unsupported castor type', node.type)
       return `${uncasted}::🦫`

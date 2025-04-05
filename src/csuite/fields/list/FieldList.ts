@@ -19,11 +19,14 @@ interface AutoBehaviour<out T extends CSchema> {
    /** list of keys that must be present */
    keys(self: T['{field}']): string[] // ['foo', 'bar', 'baz']
 
-   /** for every item given by the list above */
-   getKey(self: T['{field}'], ix: number): string
+   /**
+    * @deprecated
+    * for every item given by the list above
+    */
+   getKey?(self: T['{field}'], ix: number): string
 
-   /** once an item if  */
-   init(key: string /* foo */): T['{value}']
+   /** initialization  */
+   init?(key: string /* foo */): T['{setValue}']
 }
 
 // #region CONFIG
@@ -76,7 +79,7 @@ type Field_list_ownSerial<T extends CSchema> = {
 
 // #region VALUE type
 export type Field_list_value<T extends CSchema> = T['{value}'][]
-export type Field_list_SetValue<T extends CSchema> = T['{setvalue}'][]
+export type Field_list_SetValue<T extends CSchema> = T['{setValue}'][]
 export type Field_list_unchecked<T extends CSchema> = T['{unchecked}'][]
 
 export type Field_list_patch<T extends CSchema> =
@@ -112,7 +115,7 @@ export interface Field_list<T extends CSchema> {
    '{ownConfig}': Field_list_ownConfig<T>
    '{ownSerial}': Field_list_ownSerial<T>
    '{value}': Field_list_value<T>
-   '{setvalue}': Field_list_SetValue<T>
+   '{setValue}': Field_list_SetValue<T>
    '{unchecked}': Field_list_unchecked<T>
    '{child}': T['{field}']
    '{opts}': unknown
@@ -229,21 +232,9 @@ export class Field_list<T extends CSchema> extends Field {
       return this.items_.some((i) => i.zHasChanges)
    }
 
-   // resetSmart(): void {
-   //     // fix size
-   //     if (!this.config.auto) {
-   //         const defaultLength = clampOpt(this.config.defaultLength, this.config.min, this.config.max)
-   //         for (let i = this.items.length; i > defaultLength; i--) this.removeItem(this.items[i - 1]!)
-   //         for (let i = this.items.length; i < defaultLength; i++) this.addItem({ skipBump: true })
-   //     }
-
-   //     // reset all remaining values
-   //     for (const i of this.items) i.reset()
-   // }
-
    override zReset(): void {
       super.zReset()
-      this.zChildrenAll.forEach((i) => i.zReset())
+      this.zChildrenAll.forEach((i) => i.zReset()) // fixme this should not be here
    }
 
    findItemIndexContaining(widget: Field): number | null {
@@ -293,12 +284,23 @@ export class Field_list<T extends CSchema> extends Field {
       const disposeFn = reaction(
          () => auto.keys(this),
          (keys: string[]) => {
+            if (keys == null) {
+               console.error(`[❌ INVARIANT VIOLATION] FList.config.auto => keys() returned null `)
+               keys = []
+            }
             this.zRunInTransaction(() => {
                // 1. Add missing entries
-               const currentKeys: string[] = this.items_.map((i, ix) => auto.getKey(i, ix))
+               const getKeyFn = auto.getKey
+               const currentKeys: string[] =
+                  getKeyFn != null
+                     ? this.items_.map((i, ix) => getKeyFn(i, ix))
+                     : this.items_.map((i) => i.zMountKey as string)
+
                const missingKeys: string[] = keys.filter((k) => !currentKeys.includes(k))
                for (const k of missingKeys) {
-                  this.addItem({ value: auto.init(k) })
+                  console.log(`[super🔴] adding`, { valueExt: auto.init?.(k) ?? {}, itemKey: k })
+                  if (auto.init != null) this.addItem({ valueExt: auto.init(k), itemKey: k })
+                  else this.addItem({ itemKey: k })
                }
 
                // 2. delete items that must be removed.
@@ -520,26 +522,12 @@ export class Field_list<T extends CSchema> extends Field {
       return value
    }
 
-   // 🦊 get zValue_or_fail(): Field_list_value<T> {
-   // 🦊     const x: this['{value}'] = new Proxy([], this.makeValueProxy('fail'))
-   // 🦊     Object.defineProperty(this, 'zValue_or_fail', { value: x })
-   // 🦊     return x
-   // 🦊 }
-
-   // 🦊 get zValue_or_zero(): Field_list_value<T> {
-   // 🦊     const x: this['{value}'] = new Proxy([], this.makeValueProxy('zero'))
-   // 🦊     Object.defineProperty(this, 'zValue_or_zero', { value: x })
-   // 🦊     return x
-   // 🦊 }
-
-   // 🦊 get value_unchecked(): Field_list_unchecked<T> {
-   // 🦊     const x: this['{unchecked}'] = new Proxy([], this.makeValueProxy('unchecked'))
-   // 🦊     Object.defineProperty(this, 'value_unchecked', { value: x })
-   // 🦊     return x
-   // 🦊 }
-
    get zValue(): Field_list_value<T> {
       return this.zValue_or_fail
+   }
+
+   [Symbol.iterator](): IterableIterator<T['{field}']> {
+      return this.items_[Symbol.iterator]()
    }
 
    set zValue(val: Field_list_value<T>) {
@@ -630,7 +618,7 @@ export class Field_list<T extends CSchema> extends Field {
       }
    }
 
-   override zGetSetValue(): this['{setvalue}'] | undefined {
+   override zGetSetValue(): this['{setValue}'] | undefined {
       // console.log(`[💀 getSetValue] `, this.path)
       return this.value_set
    }
@@ -672,7 +660,7 @@ export class Field_list<T extends CSchema> extends Field {
     * Appends new elements to the end of an array,
     * and returns the new length of the array.
     */
-   push(...values: T['{setvalue}'][]): number {
+   push(...values: T['{setValue}'][]): number {
       if (values.length === 0) return this.length
       this.zRunInTransaction(() => {
          for (const v of values) {
@@ -702,9 +690,11 @@ export class Field_list<T extends CSchema> extends Field {
          // at
          at?: number
          applyEvenIfAtMaxLen?: boolean
+         /** 🔶 only use this param if you know what you're doing */
+         itemKey?: string
          // value
          value?: T['{value}']
-         valueExt?: T['{setvalue}']
+         valueExt?: T['{setValue}']
          serial?: T['{serial}']
       } = {},
    ): Maybe<T['{field}']> {
@@ -719,7 +709,7 @@ export class Field_list<T extends CSchema> extends Field {
          return void console.log(`[🔶] list.addItem: list is already at max length`)
 
       return this.zRunInTransaction(() => {
-         const itemId = Field_list.generateId()
+         const itemId = p.itemKey ?? Field_list.generateId()
          const at: number = p.at ?? this.items_.length
          this.zPatchSerial((draft) => {
             if (draft.items_ == null || draft.keys == null) {

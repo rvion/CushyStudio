@@ -29,7 +29,7 @@ export interface Field_color {
    '{ownConfig}': Field_color_ownConfig
    '{ownSerial}': Field_color_ownSerial
    '{value}': Field_color_value
-   '{setvalue}': Field_color_value
+   '{setValue}': Field_color_value
    '{unchecked}': Field_color_unchecked
    '{child}': never
    '{opts}': unknown

@@ -44,7 +44,7 @@ export interface Field_number {
    '{ownConfig}': Field_number_ownConfig
    '{ownSerial}': Field_number_ownSerial
    '{value}': Field_number_value
-   '{setvalue}': Field_number_value
+   '{setValue}': Field_number_value
    '{unchecked}': Field_number_unchecked
    '{child}': never
    '{opts}': unknown

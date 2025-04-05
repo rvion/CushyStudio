@@ -9,6 +9,7 @@ import { Field_selectMany, type Field_selectMany_serial } from './FieldSelectMan
 
 const b = simpleBuilder
 
+// eslint-disable-next-line vitest/no-commented-out-tests
 // describe('array proxies', () => {
 //    // it.skip('should correctly be packed by MsgPackr', () => {
 //    //    // v1 Proxy with get
@@ -35,6 +36,28 @@ const b = simpleBuilder
 //    //    console.log(`[🤠] v4`, v4Arr.length, JSON.stringify(v4))
 //    // })
 // })
+
+describe('validation when values are invalid', () => {
+   it('detect errors when value candidate is an array', () => {
+      const serial: Z.Many_<any>['{serial}'] = { $: 'selectMany', values: ['❌'] }
+      const schema = b.selectManyStrings(['x', 'y', 'z'])
+      const entity = schema.create(serial)
+      expect(entity.zIsValid).toBeFalsy()
+      expect(entity.zAllErrorsIncludingChildrenErrors).toEqual([
+         { path: '$', message: 'value ❌ (label: ❌) not in choices' },
+      ])
+   })
+   it('detect errors when value candidate is an lambda', () => {
+      const serial: Z.Many_<any>['{serial}'] = { $: 'selectMany', values: ['❌'] }
+      const schema = b.selectManyDynamicStrings(() => ['x', 'y', 'z'])
+      const entity = schema.create(serial)
+      expect(entity.zIsValid).toBeFalsy()
+      expect(entity.zAllErrorsIncludingChildrenErrors).toEqual([
+         { path: '$', message: 'value ❌ (label: ❌) not in choices' },
+      ])
+   })
+})
+
 // ------------------------------------------------------------------------------
 describe('FieldSelectMany', () => {
    it('works', () => {

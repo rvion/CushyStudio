@@ -28,7 +28,7 @@ export interface Field_markdown {
    '{ownConfig}': Field_markdown_ownConfig
    '{ownSerial}': Field_markdown_ownSerial
    '{value}': Field_markdown_value
-   '{setvalue}': Field_markdown_value
+   '{setValue}': Field_markdown_value
    '{unchecked}': Field_markdown_unchecked
    '{child}': never
    '{opts}': unknown

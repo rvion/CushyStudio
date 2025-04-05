@@ -43,7 +43,7 @@ export interface Field_date<VALUE> {
    '{ownConfig}': Field_date_ownConfig<VALUE>
    '{ownSerial}': Field_date_ownSerial
    '{value}': Field_date_value<VALUE>
-   '{setvalue}': Field_date_value<VALUE>
+   '{setValue}': Field_date_value<VALUE>
    '{unchecked}': Field_date_unchecked<VALUE>
    '{child}': never
    '{opts}': unknown

@@ -48,7 +48,7 @@ export interface Field_matrix {
    '{ownConfig}': Field_matrix_ownConfig
    '{ownSerial}': Field_matrix_ownSerial
    '{value}': Field_matrix_value
-   '{setvalue}': Field_matrix_value
+   '{setValue}': Field_matrix_value
    '{unchecked}': Field_matrix_unchecked
    '{child}': never
    '{opts}': unknown

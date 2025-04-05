@@ -1,7 +1,7 @@
 import type { Field_string_config } from '../fields/string/FieldString'
 import type { IconName } from '../icons/IconName'
 import type { CSSSizeString } from './CSSSizeString'
-import type { CSSProperties, ReactElement, ReactNode } from 'react'
+import type { CSSProperties, HTMLInputAutoCompleteAttribute, ReactElement, ReactNode } from 'react'
 
 import { useState } from 'react'
 
@@ -68,6 +68,7 @@ export type InputStringProps = {
    inputClassName?: string
    /** style added on the input itself */
    inputStyle?: CSSProperties
+   autoComplete?: HTMLInputAutoCompleteAttribute | undefined
 
    onBlur?: (ev: React.FocusEvent<HTMLInputElement, Element>) => void
    onFocus?: (ev: React.FocusEvent<HTMLInputElement, Element>) => void
@@ -175,6 +176,7 @@ export const InputStringUI = obs(function WidgetStringUI_(p: InputStringProps) {
          type={reveal ? 'text' : p.type}
          pattern={extractConfigValue(p.pattern)?.toString()}
          placeholder={p.placeholder}
+         autoComplete={p.autoComplete}
          autoFocus={p.autoFocus}
          disabled={p.disabled}
          value={p.buffered ? (temporaryValue ?? value) : value}

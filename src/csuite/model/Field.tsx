@@ -123,7 +123,7 @@ export interface Field {
    '{serial}': FieldSerialFor<this>
    '{config}': FieldConfigFor<this>
    '{value}': unknown
-   '{setvalue}': unknown
+   '{setValue}': unknown
    '{unchecked}': unknown
    '{child}': unknown
    '{opts}': unknown
@@ -362,7 +362,7 @@ export abstract class Field {
     * generic implementation; must be overriden for every non-leaves
     * @undecorated (single action setter inside)
     */
-   zSet(x: this['{setvalue}']): this {
+   zSet(x: this['{setValue}']): this {
       if (isProbablySomeFieldSerialOf(x, this.zType)) this.zSetSerial(x as this['{serial}'])
       else if ((x as any) instanceof Field) this.zSetSerial((x as Field).zSerial as this['{serial}'])
       else this.zSetValue(x)
@@ -370,7 +370,7 @@ export abstract class Field {
    }
 
    /** @undecorated (pure getter function) */
-   zGetSetValue(): this['{setvalue}'] | undefined {
+   zGetSetValue(): this['{setValue}'] | undefined {
       // console.log(`[💀 getSetValue] `, this.path)
       return this.zValue
    }
@@ -459,6 +459,11 @@ export abstract class Field {
     * should be overritten by every parent field.
     */
    static getTravels(config: any): SchemaDictWithPaths {
+      if (config.getCustomTravels != null)
+         return {
+            ...this.getChildren(config),
+            ...config.getCustomTravels?.(),
+         }
       return this.getChildren(config)
    }
 
@@ -848,7 +853,7 @@ export abstract class Field {
     */
    @computed get zCanBeToggledWithinParent(): boolean {
       // if (isFieldOptional(this)) return true
-      if (isFieldList(this.zParent)) return true
+      // if (isFieldList(this.zParent)) return true
       if (isFieldOptional(this.zParent)) return true
       if (isFieldChoices(this.zParent)) return true
       if (isFieldChoice(this.zParent)) return false

@@ -57,7 +57,7 @@ export type Field_optional_value<T extends CSchema = CSchema> =
    | T['{value}']
    // Set value (inactive)
    | null
-export type Field_optional_SetValue<T extends CSchema = CSchema> = T['{setvalue}'] | undefined | null
+export type Field_optional_SetValue<T extends CSchema = CSchema> = T['{setValue}'] | undefined | null
 
 // #region Types
 export interface Field_optional<T extends CSchema = CSchema> {
@@ -65,7 +65,7 @@ export interface Field_optional<T extends CSchema = CSchema> {
    '{ownConfig}': Field_optional_ownConfig<T>
    '{ownSerial}': Field_optional_ownSerial<T>
    '{value}': Field_optional_value<T>
-   '{setvalue}': Field_optional_SetValue<T>
+   '{setValue}': Field_optional_SetValue<T>
    '{unchecked}': Field_optional_value<T>
    '{child}': T['{field}']
    '{opts}': unknown
@@ -324,7 +324,7 @@ export class Field_optional<out T extends CSchema = CSchema> extends Field {
       }
       return this
    }
-   override zGetSetValue(): this['{setvalue}'] | undefined {
+   override zGetSetValue(): this['{setValue}'] | undefined {
       // console.log(`[💀 getSetValue] `, this.path)
       return this.child.zGetSetValue()
    }

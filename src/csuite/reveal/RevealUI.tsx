@@ -6,11 +6,9 @@ import React, { cloneElement, createElement, useEffect, useMemo } from 'react'
 import { createPortal } from 'react-dom'
 
 import { cls } from '../../widgets/misc/cls'
-import { regionMonitor } from '../regions/RegionMonitor'
 import { objectAssignTsEfficient_t_t } from '../utils/objectAssignTsEfficient'
 import { useEffectAction } from '../utils/useEffectAction'
 import { useMemoAction } from '../utils/useMemoAction'
-import { VirtualDomRect } from './misc/VirtualDomRect'
 import { RevealBackdropUI } from './RevealBackdropUI'
 import { whitelistedClonableComponents } from './RevealCloneWhitelist'
 import { RevealCtx, useRevealOrNull } from './RevealCtx'
@@ -75,46 +73,7 @@ export const RevealUI: React.FunctionComponent<RevealProps> = obs(function Revea
    // TODO: can we move that to the tooltip component ?
    // update position in case something moved or scrolled
    useEffect(() => {
-      if (reveal == null) return
-      if (!reveal.isVisible) return
-
-      // find element to attach to
-      const relTo = reveal.p.relativeTo
-
-      // 1. place around mouse cursor
-      if (relTo === 'mouse') {
-         const x = regionMonitor.mouseX
-         const y = regionMonitor.mouseY
-         const vDomRect = new VirtualDomRect({ x, y, width: 1, height: 1 })
-         reveal.setPosition(vDomRect, null)
-      }
-
-      // 2. place around anchor
-      else if (relTo == null || relTo === 'anchor') {
-         const element = anchorRef.current
-         // console.log(`[🌍 1] `, element?.getBoundingClientRect())
-         // console.log(`[🌍 2] `, reveal.getBoundingClientRect(element))
-         reveal.setPosition(
-            // 🌍 element?.getBoundingClientRect() ?? null,
-            reveal.getBoundingClientRect(element),
-            // 🌍 shellRef.current?.getBoundingClientRect() ?? null,
-            reveal.getBoundingClientRect(shellRef.current),
-         )
-      }
-
-      // 3. place somewhere else
-      else if (relTo?.startsWith('#')) {
-         const element = document.getElementById(relTo.slice(1))!
-         // do we want to throw HERE ?
-         // or defer to anchor instead ?
-         // we could move this block above 2.
-         // and use 2 as a fallback case.
-         if (element == null) return
-         const rect = element.getBoundingClientRect()
-         reveal.setPosition(rect, shellRef.current?.getBoundingClientRect() ?? null)
-
-         // in that case, let's add a return here
-      }
+      reveal?.lazyState.getRevealState().updatePlacement()
    }, [reveal?.isVisible])
 
    // check if we can clone the child element instead of adding a div in the DOM

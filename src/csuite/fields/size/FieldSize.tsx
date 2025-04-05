@@ -58,7 +58,7 @@ export interface Field_size {
    '{ownConfig}': Field_size_ownConfig
    '{ownSerial}': Field_size_ownSerial
    '{value}': Field_size_value
-   '{setvalue}': Field_size_value
+   '{setValue}': Field_size_value
    '{unchecked}': Field_size_unchecked
    '{child}': never
    '{opts}': unknown

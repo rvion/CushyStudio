@@ -4,6 +4,7 @@ import type { TintExt } from '../kolor/Tint'
 import type { CovariantFn } from '../variance/BivariantHack'
 import type { CovariantFC } from '../variance/CovariantFC'
 import type { Field } from './Field'
+import type { SchemaDictWithPaths } from './FieldConstructor'
 import type { FieldOptions } from './FieldOptions'
 import type { FieldTag } from './FieldTag'
 import type { Klass } from './KlassToUse'
@@ -14,6 +15,8 @@ import type { Problem_Ext } from './Validation'
 export type FieldConfigFor<FIELD extends Field> = FieldConfig_CommonProperties<FIELD> & FIELD['{ownConfig}']
 
 export interface FieldConfig_CommonProperties<out FIELD extends Field> {
+   getCustomTravels?: () => SchemaDictWithPaths
+
    readonly uiui?: RENDERER.UIConf<FIELD>
    /**
     * @since 2024-05-20

@@ -12,6 +12,7 @@ import { csuiteConfig } from '../../config/configureCsuite'
 import { extractConfigMessage, extractConfigValue } from '../../errors/extractConfig'
 import { Field } from '../../model/Field'
 import { isProbablySerialSelectMany, registerFieldClass } from '../WidgetUI.DI'
+import { computed } from 'mobx'
 
 export type SelectManyAppearance = 'select' | 'tab' | 'list'
 
@@ -69,10 +70,12 @@ type Field_selectMany_ownConfig<
    /** set this to true if your choices are dynamically generated from the query directly, to disable local filtering */
    disableLocalFiltering?: boolean
    appearance?: SelectManyAppearance
+   // todo: remove
    OptionLabelUI?: (
       //
       t: Maybe<SelectOption<VALUE, KEY>>,
       where: SelectValueSlots,
+      self: Field_selectMany<VALUE, KEY>,
    ) => React.ReactNode
 
    /**
@@ -134,7 +137,7 @@ export interface Field_selectMany<
    '{ownConfig}': Field_selectMany_ownConfig<VALUE, KEY>
    '{ownSerial}': Field_selectMany_ownSerial<KEY>
    '{value}': Field_selectMany_value<VALUE>
-   '{setvalue}': VALUE[] | KEY[]
+   '{setValue}': VALUE[] | KEY[]
    '{unchecked}': Field_selectMany_unchecked<VALUE>
    '{child}': never
    '{opts}': unknown
@@ -240,6 +243,17 @@ export class Field_selectMany<
       })
    }
 
+   // todo: remove - do  not belong here
+   @computed get OptionLabelUI():
+      | ((t: Maybe<SelectOption<VALUE, KEY>>, where: SelectValueSlots) => React.ReactNode)
+      | undefined {
+      // no prop => do nothing
+      if (this.zConfig.OptionLabelUI == null) return
+      // prop => bind to self
+      return (t: Maybe<SelectOption<VALUE, KEY>>, where: SelectValueSlots): React.ReactNode =>
+         this.zConfig.OptionLabelUI!(t, where, this)
+   }
+
    get possibleKeys(): KEY[] {
       const _choices = this.zConfig.choices
       // 2024-08-02: domi: 🔴 select all is dangerous for models
@@ -262,6 +276,7 @@ export class Field_selectMany<
    }
 
    get shouldValidateThatValueIsAmongstKeys(): boolean {
+      return true
       if (Array.isArray(this.zConfig.choices)) return true
       // return locoFront != null // 🔴 pick a better logic ? add config flag ?
       return false
@@ -446,7 +461,7 @@ export class Field_selectMany<
       return this
    }
 
-   override zGetSetValue(): this['{setvalue}'] | undefined {
+   override zGetSetValue(): this['{setValue}'] | undefined {
       // console.log(`[💀 getSetValue] `, this.path)
       return this.selectedKeys
    }

@@ -73,7 +73,11 @@ type Field_selectOne_ownConfig<
    getOptionFromId: (t: KEY, self: Field_selectOne<NoInfer<VALUE>, KEY>) => Maybe<SelectOption<VALUE, KEY>>
    /** set this to true if your choices are dynamically generated from the query directly, to disable local filtering */
    disableLocalFiltering?: boolean
-   OptionLabelUI?: (t: Maybe<SelectOption<VALUE, KEY>>, where: SelectValueSlots) => React.ReactNode
+   OptionLabelUI?: (
+      t: Maybe<SelectOption<VALUE, KEY>>,
+      where: SelectValueSlots,
+      self: Field_selectOne<NoInfer<VALUE>, KEY>,
+   ) => React.ReactNode
    SlotAnchorContentUI?: React.FC<{}>
    appearance?: SelectOneSkin
 
@@ -146,7 +150,7 @@ export interface Field_selectOne<
    '{ownConfig}': Field_selectOne_ownConfig<VALUE, KEY>
    '{ownSerial}': Field_selectOne_ownSerial<KEY>
    '{value}': VALUE
-   '{setvalue}': VALUE | KEY
+   '{setValue}': VALUE | KEY | { $$KEY: KEY } | { $$VALUE: KEY }
    '{unchecked}': Field_selectOne_unchecked<VALUE>
    '{child}': never
    '{opts}': unknown
@@ -221,6 +225,7 @@ export class Field_selectOne<
    }
 
    get shouldValidateThatValueIsAmongstKeys(): boolean {
+      return true
       if (Array.isArray(this.zConfig.choices)) return true
       // return locoFront != null // 🔴 pick a better logic ? add config flag ?
       return false
@@ -289,6 +294,17 @@ export class Field_selectOne<
 
       // 🔶 maybe do all these config checks in the constructor?
       throw new Error('no way to get choices. Provide choices or options or values + getIdFromValue')
+   }
+
+   // todo: remove - do  not belong here
+   @computed get OptionLabelUI():
+      | ((t: Maybe<SelectOption<VALUE, KEY>>, where: SelectValueSlots) => React.ReactNode)
+      | undefined {
+      // no prop => do nothing
+      if (this.zConfig.OptionLabelUI == null) return
+      // prop => bind to self
+      return (t: Maybe<SelectOption<VALUE, KEY>>, where: SelectValueSlots): React.ReactNode =>
+         this.zConfig.OptionLabelUI!(t, where, this)
    }
 
    //  💬 2024-09-?? ???:
@@ -410,13 +426,15 @@ export class Field_selectOne<
       return false
    }
 
-   override zSet(valOrKey: VALUE | KEY): this {
+   override zSet(valOrKey: this['{setValue}']): this {
+      if (typeof valOrKey === 'object' && valOrKey != null && '$$KEY' in valOrKey) this.selectedId = valOrKey.$$KEY as KEY // prettier-ignore
+      if (typeof valOrKey === 'object' && valOrKey != null && '$$VALUE' in valOrKey) this.zValue = valOrKey.$$VALUE as VALUE // prettier-ignore
       if (this.isProbablyValidKey(valOrKey)) this.selectedId = valOrKey
-      else this.zValue = valOrKey
+      else this.zValue = valOrKey as VALUE
       return this
    }
 
-   override zGetSetValue(): this['{setvalue}'] | undefined {
+   override zGetSetValue(): this['{setValue}'] | undefined {
       // console.log(`[💀 getSetValue] `, this.path)
       return this.selectedId
    }
