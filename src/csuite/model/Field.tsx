@@ -498,26 +498,26 @@ export abstract class Field {
     * @undecorated (this.repo.runInTransaction already wrapped in runInAction)
     */
    zDisposeTree(): void {
-      this.zRunInTransaction((tct) => this.z_disposeTree(tct))
+      this.zRunInTransaction((tct) => this.zDisposeTree_(tct))
    }
 
    /**
     * calls itself recursively
     * @undecorated (manual runInAction inside)
     */
-   private z_disposeTree(tct: Transaction): void {
+   private zDisposeTree_(tct: Transaction): void {
       runInAction(() => {
-         this.z_disposeSelf(tct)
+         this.zDisposeSelf_(tct)
 
          // dispose all children
          for (const sub of this.zChildrenAll) {
-            sub.z_disposeTree(tct)
+            sub.zDisposeTree_(tct)
          }
       })
    }
 
    /** @undecorated (only called by _disposeTree above, which is wrapped in runInAction) */
-   private z_disposeSelf(tct: Transaction): void {
+   private zDisposeSelf_(tct: Transaction): void {
       // TODO:
       // - disable all publish
       // - disable all reactions
