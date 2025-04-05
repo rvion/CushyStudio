@@ -198,8 +198,6 @@ export interface FieldConfig_CommonProperties<out FIELD extends Field> {
     */
    required?: boolean
    readonly?: boolean
-
-   instanciationOption?: FieldOptions
 }
 
 export interface WidgetMenuAction<FIELD extends Field> {

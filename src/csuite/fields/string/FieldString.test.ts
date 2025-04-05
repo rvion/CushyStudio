@@ -1,4 +1,4 @@
-import { describe, expect, it, vitest } from 'vitest'
+import { beforeEach, describe, expect, it, vitest } from 'vitest'
 
 import { simpleBuilder } from '../../simple/SimpleFactory'
 import { Field_string, type Field_string_serial } from './FieldString'
@@ -7,6 +7,10 @@ const b = simpleBuilder
 
 // ------------------------------------------------------------------------------
 describe('field string', () => {
+   beforeEach(() => {
+      vitest.restoreAllMocks()
+   })
+
    it('preserves ref equality check when using setSerial', () => {
       const S = b.string({ default: 'abc' })
       const ser1: Field_string_serial = { $: 'str', value: 'ser 1' }

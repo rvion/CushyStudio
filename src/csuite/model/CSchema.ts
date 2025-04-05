@@ -579,7 +579,7 @@ export class CSchema<out FIELD extends Field = Field> {
       if (isSchemaSelectMany(node)) return `${uncasted} #>> '{{}}'`
       if (isSchemaSelectOne(node)) return `${uncasted} #>> '{{}}'`
       // 🚂 if (isSchemaRelationship(node)) return `(${uncasted} #>> '{{}}')::uuid`
-      // 🚂 if (isSchemaRelationships(node)) return `(${uncasted} #>> '{{}}')::text[]::uuid[]`
+      // 🚂 if (isSchemaRelationships(node)) return `${uncasted}`
 
       console.log('🦫 unsupported castor type', node.type)
       return `${uncasted}::🦫`

@@ -15,6 +15,7 @@ import type {
 import type { FieldId } from './FieldId'
 import type { FieldSerialFor } from './FieldSerial'
 import type { Channel, ChannelId } from './pubsub/Channel'
+import type { FieldReaction } from './pubsub/FieldReaction'
 import type { Publication } from './pubsub/Producer'
 import type { Repository } from './Repository'
 import type { Transaction } from './Transaction'
@@ -1423,8 +1424,8 @@ export abstract class Field {
       // | we need to add try-catch instead.
       // | 👇👇👇👇👇👇👇👇👇👇👇👇
       // ❌ if (!this.isSet) return
-      if (!this.zIsOwnSet)
-         return console.log(`[🤠] skipping publication of ${this.zPathExt} because field is not set`)
+      // if (!this.zIsOwnSet)
+      //    return console.log(`[🤠] skipping publication of ${this.zPathExt} because field is not set`)
 
       // Create and store values for every producer
       const producedValues: Record<ChannelId, any> = {}
@@ -1703,18 +1704,6 @@ export abstract class Field {
       throw new Error(`🔴 _acknowledgeNewChildSerial not implemented (${this.zPathExt})`)
    }
 
-   // --------------------------------------------------------------------------------
-   // 🔶 the 5 getters bellow are temporary hacks to make shared keep working
-   // until every shared usage has been migrated
-
-   /**
-    * getter that resolve to `this.schema.producers`
-    * @undecorated
-    */
-   get zProducers(): Publication<any, any>[] {
-      return this.zSchema.publications
-   }
-
    /** probably the wrong place to retrieve that now that presenter are comming */
    get zIcon(): Maybe<IconName> {
       const x = this.zSchema.config.icon
@@ -1726,15 +1715,20 @@ export abstract class Field {
 
    private zHasBeenInitialized: boolean = false
 
+   /** allow to add a live reaction on a field */
+   zAddReaction(r: FieldReaction<this>): void {
+      const cleanupFn = reaction(
+         () => r.expr(this),
+         (val) => r.effect(val, this),
+         { fireImmediately: true, name: `Field-_setupReactions@${this.zPath}` },
+      )
+      this.zDisposeFns.push(cleanupFn)
+   }
+
    private zSetupReactions(): void {
       if (this.zConfig.reactions == null) return
-      for (const r of this.zConfig.reactions) {
-         const cleanupFn = reaction(
-            () => r.expr(this),
-            (val) => r.effect(val, this),
-            { fireImmediately: true },
-         )
-         this.zDisposeFns.push(cleanupFn)
+      for (const reaction of this.zSchema.reactions) {
+         this.zAddReaction(reaction)
       }
    }
 

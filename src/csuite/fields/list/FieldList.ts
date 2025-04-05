@@ -297,7 +297,15 @@ export class Field_list<T extends CSchema> extends Field {
       if (auto == null) return
 
       const disposeFn = reaction(
-         () => auto.keys(this),
+         (): string[] => {
+            try {
+               return auto.keys(this)
+            } catch (e) {
+               console.error(`🔶 list.auto reaction failed; please avoid crashing.`)
+               console.error(e)
+               return []
+            }
+         },
          (keys: string[]) => {
             if (keys == null) {
                console.error(`[❌ INVARIANT VIOLATION] FList.config.auto => keys() returned null `)
@@ -327,7 +335,7 @@ export class Field_list<T extends CSchema> extends Field {
                }
             })
          },
-         { fireImmediately: true },
+         { fireImmediately: true, name: `list-auto@${this.zPath}` },
       )
 
       this.zDisposeFns.push(disposeFn)

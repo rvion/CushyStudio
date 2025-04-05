@@ -169,7 +169,6 @@ export class ComfyPromptL extends BaseInst<TABLES['comfy_prompt']> {
    }
    private pendingPromises: Promise<void>[] = []
 
-   // 🦊
    retrieveImage = async (
       //
       comfyImageInfo: ComfyImageInfo,

@@ -11,8 +11,6 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import { FieldSelector } from './selector'
 
-const spyOn = vi.spyOn
-
 describe('SelectorParser Tests', () => {
    it('can parse not', () => {
       // prettier-ignore
@@ -210,7 +208,7 @@ describe('SelectorParser Tests', () => {
 
    describe('errors', () => {
       beforeEach(() => {
-         spyOn(console, 'log').mockImplementation(() => undefined)
+         vi.spyOn(console, 'log').mockImplementation(() => undefined)
       })
       // eslint-disable-next-line vitest/no-commented-out-tests
       // it('should throw an error for invalid axis', () => {

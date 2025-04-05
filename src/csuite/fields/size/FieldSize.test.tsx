@@ -3,12 +3,10 @@ import { afterEach, beforeEach, describe, expect, it, vi, vitest } from 'vitest'
 import { simpleBuilder } from '../../simple/SimpleFactory'
 import { Field_size } from './FieldSize'
 
-const spyOn = vi.spyOn
-
 describe('FieldSize', () => {
    describe('generatePatches & applyPatches', () => {
       beforeEach(() => {
-         spyOn(console, 'log').mockReturnValue(undefined)
+         vi.spyOn(console, 'log').mockReturnValue(undefined)
       })
       afterEach(() => {
          vi.restoreAllMocks()
@@ -39,7 +37,7 @@ describe('FieldSize', () => {
    describe('create perf', () => {
       describe('without a default value', () => {
          it('should use the empty serial and not patch it', () => {
-            const patchSerial = vitest.spyOn(Field_size.prototype, 'zPatchSerial')
+            const patchSerial = vitest.vi.spyOn(Field_size.prototype, 'zPatchSerial')
             const S = simpleBuilder.size_()
             const E = S.create()
 
@@ -50,7 +48,7 @@ describe('FieldSize', () => {
 
       describe('with a default value', () => {
          it('should use the default serial and not patch it', () => {
-            const patchSerial = vitest.spyOn(Field_size.prototype, 'zPatchSerial')
+            const patchSerial = vitest.vi.spyOn(Field_size.prototype, 'zPatchSerial')
             const S = simpleBuilder.size({ default: { width: 5, height: 5 } })
             const E = S.create()
 

@@ -108,7 +108,7 @@ function formatDate(dateStr: string): string {
 // Main Function
 async function main(): Promise<void> {
    // === Configuration ===
-   const startDate = '2025-03-01' // Optional: Specify if needed
+   const startDate = '2025-04-01' // Optional: Specify if needed
    const config: Config = {
       loco: {
          path: path.resolve('/Users/loco/dev/monoloco'),

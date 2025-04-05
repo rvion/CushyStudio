@@ -50,12 +50,10 @@ export class CSchemaNeighborhood<KEY extends string> {
    }
 
    private _getOneOrNull(key: KEY): Maybe<CSchema> {
-      if (key.startsWith(CUSTOM_TRAVEL_PREFIX)) return getBuilder().empty()
       return this.edges[key]?.schema
    }
 
    private _getOne(key: KEY): CSchema {
-      if (key.startsWith(CUSTOM_TRAVEL_PREFIX)) return getBuilder().empty()
       const edge = this.edges[key]
       if (edge == null) {
          const availableKeys = this.getPathsAndSchemaNoFollow().map((i) => i.at)
@@ -160,12 +158,29 @@ export class CSchemaNeighborhood<KEY extends string> {
    }
 
    /** mini selector implementation for schema */
-   find(queries: string[]): SchemaGraphNode[] {
+   find(
+      queries: string[],
+      x?: {
+         // if false, do not even attempt to go deeper
+         enter?: (schema: Z.Schema, at: NeighborhoodPath) => boolean
+         // step 2. if accept is present,
+         accept?: (schema: Z.Schema, at: NeighborhoodPath) => boolean
+      },
+   ): SchemaGraphNode[] {
+      /**
+       * 🔶 2025-04-02 domi:
+       * - for varRefs, we use this.getPathsAndSchemaNoFollow()
+       * - for col picker, we use this.find() which enters/accepts everything
+       * So not all values from col picker are valid/easily convertible to varRefs
+       */
+      const enter = x?.enter ?? ((): boolean => true)
+      const accept = x?.accept ?? ((): boolean => true)
       let leaves: SchemaGraphNode[] = [{ at: '$', schema: this.schema }]
       const out: SchemaGraphNode[] = []
       for (const query of queries) {
          let nextLeaves: SchemaGraphNode[] = []
          for (const { at, schema } of leaves) {
+            if (!enter(schema, at)) continue
             const XX = schema.neighboors[this.name].edges
             nextLeaves.push(
                ...Object.entries(XX).map(([k, v]) => ({
@@ -173,7 +188,7 @@ export class CSchemaNeighborhood<KEY extends string> {
                   schema: v.schema,
                })),
             )
-            nextLeaves = nextLeaves.filter((t) => searchMatches(t.at, query))
+            nextLeaves = nextLeaves.filter((t) => searchMatches(t.at, query) && accept(t.schema, t.at))
          }
          out.push(...nextLeaves)
          leaves = nextLeaves

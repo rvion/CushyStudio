@@ -6,12 +6,8 @@ import { Severity } from '../../model/Validation'
 import { simpleBuilder as b } from '../../simple/SimpleFactory'
 import { Field_date } from './FieldDate'
 
-const spyOn = vi.spyOn
-const mock = vi.mock
-
 describe('FieldDate', () => {
    afterEach(() => {
-      // mock.restore()
       vi.restoreAllMocks()
    })
 
@@ -214,7 +210,7 @@ describe('FieldDate', () => {
       it('should patch the serial in a transaction if the value is valid', () => {
          const field = b.date().create()
 
-         spyOn(field.zRepo, 'runInTransaction')
+         vi.spyOn(field.zRepo, 'runInTransaction')
 
          field.zValue = new Date(2025, 1, 3, 4, 5)
 
@@ -276,7 +272,7 @@ describe('FieldDate', () => {
       it('should patch the serial in a transaction', () => {
          const field = b.date().create()
 
-         spyOn(field.zRepo, 'runInTransaction')
+         vi.spyOn(field.zRepo, 'runInTransaction')
 
          field.setValueFromString('03/02/2025 04:05')
 
@@ -290,7 +286,7 @@ describe('FieldDate', () => {
       it('should patch the serial in a transaction if the value is invalid', () => {
          const field = b.date().create()
 
-         spyOn(field.zRepo, 'runInTransaction')
+         vi.spyOn(field.zRepo, 'runInTransaction')
          field.setValueFromString('invalid')
 
          expect(field.zRepo.runInTransaction).toHaveBeenCalledTimes(1)

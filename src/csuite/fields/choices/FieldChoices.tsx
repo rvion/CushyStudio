@@ -249,7 +249,7 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field {
                this.enableBranch(key)
             }
          },
-         { fireImmediately: true },
+         { fireImmediately: true, name: `choices-dynamic@${this.zPath}` },
       )
       this.zDisposeFns.push(disposeFn)
    }

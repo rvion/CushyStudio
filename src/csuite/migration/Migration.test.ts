@@ -3,13 +3,11 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { sb } from '../simple/SimpleFactory'
 import { MigrationEngine } from './MigrationEngine'
 
-const spyOn = vi.spyOn
-
 const b = sb
 
 describe('paths and pathExt', () => {
    beforeEach(() => {
-      spyOn(console, 'log').mockImplementation(() => undefined)
+      vi.spyOn(console, 'log').mockImplementation(() => undefined)
    })
 
    it('looks like jsonPath', () => {
