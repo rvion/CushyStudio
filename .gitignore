@@ -110,3 +110,6 @@ eslint.config.debug.json
 
 autotype.summary.txt
 src/theme/twin.css
+
+bunPlugin.cache
+bunPlugin.reload.ts
