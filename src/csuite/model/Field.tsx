@@ -1911,33 +1911,34 @@ export abstract class Field {
       return this.zConfig.label
    }
 
-   private z_extraSaveChangesFunction: (() => Promise<void> | void)[] = []
-   zOnSaveChanges(fn: () => Promise<void> | void): void { this.z_extraSaveChangesFunction.push(fn) } // prettier-ignore
+   // legacy => migrate to new event system
+   private zExtraSaveChangesFunction: (() => Promise<void> | void)[] = []
+   zOnSaveChanges(fn: () => Promise<void> | void): void { this.zExtraSaveChangesFunction.push(fn) } // prettier-ignore
    public async zSaveChanges(): Promise<void> {
-      for (const fn of this.z_extraSaveChangesFunction) await fn()
+      for (const fn of this.zExtraSaveChangesFunction) await fn()
       this.zTouched = false
    }
 
    // ---------------------------------------------------------------------------
-   private _callbacks: { [key in FieldEvent_]?: ((field: any) => void)[] } = {}
+   private zCallbacks_: { [key in FieldEvent_]?: ((field: any) => void)[] } = {}
 
    /** @internal */
    zInternalRunCallbacksForEvent(event: FieldEvent_): void {
-      if (this._callbacks[event] == null) return
-      for (const cb of this._callbacks[event]!) {
+      if (this.zCallbacks_[event] == null) return
+      for (const cb of this.zCallbacks_[event]!) {
          cb(this)
       }
    }
    zOn(event: FieldEvent_, cb: CovariantFn<[field: this], void>): void {
-      if (this._callbacks[event] == null) this._callbacks[event] = []
-      this._callbacks[event]?.push(cb)
+      if (this.zCallbacks_[event] == null) this.zCallbacks_[event] = []
+      this.zCallbacks_[event]?.push(cb)
    }
 
    zOff(event: FieldEvent_, cb: CovariantFn<[field: this], void>): void {
-      if (this._callbacks[event] == null) return console.warn(`[🔶] Field.off: no callbacks for ${event}`)
-      const i = this._callbacks[event]?.indexOf(cb)
+      if (this.zCallbacks_[event] == null) return console.warn(`[🔶] Field.off: no callbacks for ${event}`)
+      const i = this.zCallbacks_[event]?.indexOf(cb)
       if (i === -1) return console.warn(`[🔶] Field.off callback not found for ${event}`)
-      this._callbacks[event]?.splice(i, 1)
+      this.zCallbacks_[event]?.splice(i, 1)
    }
 
    /**
