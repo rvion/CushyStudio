@@ -188,7 +188,7 @@ export class Field_list<T extends CSchema> extends Field {
             }),
          keys: Array(length)
             .fill(undefined)
-            .map((_, ix) => Field_list.generateId(ix)),
+            .map((_, ix) => Field_list.zGenerateListItemKey(ix)),
       }
    }
 
