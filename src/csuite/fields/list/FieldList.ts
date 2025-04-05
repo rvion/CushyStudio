@@ -730,6 +730,17 @@ export class Field_list<T extends CSchema> extends Field {
          let at: number = p.at ?? this.items_.length
          if (at < 0) at = this.items_.length + at
 
+
+         // should we crash instead ?
+         if (at < 0) {
+            console.warn(`[🔶] field ${this.zPathExt} tried to insert a value at index ${at}; clamping to 0`)
+            at = 0
+         }
+         if (at > this.items_.length) {
+            console.warn(`[🔶] field ${this.zPathExt} tried to insert a value at index ${at} (length=${this.items_.length}); clamping to ${this.items_.length}`) // prettier-ignore
+            at = this.items_.length
+
+
          this.zPatchSerial((draft) => {
             if (draft.items_ == null || draft.keys == null) {
                if (at !== 0) throw new Error('❌ Field_list is not sparsed')
