@@ -320,7 +320,7 @@ export class Field_list<T extends CSchema> extends Field {
                      : this.items_.map((i) => i.zMountKey as string)
                const missingKeys: string[] = keys.filter((k) => !currentKeys.includes(k))
                for (const k of missingKeys) {
-                  console.log(`[super🔴] adding`, { valueExt: auto.init?.(k) ?? {}, itemKey: k })
+                  // console.log(`[super🔴] adding`, { valueExt: auto.init?.(k) ?? {}, itemKey: k })
                   if (auto.init != null) this.addItem({ valueExt: auto.init(k), itemKey: k })
                   else this.addItem({ itemKey: k })
                }

@@ -102,7 +102,7 @@ export class Field_shared<out F extends Field = Field> extends Field {
    }
 
    get zValue(): Field_shared_value<F> {
-      return this.child.zValue
+      return this.zValue_or_fail
    }
 
    set zValue(val: Field_shared_value<F>) {

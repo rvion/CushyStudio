@@ -557,7 +557,7 @@ export class Field_selectOne<
    }
 
    get selectedId(): KEY | undefined {
-      return this.zSerial.val // || this.default // 🔴 idk, probably bad to have default here
+      return this.zSerial.val
    }
 
    set selectedId(nextId: KEY | undefined) {
@@ -565,41 +565,8 @@ export class Field_selectOne<
 
       this.zRunInTransaction(() => {
          this.zPatchSerial((draft) => void (draft.val = nextId))
-
-         // 💬 2024-07-08 rvion:
-         // | when setting a value with equal id, we may be actually changing the SelectOption
-         // | (cached name could be different, etc.)
-         // | since it's a bit complicated, let's not care today. if this cause a bug, let's improve
-         // | that later
-
-         // ⏸️ const nextHasSameID = this.value.id === next.id
-         // ⏸️ if (!nextHasSameID) this.applyValueUpdateEffects()
-         // ⏸️ else this.applySerialUpdateEffects()
       })
    }
-
-   // 💬 2024-09-03 rvion:
-   // | defaultValue should NEVER be usefull anymore
-   // | when setOwnSerial is called with a defaultKey,
-   // | the serial should already have the key set, and the default getValue(key)
-   // | will properly retrieve the value
-   //
-   // ❌ get defaultValue(): VALUE | undefined {
-   // ❌     if (!this.hasDefaultKey) return undefined
-   // ❌     // 💬 2024-09-03 rvion:
-   // ❌     // | technically, some select could allow null as KEY,
-   // ❌     // | so testing against (== null) is just wrong.
-   // ❌     // | that's why we use this.hasDefaultKey instead, then assume
-   // ❌     // | that the defaultKey has type KEY, even if it's null in the
-   // ❌     // | live below         VVVVVVVVVVVVVVVVVVVVVV
-   // ❌     const defaultKey: KEY = this.defaultKey as KEY
-   // ❌     const value = this.getValueFromId(defaultKey)
-   // ❌     return value ?? undefined
-   // ❌ }
-
-   // set value(next: Field_selectOne_value<VALUE>) {
-   //     // 🔴 can we do without this?
-   // }
 
    /**
     * 💬 2024-09-03 domi:

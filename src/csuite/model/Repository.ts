@@ -13,6 +13,10 @@ import { Transaction } from './Transaction'
  * 🔶 this class is not observable as of 2025-02-07
  */
 export class Repository {
+   ASSERT_IS_RUNNING_IN_TRANSACTION(): Transaction {
+      if (this.tct == null) throw new Error('❌ invariant violation: ASSERT_IS_RUNNING_IN_TRANSACTION')
+      return this.tct
+   }
    /**
     * @deprecated
     * unimplemented; probably worth adding back as non-observable weakmap
@@ -91,12 +95,9 @@ export class Repository {
    }
 
    /** only called when  a new field is created */
-   _registerField(field: Field, tct: Transaction): void {
+   _registerField(field: Field): void {
       this.fieldCount += 1
       if (field.zRoot == field) this.documentCount += 1
-
-      // 🔴 creations ⁉️
-      tct.trackAsCreated(field)
    }
 
    tct: Maybe<Transaction> = null
@@ -126,7 +127,7 @@ export class Repository {
                // for now, we execute the commit callbacks outside of the transaction
                // we may consider swapping the order of the next two lines if need be.
                this.tct = null
-               tct.commit() // <-- apply the callback once every update is done, OUTSIDE of the transaction
+               tct.commit()
                this.lastTransaction = tct
             }
             return OUT

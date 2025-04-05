@@ -7,8 +7,9 @@ import type { Field } from './Field'
 import type { SchemaDictWithPaths } from './FieldConstructor'
 import type { FieldTag } from './FieldTag'
 import type { Klass } from './KlassToUse'
+import type { FieldPublication } from './pubsub/FieldPublication'
 import type { FieldReaction } from './pubsub/FieldReaction'
-import type { Publication } from './pubsub/Producer'
+import type { FieldSubscription } from './pubsub/FieldSubscriptions'
 import type { Problem_Ext } from './Validation'
 
 export type FieldConfigFor<FIELD extends Field> = FieldConfig_CommonProperties<FIELD> & FIELD['{ownConfig}']
@@ -181,7 +182,8 @@ export interface FieldConfig_CommonProperties<out FIELD extends Field> {
     *                          ^^^^^^^^^^^^^^^^
     * @stability beta
     */
-   publications?: Publication<any, FIELD>[]
+   publications?: FieldPublication<any, FIELD>[]
+   subscriptions?: FieldSubscription<any, FIELD>[]
 
    /**
     * @internal

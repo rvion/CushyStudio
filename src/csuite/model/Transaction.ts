@@ -1,6 +1,8 @@
 import type { Field } from './Field'
 import type { Repository } from './Repository'
 
+import { FieldEvent } from './FieldEvent'
+
 type TransactionSummary = {
    created: string[]
    updated: string[]
@@ -8,9 +10,12 @@ type TransactionSummary = {
 }
 
 export class Transaction {
-   constructor(
-      public repo: Repository, // 🔴 Transaction mode is not used yet // public mode: TransactionMode,
-   ) {}
+   static UID: number = 0
+   uid = Transaction.UID++
+
+   constructor(public repo: Repository) {
+      this.repo.transactionCount++
+   }
 
    get summary1(): TransactionSummary {
       return {
@@ -44,8 +49,6 @@ export class Transaction {
    }
 
    commit(): void {
-      // bump transaction
-      this.repo.transactionCount++
       this.repo.createCount += this.createdFields.size
       this.repo.updateCount += this.updatedFields.size
       this.repo.deleteCount += this.deletedFields.size
@@ -76,7 +79,12 @@ export class Transaction {
 
       for (const { field } of updatedFieldList) {
          this.repo.debugLog(`💙 ${`publish`.padEnd(10)} ${field.zPath}`)
-         field.zRunPublications()
+         field.zRunPublications(FieldEvent.CommitUpdate)
+         field.zInternalRunCallbacksForEvent(FieldEvent.CommitUpdate)
+      }
+
+      for (const { field } of updatedFieldList) {
+         field.zInternalRunCallbacksForEvent(FieldEvent.CommitUpdate2)
       }
 
       // #region Delete

@@ -8,10 +8,10 @@ import type { FieldConstructor, TravelEdge } from './FieldConstructor'
 import type { CastUnknown, IsUnknown } from './IsItUnknown'
 import type { Klass } from './KlassToUse'
 import type { Channel, ChannelId } from './pubsub/Channel'
+import type { FieldPublication } from './pubsub/FieldPublication'
 import type { FieldReaction } from './pubsub/FieldReaction'
-import type { Publication } from './pubsub/Producer'
 
-import { reaction, runInAction } from 'mobx'
+import { runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
 
 import {
@@ -29,6 +29,7 @@ import { memoizedFN, schemaConfigHash } from '../hashUtils/hash'
 import { objectAssignTsEfficient_t_pt } from '../utils/objectAssignTsEfficient'
 import { potatoClone } from '../utils/potatoClone'
 import { CSchemaNeighborhood, type NeighborhoodName } from './CSchemaTraversal'
+import { FieldEvent } from './FieldEvent'
 import { getGlobalRepository, type Repository } from './Repository'
 
 declare global {
@@ -290,44 +291,106 @@ export class CSchema<out FIELD extends Field = Field> {
    }
 
    // PubSub -----------------------------------------------------
-   publishLocallyToChannel<T>(chan: Channel<T> | ChannelId, produce: (self: FIELD) => T): this {
+   publishLocallyToChannel<T>(
+      chan: Channel<T> | ChannelId,
+      produce: (self: FIELD) => T,
+      opts?: Partial<FieldPublication<FIELD, FIELD>>,
+   ): this {
       return this.withConfig({
-         publications: [...(this.config.publications ?? []), { chan, produce, hoist: false }],
+         publications: [
+            ...(this.config.publications ?? []),
+            {
+               chan,
+               on: FieldEvent.CommitUpdate,
+               produce,
+               hoist: false,
+               ...opts,
+            },
+         ],
       })
    }
 
-   publishSelfLocallyToChannel(chan: Channel<FIELD> | ChannelId): this {
+   private static PublishSelfFn = (s: Field): Field => s
+   publishSelfLocallyToChannel(
+      chan: Channel<FIELD> | ChannelId,
+      opts?: Partial<FieldPublication<FIELD, FIELD>>,
+   ): this {
       return this.withConfig({
-         publications: [...(this.config.publications ?? []), { chan, hoist: false, produce: (s) => s }],
+         publications: [
+            ...(this.config.publications ?? []),
+            {
+               chan,
+               hoist: false,
+               on: FieldEvent.TrackAsCreated,
+               produce: CSchema.PublishSelfFn,
+               ...opts,
+            },
+         ],
       })
    }
 
-   publishToChannel<T>(chan: Channel<T> | ChannelId, produce: (self: FIELD) => T): this {
+   publishSelfToChannel(
+      chan: Channel<FIELD> | ChannelId,
+      opts?: Partial<FieldPublication<FIELD, FIELD>>,
+   ): this {
       return this.withConfig({
-         publications: [...(this.config.publications ?? []), { chan, hoist: true, produce }],
+         publications: [
+            ...(this.config.publications ?? []),
+            {
+               chan,
+               hoist: true,
+               on: FieldEvent.TrackAsCreated,
+               produce: CSchema.PublishSelfFn,
+               ...opts,
+            },
+         ],
       })
    }
 
-   publishSelfToChannel(chan: Channel<FIELD> | ChannelId): this {
+   publishToChannel<T>(
+      chan: Channel<T> | ChannelId,
+      produce: (self: FIELD) => T,
+      opts?: Partial<FieldPublication<FIELD, FIELD>>,
+   ): this {
       return this.withConfig({
-         publications: [...(this.config.publications ?? []), { chan, hoist: true, produce: (s) => s }],
+         publications: [
+            ...(this.config.publications ?? []),
+            {
+               chan,
+               hoist: true,
+               on: FieldEvent.CommitUpdate,
+               produce,
+               ...opts,
+            },
+         ],
       })
    }
 
-   publishValueToChannel(chan: Channel<FIELD['{value}']> | ChannelId): this {
+   private static PublishValueFn = <T extends { value: any }>(s: T): T['value'] => s.value
+   publishValueToChannel(
+      chan: Channel<FIELD['value']> | ChannelId,
+      opts?: Partial<FieldPublication<FIELD['value'], FIELD>>,
+   ): this {
       return this.withConfig({
-         publications: [...(this.config.publications ?? []), { chan, hoist: true, produce: (s) => s.zValue }],
+         publications: [
+            ...(this.config.publications ?? []),
+            {
+               chan,
+               on: 'tct.trackAsCreated+Updated',
+               hoist: true,
+               produce: CSchema.PublishValueFn,
+               ...opts,
+            },
+         ],
       })
    }
 
+   /** chanel subscriptions are run syncrhonously within the same mobx action */
    subscribeToChannel<T>(chan: Channel<T> | ChannelId, effect: (arg: T, self: FIELD) => void): this {
-      return this.addReaction(
-         (self) => self.zReadChannel(chan),
-         (arg, self) => {
-            if (arg == null) return
-            effect(arg, self)
-         },
-      )
+      return this.addSubscription(chan, (arg, self) => {
+         if (arg == null) return
+         effect(arg, self)
+      })
    }
 
    get reactions(): readonly FieldReaction<FIELD>[] {
@@ -346,6 +409,11 @@ export class CSchema<out FIELD extends Field = Field> {
    addReaction<T>(expr: (self: FIELD) => T, effect: (arg: T, self: FIELD) => void): this {
       return this.withConfig({
          reactions: [...(this.config.reactions ?? []), { expr, effect }],
+      })
+   }
+   addSubscription<T>(channel: Channel<T> | ChannelId, effect: (arg: T, self: FIELD) => void): this {
+      return this.withConfig({
+         subscriptions: [...(this.config.subscriptions ?? []), { channel, effect }],
       })
    }
 
@@ -375,7 +443,7 @@ export class CSchema<out FIELD extends Field = Field> {
       repository_?: Repository,
    ): FIELD {
       const repository = repository_ ?? getGlobalRepository()
-      return this.instanciate(repository, null, null, '$', serial)
+      return repository.runInTransaction(() => this.instanciate(repository, null, null, '$', serial))
    }
 
    createFrom(value?: FIELD['{setValue}'], repository_?: Repository): FIELD {
@@ -474,19 +542,6 @@ export class CSchema<out FIELD extends Field = Field> {
          ]
          const KTOR: Klass<FIELD> = this.konfig.classToUse ?? this.fieldConstructor
          const field: FIELD = new KTOR(...args)
-
-         // start publications
-         field.zRunPublications()
-
-         // start reactions
-         for (const { expr, effect } of this.reactions) {
-            // 🔴 Need to dispose later
-            reaction(
-               () => expr(field),
-               (arg) => effect(arg, field),
-               { fireImmediately: true },
-            )
-         }
          return field
       })
    }

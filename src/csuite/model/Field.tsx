@@ -4,6 +4,7 @@ import type { IconName } from '../icons/IconName'
 import type { TintExt } from '../kolor/Tint'
 import type { FieldAnomaly } from '../migration/Anomaly'
 import type { ITreeElement } from '../tree/TreeEntry'
+import type { CovariantFn } from '../variance/BivariantHack'
 import type { AnyFieldSerial } from './EntitySerial'
 import type { FieldConfigFor } from './FieldConfig'
 import type {
@@ -16,7 +17,6 @@ import type { FieldId } from './FieldId'
 import type { FieldSerialFor } from './FieldSerial'
 import type { Channel, ChannelId } from './pubsub/Channel'
 import type { FieldReaction } from './pubsub/FieldReaction'
-import type { Publication } from './pubsub/Producer'
 import type { Repository } from './Repository'
 import type { Transaction } from './Transaction'
 import type { Problem, Problem_Ext } from './Validation'
@@ -27,7 +27,7 @@ import _set from 'lodash/set'
 import _unset from 'lodash/unset'
 import { computed, isObservable, observable, reaction, runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
-import { type FC, type ReactNode, useMemo } from 'react'
+import { type DependencyList, type FC, type ReactNode, useCallback, useEffect, useMemo } from 'react'
 
 import { csuiteConfig } from '../config/configureCsuite'
 import { isHole } from '../fields/list/HOLE'
@@ -54,6 +54,7 @@ import { autofixSerial_20240703 } from './autofix/autofixSerial_20240703'
 import { autofixSerial_20240711 } from './autofix/autofixSerial_20240711'
 import { CSchema, type WithConfigOptions } from './CSchema'
 import { type CushyOnlyMixin, CushyOnlyMixinDescriptors } from './CushyOnly.mixin'
+import { FieldEvent, type FieldEvent_ } from './FieldEvent'
 import { mkNewFieldId_v1 } from './FieldId'
 import { type TraversalMixin, TraversalMixinDescriptors } from './FieldTraversal.mixin'
 import {
@@ -1094,7 +1095,8 @@ export abstract class Field {
     * when this field or one of its descendant publishes a value,
     * it will be stored here and possibly consumed by other descendants
     */
-   @observable accessor zAdvertisedValues: Record<ChannelId, any> = {}
+   protected readonly zAdvertisedValues: Record<ChannelId, any> = observable({})
+   protected readonly zLurkers: Map<ChannelId, ((val: any) => void)[]> = new Map()
 
    /**
     * when reading a publication, we will walk up the parent chain
@@ -1386,49 +1388,116 @@ export abstract class Field {
       this.zConfig.onValueChange?.(this)
    }
 
+   zSetupSubscriptions(): void {
+      if (this.zConfig.subscriptions == null) return
+      if (this.zConfig.subscriptions.length === 0) return
+      // for every subscription
+      for (const sub of this.zConfig.subscriptions) {
+         // get chanelID
+         const channelId = typeof sub.channel === 'string' ? sub.channel : sub.channel.id
+
+         // build a memory-stable effect lambda (bind effect to this)
+         const effect = (val: any): void => sub.effect(val, this)
+
+         // then walk ancestor chain
+         anc: for (const parent of this.zAncestors) {
+            // and register self as lurker
+            const prev = parent.zLurkers.get(channelId)
+            if (prev == null) parent.zLurkers.set(channelId, [effect])
+            else prev.push(effect)
+
+            // if parent already has a published value,
+            const alreadyHasAPublishedValue = channelId in parent.zAdvertisedValues
+            if (alreadyHasAPublishedValue) {
+               // we run the effect immediately
+               effect(parent.zAdvertisedValues[channelId])
+
+               // and we stop, because assume we'll never read any
+               // channel value from any field above in the field tree
+               break anc
+            }
+         }
+      }
+   }
+
    /**
     * this method might be optimized
-    * todo:
     *  - by storing the published value locally
     *  - by defining a getter on the _advertisedValues object of all parents
     *  - by only setting this getter up once.
+    * but ALSO MAYBE NOT; need to double check mobx interractions
     * */
-   zRunPublications(this: Field): void {
-      // 1. publications(broadcast upwards)
-      const publications = this.zSchema.publications
+
+   zRunPublications(mode: FieldEvent_): void {
+      const publicationsAll = this.zConfig.publications
+      if (publicationsAll == null) return
+
+      const publications = publicationsAll.filter((p) => p.on === mode)
       if (publications.length === 0) return
 
-      // 💬 2024-09-20 rvion:
-      // | 🔴
-      // | We need to write tests about that.
       // 💬 2024-12-30 rvion:
       // | seems like a good idea, but is actually a bad idea.
       // | it completely prevents us from beeing able to 'set' fields that require reading
       // | a parent publication to know the set of possible values.
       // | we need to add try-catch instead.
-      // | 👇👇👇👇👇👇👇👇👇👇👇👇
-      // ❌ if (!this.isSet) return
-      // if (!this.zIsOwnSet)
-      //    return console.log(`[🤠] skipping publication of ${this.zPathExt} because field is not set`)
+      // if (!this.isSet) return console.log(`[🤠] skipping publication of ${this.pathExt} because field is not set`)
+      // if (!this.isOwnSet) return console.log(`[🤠] skipping publication of ${this.pathExt} because field is not ownSet`)
+
+      // 💬 2025-04-03 rvion:
+      // | lurkerdNotified is a set of effects.
+      // | effects should be stable per field, so it's a bit like checking we've
+      // |
+      // | -> bug-I-went-though-1. de-duplicating by field will cause misses when
+      // |    (A publish x1 and x2, both beeing subscribed by B)
+      // |
+      // | -> bug-I-went-though-2. storing anything else than the effect in the _lurkers
+      // |    map is less efficient
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
+      const lurkerdNotified = new Set<Function>()
 
       // Create and store values for every producer
-      const producedValues: Record<ChannelId, any> = {}
       for (const publication of publications) {
-         const channelId = typeof publication.chan === 'string' ? publication.chan : publication.chan.id
-         if (publication.hoist) producedValues[channelId] = publication.produce(this)
-         else this.zAdvertisedValues[channelId] = publication.produce(this)
-         // console.log(`[🪈] ${channelId} | ${this.path} is publishing`)
-      }
-      runInAction(() => {
-         // Assign values to every parent field in the hierarchy
-         if (Object.keys(producedValues).length > 0) {
-            let at = this as any as Field | null
-            while (at != null) {
-               Object.assign(at.zAdvertisedValues, producedValues)
-               at = at.zParent
+         if (publication.onlyIfSet && !this.zIsSet) continue
+         if (publication.onlyIfOwnSet && !this.zIsOwnSet) continue
+         if (publication.onlyIfValid && !this.zIsValid) continue
+
+         const channelId =
+            typeof publication.chan === 'string' //
+               ? publication.chan
+               : publication.chan.id
+
+         const value = publication.produce(this)
+         const publishTo = (field: Field): void => {
+            // update value in `_advertisedValues`
+            field.zAdvertisedValues[channelId] = value
+
+            // notify lurkers directly without waiting for mobx transaction
+            const lurkers = field.zLurkers.get(channelId)
+            if (lurkers == null) return
+            for (const lurker of lurkers) {
+               // TODO: if no in-between fields between this lurker and us has ....
+               if (lurkerdNotified.has(lurker)) continue
+               lurkerdNotified.add(lurker)
+               lurker(value)
             }
          }
-      })
+
+         // if hoist, publish
+         const hoist = publication.hoist
+         let reach =
+            typeof hoist === 'number'
+               ? hoist // number
+               : hoist // boolean
+                 ? Infinity
+                 : 0
+
+         // eslint-disable-next-line consistent-this
+         let at: Maybe<Field> = this
+         while (at != null && reach-- >= 0) {
+            publishTo(at)
+            at = at.zParent
+         }
+      }
    }
 
    @computed get zIsHidden(): boolean {
@@ -1632,9 +1701,11 @@ export abstract class Field {
       // console.log(`[🤠] ${this.path}`, JSON.stringify(this.serial), JSON.stringify(next), this.serial === next)
       if (this.zSerial === next) return
       runInAction(() => {
-         tct.trackAsUpdated(this)
          this.zSerial = next
          // this.__version__++
+         tct.trackAsUpdated(this)
+         this.zRunPublications(FieldEvent.TrackAsUpdated)
+         this.zRunPublications(FieldEvent.TrackAsCreatedOrUpdated)
          this.zParent?.zAcknowledgeNewChildSerial(this.zMountKey, this.zSerial)
       })
    }
@@ -1716,29 +1787,22 @@ export abstract class Field {
    }
 
    /** this function MUST be called at the end of every field constructor */
-   protected init(
-      //
-      serial?: this['{serial}'],
-   ): void {
-      // /* 😂 */ console.log(`[🤠] ${getUIDForMemoryStructure(serial)} (field.init)`)
-
-      // 1. ensure field hasn't been initialized yet
-      if (this.zHasBeenInitialized)
-         return console.error(`[🔶] Field.init has already been called => ABORTING`)
+   /** this function MUST be called at the end of every widget constructor */
+   protected init(serial?: this['{serial}']): void {
+      if (this.zHasBeenInitialized) return console.error(`[🔶] Field.init already called => ABORTING`)
       this.zHasBeenInitialized = true
+      const transaction = this.zRepo.ASSERT_IS_RUNNING_IN_TRANSACTION()
+      this.zRepo._registerField(this)
+      transaction.trackAsCreated(this)
+      //   VVVVVVVVVVVV this is where we hydrate children
+      this.zSetOwnSerialWithValidationAndMigrationAndFixes(serial)
       this.zSetupReactions()
-
-      // 2. ...
-      this.zRunInTransaction((tct) => {
-         // this.copyCommonSerialFields(serial)
-         this.zRepo._registerField(this, tct)
-
-         //   VVVVVVVVVVVV this is where we hydrate children
-         this.zSetOwnSerialWithValidationAndMigrationAndFixes(serial)
-
-         this.UI = this.UI.bind(this)
-         this.zReady = true
-      })
+      this.zSetupSubscriptions()
+      this.zRunPublications(FieldEvent.CommitUpdate)
+      this.zRunPublications(FieldEvent.TrackAsCreated)
+      this.zRunPublications(FieldEvent.TrackAsCreatedOrUpdated)
+      this.UI = this.UI.bind(this)
+      this.zReady = true
    }
 
    zCloneWithoutParent(): this {
@@ -1853,6 +1917,42 @@ export abstract class Field {
       for (const fn of this.z_extraSaveChangesFunction) await fn()
       this.zTouched = false
    }
+
+      // ---------------------------------------------------------------------------
+      private _callbacks: { [key in FieldEvent_]?: ((field: any) => void)[] } = {}
+
+      /** @internal */
+      zInternalRunCallbacksForEvent(event: FieldEvent_): void {
+         if (this._callbacks[event] == null) return
+         for (const cb of this._callbacks[event]!) {
+            cb(this)
+         }
+      }
+      zOn(event: FieldEvent_, cb: CovariantFn<[field: this], void>): void {
+         if (this._callbacks[event] == null) this._callbacks[event] = []
+         this._callbacks[event]?.push(cb)
+      }
+
+      zOff(event: FieldEvent_, cb: CovariantFn<[field: this], void>): void {
+         if (this._callbacks[event] == null) return console.warn(`[🔶] Field.off: no callbacks for ${event}`)
+         const i = this._callbacks[event]?.indexOf(cb)
+         if (i === -1) return console.warn(`[🔶] Field.off callback not found for ${event}`)
+         this._callbacks[event]?.splice(i, 1)
+      }
+
+      /**
+       * this function allow to register temporary events callbacks
+       * on a field that last while the component is mounted
+       */
+      zReactUseEvent(event: FieldEvent_, cb: CovariantFn<[field: this], void>, deps: DependencyList): void {
+         const cbStable = useCallback(cb, deps)
+         useEffect(() => {
+            this.zOn(event, cbStable)
+            return (): void => this.zOff(event, cbStable)
+         }, [cbStable, event])
+      }
+   }
+
 }
 
 // #region Mixins
