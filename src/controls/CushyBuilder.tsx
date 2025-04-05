@@ -5,6 +5,7 @@ import type { Field_matrix_config } from '../csuite/fields/matrix/FieldMatrix'
 import type { Field_number } from '../csuite/fields/number/FieldNumber'
 import type { Field_optional_config } from '../csuite/fields/optional/FieldOptional'
 import type { SelectOption } from '../csuite/fields/selectOne/SelectOption'
+import type { FieldConstructor } from '../csuite/model/FieldConstructor'
 // import type { IBuilder } from '../csuite/model/IBuilder'
 import type { OpenRouter_Models } from '../csuite/openrouter/OpenRouter_models'
 
@@ -106,8 +107,8 @@ export class CushySchemaBuilder /* implements IBuilder */ {
       })
    }
 
-   custom<T>(config: Field_custom<T>['{config}']): Z.Custom<T> {
-      return CSchema.new<Field_custom<T>>(Field_custom, config)
+   custom<T extends FieldConstructor<any>>(cls: T, config: InstanceType<T>['{config}']): Z.Custom<T> {
+      return CSchema.new<Field_custom<T>>(cls, config)
    }
 
    list<T extends CSchema>(config: Field_list_config<T>): CSchema<Field_list<T>> {

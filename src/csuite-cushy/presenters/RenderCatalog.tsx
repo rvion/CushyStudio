@@ -31,6 +31,7 @@ import { type WidgetLabelCaretProps, WidgetLabelCaretUI } from '../../csuite/for
 import { WidgetLabelIconPlacholderUI, WidgetLabelIconUI } from '../../csuite/form/WidgetLabelIconUI'
 import { Frame } from '../../csuite/frame/Frame'
 import { IkonOf } from '../../csuite/icons/iconHelpers'
+import { InputNumberUI } from '../../csuite/input-number/InputNumberUI'
 import { MessageErrorUI } from '../../csuite/messages/MessageErrorUI'
 import { MessageInfoUI } from '../../csuite/messages/MessageInfoUI'
 import { MessageWarningUI } from '../../csuite/messages/MessageWarningUI'
@@ -106,6 +107,7 @@ const catalog_Indent = {
 
 const catalog_inputs = {
    InputBoolUI: InputBoolUI,
+   InputNumberUI: InputNumberUI,
 }
 // #region shells
 
