@@ -111,7 +111,7 @@ export class ComfyPromptL extends BaseInst<TABLES['comfy_prompt']> {
    }
 
    /** update pointer to the currently executing node */
-   private onExecuting = async (msg: WsMsgExecuting): Promise<void> => {
+   private onExecuting = (msg: WsMsgExecuting): void => {
       this.graph.onExecuting(msg)
 
       if (msg.data.node == null) {

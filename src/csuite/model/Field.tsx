@@ -143,7 +143,7 @@ export abstract class Field {
     */
    readonly zUid: FieldId
 
-   /** widget serial is the full serialized representation of that widget  */
+   /** field serial is the full serialized representation of that field */
    @observable.ref accessor zSerial: this['{serial}']
 
    /**
@@ -165,7 +165,7 @@ export abstract class Field {
    /** parent field, (null when root) */
    @observable.ref accessor zParent: Field | null
 
-   /** schema used to instanciate this widget */
+   /** schema used to instanciate this field */
    zSchema: CSchema<this>
 
    get zOpts2(): this['{opts}'] {
@@ -183,7 +183,7 @@ export abstract class Field {
       root: Field | null,
       /** parent field, (null when root) */
       parent: Field | null,
-      /** schema used to instanciate this widget */
+      /** schema used to instanciate this field */
       schema: CSchema<any /* ❓ */>,
       initialMountKey: string,
       serial?: any /* ❓ */, // this['{serial}'],
@@ -207,14 +207,14 @@ export abstract class Field {
       return (this.constructor as FieldConstructor<this>).type
    }
 
-   /** @undecorated */
    private get zMigrateSerial_(): SerialMigrationFunction<this['{serial}']> {
       return (this.constructor as FieldConstructor<this>).migrateSerial
    }
 
    /**
-    * widget value is the simple/easy-to-use representation of that widget
-    * @undecorated
+    * field value is an easy-to-use representation of that field
+    * not guaranteed to be the serializable,
+    * [@see {@link zGetSetValue} for that]
     */
    abstract zValue: this['{value}']
 
@@ -924,8 +924,8 @@ export abstract class Field {
    }
 
    /**
-    * return true when widget has no child
-    * return false when widget has one or more child
+    * return true when field has no child
+    * return false when field has one or more child
     * */
    get zHasNoChild(): boolean {
       return this.zChildrenAll.length === 0
@@ -1033,7 +1033,7 @@ export abstract class Field {
     * | simply do a this.setValue(this.defaultValue)
     * | but it feels like a wrong implementation 🤔
     * | it's simpler  though
-    * 🔶 some widget like `WidgetPrompt` would not work with such logic
+    * 🔶 some field like `WidgetPrompt` would not work with such logic
     * */
    zReset(): void {
       runInAction(() => {
@@ -1076,38 +1076,22 @@ export abstract class Field {
          this.zTouched_ = val
       })
    }
-   /**
-    * Identical to field.touched = true but easier to use when field is nullable
-    */
+   /** Identical to field.touched = true but easier to use when field is nullable */
    zTouch(): void {
-      runInAction(() => {
-         this.zTouched = true
-      })
+      runInAction(() => void (this.zTouched = true))
    }
 
    zTouchAll(): void {
       runInAction(() => {
          if (this.zChildrenAll.length === 0) this.zTouched = true
-
-         for (const child of this.zChildrenAll) {
-            child.zTouchAll()
-         }
+         for (const child of this.zChildrenAll) child.zTouchAll()
       })
    }
-
-   /**
-    * 2024-05-24 rvion: do we want some abstract defaultValue() too ?
-    * feels like it's going to be PITA to use for higher level objects 🤔
-    * but also... why not...
-    * 🔶 some widget like `WidgetPrompt` would not work with such logic
-    * 🔶 some widget like `Optional` have no simple way to retrieve the default value
-    */
-   // abstract readonly defaultValue: this['schema']['{value}'] |
 
    private $FieldSym: typeof FieldSym = FieldSym // DO NOT REMOVE
 
    /**
-    * when this widget or one of its descendant publishes a value,
+    * when this field or one of its descendant publishes a value,
     * it will be stored here and possibly consumed by other descendants
     */
    @observable accessor zAdvertisedValues: Record<ChannelId, any> = {}
@@ -1403,7 +1387,7 @@ export abstract class Field {
    }
 
    /**
-    * this method can be heavily optimized
+    * this method might be optimized
     * todo:
     *  - by storing the published value locally
     *  - by defining a getter on the _advertisedValues object of all parents
@@ -1436,7 +1420,7 @@ export abstract class Field {
          // console.log(`[🪈] ${channelId} | ${this.path} is publishing`)
       }
       runInAction(() => {
-         // Assign values to every parent widget in the hierarchy
+         // Assign values to every parent field in the hierarchy
          if (Object.keys(producedValues).length > 0) {
             let at = this as any as Field | null
             while (at != null) {
@@ -1453,7 +1437,7 @@ export abstract class Field {
       return false
    }
 
-   /** whether the widget should be considered inactive */
+   /** whether the field should be considered inactive */
    @computed get zIsDisabled(): boolean {
       return isFieldOptional(this) && !this.isActive
    }
@@ -1493,12 +1477,12 @@ export abstract class Field {
    }
 
    /**
-    * if specified, overrides the default logic to decide if the widget need to be collapsible
+    * if specified, overrides the default logic to decide if the field need to be collapsible
     * @deprecated
     * 🔶 going to be removed ASAP
     */
    @computed get zIsCollapsible(): boolean {
-      // top level widget is not collapsible; we may want to revisit this decision
+      // top level field is not collapsible; we may want to revisit this decision
       // if (widget.parent == null) return false
       if (this.zConfig.collapsed != null) return this.zConfig.collapsed //
       if (this.zConfig.label === false) return false
@@ -1506,7 +1490,7 @@ export abstract class Field {
    }
 
    /**
-    * if provided, the default logic to decide if the widget need to be bordered
+    * if provided, the default logic to decide if the field need to be bordered
     * @deprecated
     */
    @computed get zBorder(): TintExt {
@@ -1515,14 +1499,13 @@ export abstract class Field {
       // if (this.parent.subWidgets.length === 0) return false
       // if app author manually specify they want no border, then we respect that
       if (this.zConfig.border != null) return this.zConfig.border
-      // if the widget do NOT have a body => we do not show the border
+      // if the field do NOT have a body => we do not show the border
       // if (this.DefaultBodyUI == null) return false // 🔴 <-- probably a mistake here
       // default case when we have a body => we show the border
       return false
       // return 8
    }
 
-   // #region UI.Render
    UI(props: RENDERER.FieldRenderArgs<this> = {}): ReactNode {
       // 💬 2024-10-17 ghusse:
       // | Spreading props here instead of passing them as a single object
@@ -1732,7 +1715,7 @@ export abstract class Field {
       }
    }
 
-   /** this function MUST be called at the end of every widget constructor */
+   /** this function MUST be called at the end of every field constructor */
    protected init(
       //
       serial?: this['{serial}'],

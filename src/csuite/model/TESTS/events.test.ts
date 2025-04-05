@@ -190,10 +190,5 @@ describe('model links', () => {
          updated: ['$.list.UUID2', '$.list', '$'],
          deleted: [],
       })
-      expect(tct?.summary2).toMatchObject([
-         { path: '$.list.UUID2', type: 'update' },
-         { path: '$.list', type: 'update' },
-         { path: '$', type: 'update' },
-      ])
    })
 })

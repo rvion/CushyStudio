@@ -1,6 +1,5 @@
 import type { Field } from '../Field'
 
-import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
 
 import { bang } from '../../utils/bang'
@@ -20,9 +19,7 @@ export class Channel<T> {
       return bang(field.zReadChannel(this), 'Empty channel')
    }
 
-   constructor(public id: ChannelId = nanoid()) {
-      makeAutoObservable(this)
-   }
+   constructor(public id: ChannelId = nanoid()) {}
 
    // see src/csuite/utils/potatoClone.ts
    [Symbol.for('🥔')](): this {

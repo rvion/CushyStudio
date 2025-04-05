@@ -33,9 +33,7 @@ const makeDoc = ():
 
 // #region benchark
 const bench = new Bench({ time: 1000 })
-const schema1 = makeDoc().withConfig({
-   instanciationOption: { altMobx: true },
-})
+const schema1 = makeDoc()
 const schema2 = makeDoc()
 
 const memUsage1: number[] = []

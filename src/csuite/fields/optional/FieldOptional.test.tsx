@@ -254,7 +254,6 @@ describe('FieldOptional', () => {
                   expect(serial).toEqual({ $: 'optional', y: { $: 'number', value: 42 } })
 
                   const E = S.create(serial)
-                  console.log(`[🤠HHHAA] `, E.zSerial, serial)
                   expect(E.zSerial).toEqual(serial)
                   expect(E.isActive).toBe(true)
                   expect(E.zValue).toBe(42)

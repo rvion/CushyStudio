@@ -5,7 +5,6 @@ import type { Patch } from '../../model/Patch'
 import type { Repository } from '../../model/Repository'
 import type { Problem_Ext } from '../../model/Validation'
 
-import { produce } from 'immer'
 import { computed, observable } from 'mobx'
 
 import { csuiteConfig } from '../../config/configureCsuite'
@@ -109,7 +108,7 @@ export class Field_string extends Field {
          if ('val' in serial) {
             const recoveredVal = serial.val
             if (typeof recoveredVal !== 'string') throw new Error(`Field_string: invalid legacy 'val' serial`)
-            return produce(serial, (serial) => void (serial.value = recoveredVal))
+            return { ...serial, value: recoveredVal }
          }
       }
    }
@@ -158,7 +157,7 @@ export class Field_string extends Field {
       // assign default value if not value set but has default value
       if (next.value == null) {
          const def = this.defaultValue
-         if (def != null) next = produce(next, (draft) => void (draft.value = def))
+         if (def != null) next = { ...next, value: def }
       }
 
       // 2. ASSIGN
