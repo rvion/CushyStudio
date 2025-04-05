@@ -2,6 +2,7 @@ import type { Field_number } from '../fields/number/FieldNumber'
 
 import { describe, expect, it } from 'vitest'
 
+import { naiveDeepClone } from '../utils/naiveDeepClone'
 import { getGlobalRepository, type Repository } from './Repository'
 
 describe('field', () => {
@@ -12,6 +13,7 @@ describe('field', () => {
    }
 
    const mkFields = (stats: Stats): { publisher: Z.Number; subscriber: Z.Number } => {
+      const b = getBuilder()
       const publisher = b
          .number({ default: 20, onValueChange: () => stats.publisher++ })
          .publishSelfToChannel('X', { hoist: 1, on: 'tct.trackAsCreated+Updated' })

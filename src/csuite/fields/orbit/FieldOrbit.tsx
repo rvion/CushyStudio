@@ -48,27 +48,28 @@ export interface Field_orbit {
    '{ownConfig}': Field_orbit_ownConfig
    '{ownSerial}': Field_orbit_ownSerial
    '{value}': Field_orbit_value
+   '{setValue}': Field_orbit_value
    '{unchecked}': Field_orbit_unchecked
    '{field}': Field_orbit
    '{child}': never
 }
+// todo: remove
 export class Field_orbit extends Field {
    // #region types
    static readonly type: 'orbit' = 'orbit'
-   static readonly unsetSerial: Field_orbit['{serial}'] = { $: 'orbit' }
    static migrateSerial(): undefined {}
-   public static readonly patchedSerialPaths: readonly string[] = Object.freeze(['azimuth', 'elevation'])
+   static readonly patchedSerialPaths: readonly string[] = Object.freeze(['azimuth', 'elevation'])
+
+   static readonly unsetSerial: Field_orbit['{serial}'] = { $: 'orbit' }
    static generateSerial(
-      value: Maybe<Field_orbit['{value}']>,
+      setValue: Maybe<Field_orbit['{setValue}']>,
       config: Field_orbit['{config}'],
    ): Field_orbit['{serial}'] {
-      if (value == null && config.default == null) return this.unsetSerial
-      const selectedVal = value ?? config.default
-      return {
-         $: 'orbit',
-         azimuth: selectedVal?.azimuth,
-         elevation: selectedVal?.elevation,
-      }
+      if (setValue == null && config.default == null) return this.unsetSerial
+      const selectedVal = setValue ?? config.default
+      const azimuth = selectedVal?.azimuth
+      const elevation = selectedVal?.elevation
+      return { $: 'orbit', azimuth, elevation }
    }
    static codeForTypescriptValue(config: Field_orbit['{config}']): string {
       return `number`

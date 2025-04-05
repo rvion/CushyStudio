@@ -50,6 +50,6 @@ export const ShellMobileUI = obs(function ShellMobile(p: RenderPropsCompiled) {
       </Frame>
    )
 
-   if (/* field.animateResize && */ p.Body != null) return <AnimatedSizeUI>{WUI}</AnimatedSizeUI>
+   if (p.Body != null) return <AnimatedSizeUI>{WUI}</AnimatedSizeUI>
    return WUI
 })

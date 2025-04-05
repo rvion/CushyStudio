@@ -41,6 +41,7 @@ export interface Field_enum<O extends ComfyUnionValue> {
    '{ownConfig}': Field_enum_ownConfig<O>
    '{ownSerial}': Field_enum_ownSerial<O>
    '{value}': Field_enum_value<O>
+   '{setValue}': Field_enum_value<O>
    '{unchecked}': Field_enum_value<O> | undefined
    '{field}': Field_enum<O>
    '{child}': never
@@ -49,13 +50,15 @@ export class Field_enum<O extends ComfyUnionValue> extends Field {
    // #region Static
    static readonly type: 'enum' = 'enum'
    public static readonly patchedSerialPaths: readonly string[] = Object.freeze(['val'])
+
    static readonly unsetSerial: Field_enum<any>['{serial}'] = { $: 'enum' }
    static generateSerial(
-      value: Maybe<Field_enum<any>['{value}']>,
+      setValue: Maybe<Field_enum<any>['{setValue}']>,
       config: Field_enum<any>['{config}'],
    ): Field_enum<any>['{serial}'] {
-      if (value == null && config.default == null) return this.unsetSerial
-      return { $: 'enum', val: value ?? config.default }
+      if (setValue == null && config.default == null) return this.unsetSerial
+      const val = setValue ?? config.default
+      return { $: 'enum', val }
    }
 
    static codeForTypescriptValue(config: Field_enum<any>['{config}']): string {

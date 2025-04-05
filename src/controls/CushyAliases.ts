@@ -6,7 +6,6 @@ import type { Field_board } from '../csuite/fields/board/Field_board'
 import type { Field_bool } from '../csuite/fields/bool/FieldBool'
 import type { Field_choices, MAGICCHOICES } from '../csuite/fields/choices/FieldChoices'
 import type { Field_color } from '../csuite/fields/color/FieldColor'
-import type { Field_custom } from '../csuite/fields/custom/FieldCustom'
 import type { Field_date } from '../csuite/fields/date/FieldDate'
 import type { Field_enum } from '../csuite/fields/enum/FieldEnum'
 import type { Field_group, MAGICFIELDS } from '../csuite/fields/group/FieldGroup'
@@ -100,7 +99,6 @@ declare global {
       type EnumOf<O extends ComfyUnionValue>          = CSchema<Field_enum<O>>
       type Orbit                                      = CSchema<Field_orbit>
       type Image                                      = CSchema<Field_image>
-      type Custom<T>                                  = CSchema<Field_custom<T>>
 
       // Fields
       type FShared<T extends Field>                    = Field_shared<T>
@@ -151,7 +149,6 @@ declare global {
       type FEnumOf<O extends ComfyUnionValue>          = Field_enum<O>
       type FOrbit                                      = Field_orbit
       type FImage                                      = Field_image
-      type FCustom<T>                                  = Field_custom<T>
 
    }
 }

@@ -55,7 +55,7 @@ class Field_dummy extends Field {
    override zIsValueEqual(other: Field): boolean {
       return this.zValue_unchecked === other.zValue_unchecked
    }
-   protected override zSetOwnSerial(serial: Field_dummy_serial): void {
+   protected override zSetOwnSerial(serial: this['{serial}']): void {
       this.zAssignNewSerial(serial)
    }
    override get zHasChanges(): boolean {
@@ -76,7 +76,7 @@ class Field_dummy extends Field {
       parent: Field | null,
       schema: CSchema<Field_dummy>,
       initialMountKey: string,
-      serial?: Field_dummy_serial,
+      serial?: Field_dummy['{serial}'],
    ) {
       super(repo, root, parent, schema, initialMountKey, serial)
       this.init(serial)

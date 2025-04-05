@@ -13,7 +13,7 @@ import { registerFieldClass } from '../WidgetUI.DI'
 
 // #region Config
 export type Field_image_ownConfig = {
-   default?: MediaImageL
+   default?: MediaImageL | MediaImageID
    suggestionWhere?: SQLWhere<MediaImageT>
    assetSuggested?: RelativePath | RelativePath[]
 }
@@ -34,34 +34,39 @@ export type Field_image_ownSerial = {
    size?: number
 }
 
-// #region Value
-export type Field_image_value = MediaImageL
-
 // #region STATE
 export interface Field_image {
    '{type}': 'image'
    '{ownConfig}': Field_image_ownConfig
    '{ownSerial}': Field_image_ownSerial
-   '{value}': Field_image_value
-   '{unchecked}': Field_image_value | undefined
+   '{value}': MediaImageL
+   '{setValue}': MediaImageL | MediaImageID
+   '{unchecked}': MediaImageL | undefined
    '{field}': Field_image
    '{child}': never
 }
 export class Field_image extends Field {
    // #region static
    static readonly type: 'image' = 'image'
-   static readonly unsetSerial: Field_image['{serial}'] = { $: 'image' }
    public static readonly patchedSerialPaths: readonly string[] = Object.freeze([
       'imageID',
       'imageHash',
       'size',
    ])
+   static readonly unsetSerial: Field_image['{serial}'] = { $: 'image' }
+   static getIdFrom(imgOrId: MediaImageL | MediaImageID): MediaImageID {
+      if (typeof imgOrId === 'object') return imgOrId.id
+      if (typeof imgOrId === 'string') return imgOrId
+      throw new Error('Field_image: getIdFrom: invalid type')
+   }
    static generateSerial(
-      value: Maybe<Field_image['{value}']>,
+      setValue: Maybe<Field_image['{setValue}']>,
       config: Field_image['{config}'],
    ): Field_image['{serial}'] {
-      if (value == null && config.default == null) return this.unsetSerial
-      return { $: 'image', imageID: value?.id ?? config.default?.id }
+      if (setValue == null && config.default == null) return this.unsetSerial
+      if (setValue != null) return { $: 'image', imageID: this.getIdFrom(setValue) }
+      if (config.default != null) return { $: 'image', imageID: this.getIdFrom(config.default) }
+      return this.unsetSerial
    }
    static migrateSerial(): undefined {}
    static codeForTypescriptValue(config: Field_image['{config}']): string {
@@ -91,38 +96,28 @@ export class Field_image extends Field {
       const def = this.zConfig.default
       if (this.zSerial.imageID == null && def != null) {
          next = produce(next, (draft) => {
-            draft.imageID = def.id
+            draft.imageID = Field_image.getIdFrom(def)
          })
       }
 
       this.zAssignNewSerial(next)
    }
 
-   // #region UI
-   DefaultHeaderUI: -1 = -1
-   DefaultBodyUI: -1 = -1
-
-   // #region UI/helpers
-   get animateResize(): boolean {
-      return false
-   }
-
    // #region Validation
-   get zOwnConfigSpecificProblems(): Problem_Ext {
-      return null
-   }
-
-   get zOwnTypeSpecificProblems(): Problem_Ext {
-      return null
-   }
+   get zOwnConfigSpecificProblems(): Problem_Ext { return null } // prettier-ignore
+   get zOwnTypeSpecificProblems(): Problem_Ext { return null } // prettier-ignore
 
    // #region ...
-   get defaultValue(): MediaImageL | undefined {
-      return this.zConfig.default
+   get defaultValue(): MediaImageID | undefined {
+      const def = this.zConfig.default
+      if (def == null) return undefined
+      if (typeof def === 'object') return def.id
+      if (typeof def === 'string') return def
+      throw new Error('Field_image: defaultValue: invalid type')
    }
 
    get zHasChanges(): boolean {
-      return this.zValue !== this.defaultValue
+      return this.zValue.id !== this.defaultValue
    }
 
    // #region value

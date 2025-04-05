@@ -310,7 +310,6 @@ export class Field_list<T extends CSchema> extends Field {
                   getKeyFn != null
                      ? this.items_.map((i, ix) => getKeyFn(i, ix))
                      : this.items_.map((i) => i.zMountKey as string)
-
                const missingKeys: string[] = keys.filter((k) => !currentKeys.includes(k))
                for (const k of missingKeys) {
                   console.log(`[super🔴] adding`, { valueExt: auto.init?.(k) ?? {}, itemKey: k })
@@ -321,7 +320,8 @@ export class Field_list<T extends CSchema> extends Field {
                // 2. delete items that must be removed.
                let ix = 0
                for (const item of this.items_.slice()) {
-                  const isExtra = !keys.includes(auto.getKey(item, ix++))
+                  const itemKey = getKeyFn != null ? getKeyFn(item, ix++) : item.zMountKey
+                  const isExtra = !keys.includes(itemKey)
                   if (!isExtra) continue
                   this.removeItem(item)
                }
@@ -730,7 +730,6 @@ export class Field_list<T extends CSchema> extends Field {
          let at: number = p.at ?? this.items_.length
          if (at < 0) at = this.items_.length + at
 
-
          // should we crash instead ?
          if (at < 0) {
             console.warn(`[🔶] field ${this.zPathExt} tried to insert a value at index ${at}; clamping to 0`)
@@ -739,7 +738,7 @@ export class Field_list<T extends CSchema> extends Field {
          if (at > this.items_.length) {
             console.warn(`[🔶] field ${this.zPathExt} tried to insert a value at index ${at} (length=${this.items_.length}); clamping to ${this.items_.length}`) // prettier-ignore
             at = this.items_.length
-
+         }
 
          this.zPatchSerial((draft) => {
             if (draft.items_ == null || draft.keys == null) {

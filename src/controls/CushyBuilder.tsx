@@ -6,7 +6,6 @@ import type { Field_number } from '../csuite/fields/number/FieldNumber'
 import type { Field_optional_config } from '../csuite/fields/optional/FieldOptional'
 import type { SelectOption } from '../csuite/fields/selectOne/SelectOption'
 import type { FieldConstructor } from '../csuite/model/FieldConstructor'
-// import type { IBuilder } from '../csuite/model/IBuilder'
 import type { OpenRouter_Models } from '../csuite/openrouter/OpenRouter_models'
 
 import { nanoid } from 'nanoid'
@@ -17,7 +16,6 @@ import { Field_board } from '../csuite/fields/board/Field_board'
 import { WidgetListExtUI__Timeline } from '../csuite/fields/board/WidgetListExtUI'
 import { Field_color } from '../csuite/fields/color/FieldColor'
 import { simpleShape$ } from '../csuite/fields/core-prefabs/ShapeSchema'
-import { Field_custom } from '../csuite/fields/custom/FieldCustom'
 import { Field_image } from '../csuite/fields/image/FieldImage'
 import { Field_list } from '../csuite/fields/list/FieldList'
 import { Field_matrix } from '../csuite/fields/matrix/FieldMatrix'
@@ -107,8 +105,12 @@ export class CushySchemaBuilder /* implements IBuilder */ {
       })
    }
 
-   custom<T extends FieldConstructor<any>>(cls: T, config: InstanceType<T>['{config}']): Z.Custom<T> {
-      return CSchema.new<Field_custom<T>>(cls, config)
+   // prettier-ignore
+   custom<T extends FieldConstructor<any>>(
+      cls: T,
+      config: InstanceType<T>['{config}'],
+   ): Z.Schema<InstanceType<T>> {
+      return CSchema.new<any>(cls, config)
    }
 
    list<T extends CSchema>(config: Field_list_config<T>): CSchema<Field_list<T>> {
@@ -250,7 +252,7 @@ export class CushySchemaBuilder /* implements IBuilder */ {
          OptionLabelUI(t, where) {
             if (t?.id == null) return '🔶DEFAULT🔶'
             const model = openRouterInfos[t.id]
-            if (!model) return '🔶DEFAULT🔶'
+            if (model == null) return '🔶DEFAULT🔶'
             const moderationEmoji = model.top_provider.is_moderated ? '😇' : '😈'
             const pricing = model.pricing
             const pricingText = `(💰: ${pricing.prompt}/tok${pricing.request !== '0' ? ` + ${pricing.request}/req` : ''})`
@@ -293,7 +295,8 @@ export class CushySchemaBuilder /* implements IBuilder */ {
                      'cushy_app.name',
                      fn.count('step.id').as('count'),
                   ])
-               return query?.length //
+
+               return query != null && query.length > 0
                   ? Q1.where('cushy_app.name', 'like', `%${query}%`)
                   : Q1
             })
@@ -329,7 +332,7 @@ export class CushySchemaBuilder /* implements IBuilder */ {
                      'draft.title',
                      fn.count('step.id').as('count'),
                   ])
-               return query?.length //
+               return query != null && query.length > 0 //
                   ? Q1.where('draft.title', 'like', `%${query}%`)
                   : Q1
             })

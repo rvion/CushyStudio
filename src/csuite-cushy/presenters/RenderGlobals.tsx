@@ -1,7 +1,7 @@
+/* eslint-disable @typescript-eslint/no-namespace */
 import type { Field_bool } from '../../csuite/fields/bool/FieldBool'
 import type { Field_choices } from '../../csuite/fields/choices/FieldChoices'
 import type { Field_color } from '../../csuite/fields/color/FieldColor'
-import type { Field_custom } from '../../csuite/fields/custom/FieldCustom'
 import type { Field_date } from '../../csuite/fields/date/FieldDate'
 import type { Field_enum } from '../../csuite/fields/enum/FieldEnum'
 import type { Field_group } from '../../csuite/fields/group/FieldGroup'
@@ -25,7 +25,6 @@ import type { RenderProps } from './RenderProps'
 import type { RenderRule } from './RenderRule'
 import type { FC } from 'react'
 
-/* eslint-disable @typescript-eslint/no-namespace */
 declare global {
    namespace RENDERER {
       // what is passed to `uiui` in the config
@@ -56,7 +55,6 @@ declare global {
          bool: typeof Field_bool
          choices: typeof Field_choices
          color: typeof Field_color
-         custom: typeof Field_custom
          date: typeof Field_date
          enum: typeof Field_enum
          image: typeof Field_image
@@ -80,7 +78,6 @@ declare global {
          | 'bool'
          | 'choices'
          | 'color'
-         | 'custom'
          | 'date'
          | 'enum'
          | 'image'

@@ -63,11 +63,11 @@ export class Field_prompt extends Field {
    static codeForTypescriptValue = () => `Field_prompt`
    public static readonly patchedSerialPaths: readonly string[] = Object.freeze(['val'])
    static generateSerial(
-      value: Maybe<Field_prompt['{value}']>,
+      setValue: Maybe<Field_prompt['{value}']>,
       config: Field_prompt['{config}'],
    ): Field_prompt['{serial}'] {
-      if (value == null && config.default == null) return this.unsetSerial
-      return { $: 'prompt', val: value != null ? value.zSerial.val : config.default }
+      if (setValue == null && config.default == null) return this.unsetSerial
+      return { $: 'prompt', val: setValue != null ? setValue.zSerial.val : config.default }
    }
    static migrateSerial(): undefined {}
 
@@ -210,13 +210,6 @@ export class Field_prompt extends Field {
    }
 
    // #region ...
-
-   get animateResize(): false {
-      // codemirror resize automatically every time a line is added
-      // the animation is just annoying there.
-      return false
-   }
-
    compile = (p: {
       /** for wildcard */
       seed?: number
