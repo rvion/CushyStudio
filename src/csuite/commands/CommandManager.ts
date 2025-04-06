@@ -1,7 +1,7 @@
 import type { Command, CommandContext } from './Command'
 import type { KeyboardEvent } from 'react'
 
-import { makeAutoObservable, observable } from 'mobx'
+import { computed, makeAutoObservable, observable } from 'mobx'
 
 import { META_NAME, MOD_KEY } from '../accelerators/META_NAME'
 import { Trigger } from '../trigger/Trigger'
@@ -46,10 +46,10 @@ export class CommandManager {
       } = {},
    ) {
       makeAutoObservable(this, {
-         commands: observable.shallow,
-         commandByShortcut: observable.shallow,
-         commandByContext: observable.shallow,
-         contextByName: observable.shallow,
+         // commands: observable,
+         // commandByShortcut: observable,
+         // commandByContext: observable,
+         // contextByName: observable.shallow,
 
          // items are readonly, no need to make them recursively observabel
          lastTriggered: observable.shallow,
@@ -63,6 +63,16 @@ export class CommandManager {
 
    /** index of all commands, by their ID */
    commands: Map<Command['id'], Command> = new Map()
+   get commandsAsArray(): Command[] {
+      return Array.from(this.commands.values())
+   }
+
+   get allKnownContextNames(): string[] {
+      return this.allKnownContexts.map((ctx) => ctx.name)
+   }
+   get allKnownContexts(): CommandContext[] {
+      return Array.from(this.commandByContext.keys())
+   }
 
    /** index of all commands, by their shortcut */
    commandByShortcut: Map<string, Command[]> = new Map()
@@ -121,6 +131,16 @@ export class CommandManager {
          next.push(op)
          // store back the updataed list list
          this.commandByShortcut.set(key, next)
+      }
+
+      // index by context
+      if (this.commandByContext.has(op.ctx)) {
+         const list = this.commandByContext.get(op.ctx)!
+         const next = list.filter((o) => o.id !== op.id)
+         next.push(op)
+         this.commandByContext.set(op.ctx, next)
+      } else {
+         this.commandByContext.set(op.ctx, [op])
       }
    }
 

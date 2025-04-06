@@ -970,11 +970,18 @@ export class STATE {
       writeFileSync(absPath, content, 'utf-8')
    }
 
-   preferences = {
-      interface: interfaceConf,
-      system: systemConf,
-      theme: themeConf,
-   }
+   readonly preferences = observable(
+      {
+         interface: interfaceConf,
+         system: systemConf,
+         theme: themeConf,
+      },
+      {
+         interface: observable.ref,
+         system: observable.ref,
+         theme: observable.ref,
+      },
+   )
 
    csuite: CSuiteConfig = new CSuite_ThemeCushy(this)
 
