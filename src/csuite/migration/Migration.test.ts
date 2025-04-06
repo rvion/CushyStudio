@@ -53,7 +53,7 @@ describe('migrator', () => {
       //     },
       //     config: (b) => b.string(),
       //     action: ({ document, config, anomaly, data }) => {
-      //         data.field.value = config.value
+      //         data.field.zValue = config.value
       //         return 'SUCCESS'
       //     },
       // })

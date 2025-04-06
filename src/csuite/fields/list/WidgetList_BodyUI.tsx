@@ -7,7 +7,8 @@ import { ListItemMoveUpButtonUI } from './ListItemMoveUpButtonUI'
 
 export const WidgetList_BodyUI = obs(function WidgetList_BodyUI_<T extends CSchema>(p: {
    field: Field_list<T>
-   forLabelUse: 'key' | 'index'
+   /** defaults to `index` */
+   forLabelUse?: 'key' | 'index'
    className?: string
 }) {
    const listField = p.field

@@ -24,7 +24,7 @@ export const StackLatentUI = obs(function WeaverLatentUI_(p: {
             <uy.layout.Row align>
                {Object.keys(field.mode.zConfig.items).map((key: string) => {
                   return (
-                     <uy.inputs.InputBoolUI
+                     <uy.inputs.BoolUI
                         toggleGroup={field.zUid + '_LATENTGROUP'}
                         display={'button'}
                         expand
@@ -32,7 +32,7 @@ export const StackLatentUI = obs(function WeaverLatentUI_(p: {
                         onValueChange={() => field.mode.toggleBranch(key as any)}
                      >
                         {key}
-                     </uy.inputs.InputBoolUI>
+                     </uy.inputs.BoolUI>
                   )
                })}
             </uy.layout.Row>
@@ -76,10 +76,10 @@ export const StackLatentUI = obs(function WeaverLatentUI_(p: {
 })
 const _EmptyUI = obs(function _EmptyUI_(p: { field: $WeaverLatent['{field}'] }) {
    // const theme = cushy.preferences.theme.zValue
-   const f = p.field.value
-   const imageL = p.field.Image.value
+   const f = p.field.zValue
+   const imageL = p.field.image.zValue
 
-   const [isOver, dropRef] = uy.dropZone({
+   const [isOver, dropRef] = uy.dnd.useDropZone({
       config: { shallow: true },
       Image: {
          onDrop: (item, monitor) => {
@@ -87,9 +87,9 @@ const _EmptyUI = obs(function _EmptyUI_(p: { field: $WeaverLatent['{field}'] }) 
          },
          onHover: (item, monitor) => {
             cushy.dndHandler.setContent({
-               icon: 'mdiImage',
+               icon: IKONS.mdiImage,
                label: 'Drop Image',
-               suffixIcon: 'mdiMenuOpen',
+               suffixIcon: IKONS.mdiMenuOpen,
             })
          },
       },
@@ -142,7 +142,7 @@ const _EmptyUI = obs(function _EmptyUI_(p: { field: $WeaverLatent['{field}'] }) 
                      >
                         <img
                            //
-                           src={p.field.Image.value.url}
+                           src={p.field.image.zValue.url}
                            tw='h-full w-full object-contain '
                            style={{
                               transform: `
@@ -168,10 +168,10 @@ const _EmptyUI = obs(function _EmptyUI_(p: { field: $WeaverLatent['{field}'] }) 
 })
 
 // Could probably be re-used if de-coupled from the field, fuck this thing
-const _SizeIndicatorUI = obs(function _SizeIndicatorUI_(p: { field: $WeaverLatent['{Field}'] }) {
+const _SizeIndicatorUI = obs(function _SizeIndicatorUI_(p: { field: $WeaverLatent['{field}'] }) {
    const theme = cushy.preferences.theme.zValue
-   const f = p.field.value
-   const imageL = p.field.Image.value
+   const f = p.field.zValue
+   const imageL = p.field.image.zValue
 
    const horizontal = f.mode.image ? imageL.width > imageL.height : f.dimensions.width > f.dimensions.height
 
@@ -224,9 +224,10 @@ const _SizeIndicatorUI = obs(function _SizeIndicatorUI_(p: { field: $WeaverLaten
                                 hue: 145,
                              }
                            : {
-                                contrast: theme.global.active.l?.contrast
-                                   ? theme.global.active.l?.contrast + 0.1
-                                   : undefined,
+                                contrast:
+                                   theme.global.active.l?.contrast != null
+                                      ? theme.global.active.l?.contrast + 0.1
+                                      : undefined,
                                 // contrast: 100,
                                 chroma: theme.global.active.c?.chroma,
                                 chromaBlend: theme.global.active.c?.chromaBlend,

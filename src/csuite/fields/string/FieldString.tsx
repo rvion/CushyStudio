@@ -95,6 +95,9 @@ export interface Field_string {
 
 // #region STATE
 export class Field_string extends Field {
+   set _(next: this['{value}']) { this.zValue = next } // prettier-ignore
+   get _() { return this.zValue } // prettier-ignore
+
    // #region Type
    static readonly type: 'str' = 'str'
    static readonly codeForTypescriptValue = (config: Field_string_ownConfig): string => {

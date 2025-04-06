@@ -7,9 +7,9 @@ some operation have well defined semantics
 
 -  should we fail ?
 -  should we revert silently to previously valid state
-   (e.g. field.value must be < 6)
--  field.value = 4 // ok
--  field.value = 8 // fails silently ? revert value to 4 ? clamp to 6
+   (e.g. field.zValue must be < 6)
+-  field.zValue = 4 // ok
+-  field.zValue = 8 // fails silently ? revert value to 4 ? clamp to 6
 
 -  what can the middleware promise do ?
 

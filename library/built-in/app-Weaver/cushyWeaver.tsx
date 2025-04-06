@@ -11,7 +11,7 @@ app<FIELD>({
       description: "An app that allows creating a variable amount of workflows as you need, based on a stacking system similar to Blender's modifier system. The Socialable Weaver", // prettier-ignore
    },
    ui: _cushyWeaverSchema,
-   layout: _cushyWeaverLayout(),
+   layout: _cushyWeaverLayout,
    run: _cushyWeaverRun,
    version: { major: 0, minor: 1, patch: 0 },
 })

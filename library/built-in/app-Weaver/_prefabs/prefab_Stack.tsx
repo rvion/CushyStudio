@@ -34,7 +34,7 @@ export const StackCardUI = obs(function StackCardUI_(p: {
       >
          <uy.misc.Frame tw='select-none !gap-2 px-1 py-1' line>
             <uy.misc.Frame row line linegap={false}>
-               <uy.inputs.InputBoolUI
+               <uy.inputs.BoolUI
                   tw='!border-none !bg-transparent'
                   // subtle
                   square
@@ -61,7 +61,7 @@ export const StackCardUI = obs(function StackCardUI_(p: {
                roundness={theme.global.roundness}
             >
                <uy.string.input field={p.field.name} />
-               <uy.inputs.InputBoolUI
+               <uy.inputs.BoolUI
                   display='button'
                   square
                   size={'input'}

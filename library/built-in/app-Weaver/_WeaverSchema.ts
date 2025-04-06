@@ -15,7 +15,7 @@ export type $CushyWeaverUI = Z.Group<{
    // extra2: $extra2
 }>
 
-export function _cushyWeaverSchema(b: X.Builder): $CushyWeaverUI {
+export function _cushyWeaverSchema(b: Z.Builder): $CushyWeaverUI {
    return b.fields({
       stack: b
          .fields({

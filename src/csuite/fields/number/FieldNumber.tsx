@@ -53,6 +53,9 @@ export interface Field_number {
 
 // #region STATE
 export class Field_number extends Field {
+   set _(next: this['{value}']) { this.zValue = next } // prettier-ignore
+   get _() { return this.zValue } // prettier-ignore
+
    // #region TYPE
    static readonly type: 'number' = 'number'
    static readonly codeForTypescriptValue = (config: Field_number['{config}']): string => 'number'

@@ -13,7 +13,7 @@ export type $WeaverPromptRegion = Z.Group<{
    lock: Z.Bool
 }>
 
-function weaverPromptRegion(b: X.Builder, options?: {}): $WeaverPromptRegion {
+function weaverPromptRegion(b: Z.Builder, options?: {}): $WeaverPromptRegion {
    return b.fields({
       enabled: b.bool({ default: true }),
       x: b.number({ default: 0 }),
@@ -41,7 +41,7 @@ export type $WeaverPrompt = Z.Group<{
    regions: Z.List<$WeaverPromptRegion>
 }>
 
-export function weaverPrompt(b: X.Builder, options?: { default?: string }): $WeaverPrompt {
+export function weaverPrompt(b: Z.Builder, options?: { default?: string }): $WeaverPrompt {
    return b.fields(
       //
       {
@@ -53,23 +53,23 @@ export function weaverPrompt(b: X.Builder, options?: { default?: string }): $Wea
             description: 'When true, the prompt will apply positively',
          }),
          prompt: b.prompt({
-            icon: 'mdiPlusBoxOutline',
+            icon: IKONS.mdiPlusBoxOutline,
             // background: { hue: 150, chroma: 0.05 },
             default: options?.default ?? '',
             presets: [
                //
                {
                   label: 'Portrait',
-                  icon: 'mdiFaceWoman',
+                  icon: IKONS.mdiFaceWoman,
                   apply: (w) => w.setText('portrait, face'),
                },
                {
                   label: 'Landscape',
-                  icon: 'mdiImageFilterHdr',
+                  icon: IKONS.mdiImageFilterHdr,
                   apply: (w) => w.setText('landscape, nature'),
                },
-               { label: 'Tree', icon: 'mdiTree', apply: (w) => w.setText(samplePrompts.tree) },
-               { label: 'Abstract', icon: 'mdiShape', apply: (w) => w.setText('abstract, art') },
+               { label: 'Tree', icon: IKONS.mdiTree, apply: (w) => w.setText(samplePrompts.tree) },
+               { label: 'Abstract', icon: IKONS.mdiShape, apply: (w) => w.setText('abstract, art') },
             ],
          }),
          regions: weaverPromptRegion(b).list({ hidden: true }),
@@ -84,7 +84,7 @@ export type $WeaverPromptList = Z.Group<{
    prompts: Z.List<$WeaverPrompt>
 }>
 
-export function promptList(b: X.Builder, options?: { default?: string }): $WeaverPromptList {
+export function promptList(b: Z.Builder, options?: { default?: string }): $WeaverPromptList {
    const tags = cushy.danbooru.tags
    // const artists = tags.filter((t) => t.category === 1).map((t) => t.text)
 
@@ -110,6 +110,6 @@ export function promptList(b: X.Builder, options?: { default?: string }): $Weave
          //     tags.filter((t) => t.category === 1).map((t) => ({ id: t.text, label: `${t.text} (${t.count})` })),
          // ),
       },
-      { icon: 'mdiTextBoxPlus' },
+      { icon: IKONS.mdiTextBoxPlus },
    )
 }

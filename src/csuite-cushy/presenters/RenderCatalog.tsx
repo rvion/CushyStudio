@@ -69,7 +69,7 @@ const catalog_wrappers = {
 }
 
 const catalog_icons = {
-   IkonOf: IkonOf,
+   Of: IkonOf,
 }
 
 const catalog_message = {
@@ -109,8 +109,8 @@ const catalog_Indent = {
 // #region inputs
 
 const catalog_inputs = {
-   InputBoolUI: InputBoolUI,
-   InputNumberUI: InputNumberUI,
+   BoolUI: InputBoolUI,
+   NumberUI: InputNumberUI,
 }
 // #region shells
 

@@ -65,6 +65,9 @@ export interface Field_bool extends Field {
 }
 
 export class Field_bool extends Field {
+   set _(next: this['{value}']) { this.zValue = next } // prettier-ignore
+   get _() { return this.zValue } // prettier-ignore
+
    // #region TYPE
    static readonly type: 'bool' = 'bool'
    static readonly codeForTypescriptValue = (config: Field_bool_ownConfig): string => 'boolean'

@@ -1,21 +1,20 @@
-import type { IconName } from '../../../../../src/csuite/icons/icons'
+import type { IconName } from '../../../../../src/csuite/icons/IconName'
 import type { $WeaverPromptList } from './WeaverPrompting'
 
-import { POPUP } from '../../../../../src/widgets/misc/SimplePopUp'
 import { StackCardUI, type StackData } from '../prefab_Stack'
 
 export const StackPromptingUI = obs(function StackPromptingUI_(p: {
-   field: $WeaverPromptList['$Field']
-   datafield: StackData['$Field']
-   stackField: Z.List<StackData>['$Field']
+   field: $WeaverPromptList['{field}']
+   datafield: StackData['{field}']
+   stackField: Z.List<StackData>['{field}']
    stackIndex: number
 }) {
-   const activePrompt = p.field.Prompts.items[p.field.ActiveIndex.value]
+   const activePrompt = p.field.prompts.items[p.field.activeIndex.zValue]
    const index = p.stackIndex
    const prompts = p.field
    const theme = cushy.preferences.theme.zValue
 
-   const [isDropZoneHovered, dropRef] = uy.dropZone({
+   const [isDropZoneHovered, dropRef] = uy.dnd.useDropZone({
       config: { shallow: true },
       Image: {
          onDrop: (item, monitor) => {
@@ -49,12 +48,12 @@ export const StackPromptingUI = obs(function StackPromptingUI_(p: {
                                  tw='max-w-[500px] !border-none line-clamp-1 p-1 px-2'
                                  hover
                                  onClick={() => {
-                                    const prompt = prompts.fields.prompts.addItem()
+                                    const prompt = prompts.prompts.addItem()
                                     if (!prompt) {
                                        console.warn('Unable to add prompt')
                                        return
                                     }
-                                    prompt.fields.prompt.text = item.text
+                                    prompt.prompt.text = item.text
 
                                     p.stop()
                                  }}
@@ -81,9 +80,9 @@ export const StackPromptingUI = obs(function StackPromptingUI_(p: {
          },
          onHover: (item, monitor) => {
             cushy.dndHandler.setContent({
-               icon: 'mdiImage',
+               icon: IKONS.mdiImage,
                label: 'Insert Prompt from image',
-               suffixIcon: 'mdiPencilPlus',
+               suffixIcon: IKONS.mdiPencilPlus,
             })
          },
       },
@@ -96,31 +95,32 @@ export const StackPromptingUI = obs(function StackPromptingUI_(p: {
          field={p.datafield}
          stackField={p.stackField}
          stackIndex={index}
-         icon={p.field.icon ?? undefined}
+         icon={p.field.zIcon ?? undefined}
       >
          <div ref={dropRef} tw='py-1'>
-            <uy.list.BlenderLike<typeof prompts.fields.prompts> //
-               activeIndex={prompts.value.activeIndex}
-               field={prompts.fields.prompts}
+            <uy.list.BlenderLike<typeof prompts.prompts> //
+               activeIndex={prompts.activeIndex._}
+               field={prompts.prompts}
                renderItem={(item, index) => {
-                  const conditioningIcon: IconName = index == 0 ? 'mdiArrowDown' : 'mdiFormatListGroupPlus'
-                  const hasPrompt = item.fields.prompt.text != ''
-                  const active = prompts.value.activeIndex == index
-                  const positive = item.value.positive
+                  const conditioningIcon: IconName =
+                     index == 0 ? IKONS.mdiArrowDown : IKONS.mdiFormatListGroupPlus
+                  const hasPrompt = item.prompt.text != ''
+                  const active = prompts.zValue.activeIndex == index
+                  const positive = item.zValue.positive
                   return (
                      <uy.misc.Frame
                         roundness={theme.global.roundness}
                         tw={['flex items-center overflow-clip', !hasPrompt && 'opacity-50']}
                         hover
-                        key={item.id}
-                        onMouseDown={() => (prompts.ActiveIndex.value = index)}
+                        key={item.zUid}
+                        onMouseDown={() => (prompts.activeIndex._ = index)}
                         base={positive ? {} : { chroma: 0.1, hue: 0 }}
                         border={positive ? {} : active ? { contrast: 0.1, chromaBlend: 10, hue: 0 } : {}}
                         style={{
                            borderStyle: positive ? 'solid' : 'dashed',
                         }}
                      >
-                        <uy.inputs.InputBoolUI
+                        <uy.inputs.BoolUI
                            tw='!border-none !bg-transparent'
                            square
                            display={'button'}
@@ -130,7 +130,7 @@ export const StackPromptingUI = obs(function StackPromptingUI_(p: {
                            icon={positive ? IKONS.mdiPlus : IKONS.mdiMinus}
                            value={positive}
                            onValueChange={() => {
-                              item.value.positive = !positive
+                              item.positive._ = !positive
                            }}
                            onMouseDown={(ev) => {
                               ev.stopPropagation()
@@ -140,17 +140,13 @@ export const StackPromptingUI = obs(function StackPromptingUI_(p: {
                         <span
                            tw={[
                               'line-clamp-1 w-full flex-grow px-1',
-                              !item.fields.enabled.value && hasPrompt && 'opacity-50',
+                              !item.enabled._ && hasPrompt && 'opacity-50',
                            ]}
                         >
-                           {item.fields.name.value == ''
-                              ? hasPrompt
-                                 ? item.fields.prompt.text
-                                 : 'Empty Prompt'
-                              : item.fields.name.value}
+                           {item.name._ == '' ? (hasPrompt ? item.prompt.text : 'Empty Prompt') : item.name._}
                         </span>
                         <div tw='flex-none'>
-                           <uy.ikonOf name={conditioningIcon} />
+                           <uy.icons.Of name={conditioningIcon} />
                         </div>
                         <div tw='w-2' />
                         <div tw='flex-none'>
@@ -159,15 +155,15 @@ export const StackPromptingUI = obs(function StackPromptingUI_(p: {
                                  square
                                  // disabled={!hasPrompt}
                                  toggleGroup='prompt'
-                                 value={item.fields.enabled.value}
-                                 onValueChange={(v) => (item.fields.enabled.value = v)}
+                                 value={item.enabled._}
+                                 onValueChange={(v) => (item.enabled._ = v)}
                                  tooltip={'Whether or not the prompt effects the generation'}
                               />
                            ) : (
                               <uy.misc.Frame
                                  // base={{ hue: 0, chromaBlend: 10 }}
                                  text={{ contrast: 0.5, hue: 90, chromaBlend: 10 }}
-                                 icon='mdiAlert'
+                                 icon={IKONS.mdiAlert}
                                  size='input'
                                  square
                                  tooltip='This entry will have no effect because the prompt is empty'
@@ -183,27 +179,25 @@ export const StackPromptingUI = obs(function StackPromptingUI_(p: {
          <uy.misc.Button
             hover
             tw='w-full !content-start !items-center !justify-start !border-none !bg-transparent py-[15px] pl-3.5 text-center'
-            icon={p.field.fields.showEditor.value ? 'mdiChevronDown' : 'mdiChevronRight'}
+            icon={p.field.showEditor._ ? IKONS.mdiChevronDown : IKONS.mdiChevronRight}
             onMouseDown={(e) => {
-               if (e.button != 0) {
-                  return
-               }
-               p.field.fields.showEditor.toggle()
+               if (e.button != 0) return
+               p.field.showEditor.toggle()
             }}
          >
             Editor
          </uy.misc.Button>
 
-         {p.field.fields.showEditor.value && (
+         {p.field.showEditor.zValue && (
             <uy.misc.Frame tw='gap-2 ' col>
                {activePrompt ? (
                   <>
-                     <uy.string.input field={activePrompt.fields.name} />
+                     <uy.string.input field={activePrompt.name} />
 
-                     <uy.boolean.default
+                     <uy.inputs.BoolUI
                         toggleGroup='y802w34ty80we4th80er0erh8008'
-                        value={activePrompt.value.enabled}
-                        onValueChange={(v) => (activePrompt.value.enabled = v)}
+                        value={activePrompt.zValue.enabled}
+                        onValueChange={(v) => (activePrompt.zValue.enabled = v)}
                         widgetLabel='Prompt Enabled'
                         text='Prompt Enabled'
                         // Tooltip needs to be gathered from the field
@@ -212,7 +206,7 @@ export const StackPromptingUI = obs(function StackPromptingUI_(p: {
                         expand
                      />
                      <uy.misc.ResizableFrame tw='!bg-transparent'>
-                        <uy.group.Default tw='flex-1' field={activePrompt} />
+                        <uy.group.DefaultBody tw='flex-1' field={activePrompt} />
                      </uy.misc.ResizableFrame>
                   </>
                ) : (

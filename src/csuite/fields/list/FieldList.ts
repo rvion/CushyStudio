@@ -213,6 +213,15 @@ export class Field_list<T extends CSchema> extends Field {
       return numberToListKey(nth) // conflict ?
    }
 
+   get firstOrNull(): Maybe<T['{field}']> {
+      return this.items_[0]
+   }
+   get firstOrCrash() {
+      const first = this.items_[0]
+      if (first == null) throw new Error(`❌ FieldList.firstOrCrash: no items`)
+      return first
+   }
+
    get zIsOwnSet(): boolean {
       return this.zSerial.items_ != null
    }

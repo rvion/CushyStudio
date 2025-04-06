@@ -44,7 +44,7 @@ export function _evalPrompt(
       printWildcards: true,
    })
    const clip = posPrompt.clip
-   let ckpt = posPrompt.ckpt
-   let conditioning: Comfy.Signal['CONDITIONING'] = posPrompt.conditioning // graph.CLIPTextEncode({ clip: clipPos, text: finalText })
+   const ckpt = posPrompt.ckpt
+   const conditioning: Comfy.Signal['CONDITIONING'] = posPrompt.conditioning // graph.CLIPTextEncode({ clip: clipPos, text: finalText })
    return { conditioning, ckpt, clip }
 }

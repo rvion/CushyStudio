@@ -41,7 +41,7 @@ const MyComponent = obs((p: { field: MyField }) => {
    return (
       <div>
          <div tw='loading loading-spinner'></div>
-         <uy.inputs.InputNumberUI //
+         <uy.inputs.NumberUI //
             mode='int'
             value={field.magicNumber1}
             onValueChange={(next) => (field.magicNumber1 = next)}
