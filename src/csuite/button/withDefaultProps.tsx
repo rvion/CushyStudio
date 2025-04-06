@@ -1,6 +1,7 @@
-// eslint-disable-next-line no-restricted-imports
-
 import type { PropsOf } from '../types/PropsOf'
+
+// eslint-disable-next-line no-restricted-imports
+import { observer } from 'mobx-react-lite'
 
 import { objectAssignTsEfficient_pt_t } from '../utils/objectAssignTsEfficient'
 
