@@ -7,7 +7,6 @@ import { WidgetLabelContainerUI } from '../../csuite/form/WidgetLabelContainerUI
 import { Frame } from '../../csuite/frame/Frame'
 import { useProvenance } from '../../csuite/provenance/Provenance'
 import { RevealUI } from '../../csuite/reveal/RevealUI'
-import { AnimatedSizeUI } from '../../csuite/smooth-size/AnimatedSizeUI'
 import { renderFCOrNode, renderFCOrNodeWithWrapper } from '../../csuite/utils/renderFCOrNode'
 import { WidgetPresetsUI } from '../catalog/Presets/WidgetPresets'
 
@@ -69,7 +68,7 @@ const CushyShellUI = obs(function CushySHell(
       </Frame>
    )
 
-   WUI = <AnimatedSizeUI>{WUI}</AnimatedSizeUI>
+   // WUI = <AnimatedSizeUI>{WUI}</AnimatedSizeUI>
    if (p.Decoration != null)
       // WUI = renderFCOrNode(p.Decoration, {
       WUI = renderFCOrNode(p.Decoration, {

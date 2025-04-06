@@ -2,7 +2,6 @@ import type { RenderPropsCompiled } from '../presenters/RenderPropsCompiled'
 
 import { WidgetHeaderContainerUI } from '../../csuite/form/WidgetHeaderContainerUI'
 import { Frame } from '../../csuite/frame/Frame'
-import { AnimatedSizeUI } from '../../csuite/smooth-size/AnimatedSizeUI'
 import { _isFC, renderFCOrNode, renderFCOrNodeWithWrapper } from '../../csuite/utils/renderFCOrNode'
 
 export const ShellMobileUI = obs(function ShellMobile(p: RenderPropsCompiled) {
@@ -50,6 +49,6 @@ export const ShellMobileUI = obs(function ShellMobile(p: RenderPropsCompiled) {
       </Frame>
    )
 
-   if (p.Body != null) return <AnimatedSizeUI>{WUI}</AnimatedSizeUI>
+   if (p.Body != null) return WUI // return <AnimatedSizeUI>{WUI}</AnimatedSizeUI>
    return WUI
 })
