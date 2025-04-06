@@ -2,8 +2,8 @@ import { cushyFactory } from '../../controls/CushyBuilder'
 import { readJSON, writeJSON } from '../jsonUtils'
 
 export const systemConf = cushyFactory.document(
-   (ui) =>
-      ui.fields(
+   (b) =>
+      b.fields(
          {
             // output: ui.group({
             //     items: {
@@ -21,26 +21,25 @@ export const systemConf = cushyFactory.document(
             //         }),
             //     },
             // }),
-            externalEditor: ui.string({
-               //
+            externalEditor: b.string({
                label: 'External Editor',
                description:
                   'The name of your preffered text editor to use when opening text files externally',
                default: 'code',
             }),
-            tags: ui.fields({
-               danbooru: ui.bool({
+            tags: b.fields({
+               danbooru: b.bool({
                   default: true,
                   label: 'Danbooru',
                }),
-               danbooruNSFW: ui.bool({
+               danbooruNSFW: b.bool({
                   default: false,
                   label: 'Danbooru NSFW',
                }),
-               e621: ui.bool({ default: false, label: 'e621' }),
+               e621: b.bool({ default: false, label: 'e621' }),
 
-               e621NSFW: ui.bool({ default: false, label: 'e621 NSFW' }),
-               remove: ui.int({ default: 0, min: 0, label: 'Minimum count' }),
+               e621NSFW: b.bool({ default: false, label: 'e621 NSFW' }),
+               remove: b.int({ default: 0, min: 0, label: 'Minimum count' }),
             }),
          },
          {
