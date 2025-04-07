@@ -186,6 +186,9 @@
         "zod-validation-error": "^3.4.0"
     },
     "devDependencies": {
+        "@babel/plugin-syntax-import-attributes": "^7.26.0",
+        "@babel/preset-react": "^7.26.3",
+        "@babel/preset-typescript": "^7.27.0",
         "@eslint-community/eslint-plugin-eslint-comments": "^4.4.1",
         "@types/lodash": "^4.17.16",
         "@types/marked": "^6.0.0",
@@ -201,11 +204,11 @@
         "@vitest/eslint-plugin": "^1.1.39",
         "cross-env": "^7.0.3",
         "electron-devtools-installer": "^4.0.0",
+        "eslint": "^9.24.0",
         "eslint-config-prettier": "^10.1.1",
         "eslint-plugin-react-refresh": "^0.4.19",
         "eslint-plugin-tailwindcss": "^3.18.0",
         "eslint-plugin-unused-imports": "^4.1.4",
-        "eslint": "^9.24.0",
         "format-imports": "^4.0.7",
         "less": "^4.3.0",
         "node-abi": "^4.2.0",

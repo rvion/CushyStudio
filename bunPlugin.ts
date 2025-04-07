@@ -1,4 +1,6 @@
 // @ts-nocheck
+import './src/setup'
+
 // todo: add back @bun/types later when bun types do not conflict with node types
 import * as babel from '@babel/core'
 import { plugin } from 'bun'
@@ -29,7 +31,8 @@ plugin({
 
       // 2. change how .ts and .tsx files are loaded
       log(`setup took ${Date.now() - startSetup}ms`)
-      const filter = /.*monoloco\/src.*\.(ts|tsx)$/
+
+      const filter = /\.(ts|tsx)$/
       build.onLoad({ filter }, async (args): Promise<{ loader: 'js'; contents: string }> => {
          try {
             watchFileSet.add(args.path.replace(folderToWatch, ''))
@@ -37,9 +40,14 @@ plugin({
             const startTranspiling = performance.now()
             let codeJS = await transpileFile(args.path, codeTs)
 
+            const relPathXX = '../'.repeat(args.path.replace(folderToWatch, '').split('/').length)
+            // console.log(`[🤠] `, folderToWatch)
+            // console.log(`[🤠] `, args.path)
+            // console.log(`[🤠] `, relPathXX)
             // 3. inject a dependency on a file that do NOT go though the plugin
-            if (!codeJS.startsWith(`import '${RELOAD_HACK_FILENAME}'`))
-               codeJS = `import '${RELOAD_HACK_FILENAME}'\n${codeJS}`
+            if (!args.path.endsWith('bunPlugin.reload.ts'))
+               if (!codeJS.startsWith(`import '${RELOAD_HACK_FILENAME}'`))
+                  codeJS = `import '${relPathXX}${RELOAD_HACK_FILENAME}'\n${codeJS}`
 
             totalTimeSpentTranspiling += performance.now() - startTranspiling
             addToCache(codeTs, codeJS)
