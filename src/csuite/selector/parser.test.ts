@@ -14,13 +14,15 @@ import { FieldSelector } from './selector'
 describe('SelectorParser Tests', () => {
    it('can parse not', () => {
       // prettier-ignore
-      expect(FieldSelector.from('.foo!(.bar)').parse().steps).toEqual([
+      expect(FieldSelector.from('.foo!(.bar)."super.a.b.c"').parse().steps).toEqual([
          { type: 'axis', axis: '.' },
          { type: 'mount', key: 'foo' },
          { type: 'not', steps: [
             { type: 'axis', axis: '.' },
             { type: 'mount', key: 'bar' },
          ] },
+         {type: 'axis', axis: '.' },
+         {type: 'mount', key: 'super.a.b.c' },
       ])
    })
    it('can parse has', () => {

@@ -488,7 +488,7 @@ export class FieldSelector {
       else if (char === '&') return this.parseNested()
       else if (char === '#') return this.parseHasId()
       else if (char === '%') return this.parseHasTag()
-      else if (/[a-zA-Z0-9_-]/.test(char!)) return this.parseFilterKey()
+      else if (/["a-zA-Z0-9_-]/.test(char!)) return this.parseFilterKey()
       else if (axes.includes(char as any)) return this.parseAxisStep()
       else
          this.FAIL(
@@ -652,6 +652,14 @@ export class FieldSelector {
    }
 
    private consumeNextWord(): string {
+      // quoted word
+      if (this.peek() === '"') {
+         this.consumeCharOrThrow('"')
+         const word = this.consumeWhile((char) => char !== '"')
+         this.consumeCharOrThrow('"')
+         return word
+      }
+
       const word = this.consumeWhile((char) => /[a-zA-Z0-9_-]/.test(char))
       if (word.length === 0)
          this.FAIL(`Expected word at position ${this.position} in selector "${this.selector}"`)
