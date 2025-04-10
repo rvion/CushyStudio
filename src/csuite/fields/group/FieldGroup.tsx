@@ -321,7 +321,8 @@ export class Field_group<T extends SchemaDict> extends Field {
       return this
    }
 
-   set zValue(val: Field_group_value<T>) {
+   /** only here to avoid copy-pasting the implementation twice */
+   private zValue__setter(val: Field_group_value<T>) {
       this.zRunInTransaction(() => {
          for (const key in val) {
             const child = this.zFields[key]
@@ -333,15 +334,13 @@ export class Field_group<T extends SchemaDict> extends Field {
          }
       })
    }
-
+   set zValue(val: Field_group_value<T>) { this.zValue__setter(val) } // prettier-ignore
    get zValue(): Field_group_value<T> {
       const value = new Proxy({}, this.makeValueProxy('fail'))
       void this.zSerial
       Object.defineProperty(this, 'zValue', {
-         get: () => {
-            void this.zSerial
-            return value
-         },
+         get: () => (void this.zSerial, value),
+         set: (val: Field_group_value<T>) => this.zValue__setter(val),
       })
       return value
    }
@@ -349,10 +348,7 @@ export class Field_group<T extends SchemaDict> extends Field {
       const value = new Proxy({}, this.makeValueProxy('zero'))
       void this.zSerial
       Object.defineProperty(this, 'zValueOrZero', {
-         get: () => {
-            void this.zSerial
-            return value
-         },
+         get: () => (void this.zSerial, value),
       })
       return value
    }
@@ -360,17 +356,14 @@ export class Field_group<T extends SchemaDict> extends Field {
       const value = new Proxy({}, this.makeValueProxy('unchecked'))
       void this.zSerial
       Object.defineProperty(this, 'zValueUnchecked', {
-         get: () => {
-            void this.zSerial
-            return value
-         },
+         get: () => (void this.zSerial, value),
       })
       return value
    }
-   get zValue_set(): Field_group_SetValue<T> {
+   get zSetValue(): Field_group_SetValue<T> {
       const value = new Proxy({}, this.makeValueProxy('set'))
       void this.zSerial
-      Object.defineProperty(this, 'zValue_set', {
+      Object.defineProperty(this, 'zSetValue', {
          get: () => {
             void this.zValue
             return value
@@ -435,7 +428,7 @@ export class Field_group<T extends SchemaDict> extends Field {
 
    override zGetSetValue(): this['{setValue}'] | undefined {
       // console.log(`[💀 getSetValue] `, this.path)
-      return this.zValue_set
+      return this.zSetValue
    }
 
    override zReset(): void {

@@ -501,22 +501,20 @@ export class Field_selectMany<
       return this.selectedKeys
    }
 
+   /** only here to avoid copy-pasting the implementation twice */
+   private zValue__setter(next: VALUE[]) {
+      this.selectedKeys = next.map((val) => this.zConfig.getIdFromValue(val))
+   }
+
+   set zValue(next: VALUE[]) { this.zValue__setter(next) } // prettier-ignore
    get zValue(): VALUE[] {
       const value = new Proxy([], this.makeValueProxy())
       void this.zSerial
       Object.defineProperty(this, 'zValue', {
          get: () => (void this.zSerial, value),
-         set: (next: VALUE[]) => this.zSetValue__(next),
+         set: (next: VALUE[]) => this.zValue__setter(next),
       })
       return value
-   }
-
-   set zValue(next: VALUE[]) {
-      this.zSetValue__(next)
-   }
-
-   private zSetValue__(next: VALUE[]) {
-      this.selectedKeys = next.map((val) => this.zConfig.getIdFromValue(val))
    }
 
    get zValueOrZero(): VALUE[] {

@@ -648,7 +648,8 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field {
       }
    }
 
-   set zValue(val: Field_choices_value<T>) {
+   /** only here to avoid copy-pasting the implementation twice */
+   private zValue__setter(val: Field_choices_value<T>): void {
       this.zRunInTransaction(() => {
          for (const branch of this.allPossibleChoices) {
             this._setBranchValue(branch, val[branch])
@@ -657,14 +658,13 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field {
    }
 
    /** results, but only for active branches */
+   set zValue(val: Field_choices_value<T>) { this.zValue__setter(val) } // prettier-ignore
    get zValue(): Field_choices_value<T> {
       const value = new Proxy({} as any, this.makeValueProxy('fail'))
       void this.zSerial
       Object.defineProperty(this, 'zValue', {
-         get: () => {
-            void this.zSerial
-            return value
-         },
+         get: () => (void this.zSerial, value),
+         set: (val) => this.zValue__setter(val),
       })
       return value
    }
@@ -672,10 +672,7 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field {
       const value = new Proxy({} as any, this.makeValueProxy('zero'))
       void this.zSerial
       Object.defineProperty(this, 'zValueOrZero', {
-         get: () => {
-            void this.zSerial
-            return value
-         },
+         get: () => (void this.zSerial, value),
       })
       return value
    }
@@ -683,10 +680,7 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field {
       const value = new Proxy({} as any, this.makeValueProxy('unchecked'))
       void this.zSerial
       Object.defineProperty(this, 'zValueUnchecked', {
-         get: () => {
-            void this.zSerial
-            return value
-         },
+         get: () => (void this.zSerial, value),
       })
       return value
    }
@@ -694,10 +688,7 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field {
       const value = new Proxy({} as any, this.makeValueProxy('set'))
       void this.zSerial
       Object.defineProperty(this, 'value_set', {
-         get: () => {
-            void this.zSerial
-            return value
-         },
+         get: () => (void this.zSerial, value),
       })
       return value
    }

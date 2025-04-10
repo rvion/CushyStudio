@@ -504,23 +504,8 @@ export class Field_list<T extends CSchema> extends Field {
       // | ```
    }
 
-   /**
-    * code below is very wtf, and surprisingly simple for what it achieve
-    * see `src/csuite/model/TESTS/proxy.test.ts` if you're not scared
-    */
-
-   get zValue(): Field_list_value<T> {
-      const value = new Proxy([], this.makeValueProxy('fail'))
-      void this.zSerial
-      Object.defineProperty(this, 'zValue', {
-         get: () => {
-            void this.zSerial
-            return value
-         },
-      })
-      return value
-   }
-   set zValue(val: Field_list_value<T>) {
+   /** results, but only for active branches */
+   private zValue__setter = (val: Field_list_value<T>) => {
       this.zRunInTransaction(() => {
          for (let i = 0; i < val.length; i++) {
             // 1. replace existing items
@@ -532,14 +517,22 @@ export class Field_list<T extends CSchema> extends Field {
       })
    }
 
+   set zValue(val: Field_list_value<T>) { this.zValue__setter(val) } // prettier-ignore
+   get zValue(): Field_list_value<T> {
+      const value = new Proxy([], this.makeValueProxy('fail'))
+      void this.zSerial
+      Object.defineProperty(this, 'zValue', {
+         get: () => (void this.zSerial, value),
+         set: (val: Field_list_value<T>) => this.zValue__setter(val),
+      })
+      return value
+   }
+
    get zValueOrZero(): Field_list_value<T> {
       const value = new Proxy([], this.makeValueProxy('zero'))
       void this.zSerial
       Object.defineProperty(this, 'zValueOrZero', {
-         get: () => {
-            void this.zSerial
-            return value
-         },
+         get: () => (void this.zSerial, value),
       })
       return value
    }
@@ -547,10 +540,7 @@ export class Field_list<T extends CSchema> extends Field {
       const value = new Proxy([], this.makeValueProxy('unchecked'))
       void this.zSerial
       Object.defineProperty(this, 'zValueUnchecked', {
-         get: () => {
-            void this.zSerial
-            return value
-         },
+         get: () => (void this.zSerial, value),
       })
       return value
    }
@@ -558,10 +548,7 @@ export class Field_list<T extends CSchema> extends Field {
       const value = new Proxy([], this.makeValueProxy('set'))
       void this.zSerial
       Object.defineProperty(this, 'value_set', {
-         get: () => {
-            void this.zSerial
-            return value
-         },
+         get: () => (void this.zSerial, value),
       })
       return value
    }
