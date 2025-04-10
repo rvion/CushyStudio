@@ -11,8 +11,9 @@ import { computed } from 'mobx'
 
 import { type SimpleShape, simpleShape$ } from '../core-prefabs/ShapeSchema'
 import { Field_group, type MAGICFIELDS } from '../group/FieldGroup'
-import { WidgetListExt_LineUI } from './WidgetListExt_LineUI'
-import { WidgetListExtUI__Regional } from './WidgetListExtUI'
+
+// import { WidgetListExt_LineUI } from './WidgetListExt_LineUI'
+// import { WidgetListExtUI__Regional } from './WidgetListExtUI'
 
 // ------------------------------------------------------------------------------------------------------------------------
 export type Field_board_config<T extends CSchema> = {
@@ -83,10 +84,10 @@ export class Field_board<SCHEMA extends CSchema> extends Field_group<BoardDataSc
                   min: opts.defaultLength,
                }),
             },
-            { icon: opts.icon },
+            { icon: opts.icon, tags: ['board'] },
          )
          .useClass(Field_board<SCHEMA>, opts)
-         .withConfig({ uiui: { Body: WidgetListExtUI__Regional } })
+      // .withConfig({ uiui: { Body: WidgetListExtUI__Regional } })
    }
 
    @computed get width(): number {
@@ -98,5 +99,5 @@ export class Field_board<SCHEMA extends CSchema> extends Field_group<BoardDataSc
    }
 
    // somehow this is enough to make the ui work for now
-   DefaultHeaderUI: any = WidgetListExt_LineUI
+   // DefaultHeaderUI: any = WidgetListExt_LineUI
 }

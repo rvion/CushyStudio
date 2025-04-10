@@ -11,21 +11,11 @@ app({
       const chan = new cushy.Channel<Field_number>()
       return b.fields({
          // A. link from a field that exist somewhere else
-         linkedFromField: b.fields(
-            {
-               val1: b.linkedFromExternalField(someExternalField),
-               val2: b.linkedFromExternalField(someExternalField),
-               val3: b.linkedFromExternalField(someExternalField),
-            },
-            {
-               uiui: {
-                  // Decoration: (f) => <uy.decorations.Card {...f} contrast={30} />,
-                  // Before: (f) => <>🔴</>,
-                  // Header: (f) => <>coucou</>,
-                  // rules: [{ selector: '', uiconf: { After: <>🟢</> } }],
-               },
-            },
-         ),
+         linkedFromField: b.fields({
+            val1: b.linkedFromExternalField(someExternalField),
+            val2: b.linkedFromExternalField(someExternalField),
+            val3: b.linkedFromExternalField(someExternalField),
+         }),
 
          // B. link from a field that has been published to a channel
          linkedFromChannel: b.fields({

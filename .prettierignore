@@ -41,3 +41,6 @@ src/prompt/grammar/grammar.parser.ts
 
 # files code-generated
 # schema/global.d.ts
+
+# import order matters here
+src/setup.ts

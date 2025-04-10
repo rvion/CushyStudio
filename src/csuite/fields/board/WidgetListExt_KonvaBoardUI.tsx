@@ -1,6 +1,6 @@
 import type { Field_board } from './Field_board'
 
-import { observer, useLocalObservable } from 'mobx-react-lite'
+import { useLocalObservable } from 'mobx-react-lite'
 import { Layer, Stage } from 'react-konva'
 
 import { InputNumberUI } from '../../input-number/InputNumberUI'

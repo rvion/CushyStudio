@@ -1,7 +1,6 @@
 import type { FrameProps } from '../frame/Frame'
 
 import { makeAutoObservable, observable, runInAction } from 'mobx'
-
 import React, { useEffect, useMemo } from 'react'
 
 import { Frame } from '../frame/Frame'

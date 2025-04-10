@@ -520,6 +520,18 @@ export class Field_list<T extends CSchema> extends Field {
       })
       return value
    }
+   set zValue(val: Field_list_value<T>) {
+      this.zRunInTransaction(() => {
+         for (let i = 0; i < val.length; i++) {
+            // 1. replace existing items
+            if (i < this.items_.length) this.items_[i]!.zValue = val[i]
+            // 2. add missing items
+            else this.addItem({ at: i, value: val[i] })
+         }
+         this.splice(val.length)
+      })
+   }
+
    get zValueOrZero(): Field_list_value<T> {
       const value = new Proxy([], this.makeValueProxy('zero'))
       void this.zSerial
@@ -556,18 +568,6 @@ export class Field_list<T extends CSchema> extends Field {
 
    [Symbol.iterator](): IterableIterator<T['{field}']> {
       return this.items_[Symbol.iterator]()
-   }
-
-   set zValue(val: Field_list_value<T>) {
-      this.zRunInTransaction(() => {
-         for (let i = 0; i < val.length; i++) {
-            // 1. replace existing items
-            if (i < this.items_.length) this.items_[i]!.zValue = val[i]
-            // 2. add missing items
-            else this.addItem({ at: i, value: val[i] })
-         }
-         this.splice(val.length)
-      })
    }
 
    // 💬 2025-01-21 rvion: all of those `setSerial()`, `set()`, and `set value()` are wrong and should have

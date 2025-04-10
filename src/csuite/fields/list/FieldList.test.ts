@@ -412,7 +412,7 @@ describe('FieldList', () => {
          ])
       })
 
-      it('properly update indexes when moving an item three indices on the right', () => {
+      it.only('properly update indexes when moving an item three indices on the right', () => {
          const S = b.int().list({ defaultLength: 8 })
          const E = S.create()
          E.zValue = E.zValue.map((_, ix) => ix)

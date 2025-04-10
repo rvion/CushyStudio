@@ -109,21 +109,21 @@ describe('FieldGroup', () => {
          const E1 = S1.create()
          const E1Ann = _getAdministration(E1).appliedAnnotations_
          // expect(Object.keys(E1Ann).length).toBeGreaterThan(100)
-         expect(isObservableProp(E1, 'id')).toBe(false)
-         expect(isObservableProp(E1, 'schema')).toBe(false)
+         expect(isObservableProp(E1, 'zUid')).toBe(false)
+         expect(isObservableProp(E1, 'zSchema')).toBe(false)
          expect(E1.zNumFields).toBe(0)
          expect(E1.constructor).toBe(Field_group)
-         expect(isObservableProp(E1, 'numFields')).toBe(true)
+         expect(isObservableProp(E1, 'zNumFields')).toBe(true)
 
          // second fail
          const E2 = S1.create()
          const E2Ann = _getAdministration(E2).appliedAnnotations_
          // expect(Object.keys(E2Ann).length).toBeGreaterThan(100)
-         expect(isObservableProp(E2, 'id')).toBe(false)
-         expect(isObservableProp(E2, 'schema')).toBe(false)
+         expect(isObservableProp(E2, 'zUid')).toBe(false)
+         expect(isObservableProp(E2, 'zSchema')).toBe(false)
          expect(E2.zNumFields).toBe(0)
          expect(E2.constructor).toBe(Field_group)
-         expect(isObservableProp(E2, 'numFields')).toBe(true)
+         expect(isObservableProp(E2, 'zNumFields')).toBe(true)
 
          // TEST TO WRITE
          // .Foo on schema 1

@@ -505,12 +505,18 @@ export class Field_selectMany<
       const value = new Proxy([], this.makeValueProxy())
       void this.zSerial
       Object.defineProperty(this, 'zValue', {
-         get: () => {
-            void this.zSerial
-            return value
-         },
+         get: () => (void this.zSerial, value),
+         set: (next: VALUE[]) => this.zSetValue__(next),
       })
       return value
+   }
+
+   set zValue(next: VALUE[]) {
+      this.zSetValue__(next)
+   }
+
+   private zSetValue__(next: VALUE[]) {
+      this.selectedKeys = next.map((val) => this.zConfig.getIdFromValue(val))
    }
 
    get zValueOrZero(): VALUE[] {
@@ -586,10 +592,6 @@ export class Field_selectMany<
             return false
          },
       }
-   }
-
-   set zValue(next: VALUE[]) {
-      this.selectedKeys = next.map((val) => this.zConfig.getIdFromValue(val))
    }
 
    override zIsValueEqual(other: Field): boolean {

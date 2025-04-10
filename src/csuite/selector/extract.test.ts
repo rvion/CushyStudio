@@ -43,15 +43,15 @@ describe('SelectorCompiler Tests', () => {
          qux: 'hello',
       })
 
-      const X = '>@str=(this.map(v=>v.value).join("-"))'
+      const X = '>@str=(this.map(v=>v.zValue).join("-"))'
       expect(selector(X).parse()).toMatchObject({
          steps: [
             { type: 'axis', axis: '>' },
             { type: 'filterType', fieldType: 'str' },
-            { type: 'collect' /* collectCode: '(this.map(v=>v.value).join("-"))' */ },
+            { type: 'collect' /* collectCode: '(this.map(v=>v.zValue).join("-"))' */ },
          ],
       })
       expect(root.zExtractLastOrThrow(X)).toBe('33-a-b-c-hello')
-      expect(root.zExtractLastOrThrow('>@number=(this.reduce((r,a)=>r+a.value,0))')).toBe(52)
+      expect(root.zExtractLastOrThrow('>@number=(this.reduce((r,a)=>r+a.zValue,0))')).toBe(52)
    })
 })

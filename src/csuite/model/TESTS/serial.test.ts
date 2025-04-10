@@ -45,6 +45,10 @@ describe('assign to value object', () => {
       expectJSON({
          $: 'group',
          values_: {
+            _x: {
+               $: 'bool',
+               value: false,
+            },
             int0: { $: 'number', value: 0 },
             int3: { $: 'number', value: 4 },
             strEmpty: { $: 'str', value: '' },
@@ -61,18 +65,14 @@ describe('assign to value object', () => {
                y: { $: 'number', value: 8 },
             },
             with: {
-               $: 'link',
-               a: { $: 'bool', value: false },
-               b: {
-                  $: 'group',
-                  values_: {
-                     b1: { $: 'shared' },
-                     b2: { $: 'shared' },
-                  },
+               $: 'group',
+               values_: {
+                  b1: { $: 'shared' },
+                  b2: { $: 'shared' },
                },
             },
          },
-      }).toMatchObject(E1.zToSerialJSON())
+      }).toEqual(E1.zToSerialJSON())
    })
 
    it('snapshots correctly', () => {

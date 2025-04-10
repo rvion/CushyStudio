@@ -25,7 +25,7 @@ const qux = root.zFields.qux
 const test2nd = root.zFields.foo.zFields.test.items[1]!
 root.foo.test.at(1)!.zValue = 'test'
 
-baz.zUpdateFieldCustom((t) => ({ abcdefgh: true })) // makes @.custom.abcdefgh be true
+baz.zUpdateFieldCustom((t) => ({ abcdefgh: true })) // makes @.zCustom.abcdefgh be true
 
 describe('selector.match', () => {
    it('works with indexes', () => {
@@ -79,8 +79,8 @@ describe('selector.select', () => {
    })
 
    it('can filter entry-node', () => {
-      expect(root.zContains('?(@.childrenAll.length === 1)')).toBe(false)
-      expect(root.zContains('?(@.childrenAll.length === 2)')).toBe(true)
+      expect(root.zContains('?(@.zChildrenAll.length === 1)')).toBe(false)
+      expect(root.zContains('?(@.zChildrenAll.length === 2)')).toBe(true)
       expect(root.zSelect('>@list?(@.length >3)')).toHaveLength(1)
       expect(root.zSelect('>@list?(@.length >2)')).toHaveLength(2)
    })
@@ -176,7 +176,7 @@ describe('selector.select', () => {
    })
 
    it('should select nodes based on expression filter', () => {
-      const selected = root.zSelect('.foo.bar?(node.value === "33")').map((f) => f.zPath)
+      const selected = root.zSelect('.foo.bar?(node.zValue === "33")').map((f) => f.zPath)
       expect(selected).toMatchObject(['$.foo.bar'])
    })
 
@@ -186,7 +186,7 @@ describe('selector.select', () => {
    })
 
    it('should handle complex expression filters with custom properties', () => {
-      const selected = root.zSelect('.foo.baz?(@.custom.abcdefgh === true)').map((f) => f.zPath)
+      const selected = root.zSelect('.foo.baz?(@.zCustom.abcdefgh === true)').map((f) => f.zPath)
       expect(selected).toMatchObject(['$.foo.baz'])
    })
 
@@ -201,10 +201,10 @@ describe('selector.select', () => {
    })
 
    it('should correctly use "contains" to verify node conditions', () => {
-      expect(root.zContains('?(@.childrenAll.length === 2)')).toBe(true)
-      expect(root.zContains('?(@.childrenAll.length === 1)')).toBe(false)
-      expect(root.zContains('.foo.baz?(@.custom.abcdefgh === true)')).toBe(true)
-      expect(root.zContains('.foo.baz?(@.custom.abcdefgh === false)')).toBe(false)
+      expect(root.zContains('?(@.zChildrenAll.length === 2)')).toBe(true)
+      expect(root.zContains('?(@.zChildrenAll.length === 1)')).toBe(false)
+      expect(root.zContains('.foo.baz?(@.zCustom.abcdefgh === true)')).toBe(true)
+      expect(root.zContains('.foo.baz?(@.zCustom.abcdefgh === false)')).toBe(false)
    })
 
    it('should match itself when selector is emtpy', () => {

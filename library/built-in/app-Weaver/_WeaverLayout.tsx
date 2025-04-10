@@ -26,7 +26,7 @@ export const _cushyWeaverLayout: AppUI<$CushyWeaverUI['{field}']> = (_, set) => 
                                  data: {},
                               },
                            })
-                           ?.data.child.enableBranch('prompting')
+                           ?.data.child.zEnableBranch('prompting')
                         if (!con) {
                            return
                         }
@@ -55,7 +55,7 @@ export const _cushyWeaverLayout: AppUI<$CushyWeaverUI['{field}']> = (_, set) => 
                                  data: {},
                               },
                            })
-                           ?.data.child.enableBranch('latent')
+                           ?.data.child.zEnableBranch('latent')
                         if (!latent) {
                            return
                         }

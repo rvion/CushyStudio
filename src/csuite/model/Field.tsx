@@ -318,7 +318,6 @@ export abstract class Field {
          const referenceValue = _get(referenceField.zSerial, serialPath)
 
          if (thisValue === referenceValue) return []
-
          if (thisValue === undefined) {
             return [
                {
@@ -850,8 +849,8 @@ export abstract class Field {
    zEnableSelfWithinParent(): void {
       const parent = this.zParent
       if (isFieldOptional(parent)) return parent.setOn()
-      if (isFieldChoices(parent)) return parent.enableBranch(this.zMountKey)
-      if (isFieldChoice(parent)) return parent.enableBranch(this.zMountKey)
+      if (isFieldChoices(parent)) return parent.zEnableBranch(this.zMountKey)
+      if (isFieldChoice(parent)) return parent.zEnableBranch(this.zMountKey)
       throw new Error(
          `(${this.zType}@'${this.zPath}').setOn: parent (${parent?.zType}) is neither optional or choices`,
       )
@@ -866,8 +865,8 @@ export abstract class Field {
       const parent = this.zParent
       if (isFieldOptional(parent)) return parent.setOff()
       if (isFieldList(parent)) return parent.removeItem(this)
-      if (isFieldChoices(parent)) return parent.disableBranch(this.zMountKey)
-      if (isFieldChoice(parent)) return parent.disableBranch(this.zMountKey)
+      if (isFieldChoices(parent)) return parent.zDisableBranch(this.zMountKey)
+      if (isFieldChoice(parent)) return parent.zDisableBranch(this.zMountKey)
       throw new Error(
          `(${this.zType}@'${this.zPath}').setOff: parent (${parent?.zType}) is neither optional or choices`,
       )

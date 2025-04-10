@@ -33,10 +33,10 @@ describe('FieldPrompt', () => {
                label: 'test',
                apply({ zFields: fields }): void {
                   // V1
-                  fields.c.enableBranch('bar')
+                  fields.c.zEnableBranch('bar')
                   fields.c.bar?.setText('new prompt A')
                   // V2
-                  fields.c.enableBranch('bar')?.setText('new prompt B')
+                  fields.c.zEnableBranch('bar')?.setText('new prompt B')
                },
             },
          ],
@@ -48,7 +48,7 @@ describe('FieldPrompt', () => {
       expect(E1.zValue.c.foo).toBe('')
       expect(E1.zValue.c.bar).toBeUndefined()
 
-      E1.zFields.c.enableBranch('bar')
+      E1.zFields.c.zEnableBranch('bar')
 
       expect(E1.zValue.c.foo).toBeUndefined()
       expect(E1.zValue.c.bar?.text).toBe('coucou')
@@ -63,7 +63,7 @@ describe('FieldPrompt', () => {
       expect(E1.zValue.c.foo).toBe('')
       expect(E1.zValue.c.bar).toBeUndefined()
 
-      E1.zFields.c.enableBranch('bar')?.setText('new prompt')
+      E1.zFields.c.zEnableBranch('bar')?.setText('new prompt')
 
       expect(E1.zValue.c.bar?.text).toBe('new prompt')
    })
