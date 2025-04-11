@@ -505,7 +505,7 @@ export class Field_list<T extends CSchema> extends Field {
    }
 
    /** results, but only for active branches */
-   private zValue__setter = (val: Field_list_value<T>) => {
+   private zValue__setter(val: Field_list_value<T>) {
       this.zRunInTransaction(() => {
          for (let i = 0; i < val.length; i++) {
             // 1. replace existing items
@@ -544,11 +544,14 @@ export class Field_list<T extends CSchema> extends Field {
       })
       return value
    }
-   get value_set(): Field_list_SetValue<T> {
+
+   set zValuePartial(val: Field_list_SetValue<T>) { this.zSet(val) } // prettier-ignore
+   get zValuePartial(): Field_list_SetValue<T> {
       const value = new Proxy([], this.makeValueProxy('set'))
       void this.zSerial
-      Object.defineProperty(this, 'value_set', {
+      Object.defineProperty(this, 'zValuePartial', {
          get: () => (void this.zSerial, value),
+         set: (val: Field_list_SetValue<T>) => this.zSet(val),
       })
       return value
    }
@@ -635,7 +638,7 @@ export class Field_list<T extends CSchema> extends Field {
 
    override zGetSetValue(): this['{setValue}'] | undefined {
       // console.log(`[💀 getSetValue] `, this.path)
-      return this.value_set
+      return this.zValuePartial
    }
 
    // #region Validation

@@ -45,13 +45,14 @@ describe('FieldPrompt', () => {
 
    it('works', () => {
       const E1 = S1.create()
-      expect(E1.zValue.c.foo).toBe('')
-      expect(E1.zValue.c.bar).toBeUndefined()
+      expect(E1.c.firstActiveBranchName).toBe('foo')
+      expect(E1.c.foo?._).toBe('')
+      expect(E1.c.bar).toBeUndefined()
 
       E1.zFields.c.zEnableBranch('bar')
 
-      expect(E1.zValue.c.foo).toBeUndefined()
-      expect(E1.zValue.c.bar?.text).toBe('coucou')
+      expect(E1.c.foo).toBeUndefined()
+      expect(E1.c.bar?.text).toBe('coucou')
 
       E1.zFields.c.bar?.setText('new prompt')
 

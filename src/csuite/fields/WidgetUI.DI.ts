@@ -123,7 +123,7 @@ function _checkIfIs<F extends Field>(
    return (field): field is F => {
       if (field == null) return false
       if (typeof field !== 'object') return false
-      if (field.type !== type) return false
+      if (field.zType !== type) return false
       if (predicate && !predicate(field)) return false
       return true
    }

@@ -222,22 +222,15 @@ describe('FieldGroup', () => {
          })
 
          it('should return true if values are equal but fields are declared in a different order', () => {
-            const field = b
-               .fields({
-                  title: b.string({}),
-                  description: b.string({}),
-               })
-               .create()
+            // first
+            const field = b.fields({ title: b.string({}), description: b.string({}) }).create()
             field.zValue.title = 'One'
             field.zValue.description = 'DESCRIPTION'
-            const field2 = b
-               .fields({
-                  description: b.string({}),
-                  title: b.string({}),
-               })
-               .create()
-            field2.zValue.title = 'One'
+
+            // second
+            const field2 = b.fields({ description: b.string({}), title: b.string({}) }).create()
             field2.zValue.description = 'DESCRIPTION'
+            field2.zValue.title = 'One'
 
             expect(field.zIsValueEqual(field2)).toBe(true)
          })

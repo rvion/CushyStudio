@@ -419,10 +419,16 @@ export class Prompt_Index extends ManagedNode<'Index'> {
       this.setText(`[${Math.floor(value)}]`)
    }
 
-   /** When called with a max number and the value within the bracket is '?', it will return a random number up to max-1. For example, indexAST.number(array.length) */
+   /**
+    * When called with a max number and the value within
+    * the bracket is '?', it will return a random number up to max-1.
+    * For example, indexAST.number(array.length)
+    */
    getIndex = (max?: number): Maybe<number> => {
       if (this.isRandom()) {
-         return max ? Math.floor(Math.random() * max) : 0
+         return max != null //
+            ? Math.floor(Math.random() * max)
+            : 0
       }
       return parseInt(this.text.slice(1, -1))
    }

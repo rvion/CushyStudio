@@ -281,8 +281,8 @@ describe('field customizations', () => {
                protoFnNotAction: isAction(E1.protoFnNotAction),
                instanceFnAction: isAction(E1.instanceFnAction),
                instanceFnNotAction: isAction(E1.instanceFnNotAction),
-               fieldGroupAttr: isObservableProp(E1, 'fields'),
-               baseFieldAttr: isObservableProp(E1, 'ready'),
+               fieldGroupAttr: isObservableProp(E1, 'zFields'),
+               baseFieldAttr: isObservableProp(E1, 'zReady'),
             }).toMatchObject({
                attrObs: true,
                attrNotObs: false,
@@ -336,8 +336,8 @@ describe('field customizations', () => {
                protoFnNotAction: isAction(E1.protoFnNotAction),
                instanceFnAction: isAction(E1.instanceFnAction),
                instanceFnNotAction: isAction(E1.instanceFnNotAction),
-               fieldGroupAttr: isObservableProp(E1, 'fields'),
-               baseFieldAttr: isObservableProp(E1, 'ready'),
+               fieldGroupAttr: isObservableProp(E1, 'zFields'),
+               baseFieldAttr: isObservableProp(E1, 'zReady'),
             }).toMatchObject({
                attrObs: false,
                attrNotObs: false,

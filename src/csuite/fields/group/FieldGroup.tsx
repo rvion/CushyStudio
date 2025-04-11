@@ -344,6 +344,7 @@ export class Field_group<T extends SchemaDict> extends Field {
       })
       return value
    }
+
    get zValueOrZero(): Field_group_value<T> {
       const value = new Proxy({}, this.makeValueProxy('zero'))
       void this.zSerial
@@ -352,6 +353,7 @@ export class Field_group<T extends SchemaDict> extends Field {
       })
       return value
    }
+
    get zValueUnchecked(): Field_group_unchecked<T> {
       const value = new Proxy({}, this.makeValueProxy('unchecked'))
       void this.zSerial
@@ -360,14 +362,14 @@ export class Field_group<T extends SchemaDict> extends Field {
       })
       return value
    }
-   get zSetValue(): Field_group_SetValue<T> {
+
+   set zValuePartial(val: Field_group_SetValue<T>) { this.zSet(val) } // prettier-ignore
+   get zValuePartial(): Field_group_SetValue<T> {
       const value = new Proxy({}, this.makeValueProxy('set'))
       void this.zSerial
-      Object.defineProperty(this, 'zSetValue', {
-         get: () => {
-            void this.zValue
-            return value
-         },
+      Object.defineProperty(this, 'zValuePartial', {
+         get: () => (void this.zSerial, value),
+         set: (val: Field_group_SetValue<T>) => this.zSet(val),
       })
       return value
    }
@@ -375,16 +377,20 @@ export class Field_group<T extends SchemaDict> extends Field {
    public zIsValueEqual(other: Field): boolean {
       if (other === this) return true
       if (!(other instanceof Field_group)) return false
+
       const otherChildren = other.zChildrenActive
       const thisChildren = this.zChildrenActive
 
       if (otherChildren.length !== thisChildren.length) return false
 
       return thisChildren.every((child) => {
-         const otherChild = other.zFields[child.zMountKey]
+         const otherChild = other.zFields[child.zMountKey] as Field
          if (otherChild == null) return false
 
-         return child.zMountKey === otherChild.mountKey && child.zIsValueEqual(otherChild)
+         return (
+            child.zMountKey === otherChild.zMountKey && //
+            child.zIsValueEqual(otherChild)
+         )
       })
    }
 
@@ -428,7 +434,7 @@ export class Field_group<T extends SchemaDict> extends Field {
 
    override zGetSetValue(): this['{setValue}'] | undefined {
       // console.log(`[💀 getSetValue] `, this.path)
-      return this.zSetValue
+      return this.zValuePartial
    }
 
    override zReset(): void {

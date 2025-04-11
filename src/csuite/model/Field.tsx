@@ -1658,7 +1658,7 @@ export abstract class Field {
    /**
     * list of all subwidgets, without named keys
     * @deprecated
-    * we should be able to trust the `subField.mountKey`
+    * we should be able to trust the `subField.zMountKey`
     * // TODO: remove
     * @undecorated
     */

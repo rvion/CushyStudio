@@ -257,7 +257,7 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field {
    private _defineMagicFields(): void {
       const properties: PropertyDescriptorMap & ThisType<any> = {}
       for (const [fName, fSchema] of this._fieldSchemas) {
-         properties[capitalize(fName)] = {
+         properties[fName as string] = {
             get: (): any => this._[fName],
             configurable: true,
          }

@@ -75,7 +75,8 @@ export class MigrationEngine {
       return Object.entries(this.batchOfSimilarAnomalies) //
          .map(([anomalySuggestionID, anomalies]): AnomalySolutionSuggestion => {
             const { document, anomaly } = bang(anomalies[0])
-            const suggestions = [...this.knownSolutions.values()] //
+            const allKnownSolutions = [...this.knownSolutions.values()]
+            const suggestions = allKnownSolutions //
                .filter((fix) => {
                   const isApplicable = fix.isApplicable({ document, anomaly })
                   // console.log(`[🤠]   ${anomalySuggestionID}: ${fix.solutionID} is ${isApplicable ? '🟢 applicable' : '❌ NOT applicable'}`) // prettier-ignore

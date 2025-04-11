@@ -62,9 +62,9 @@ describe('migrator', () => {
       expect(migrator.scope.size).toBe(2)
       expect(Object.keys(migrator.batchOfSimilarAnomalies)).toHaveLength(1)
       expect(migrator.suggestions).toHaveLength(1)
-      expect(migrator.suggestions.map((s) => s.id)).toMatchObject(['{{TEST-abcd}}@group.a@str'])
+      expect(migrator.suggestions.map((s) => s.id)).toEqual(['{{TEST-abcd}}@group.a@str'])
       expect(migrator.suggestions[0]!.count).toBe(2)
-      expect(migrator.suggestions[0]!.candidates).toMatchObject([
+      expect(migrator.suggestions[0]!.candidates).toEqual([
          { name: 'drop', solutionID: 'drop' },
          { name: 'convert previous number serial to string serial', solutionID: 'number-to-string' },
       ])

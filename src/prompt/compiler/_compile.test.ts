@@ -48,7 +48,7 @@ describe('compilation', () => {
       })
       describe('Inlined Wildcards', () => {
          it('Choice Selection', () => {
-            const FROM = '(masterpiece, tree, <choice(3):a b c "deez" e> :1.1)'
+            const FROM = '(masterpiece, tree, ?>[3] {a b c "deez" e} :1.1)'
             const TO = ' (masterpiece:1.1)(,:1.1) (tree:1.1)(,:1.1) (deez:1.1)'
             // -------------------
             const p = compilePrompt({
