@@ -183,7 +183,7 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field {
             const migrated: SOld2 = { $: 'choices', values: values_, ...rest }
 
             next = migrated
-            console.log(`[🤠] post migration 1`, JSON.stringify(next))
+            // console.log(`[🤠] post migration 1`, JSON.stringify(next))
          }
 
          // 2nd migration ------------------------------------------------------------
@@ -201,7 +201,7 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field {
                }
                next = { $: 'choices', y, n, ...rest }
             }
-            console.log(`[🤠] post migration 2`, JSON.stringify(next))
+            // console.log(`[🤠] post migration 2`, JSON.stringify(next))
          }
 
          return next

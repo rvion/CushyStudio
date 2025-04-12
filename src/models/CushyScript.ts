@@ -217,7 +217,7 @@ export class CushyScriptL extends BaseInst<TABLES['cushy_script']> {
          return view.ref
       }
 
-      console.log(`[🔴] CODE IS:`, codeJS)
+      console.log(`[🔴] CODE IS:`, { codeJS })
       // 2. eval file to extract actions
       try {
          // 2.1. replace imports

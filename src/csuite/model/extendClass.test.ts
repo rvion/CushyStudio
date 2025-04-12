@@ -352,21 +352,5 @@ describe('field customizations', () => {
             })
          }
       })
-      // eslint-disable-next-line vitest/no-commented-out-tests
-      // it.only('work simple', () => {
-      //     //
-      //     class Test {
-      //         foo = b.int({ default: 10 })
-      //         bar = b.string()
-      //         sub = {
-      //             point: b
-      //                 .fields({
-      //                     x: b.int(),
-      //                     y: b.int(),
-      //                 })
-      //                 .list(),
-      //         }
-      //     }
-      // })
    })
 })

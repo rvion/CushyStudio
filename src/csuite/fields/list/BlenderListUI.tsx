@@ -1,3 +1,4 @@
+import type { RenderRule } from '../../../csuite-cushy/presenters/RenderRule'
 import type { CSchema } from '../../model/CSchema'
 import type { Field_list } from './FieldList'
 import type { ReactNode } from 'react'
@@ -14,6 +15,7 @@ import { ListButtonAddUI } from './ListButtonAddUI'
 export type BlenderListProps<T extends Field_list<any>> = {
    field: T
    activeIndex?: number
+   childRules?: RenderRule<T>[]
    renderItem: (item: T['items'][number], index: number) => ReactNode
    direction?: 'horizontal' | 'vertical'
 }

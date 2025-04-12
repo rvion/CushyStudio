@@ -1,11 +1,11 @@
-import type { AppUI } from '../../../src/cards/App'
+import type { RenderRuleFn } from '../../../src/csuite-cushy/presenters/RenderRule'
 import type { $CushyWeaverUI } from './_WeaverSchema'
 
 import { StackLatentUI } from './_prefabs/latent/WeaverLatentUI'
 import { type $WeaverPromptList } from './_prefabs/prompting/WeaverPrompting'
 import { StackPromptingUI } from './_prefabs/prompting/WeaverPromptingUI'
 
-export const _cushyWeaverLayout: AppUI<$CushyWeaverUI['{field}']> = (_, set) => {
+export const _cushyWeaverLayout: RenderRuleFn<$CushyWeaverUI['{field}']> = (_, set) => {
    set({
       Shell: (p) => {
          const d = p.field

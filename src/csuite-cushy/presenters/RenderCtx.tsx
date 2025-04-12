@@ -1,6 +1,6 @@
 import type { Field } from '../../csuite/model/Field'
 import type { Renderer } from './Renderer'
-import type { RenderProps } from './RenderProps'
+import type { RenderRuleFlat } from './RenderRule'
 
 import { createContext, useContext } from 'react'
 
@@ -8,14 +8,17 @@ export type RenderCtx<FIELD extends Field = Field> = {
    /** field we're currently rendering */
    field: FIELD
 
-   /** display conf for curent field */
-   uiconf: RenderProps<FIELD>
+   /** renderProps specified for curent field */
+   // renderProps: RenderProps<FIELD>
 
    /** instance of the renderer in ctx */
    renderer: Renderer
 
    /** in `root` to `leaf` order, stopping at field's visual parent */
    ancestors: RenderCtx[]
+
+   /** all rules injected by ancestors, */
+   rules: RenderRuleFlat<Field>[]
 }
 
 // context for the presenter (render orchestrator, stateful per top-level <field.UI />)

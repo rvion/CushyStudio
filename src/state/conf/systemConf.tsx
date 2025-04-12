@@ -25,7 +25,7 @@ export const systemConf = cushyFactory.document(
                      init: (key) => commandManager.getCommandById(key)?.firstCombo ?? '',
                      keys: (self) => {
                         const contextName = self.zMountKey
-                        console.log(`🔴1:`, [...commandManager.contextByName.values()])
+                        // console.log(`🔴1:`, [...commandManager.contextByName.values()])
                         const contex = bang(commandManager.contextByName.get(contextName))
                         const commands = bang(commandManager.commandByContext.get(contex))
                         return commands.map((c) => c.id)

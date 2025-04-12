@@ -3,13 +3,11 @@ import type { Field_group } from './FieldGroup'
 import { ListOfFieldsContainerUI } from '../../form/WidgetsContainerUI'
 
 export const WidgetGroup_BlockUI = obs(function WidgetGroup_BlockUI_(p: {
-   //
    className?: Maybe<string>
    field: Field_group<any>
 }) {
    const field = p.field
    const children = field.zChildrenActive
-   // const isHorizontal = field.zConfig.layout === 'H'
 
    return (
       <ListOfFieldsContainerUI //
@@ -17,9 +15,8 @@ export const WidgetGroup_BlockUI = obs(function WidgetGroup_BlockUI_(p: {
          tw={[field.zConfig.className, p.className]}
       >
          {children.map((child, ix) => {
-            // const shouldJustifyLabel = isHorizontal ? false : field.zConfig.justifyLabel
             return (
-               <child.UI
+               <child.UI //
                   key={child.zMountKey}
                   Indent={(p.field.zConfig.layout === 'H' ? ix === 0 : true) ? undefined : null}
                />

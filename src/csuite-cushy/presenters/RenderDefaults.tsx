@@ -1,7 +1,7 @@
 import type { Field_group } from '../../csuite/fields/group/FieldGroup'
 import type { SelectKey } from '../../csuite/fields/selectOne/SelectOneKey'
 import type { Field } from '../../csuite/model/Field'
-import type { RenderProps } from './RenderProps'
+import type { RenderProps, RenderPropsFlat } from './RenderProps'
 
 import { runInAction } from 'mobx'
 
@@ -79,13 +79,13 @@ const baseslots: RenderProps<Field> = {
 function r<FIELD extends Field>(
    //
    selector: string,
-   uiconf: RenderProps<FIELD>,
+   renderProps: RenderPropsFlat<FIELD>,
    priority = 10,
 ): void {
    defaultRulesV2.push({
       addedBy: null,
       pattern: FieldSelector.from(selector),
-      uiconf,
+      renderPropsFlat: renderProps,
       priority,
    })
 }
@@ -129,16 +129,19 @@ function resetDefaultRules() {
    r<Field>('$.{@group|@optional.@group|@list|@choices|@prompt}', {
       Decoration: (p) => <uy.wrappers.Card {...p} />,
    })
-   r<Z.FList<Z.Record_>>('@list.@optional.@group.', {
-      Body: (f) => <uy.list.BlenderLike field={f.field} renderItem={() => <>🔴</>} />,
-   })
+   // r<Z.FList<Z.Record_>>('@list.@optional.@group.', {
+   //    Body: (f) => <uy.list.BlenderLike field={f.field} renderItem={() => <>🔴</>} />,
+   // })
    // '@list:has(.@group.{@image & {name | title}@string})'
+
    r<Z.FList<Z.Record_>>('@list:has(.@group.)', {
       Body: (f) => {
          return (
             <uy.list.BlenderLike
                field={f.field}
+               // childRules={{}}
                renderItem={(item) => {
+                  const zz = <f.field.UI />
                   const children = item.zChildrenActive
                   const str = children.find((x) => x.zType === 'str') as Z.FString | undefined
                   const img = children.find((x) => x.zType === 'image') as Z.FImage | undefined

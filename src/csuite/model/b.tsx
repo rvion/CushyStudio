@@ -6,3 +6,5 @@ export function getBuilder(): Z.Builder {
    if ((b as any) === 0) throw new Error('Builder not set yet')
    return b
 }
+
+;(globalThis as any).getBuilder = getBuilder

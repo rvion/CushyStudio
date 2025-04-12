@@ -1,6 +1,6 @@
 import type { CSchema } from '../controls/CSchema.cushy'
 import type { RenderProps } from '../csuite-cushy/presenters/RenderProps'
-import type { RenderRule, RenderRule_asList } from '../csuite-cushy/presenters/RenderRule'
+import type { RenderRule, RenderRule_asList, RenderRuleFn } from '../csuite-cushy/presenters/RenderRule'
 import type { Field } from '../csuite/model/Field'
 import type { SchemaDict } from '../csuite/model/SchemaDict'
 import type { MediaImageL } from '../models/MediaImage'
@@ -50,14 +50,6 @@ export type DraftExecutionContext = {
    canvas?: Maybe<UnifiedCanvas>
 }
 
-export type AppUI<FIELD extends Field = Field> = (
-   field: FIELD,
-   set: {
-      <F extends Field>(...props: RenderRule_asList<F>): void
-      <F extends Field>(prop: RenderProps<FIELD>): void
-   },
-) => void
-
 export type App<FIELD extends Field> = {
    /** app interface (GUI) */
    ui: (form: Z.Builder) => CSchema<FIELD>
@@ -69,7 +61,7 @@ export type App<FIELD extends Field> = {
     *   - or to set the top-level UIProps
     */
    // prettier-ignore
-   layout?: AppUI<FIELD>
+   layout?: RenderRuleFn<FIELD>
 
    /** so you cana have fancy buttons to switch between a few things */
    presets?: Record<string, (doc: NoInfer<FIELD>) => void>

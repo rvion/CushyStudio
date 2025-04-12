@@ -11,7 +11,7 @@ import type { WidgetPresetsProps } from '../catalog/Presets/WidgetPresets'
 import type { WidgetTitleProps } from '../catalog/Title/WidgetLabelTextUI'
 import type { CushyHeadProps } from '../shells/CushyHead'
 import type { RenderPropsCompiled } from './RenderPropsCompiled'
-import type { RenderRule } from './RenderRule'
+import type { RenderRule, RenderRule_asList, RenderRuleFn } from './RenderRule'
 import type { FC, ReactNode } from 'react'
 
 // #region Slots
@@ -39,6 +39,12 @@ export interface StandardProps<FIELD extends Field = Field> {
    wrappers: { rp: UIPropsFor<FIELD>; className?: string; children: ReactNode }
 }
 
+export type RenderPropsFlat<out FIELD extends Field = Field> = Omit<
+   // we need a version without subrules so it's not recusrive
+   RenderProps<FIELD>,
+   'rules'
+>
+
 export interface RenderProps<out FIELD extends Field = Field> {
    // todo
    // noInherit?: boolean
@@ -53,8 +59,14 @@ export interface RenderProps<out FIELD extends Field = Field> {
    /**
     * list of rules injected for itself and its *visual* children
     * note: a bit like CSS rules, except with stuff to swap components / props / etc.
-    * */
-   rules?: RenderRule<Field>[]
+    */
+   // prettier-ignore
+   rules?:
+      // a simple set of rules
+      | RenderRule<Field>[]
+
+      // a dynamic set of rules injected by the field
+      | RenderRuleFn<FIELD>
 
    /**
     * if specified, css rules will be matched as if the given

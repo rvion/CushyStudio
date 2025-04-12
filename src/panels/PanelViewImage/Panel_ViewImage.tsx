@@ -140,7 +140,7 @@ export const ImageActionBarUI = obs(function ImageActionBar(p: { img?: Maybe<Med
             >
                Paint
             </Button>
-            <showTags.UI rules={[['', { Shell: uy.shell.Inline }]]} />
+            <showTags.UI rules={[{ pattern: '', renderProps: { Shell: uy.shell.Inline } }]} />
             <SpacerUI />
             {img && (
                <RevealUI

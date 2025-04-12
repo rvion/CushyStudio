@@ -11,7 +11,8 @@
         "lib",
         "tmp",
         "node_modules",
-        "src/setup.ts"
+        "./src/setup.ts",
+        "setup.ts"
     ],
     "// notes": {
         "manual": [

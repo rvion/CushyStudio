@@ -1,7 +1,11 @@
-import type { RenderRule } from '../../csuite-cushy/presenters/RenderRule'
 import type { Field } from '../../csuite/model/Field'
 import type { NO_PROPS } from '../../csuite/types/NO_PROPS'
 
+import {
+   convertShortRule,
+   type RenderRule,
+   type RenderRule_asList,
+} from '../../csuite-cushy/presenters/RenderRule'
 import { usePanel } from '../../router/usePanel'
 
 export const PlaygroundRenderUI = obs(function PlaygroundRender(p: NO_PROPS) {
@@ -29,21 +33,23 @@ export const PlaygroundRenderUI = obs(function PlaygroundRender(p: NO_PROPS) {
          sub2: b.fields({ x: b.string(), y: b.int(), z: b.percent() }),
       }),
    )
-   function rule<T extends Field>(rule: RenderRule<T>): RenderRule<T> { return rule } // prettier-ignore
+   function rule<T extends Field>(...rule: RenderRule_asList<T>): RenderRule<T> {
+      return convertShortRule(rule)
+    } // prettier-ignore
    // function r<T extends Field>(...rule: RenderRule_asList<T>): RenderRule<T> { return rule } // prettier-ignore
    return (
       <div>
          <x.UI
-            rules={[
-               ['@number', { OnLeft: '👉', OnRight: '👈' }],
-               ['{title|name}@str', { Decoration: uy.wrappers.ColoredPadding.with({ bgcolor: 'red' }) }],
-               ['@list:has(.@group.{title|name}@str)', {}],
-               ['{sub1|sub2}', { Shell: false }],
-            ]}
+            rules={(p, set) => {
+               set('@number', { OnLeft: '👉', OnRight: '👈' })
+               set('{title|name}@str', { Decoration: uy.wrappers.ColoredPadding.with({ bgcolor: 'red' }) })
+               set('@list:has(.@group.{title|name}@str)', {})
+               set('{sub1|sub2}', { Shell: false })
+            }}
          />
          <div className='flex flex-wrap gap-1 mt-1'>
             <x.sub1.UI //
-               rules={[rule([x.sub1.y, { config: { max: 30, min: 0 } }])]}
+               rules={[rule(x.sub1.y, { config: { max: 30, min: 0 } })]}
                classNameForShell='grow'
             />
             <x.sub2.UI

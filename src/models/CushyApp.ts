@@ -12,7 +12,6 @@ import { computed, runInAction } from 'mobx'
 import { basename, extname, join } from 'pathe'
 
 import { generateAvatar } from '../cards/AvatarGenerator'
-import { normalizeRule, type RenderRule, type RenderRule_asDict } from '../csuite-cushy/presenters/RenderRule'
 import { VirtualHierarchy } from '../csuite/tree/VirtualHierarchy'
 import { SQLITE_false, SQLITE_true } from '../csuite/types/SQLITE_boolean'
 import { toastError, toastSuccess } from '../csuite/utils/toasts'

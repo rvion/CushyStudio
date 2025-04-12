@@ -197,7 +197,7 @@ export const DraftUI = obs(function Panel_Draft_(p: { draft: Maybe<DraftL> }) {
                      requirements={metadata.requirements}
                   />
                )}
-               {draft.form && <draft.form.UI {...draft.UIProps} />}
+               {draft.form && <draft.form.UI rules={draft.UIProps} /* {...draft.UIProps} */ />}
             </Frame>
             <Frame tw='[height:80vh]'></Frame>
          </Frame>
