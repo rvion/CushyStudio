@@ -36,7 +36,7 @@ export const BlenderListUI = obs(function BlenderListUI_<T extends Field_list<CS
          ? 'flex flex-row gap-2'
          : 'flex flex-col gap-2'
    return (
-      <Frame tw={wrapperCls}>
+      <Frame tw={wrapperCls} className='🔘BlenderListUI'>
          <Frame tw='flex flex-row gap-2 px-2' style={{ minHeight: '100%' }}>
             <ResizableFrame
                tw='overflow-clip min-w-40'
@@ -51,16 +51,8 @@ export const BlenderListUI = obs(function BlenderListUI_<T extends Field_list<CS
                      const selected = x.selectedIx === ix
                      return (
                         <Frame //
-                           tw={[
-                              //
-                              'select-none overflow-clip !border-none',
-                              '!box-content',
-                           ]}
-                           triggerOnPress={{
-                              startingState: selected,
-                              toggleGroup: 'blender-list-item-selected',
-                           }}
-                           // active={selected}
+                           tw={['h-widget select-none overflow-clip !border-none !box-content']}
+                           triggerOnPress={{ startingState: selected, toggleGroup: 'blender-list-item-selected' }} // prettier-ignore
                            border={{ contrast: 0 }}
                            onClick={action(() => (x.selectedIx = ix))}
                            base={{ contrast: selected ? 0.1 : 0 }}
