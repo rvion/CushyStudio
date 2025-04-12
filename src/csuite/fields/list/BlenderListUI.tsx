@@ -130,7 +130,7 @@ export const BlenderListUI = obs(function BlenderListUI_<T extends Field_list<CS
                </Frame>
             </div>
          </Frame>
-         {selectedChild && <selectedChild.UI />}
+         {selectedChild && <selectedChild.UI classNameForShell='grow' />}
          {/* <Frame // TODO(bird_d/ui/logic): Need an inline collapsible "group" sort of thing here
             tw='h-input flex-grow items-center text-center'
             row
