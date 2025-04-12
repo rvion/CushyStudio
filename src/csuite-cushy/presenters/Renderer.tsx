@@ -73,8 +73,8 @@ export class Renderer {
       if (typeof rulesDef === 'object' && !Array.isArray(rulesDef)) {
          // rulesDef = { rules: [rulesDef] }
          const rule: RenderRule<Field> = {
-            pattern: field,
-            renderProps: rulesDef,
+            at: field,
+            props: rulesDef,
             addedBy: field,
             priority: 99,
          }
@@ -92,13 +92,13 @@ export class Renderer {
       if (Array.isArray(rulesDef)) {
          for (const rule of rulesDef) {
             rules.push({
-               pattern: rule.pattern,
-               renderPropsFlat: rule.renderProps,
+               at: rule.at,
+               propsFlat: rule.props,
                addedBy: rule.addedBy,
                priority: rule.priority,
             })
-            if (rule.renderProps.rules != null) {
-               queue.push(rule.renderProps.rules)
+            if (rule.props.rules != null) {
+               queue.push(rule.props.rules)
             }
          }
          return
@@ -120,7 +120,7 @@ export class Renderer {
          // self rule
          if (props.length === 1) {
             Object.assign(OUT, props[0])
-            extraRules.push({ pattern: field, renderProps: props[0], addedBy: field, priority: 99 })
+            extraRules.push({ at: field, props: props[0], addedBy: field, priority: 99 })
          }
          // child rule
          else {
@@ -179,10 +179,10 @@ export class Renderer {
       // eval rule from config
       // if (field.config.uiui != null) xxx.evalRule(field.config.uiui, RENDER_PRIORITY_UIUI)
       for (const rule of rules) {
-         const isMatching = FieldSelector.match(rule.pattern, field, virtualParents)
+         const isMatching = FieldSelector.match(rule.at, field, virtualParents)
 
          if (isMatching) {
-            const newSlots = rule.renderPropsFlat as RenderProps<FIELD>
+            const newSlots = rule.propsFlat as RenderProps<FIELD>
             if (newSlots != null && Object.keys(newSlots).length > 0) {
                slots = mergeDefined(slots, newSlots)
             }

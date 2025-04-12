@@ -42,32 +42,32 @@ export type RenderRuleFn<FIELD extends Field> = CovariantFn<
 
 /** RenderRules, where every rule CAN have sub-rules */
 export type RenderRule<FIELD extends Field> = {
-   pattern: FieldPattern<FIELD>
-   renderProps: RenderProps<FIELD>
+   at: FieldPattern<FIELD>
+   props: RenderProps<FIELD>
    priority?: number
    addedBy?: Field | null
 }
 
 /** RenderRules, where every rule is guaranteed not to have any sub-rule */
 export type RenderRuleFlat<FIELD extends Field> = {
-   pattern: FieldPattern<FIELD>
-   renderPropsFlat: RenderPropsFlat<FIELD>
+   at: FieldPattern<FIELD>
+   propsFlat: RenderPropsFlat<FIELD>
    priority?: number
    addedBy?: Field | null
 }
 
 // (props when using set() function)
 export type RenderRule_asList<FIELD extends Field> = [
-   pattern: FieldPattern<FIELD>,
-   renderProps: RenderProps<FIELD>,
+   at: FieldPattern<FIELD>,
+   props: RenderProps<FIELD>,
    priority?: number,
    addedBy?: Field | null,
 ]
 
 // (props when using set() function)
 export type RenderRuleFalt_asList<FIELD extends Field> = [
-   pattern: FieldPattern<FIELD>,
-   renderPropsFlat: RenderPropsFlat<FIELD>,
+   at: FieldPattern<FIELD>,
+   propsFlat: RenderPropsFlat<FIELD>,
    priority?: number,
    addedBy?: Field | null,
 ]
@@ -78,5 +78,5 @@ export function convertShortRule<FIELD extends Field>([
    priority,
    addedBy,
 ]: RenderRule_asList<FIELD>): RenderRule<FIELD> {
-   return { pattern: match, renderProps: uiconf, priority, addedBy }
+   return { at: match, props: uiconf, priority, addedBy }
 }

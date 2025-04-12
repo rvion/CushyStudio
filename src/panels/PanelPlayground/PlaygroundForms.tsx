@@ -6,6 +6,25 @@ import { Frame } from '../../csuite/frame/Frame'
 
 /** Freely modify this as you like, then pick the "Scratch Pad" option in the top left. Do not commit changes made to this. */
 export const PlaygroundForms = obs(function PlaygroundImportFromComfy_(p: {}) {
+   // const uid = useId()
+   // const fieldUU = simpleFactory.use(
+   //    (b) => {
+   //       return b.fields({
+   //          a: b.string({ default: 'ok' }),
+   //          b: b.number({ default: 30 }),
+   //          // c: b.number({ default: 30 }),
+   //       })
+   //    },
+   //    {},
+   //    [],
+   // )
+   // return (
+   //    <div>
+   //       {uid}
+   //       <fieldUU.UI />
+   //    </div>
+   // )
+
    const field = simpleFactory.use((b) => {
       const raw = b.fields({
          a: b.percent({ suffix: '% of banana' }),
