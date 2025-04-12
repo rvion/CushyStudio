@@ -132,6 +132,16 @@ export const fieldActionMenu: MenuTemplate<FieldActionMenuProps> = defineMenuTem
       out.push(MenuDividerUI_)
       out.push(
          new SimpleMenuAction({
+            label: `copy pathNice (${field.zPathNice})`,
+            icon: IKONS.mdiContentCopy,
+            onClick: (): Promise<void> => {
+               toastInfo(field.zPathNice)
+               return navigator.clipboard.writeText(field.zPathNice)
+            },
+         }),
+      )
+      out.push(
+         new SimpleMenuAction({
             label: `copy path (${field.zPath})`,
             icon: IKONS.mdiContentCopy,
             onClick: (): Promise<void> => {

@@ -96,6 +96,7 @@ export const ensureObserver = <T extends null | undefined | FC<any>>(fn: T): T =
 
 export type KeyedField = { key: string; field: Field }
 export type FL_FieldPathExt = Tagged<string, 'FL_FieldPathExt'>
+export type FL_FieldPathNice = Tagged<string, 'FL_FieldPathNice'>
 export type FL_FieldPath = Tagged<string, 'FL_FieldPath'>
 
 export type FieldCtorProps<TYPES extends Field = any> = [
@@ -959,6 +960,15 @@ export abstract class Field {
       const p = this.zParent
       if (p == null) return `@${this.zType}`
       return p.zPathExt + '.' + this.zMountKey + `@${this.zType}`
+   }
+
+   /** path within the model */
+   @computed get zPathNice(): FL_FieldPathNice {
+      const p = this.zParent
+      if (p == null) return '$'
+      if (this.zParent?.zType === 'list')
+         return p.zPathNice + `[${this.zParent.zChildrenActive.indexOf(this)}]`
+      return p.zPathNice + '.' + this.zMountKey
    }
 
    zGetFieldAt(path: string): Maybe<Field> {
