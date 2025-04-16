@@ -1,7 +1,6 @@
 import type { ReactNode } from 'react'
 
 import { makeAutoObservable } from 'mobx'
-
 import { createRef, useMemo } from 'react'
 
 import { Button } from '../button/Button'
@@ -92,7 +91,7 @@ class ResizableFrameStableState {
       offset += e.movementY
       let next = startValue + offset
 
-      if (this.props.snap) {
+      if (this.props.snap != null && this.props.snap > 0) {
          next = Math.round(next / this.props.snap) * this.props.snap
       }
       next = clamp(next, 100, Number.MAX_SAFE_INTEGER)
@@ -106,7 +105,7 @@ export const ResizableFrame = obs(function ResizableFrame_(p: ResizableFrameProp
    const uist = useMemo(() => new ResizableFrameStableState(p), [])
    const theme = cushy.preferences.theme.zValue
 
-   const { currentSize, ...props } = p
+   const { currentSize, showFooter, ...props } = p
    return (
       <Frame // container
          // hover
@@ -120,7 +119,7 @@ export const ResizableFrame = obs(function ResizableFrame_(p: ResizableFrameProp
          roundness={theme.global.roundness}
          {...props}
       >
-         {p.header && (
+         {Boolean(p.header) && (
             <Frame
                //
                tw='p-1'
@@ -153,7 +152,7 @@ export const ResizableFrame = obs(function ResizableFrame_(p: ResizableFrameProp
                tw='inset-0 z-10 flex h-4 cursor-ns-resize items-center justify-center'
                onMouseDown={(e: React.MouseEvent<HTMLDivElement, MouseEvent>) => uist.start(e)}
             >
-               {p.showFooter != undefined && (
+               {showFooter != undefined && (
                   <Button
                      // Workaround not having a background-less button option
                      tw='absolute left-0 !h-4 !w-8 !border-none !bg-transparent'
@@ -172,7 +171,7 @@ export const ResizableFrame = obs(function ResizableFrame_(p: ResizableFrameProp
             {
                //TODO(bird_d): Make sure to fix image widget
             }
-            {p.showFooter != undefined && uist.showFooter && (
+            {showFooter != undefined && uist.showFooter && (
                <div tw='!z-50 flex-grow items-center'>{p.footer}</div>
             )}
          </Frame>

@@ -1,5 +1,4 @@
 import type { IconName } from './IconName'
-import type { IconNameReal } from './icons'
 
 import * as icons from '@mdi/js'
 
