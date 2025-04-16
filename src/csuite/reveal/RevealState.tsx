@@ -1,6 +1,6 @@
 import type { NO_PROPS } from '../types/NO_PROPS'
 import type { ObservableRef } from '../utils/observableRef'
-import type { RevealStateLazy } from './RevealStateLazy'
+import type { RevealId, RevealStateLazy } from './RevealStateLazy'
 import type { RevealContentProps } from './shells/ShellProps'
 import type { CSSProperties, FC, FocusEvent, MouseEvent, ReactNode, SyntheticEvent } from 'react'
 
@@ -69,7 +69,7 @@ export class RevealState {
    }
 
    static shared: { current: Maybe<RevealState> } = observable({ current: null }, { current: observable.ref })
-   uid: number
+   uid: RevealId
 
    get showBackdrop(): boolean {
       return this.p.showBackdrop ?? true

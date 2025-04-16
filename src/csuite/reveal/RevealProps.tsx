@@ -2,7 +2,7 @@ import type { RevealCloseEvent } from './RevealCloseEvent'
 import type { RevealPlacement } from './RevealPlacement'
 import type { RevealPresetName } from './RevealPresets'
 import type { RevealState } from './RevealState'
-import type { RevealStateLazy } from './RevealStateLazy'
+import type { RevealId, RevealStateLazy } from './RevealStateLazy'
 import type { RevealContentProps, RevealShellProps } from './shells/ShellProps'
 import type React from 'react'
 import type { FC, SyntheticEvent } from 'react'
@@ -98,6 +98,7 @@ export type RevealOpenReason =
 
 export type RevealProps = {
    ref?: React.Ref<RevealStateLazy>
+   id?: RevealId
 
    /** used to identify reveal when src/csuite/reveal/DEBUG_REVEAL.tsx set to true */
    debugName?: string

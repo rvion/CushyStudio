@@ -1,5 +1,6 @@
 import type { RevealProps } from './RevealProps'
 
+import DefaultMap from 'mnemonist/default-map'
 import { makeAutoObservable } from 'mobx'
 import React from 'react'
 
@@ -7,13 +8,35 @@ import { createObservableRef, type ObservableRef } from '../utils/observableRef'
 import { DEBUG_REVEAL } from './DEBUG_REVEAL'
 import { RevealState } from './RevealState'
 
+export type RevealId = string | number
 /**
  * state wrapper that lazily initializes the actual state when actually required
  * it's important to keep that class lighweight.
  */
 export class RevealStateLazy {
+   static VisibleReveals: DefaultMap<RevealId, Set<RevealStateLazy>> = new DefaultMap(() => new Set())
+   static unregisterAnchor(rsl: RevealStateLazy): void {
+      const id = rsl.uid
+      if (DEBUG_REVEAL) console.log(`💙 unregisterAnchor ${id} ${rsl.uid}`)
+      const set = this.VisibleReveals.get(id)
+      set.delete(rsl)
+      if (set.size === 0) this.VisibleReveals.delete(id)
+   }
+   static registerAnchor(rsl: RevealStateLazy): void {
+      const id = rsl.uid
+      if (DEBUG_REVEAL) console.log(`💙 registerAnchor ${id} ${rsl.uid}`)
+      const set = this.VisibleReveals.get(id)
+      set.add(rsl)
+   }
+   static getAnchor(id: RevealId): Maybe<RevealStateLazy> {
+      if (!this.VisibleReveals.has(id)) return null
+      const set = this.VisibleReveals.get(id)
+      const item = set.values().next().value
+      return item
+   }
+
    static nextUID: number = 1
-   uid: number = RevealStateLazy.nextUID++
+   uid: RevealId
    childRef = React.createRef<HTMLDivElement>()
 
    /**
@@ -29,6 +52,7 @@ export class RevealStateLazy {
       public p: RevealProps,
       public parentsLazy: RevealStateLazy[],
    ) {
+      this.uid = p.id ?? RevealStateLazy.nextUID++
       // if (DEBUG_REVEAL) console.log(`💙 new RevealStateLazy (lazyId: ${this.uid} / props: ${p.placement})`)
       this.tower = [...parentsLazy, this]
       this.towerContext = { tower: this.tower }

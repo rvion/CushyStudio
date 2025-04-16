@@ -1,6 +1,6 @@
-import type { ReactNode } from 'react'
 import type { RevealProps } from './RevealProps'
 import type { RevealShellProps } from './shells/ShellProps'
+import type { ReactNode } from 'react'
 
 import React, { cloneElement, createElement, useEffect, useMemo } from 'react'
 import { createPortal } from 'react-dom'
@@ -47,7 +47,12 @@ export const RevealUI: React.FunctionComponent<RevealProps> = obs(function Revea
    }, [])
 
    useEffect(() => {
-      return (): void => lazyState.state?.close('RevealUI-is-unmounted')
+      // allow to retrieve the anchor programmatically by id
+      RevealStateLazy.registerAnchor(lazyState)
+      return (): void => {
+         RevealStateLazy.unregisterAnchor(lazyState)
+         lazyState.state?.close('RevealUI-is-unmounted')
+      }
    }, [])
 
    // once updated, make sure to keep props in sync so hot reload work well enough.
