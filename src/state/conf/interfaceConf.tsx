@@ -25,6 +25,18 @@ export const interfaceConf = cushyFactory.document(
    (ui) =>
       ui.fields({
          // name copied from flexlayout; will be used
+         uiScale: ui.float({
+            text: 'UI Scale',
+            description: 'Scale of the UI by factor',
+            default: 1.0,
+            min: 0.1,
+            max: 5.0,
+            step: 0.1,
+            hideSlider: true,
+            onValueChange: (v) => {
+               //
+            },
+         }),
          tabSetEnableSingleTabStretch: ui.boolean({
             label: false,
             text: 'Auto-Hide Tabset',

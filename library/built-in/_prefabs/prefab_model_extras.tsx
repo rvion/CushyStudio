@@ -21,6 +21,7 @@ export type $schemaModelExtras = X.XChoices<{
    }>
    pag: UI_model_pag
    sag: UI_model_sag
+   sage: X.XEnum<'kjnodes.PathchSageAttentionKJ.sage_attention'>
    KohyaDeepShrink: UI_model_kohyaDeepShrink
    civitai_ckpt_air: X.XString
 }>
@@ -47,6 +48,7 @@ export const schemaModelExtras = (
             sampling: b.auto.ModelSamplingDiscrete(),
             pag: ui_model_pag(b),
             sag: ui_model_sag(b),
+            sage: b.enum['kjnodes.PathchSageAttentionKJ.sage_attention']({ default: 'auto' }),
             KohyaDeepShrink: ui_model_kohyaDeepShrink(b),
             civitai_ckpt_air: b
                .string({
@@ -123,6 +125,10 @@ export function evalModelExtras_part1(
    // 4. Optional FreeU
    if (extra.freeUv2) ckpt = graph.FreeU_V2({ model: ckpt })
    else if (extra.freeU) ckpt = graph.FreeU({ model: ckpt })
+
+   if (extra.sage) {
+      ckpt = graph['kjnodes.PathchSageAttentionKJ']({ model: ckpt, sage_attention: extra.sage })
+   }
 
    /* Rescale CFG */
    if (extra.rescaleCFG) {

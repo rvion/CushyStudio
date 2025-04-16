@@ -1,6 +1,8 @@
 import type { CushySchemaBuilder } from '../../controls/CushyBuilder'
 import type { TintExt } from '../kolor/Tint'
 
+import { Kolor } from '../kolor/Kolor'
+
 export type SimpleDropShadow = {
    x?: number
    y?: number
@@ -22,7 +24,8 @@ export function run_theme_dropShadow(shadow: SimpleDropShadow): string {
       return 'unset'
    }
 
-   return `${shadow.x ?? 0}px ${shadow.y ?? 0}px ${shadow.blur ?? 0}px ${shadow.color ?? '#000000'}${Math.round((shadow.opacity ?? 0.2) * 255).toString(16)}`
+   const col = Kolor.fromString(shadow.color!.toString())
+   return `${shadow.x ?? 0}px ${shadow.y ?? 0}px ${shadow.blur ?? 0}px ${shadow.color ? `oklch(${col.lightness} ${col.chroma} ${col.hue} / ${shadow.opacity})` : '#000000'}`
 }
 
 export const schemaSimpleDropShadow = (ui: CushySchemaBuilder): $schemaSimpleDropShadow =>

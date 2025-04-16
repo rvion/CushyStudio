@@ -80,7 +80,9 @@ export const CushyUI = observer(function CushyUI_() {
    )
 
    const theme = cushy.preferences.theme.value
+   const ifacePref = cushy.preferences.interface.value
    const textShadow = theme.global.text.shadow
+   console.log('[FD] ', run_theme_dropShadow(textShadow))
    return (
       <CSuiteProvider config={cushy.csuite}>
          <DnDDragIndicatorUI />
@@ -88,13 +90,14 @@ export const CushyUI = observer(function CushyUI_() {
             id='CushyStudio'
             style={{
                // @ts-ignore
+               zoom: ifacePref.uiScale,
                '--appbar': appBarComputed.variables.background,
                '--foobar1': inactiveTabColors.variables.color,
                '--foobar2': inactiveTabColors.variables.background,
                '--theme-roundness': `${theme.global.roundness}px`,
                '--theme-roundness-padding': `${theme.global.roundness}px`,
                // TODO(bird_d/ui/theme): Make able to be relative instead of just manual
-               'text-shadow': run_theme_dropShadow(textShadow),
+               textShadow: run_theme_dropShadow(textShadow),
                // '--theme-roundness-padding': `${cushy.preferences.theme.value.global.roundness > 10 ? cushy.preferences.theme.value.global.roundness - 10 : 0}px`,
                // TODO(bird_d): This feels hacky, probably okay for now? A lot of the csuite stuff I'm assuming needs to not use cushy.preferences.theme.value
                fontSize: `${theme.global.text.size}pt`,
