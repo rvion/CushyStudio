@@ -50,7 +50,8 @@ export const BlenderListUI = obs(function BlenderListUI_<T extends Field_list<CS
                   {field.items.map((i, ix) => {
                      const selected = x.selectedIx === ix
                      return (
-                        <Frame //
+                        <Frame
+                           key={i.zUid}
                            tw={['h-widget select-none overflow-clip !border-none !box-content']}
                            triggerOnPress={{ startingState: selected, toggleGroup: 'blender-list-item-selected' }} // prettier-ignore
                            border={{ contrast: 0 }}
