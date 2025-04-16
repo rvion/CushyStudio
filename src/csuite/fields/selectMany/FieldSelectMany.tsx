@@ -592,6 +592,58 @@ export class Field_selectMany<
       }
    }
 
+   zMoveKeyByIndex(sourceIx: number, targetIx: number): this {
+      if (this.zSerial.values == null) return this // not-set
+      if (sourceIx < 0 || sourceIx >= this.selectedKeys.length) return this // out-of-bounds
+      if (targetIx < 0 || targetIx >= this.selectedKeys.length) return this // out-of-bounds
+
+      const sourceKey = this.selectedKeys[sourceIx]!
+      return this.zMoveKeyImpl__(sourceIx, targetIx, sourceKey)
+   }
+   zMoveKeyByName(sourceKey: KEY, targetKey: KEY): this {
+      if (this.zSerial.values == null) return this // not-set
+
+      const sourceIx = this.selectedKeys.findIndex((key) => key === sourceKey)
+      const targetIx = this.selectedKeys.findIndex((key) => key === targetKey)
+      if (sourceIx === -1 || targetIx === -1) return this // not-found
+
+      return this.zMoveKeyImpl__(sourceIx, targetIx, sourceKey)
+   }
+
+   private zMoveKeyImpl__(sourceIx: number, targetIx: number, sourceKey: KEY): this {
+      this.zPatchInTransaction((next) => {
+         const keys: KEY[] = next.values!
+         keys.splice(sourceIx, 1)
+         keys.splice(targetIx, 0, sourceKey)
+         next.values = keys
+      })
+      return this
+   }
+
+   get zHasInvalidKeys(): boolean {
+      // re-implemented without using zInvalidKeysInSerial to allow for
+      // an early abort and avoid as-many calls as possible
+      if (!this.zIsSet) return false
+      const allKeys = this.zSerial.values
+      if (allKeys == null || allKeys.length === 0) return false
+      const possibleKeys = this.possibleKeys
+      for (const key of allKeys) if (!possibleKeys.includes(key)) return true
+      return false
+   }
+
+   get zInvalidKeysInSerial(): KEY[] {
+      const allKeys = this.zSerial.values ?? []
+      const possibleKeys = this.possibleKeys
+      const invalidKeys = allKeys.filter((key) => !possibleKeys.includes(key))
+      return invalidKeys
+   }
+   zRemoveLegacySelectManyValues(): void {
+      const possibleKeys = this.possibleKeys
+      this.zPatchInTransaction((next) => {
+         next.values = next.values?.filter((key) => possibleKeys.includes(key))
+      })
+   }
+
    override zIsValueEqual(other: Field): boolean {
       if (!(other instanceof Field_selectMany)) return false
       return JSON.stringify(this.zSerial.values) === JSON.stringify(other.zSerial.values)
