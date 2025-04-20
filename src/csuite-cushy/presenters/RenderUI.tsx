@@ -19,7 +19,7 @@ export const RenderUI = obs(function RenderUI_({
 
       // if presenter is full, we create it and inject it in future context
       const renderer = new Renderer(field)
-      const rootCtx: RenderCtx = { field, ancestors: [], renderer, rules: defaultRulesV2 }
+      const rootCtx: RenderCtx = { parent: null, ancestors: [], renderer, rules: defaultRulesV2 }
       return renderer.render(field, renderProps, rootCtx)
    }
 

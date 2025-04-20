@@ -1,12 +1,13 @@
 import type { Field } from '../../csuite/model/Field'
-import type { Renderer } from './Renderer'
 import type { RenderRuleFlat } from './RenderRule'
 
 import { createContext, useContext } from 'react'
 
+import { Renderer } from './Renderer'
+
 export type RenderCtx<FIELD extends Field = Field> = {
    /** field we're currently rendering */
-   field: FIELD
+   parent: FIELD | null
 
    /** renderProps specified for curent field */
    // renderProps: RenderProps<FIELD>
@@ -35,9 +36,14 @@ export const useRendererCtx = (): RenderCtx | null => {
 
 export const getVisualPath = (ctx: RenderCtx<Field> | null = useRendererCtx()): string => {
    if (ctx == null) return 'not in a rendering context'
-   return [
-      //
-      ...ctx.ancestors.map((i) => i.field.zMountKey),
-      ctx.field.zMountKey,
-   ].join('->')
+   return Renderer.getVisualAncestors(ctx)
+      .map((i) => i.zMountKey)
+      .join('->')
+   // return [
+   //    //
+   //    ...ctx.ancestors.map((i) => i.parent?.zMountKey),
+   //    ctx.parent?.zMountKey,
+   // ]
+   //    .filter(Boolean)
+   //    .join('->')
 }

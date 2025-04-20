@@ -86,8 +86,16 @@ export type Axis =
 // | '&' // ownwer => is Filter
 
 enum SelectorMode {
+   /**
+    *  match form end of pattern upwards to start
+    *  a.b.c  => means (check we're named "c" > then thaw we have a parent . > that is named "b" ...)
+    */
+   // todo: rename upwards
    MATCH = 1,
+   /** match from start to end of */
    SELECT = 2,
+   /** attempt to match on schema */
+   SELECT_SCHEMA = 3,
 }
 
 export interface Selector {
@@ -195,10 +203,10 @@ export class FieldSelector {
        * field to use for the nesting filter (`&`).
        * if not provided, evalutating `&` will crash.
        */
-      nestedUnder?: Field,
+      // nestedUnder?: Field,
    ) {
-      if (mode === SelectorMode.MATCH) return this.runMatch(field, ___, nestedUnder)
-      if (mode === SelectorMode.SELECT) return this.runSelect(field, ___, nestedUnder)
+      if (mode === SelectorMode.MATCH) return this.runMatch(field, ___ /* nestedUnder */)
+      if (mode === SelectorMode.SELECT) return this.runSelect(field, ___ /* nestedUnder */)
       throw new Error(`Unknown mode "${mode}"`)
    }
 
@@ -207,30 +215,40 @@ export class FieldSelector {
       /** fields to match */
       field: Field | Field[],
       ___?: Map<Field, Field>,
-      nestedUnder?: Field,
+      // nestedUnder?: Field,
    ): { fields: Field[]; values: any[] } {
       const { steps } = this.parse()
-      return this.selectFrom_(field, steps, SelectorMode.MATCH, ___, nestedUnder)
+      return this.selectFrom_(field, steps, SelectorMode.MATCH, ___ /* nestedUnder */)
    }
    runSelect(
       /** fields to return selection against */
       from: Field | Field[],
       ___?: Map<Field, Field>,
-      nestedUnder?: Field,
+      // nestedUnder?: Field,
    ): { fields: Field[]; values: any[] } {
       const { steps } = this.parse()
-      return this.selectFrom_(from, steps, SelectorMode.SELECT, ___, nestedUnder)
+      return this.selectFrom_(from, steps, SelectorMode.SELECT, ___ /* nestedUnder */)
    }
 
    // #region EVAL
    isDebugEnabled = false
+   private selectSchema(
+      from: Z.Schema[] | Z.Schema,
+      steps_: SelectorToken[],
+      mode: SelectorMode.SELECT_SCHEMA,
+      /** virtual hierachy */
+      ___?: Map<Field, Field>,
+      // nestedUnder?: Field,
+   ) {
+      // todo
+   }
    private selectFrom_(
       //
       from: Field[] | Field,
       steps_: SelectorToken[],
       mode: SelectorMode,
       ___?: Map<Field, Field>,
-      nestedUnder?: Field,
+      // nestedUnder?: Field,
    ) {
       let candidates: Field[] = Array.isArray(from) ? from : [from]
       const steps = mode === SelectorMode.MATCH ? steps_.toReversed() : steps_
@@ -282,8 +300,9 @@ export class FieldSelector {
 
          // nesting
          else if (step.type === 'nesting') {
-            if (nestedUnder == null) throw new Error(`No nestedUnder provided for nesting filter`)
-            candidates = candidates.filter((c) => c.zUid === nestedUnder?.zUid)
+            throw new Error('nesting should have already been resolved at this point')
+            // if (nestedUnder == null) throw new Error(`No nestedUnder provided for nesting filter`)
+            // candidates = candidates.filter((c) => c.zUid === nestedUnder?.zUid)
          }
 
          // HasID

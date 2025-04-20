@@ -1,3 +1,5 @@
+import type { Field } from '../../csuite/model/Field'
+
 import { describe, expect, it } from 'vitest'
 
 import { Renderer } from './Renderer'
@@ -40,7 +42,41 @@ describe('renderer', () => {
       ])
    })
 
-   it.only('works with a recursive rule', () => {
+   it('waah', () => {
+      const b = getBuilder()
+      const x = b
+         .fields({
+            prompts: b
+               .fields({
+                  isActive: b.bool(),
+                  content: b.string(),
+               })
+               .list(),
+         })
+         .create()
+
+      x.prompts.addItem()
+
+      const rule = Renderer.rule((_, set) => {
+         set('@list', { '∂1': '🟢' })
+         set('@list:has(>@bool)', { '∂2': '🔵' })
+         // set('@list:has(.@group:has(.isActive@bool):has(.content@str))', {
+         //    '∂1': 'yes',
+         //    rules: (s, set) => {
+         //       set('&.@group.isActive', { '∂2': 'yes' })
+         //       set('&.@group.content', { '∂3': 'yes' })
+         //    },
+         // })
+      })
+      const ZZ = Renderer.normalizeRule(x, rule)
+
+      // expect(ZZ).toHaveLength(3)
+      const renderer = new Renderer(x)
+      const out = renderer.renderTest(x, rule)
+      expect(out).toEqual([{ at: '$.prompts', props: { '∂1': '🟢', '∂2': '🔵' } }])
+   })
+
+   it('works with a recursive rule', () => {
       const field = schema.create()
       const renderer = new Renderer(field)
       //not starting with '&' injects '>', so '.' => '>.'
@@ -90,6 +126,7 @@ describe('renderer', () => {
                '∂3': 'coucou1',
             },
          },
+         { at: '$.c.x', props: { '∂3': 'coucou2' } },
          { at: '$.c.kkk', props: { '∂3': 'coucou2' } },
       ])
    })

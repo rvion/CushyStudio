@@ -191,7 +191,7 @@ export class Renderer {
          initialRules != null ? Renderer.normalizeRule(field, initialRules) : []
 
       const rootCtx: RenderCtx = {
-         field,
+         parent: null,
          ancestors: [],
          renderer: this,
          rules,
@@ -204,7 +204,6 @@ export class Renderer {
          const { nextCtx, Shell, finalProps } = this.render_<Field>(f, {}, ctx)
          ctxIn.set(f, nextCtx)
 
-         // console.log(`[🤠] ${Object.keys(finalProps)}`)
          const {
             //useless
             field,
@@ -216,18 +215,17 @@ export class Renderer {
             ...testProps
          } = finalProps
 
-         // if (f.zPath === '$.c.kkk.t1' || f.zPath === '$.c.kkk') {
-         //    console.log(
-         //       `[🤠🟢1] ${f.zPath} ${JSON.stringify(testProps)}`,
-         //       ctx.rules.map((i) => normalizePattern(i.at)).join('\n'),
-         //    )
-         // }
          if (Object.keys(testProps).length === 0) return
          out.push({ at: f.zPath, props: testProps })
       })
       return out
    }
 
+   static getVisualAncestors(ctx: RenderCtx<any>): Field[] {
+      const out = ctx.ancestors.slice(1).map((c) => bang(c.parent))
+      if (ctx.parent != null) out.push(ctx.parent)
+      return out
+   }
    render_<FIELD extends Field>(
       //
       field: FIELD,
@@ -238,9 +236,8 @@ export class Renderer {
       Shell: FCOrNode<RenderPropsCompiled<FIELD>>
       finalProps: RenderPropsCompiled<FIELD>
    } {
-      const { /* field, */ ancestors } = ctx
       const debug = false // field.path === '...'
-
+      // ------------------------------------------------------------------------
       // massive optimization here; just support arbitrary nested arrays
       // and ache the object so we never spread stuff
       const rules: RenderRuleFlat<Field>[] = [
@@ -249,24 +246,34 @@ export class Renderer {
          ...Renderer.normalizeRule(field, renderProps),
       ]
 
+      // ------------------------------------------------------------------------
       // override parents if need be
+      const ancestors = Renderer.getVisualAncestors(ctx)
       const virtualParents: Map<Field, Field> = new Map<Field, Field>()
       for (let i = 0; i < ancestors.length - 1; i++) {
-         const parent_ = ancestors[i]!.field
-         const child_ = ancestors[i + 1]!.field
+         const parent_ = ancestors[i]!
+         const child_ = ancestors[i + 1]!
          if (child_.zParent !== parent_) virtualParents.set(child_, parent_)
       }
-
-      const directParent_ = ancestors[ancestors.length - 1]?.field
-      if (directParent_ && field.zParent !== directParent_) virtualParents.set(field, directParent_)
+      if (ctx.parent && ctx.parent !== field.zParent) virtualParents.set(field, ctx.parent)
+      // const directParent_ = ancestors[ancestors.length - 1]?.parent
+      // if (directParent_ && field.zParent !== directParent_) virtualParents.set(field, directParent_)
       // if (virtualParents.size > 0)
       //    console.log(`[      🟢 >] rendering ${field.path} at ${getVisualPath(ctx)}`, virtualParents)
 
+      // ------------------------------------------------------------------------
       let slots: RenderProps<FIELD> = {}
       // eval rule from config
       // if (field.config.uiui != null) xxx.evalRule(field.config.uiui, RENDER_PRIORITY_UIUI)
       for (const rule of rules) {
          const isMatching = FieldSelector.match(rule.at, field, virtualParents)
+         // if (field.zPath === '$.c.kkk.t1' && normalizePattern(rule.at) === 'c.') {
+         //    this.debugVirtualParents(virtualParents)
+         //    console.log(`[🤠] 🔴1`, FieldSelector.match(rule.at, field))
+         //    console.log(`[🤠] 🔴2`, FieldSelector.match(rule.at, field, virtualParents))
+         //    console.log(`[🤠] 🔴3 ${Object.keys(virtualParents).length}`)
+         //    // `[🤠] rule: "${field.zPath}" matches "${normalizePattern(rule.at)}" ${isMatching ? '🟢' : '🔴'}`,
+         // }
          if (isMatching) {
             const newSlots = rule.propsFlat as RenderProps<FIELD>
             if (newSlots != null && Object.keys(newSlots).length > 0) {
@@ -290,18 +297,13 @@ export class Renderer {
       // console.log(`[🦊🟢FINAL] slots for`, field.path, slots.Head)
       // return renderFCOrNode(Shell, finalProps)
       const nextCtx: RenderCtx = {
-         field,
+         parent: field,
          ancestors: [...ctx.ancestors, ctx],
          renderer: this,
          rules,
       }
       const out = { nextCtx, Shell, finalProps }
       return out
-      // return <rendererCtx.Provider value={nextCtx}>{renderFCOrNode(Shell, finalProps)}</rendererCtx.Provider>
-      // return {
-      //    rules: rules,
-      //    reactNode: renderFCOrNode(Shell, finalProps),
-      // }
    }
 
    debugVirtualParents(virtualParents: Map<Field, Field>): void {
