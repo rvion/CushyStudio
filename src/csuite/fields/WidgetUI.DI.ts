@@ -193,3 +193,9 @@ function isProbablySerialOf<F extends Field>(
       return true
    }
 }
+
+export const isField = (arg: any): arg is Field => {
+   if (arg == null) return false
+   if (typeof arg !== 'object') return false
+   return arg._symField === Symbol.for('Field')
+}

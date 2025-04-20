@@ -143,4 +143,9 @@ export interface RenderProps<out FIELD extends Field = Field> {
    // stuff you probably don't want to include
    // debug stuff
    /* 🟣 */ DebugID?: Maybe<FC<{ field: Field }>>
+
+   /** @internal */
+   '∂1'?: any
+   '∂2'?: any
+   '∂3'?: any
 }

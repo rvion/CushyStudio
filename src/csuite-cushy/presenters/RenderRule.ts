@@ -1,5 +1,5 @@
 import type { Field } from '../../csuite/model/Field'
-import type { FieldSelector, FL_RawFieldSelector } from '../../csuite/selector/selector'
+import type { FL_RawFieldSelector } from '../../csuite/selector/selector'
 import type { CovariantFn } from '../../csuite/variance/BivariantHack'
 import type { RenderProps, RenderPropsFlat } from './RenderProps'
 
@@ -14,8 +14,8 @@ export type FieldPattern<FIELD extends Field> =
    | FIELD
    /** a set of specific fields */
    | FIELD[]
-   /** a real field selector already built */
-   | FieldSelector
+   // /** a real field selector already built */
+   // | FieldSelector
    /** a selector expression */
    | FL_RawFieldSelector
    /**
@@ -23,6 +23,8 @@ export type FieldPattern<FIELD extends Field> =
     * (useful when value comes from a config)
     */
    | boolean
+
+export type FieldPattern_Flat<FIELD extends Field> = FL_RawFieldSelector
 
 export type RenderRuleFn<FIELD extends Field> = CovariantFn<
    [
@@ -45,7 +47,7 @@ export type RenderRule<FIELD extends Field> = {
    at: FieldPattern<FIELD>
    props: RenderProps<FIELD>
    priority?: number
-   addedBy?: Field | null
+   // addedBy?: Field | null
 }
 
 /** RenderRules, where every rule is guaranteed not to have any sub-rule */
@@ -53,7 +55,7 @@ export type RenderRuleFlat<FIELD extends Field> = {
    at: FieldPattern<FIELD>
    propsFlat: RenderPropsFlat<FIELD>
    priority?: number
-   addedBy?: Field | null
+   // addedBy?: Field | null
 }
 
 // (props when using set() function)
@@ -61,7 +63,7 @@ export type RenderRule_asList<FIELD extends Field> = [
    at: FieldPattern<FIELD>,
    props: RenderProps<FIELD>,
    priority?: number,
-   addedBy?: Field | null,
+   // addedBy?: Field | null,
 ]
 
 // (props when using set() function)
@@ -69,14 +71,14 @@ export type RenderRuleFalt_asList<FIELD extends Field> = [
    at: FieldPattern<FIELD>,
    propsFlat: RenderPropsFlat<FIELD>,
    priority?: number,
-   addedBy?: Field | null,
+   // addedBy?: Field | null,
 ]
 
 export function convertShortRule<FIELD extends Field>([
    match,
    uiconf,
    priority,
-   addedBy,
+   // addedBy,
 ]: RenderRule_asList<FIELD>): RenderRule<FIELD> {
-   return { at: match, props: uiconf, priority, addedBy }
+   return { at: match, props: uiconf, priority /* addedBy */ }
 }

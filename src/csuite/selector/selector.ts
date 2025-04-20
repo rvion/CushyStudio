@@ -116,7 +116,7 @@ export class FieldSelector {
    ): boolean {
       if (pattern instanceof Field) return pattern === field
       if (Array.isArray(pattern)) return pattern.includes(field)
-      if (pattern instanceof FieldSelector) return pattern.matches(field, virtualParents)
+      // if (pattern instanceof FieldSelector) return pattern.matches(field, virtualParents)
       if (typeof pattern === 'string') return FieldSelector.from(pattern).matches(field, virtualParents)
       if (typeof pattern === 'boolean') return pattern
       return false

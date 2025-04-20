@@ -20,10 +20,10 @@ export const RenderUI = obs(function RenderUI_({
       // if presenter is full, we create it and inject it in future context
       const renderer = new Renderer(field)
       const rootCtx: RenderCtx = { field, ancestors: [], renderer, rules: defaultRulesV2 }
-      return renderer.render(field, rootCtx, renderProps)
+      return renderer.render(field, renderProps, rootCtx)
    }
 
    // case 2. sub field
    const renderer: Renderer = prevCtx.renderer
-   return renderer.render(field, prevCtx, renderProps)
+   return renderer.render(field, renderProps, prevCtx)
 })

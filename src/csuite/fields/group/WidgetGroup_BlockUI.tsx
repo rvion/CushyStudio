@@ -11,6 +11,7 @@ export const WidgetGroup_BlockUI = obs(function WidgetGroup_BlockUI_(p: {
 
    return (
       <ListOfFieldsContainerUI //
+         className='🔘WidgetGroup_BlockUI'
          layout={p.field.zConfig.layout}
          tw={[field.zConfig.className, p.className]}
       >

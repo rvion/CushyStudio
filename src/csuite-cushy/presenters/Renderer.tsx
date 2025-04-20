@@ -1,12 +1,19 @@
-import type { Field } from '../../csuite/model/Field'
+import type { Field, FL_FieldPath } from '../../csuite/model/Field'
 import type { RenderProps } from './RenderProps'
 import type { RenderPropsCompiled } from './RenderPropsCompiled'
 import type { ReactNode } from 'react'
 
 import { FieldSelector } from '../../csuite/selector/selector'
+import { bang } from '../../csuite/utils/bang'
 import { extractComponentName } from '../../csuite/utils/extractComponentName'
 import { mergeDefined } from '../../csuite/utils/mergeDefined'
-import { _isFC, renderFCOrNode, renderFCOrNodeWithWrapper } from '../../csuite/utils/renderFCOrNode'
+import {
+   _isFC,
+   type FCOrNode,
+   renderFCOrNode,
+   renderFCOrNodeWithWrapper,
+} from '../../csuite/utils/renderFCOrNode'
+import { normalizePattern, toRawFieldSelector } from './normalizePattern'
 import { type RenderCtx, rendererCtx } from './RenderCtx'
 import {
    convertShortRule,
@@ -18,11 +25,11 @@ import {
 import { RenderUI } from './RenderUI'
 
 // prettier-ignore
-type FlattenableRule =
+type FlattenableRule<FIELD extends Field = Field> =
    | undefined           // 1 == null
    | null                // 2 == null
-   | RenderProps<Field>  // 3 typeof === 'object'
-   | RenderRuleFn<Field> // 4 typeof === 'function'
+   | RenderProps<FIELD>  // 3 typeof === 'object'
+   | RenderRuleFn<FIELD> // 4 typeof === 'function'
    | RenderRule<Field>[] // 5 Array.isArray
 
 // see `src/csuite/form/presenters/presenter.readme.md`
@@ -36,79 +43,76 @@ export class Renderer {
       Renderer.count++
    }
 
-   private flattenRules(
-      //
+   static normalizeRule(
+      /** field adding the rule */
       field: Field,
-      flattenables: FlattenableRule[],
-   ): RenderRuleFlat<Field>[] {
-      const out: RenderRuleFlat<Field>[] = []
 
-      // step 1.
-      const queue: FlattenableRule[] = flattenables
-      // for (const flattenable of flattenables) {
-      //    this.flattenRule(field, flattenable, out, queue)
-      // }
+      /** rule definrion */
+      intent: FlattenableRule,
+
+      // prefixForNestedSelector = '',
+   ) {
+      const out: RenderRuleFlat<Field>[] = []
+      type QueueItem = { rule: FlattenableRule; prefixForNestedSelector: string }
+      const queue: QueueItem[] = [
+         {
+            rule: intent,
+            prefixForNestedSelector: ``,
+            // prefixForNestedSelector: `#${field.zUid}`,
+         },
+      ]
 
       // step 2.
       let max = 100
       while (queue.length > 0 && max--) {
-         const flattenable = queue.shift()
-         this.flattenRule(field, flattenable, out, queue)
+         const entry: QueueItem = queue.shift()!
+         let rule = entry.rule
+         // console.log(`[🤠] ${100 - max} with (${entry.prefixForNestedSelector})`)
+
+         // 1, 2 (null / undefined)
+         if (rule == null) continue
+
+         // 3 (object ==> renderProps)
+         if (typeof rule === 'object' && !Array.isArray(rule)) {
+            rule = [{ at: field, props: rule, /* addedBy: field, */ priority: 99 }] // => 5
+         }
+
+         // 4 (function ==> renderRule)
+         if (typeof rule === 'function') {
+            rule = this._evalRenderRuleFn(field, rule, entry.prefixForNestedSelector) // => 5
+         }
+
+         // 5
+         if (Array.isArray(rule)) {
+            for (const subrule of rule) {
+               const newRule: RenderRuleFlat<Field> = this.removeUndefs({
+                  at: subrule.at,
+                  propsFlat: subrule.props,
+                  // addedBy: subrule.addedBy,
+                  priority: subrule.priority,
+               })
+               out.push(newRule)
+               if (subrule.props.rules != null) {
+                  const prefixForNestedSelector = toRawFieldSelector(newRule.at)
+                  queue.push({ rule: subrule.props.rules, prefixForNestedSelector })
+               }
+            }
+            continue
+         }
+
+         // we should have it a continue here already
+         throw new Error(`rulesDef is not an array or a function`)
       }
+
       return out
    }
 
-   private flattenRule(
-      field: Field,
-      rulesDef: FlattenableRule,
-      rules: RenderRuleFlat<Field>[],
-      queue: FlattenableRule[],
-   ) {
-      // 1, 2
-      if (rulesDef == null) {
-         return
-      }
-
-      // 3
-      if (typeof rulesDef === 'object' && !Array.isArray(rulesDef)) {
-         // rulesDef = { rules: [rulesDef] }
-         const rule: RenderRule<Field> = {
-            at: field,
-            props: rulesDef,
-            addedBy: field,
-            priority: 99,
-         }
-         rulesDef = [rule]
-         // and continue to step 5
-      }
-
-      // 4
-      if (typeof rulesDef === 'function') {
-         rulesDef = this._evalRenderRuleFn(field, rulesDef)
-         // and continue to step 5
-      }
-
-      // 5
-      if (Array.isArray(rulesDef)) {
-         for (const rule of rulesDef) {
-            rules.push({
-               at: rule.at,
-               propsFlat: rule.props,
-               addedBy: rule.addedBy,
-               priority: rule.priority,
-            })
-            if (rule.props.rules != null) {
-               queue.push(rule.props.rules)
-            }
-         }
-         return
-      }
-
+   private static _evalRenderRuleFn(
       //
-      throw new Error(`rulesDef is not an array or a function`)
-   }
-
-   private _evalRenderRuleFn(field: Maybe<Field>, uiFn: RenderRuleFn<any>): RenderRule<Field>[] {
+      field: Maybe<Field>,
+      uiFn: RenderRuleFn<any>,
+      prefixForNestedSelector: string,
+   ): RenderRule<Field>[] {
       if (field == null) throw new Error('form not loaded yet')
 
       const extraRules: RenderRule<any>[] = []
@@ -120,17 +124,34 @@ export class Renderer {
          // self rule
          if (props.length === 1) {
             Object.assign(OUT, props[0])
-            extraRules.push({ at: field, props: props[0], addedBy: field, priority: 99 })
+            // 🍿 extraRules.push({ at: field, props: props[0], addedBy: field, priority: 99 })
+            extraRules.push({
+               at: `#${field?.zUid}`,
+               // at: field,
+               props: props[0],
+               // addedBy: field,
+               priority: 99,
+            })
          }
          // child rule
          else {
-            const extraRule = convertShortRule(props as RenderRule_asList<any>)
-            extraRules.push(extraRule)
+            const extraRule = convertShortRule(props as RenderRule_asList<Field>)
+            const childSelector = normalizePattern(extraRule.at, prefixForNestedSelector)
+            extraRules.push({ ...extraRule, at: childSelector })
          }
       }
 
       uiFn(field, set)
       return extraRules
+   }
+
+   private static removeUndefs<T extends object>(obj: T): T {
+      for (const key in obj) {
+         if (obj[key] === undefined) {
+            delete obj[key]
+         }
+      }
+      return obj
    }
 
    /**
@@ -141,26 +162,92 @@ export class Renderer {
    render<FIELD extends Field>(
       //
       field: FIELD,
-      ctx: RenderCtx<FIELD>,
       renderProps: RenderProps<FIELD>,
+      ctx: RenderCtx<FIELD>,
    ): ReactNode {
-      // {
-      //    // updated list of rules to inject to children
-      //    rules: RenderRuleFlat<Field>[]
-      //    // and react node for this field
-      //    reactNode: ReactNode
-      // }
+      const { nextCtx, Shell, finalProps } = this.render_<FIELD>(field, renderProps, ctx)
+      return <rendererCtx.Provider value={nextCtx}>{renderFCOrNode(Shell, finalProps)}</rendererCtx.Provider>
+   }
+
+   /**
+    * helper to define rules as variables without importing types
+    * nor manually annotating them
+    */
+   static rule<RULE extends FlattenableRule<Field>>(initialRules: RULE): RULE {
+      return initialRules
+   }
+
+   /**
+    * Helper to test the renderer engine
+    * not using react, but traversing all fields depth first
+    * and building a list of all props for every field
+    */
+   renderTest<FIELD extends Field>(
+      /** field entrypoing */
+      field: Field,
+      initialRules?: FlattenableRule<FIELD>,
+   ): { at: FL_FieldPath; props: RenderProps<Field> }[] {
+      const rules: RenderRuleFlat<Field>[] =
+         initialRules != null ? Renderer.normalizeRule(field, initialRules) : []
+
+      const rootCtx: RenderCtx = {
+         field,
+         ancestors: [],
+         renderer: this,
+         rules,
+      }
+      const out: { at: FL_FieldPath; props: any }[] = []
+      const ctxIn = new WeakMap<Field, RenderCtx>()
+
+      field.zTraverseDepthFirst((f) => {
+         const ctx = f.zParent ? bang(ctxIn.get(f.zParent)) : rootCtx
+         const { nextCtx, Shell, finalProps } = this.render_<Field>(f, {}, ctx)
+         ctxIn.set(f, nextCtx)
+
+         // console.log(`[🤠] ${Object.keys(finalProps)}`)
+         const {
+            //useless
+            field,
+            presenter,
+            // those are still here only to avoid creating new JS object
+            // but sub-rules have been flatten already
+            rules,
+            // what we care about
+            ...testProps
+         } = finalProps
+
+         // if (f.zPath === '$.c.kkk.t1' || f.zPath === '$.c.kkk') {
+         //    console.log(
+         //       `[🤠🟢1] ${f.zPath} ${JSON.stringify(testProps)}`,
+         //       ctx.rules.map((i) => normalizePattern(i.at)).join('\n'),
+         //    )
+         // }
+         if (Object.keys(testProps).length === 0) return
+         out.push({ at: f.zPath, props: testProps })
+      })
+      return out
+   }
+
+   render_<FIELD extends Field>(
+      //
+      field: FIELD,
+      renderProps: RenderProps<FIELD>,
+      ctx: RenderCtx<FIELD>,
+   ): {
+      nextCtx: RenderCtx
+      Shell: FCOrNode<RenderPropsCompiled<FIELD>>
+      finalProps: RenderPropsCompiled<FIELD>
+   } {
       const { /* field, */ ancestors } = ctx
       const debug = false // field.path === '...'
 
-      console.log(`[🔴] >>>>>>>> `, field.zPath, field.zUid)
-      // all rules applied
-      const selfUIUI: RenderProps<FIELD> | RenderRule<FIELD>[] = field.zConfig.uiui as any
-      const NEWRULESNORM: RenderRuleFlat<Field>[] = this.flattenRules(field, [selfUIUI, renderProps])
-
       // massive optimization here; just support arbitrary nested arrays
       // and ache the object so we never spread stuff
-      const rules: RenderRuleFlat<Field>[] = [...ctx.rules, ...NEWRULESNORM]
+      const rules: RenderRuleFlat<Field>[] = [
+         ...ctx.rules,
+         ...Renderer.normalizeRule(field, field.zConfig.uiui),
+         ...Renderer.normalizeRule(field, renderProps),
+      ]
 
       // override parents if need be
       const virtualParents: Map<Field, Field> = new Map<Field, Field>()
@@ -180,7 +267,6 @@ export class Renderer {
       // if (field.config.uiui != null) xxx.evalRule(field.config.uiui, RENDER_PRIORITY_UIUI)
       for (const rule of rules) {
          const isMatching = FieldSelector.match(rule.at, field, virtualParents)
-
          if (isMatching) {
             const newSlots = rule.propsFlat as RenderProps<FIELD>
             if (newSlots != null && Object.keys(newSlots).length > 0) {
@@ -203,14 +289,28 @@ export class Renderer {
       // console.log(`[🦊] slots for`, field.path, slots)
       // console.log(`[🦊🟢FINAL] slots for`, field.path, slots.Head)
       // return renderFCOrNode(Shell, finalProps)
-      const nextCtx: RenderCtx = { field, ancestors: [...ctx.ancestors, ctx], renderer: this, rules }
-      return <rendererCtx.Provider value={nextCtx}>{renderFCOrNode(Shell, finalProps)}</rendererCtx.Provider>
+      const nextCtx: RenderCtx = {
+         field,
+         ancestors: [...ctx.ancestors, ctx],
+         renderer: this,
+         rules,
+      }
+      const out = { nextCtx, Shell, finalProps }
+      return out
+      // return <rendererCtx.Provider value={nextCtx}>{renderFCOrNode(Shell, finalProps)}</rendererCtx.Provider>
       // return {
       //    rules: rules,
       //    reactNode: renderFCOrNode(Shell, finalProps),
       // }
    }
 
+   debugVirtualParents(virtualParents: Map<Field, Field>): void {
+      console.log(`[🦊] virtual parents = { `)
+      for (const [child, parent] of virtualParents.entries()) {
+         console.log(`[🦊]    ${child.zPath}.parent --is-> ${parent.zPath}`)
+      }
+      console.log(`[🦊] } `)
+   }
    debugFinalProps(finalProps: RenderPropsCompiled<any>): void {
       console.log(`[🦊----------->>>>>] `, finalProps.field.path, this.explainSlots(finalProps))
    }
@@ -232,7 +332,8 @@ export class Renderer {
 
 // #region 'window' mixin
 // Renderer is injected, to help with using csuite in other codebases.
-window.RENDERER = {
+const window_ = globalThis as any as typeof window
+window_.RENDERER = {
    Render: RenderUI,
 }
 

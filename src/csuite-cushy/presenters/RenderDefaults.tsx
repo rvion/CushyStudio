@@ -83,8 +83,7 @@ function r<FIELD extends Field>(
    priority = 10,
 ): void {
    defaultRulesV2.push({
-      addedBy: null,
-      at: FieldSelector.from(selector),
+      at: selector,
       propsFlat: renderProps,
       priority,
    })
