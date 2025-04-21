@@ -3,6 +3,7 @@ import type { Field_optional_serial } from '../fields/optional/FieldOptional'
 import type { IconName } from '../icons/IconName'
 import type { TintExt } from '../kolor/Tint'
 import type { FieldAnomaly } from '../migration/Anomaly'
+import type { Selectorable } from '../selector/Selectorable'
 import type { ITreeElement } from '../tree/TreeEntry'
 import type { CovariantFn } from '../variance/BivariantHack'
 import type { AnyFieldSerial } from './EntitySerial'
@@ -53,6 +54,7 @@ import { FieldSym } from './$FieldSym'
 import { autofixSerial_20240703 } from './autofix/autofixSerial_20240703'
 import { autofixSerial_20240711 } from './autofix/autofixSerial_20240711'
 import { CSchema, type WithConfigOptions } from './CSchema'
+import { CShape } from './CSchemaAt'
 import { type CushyOnlyMixin, CushyOnlyMixinDescriptors } from './CushyOnly.mixin'
 import { FieldEvent, type FieldEvent_ } from './FieldEvent'
 import { mkNewFieldId_v1 } from './FieldId'
@@ -133,8 +135,14 @@ export interface Field {
    '{ownPatch}': Patch_Common<this['{type}']>
    '{schema}': CSchema<this>
 }
-export abstract class Field {
+export abstract class Field implements Selectorable<Field> {
    // 2025-02-11 new addition
+
+   get zShape(): CShape {
+      const value = new CShape(this.zSchema, this.zMountKey, this.zParent?.zShape ?? null)
+      Object.defineProperty(value, 'zShape', { value })
+      return value
+   }
 
    /**
     * unique Field instance ID;

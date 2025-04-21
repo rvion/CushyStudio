@@ -42,38 +42,79 @@ describe('renderer', () => {
       ])
    })
 
-   it('waah', () => {
+   describe('complex stuff', () => {
       const b = getBuilder()
-      const x = b
-         .fields({
-            prompts: b
-               .fields({
-                  isActive: b.bool(),
-                  content: b.string(),
-               })
-               .list(),
-         })
-         .create()
-
-      x.prompts.addItem()
-
-      const rule = Renderer.rule((_, set) => {
-         set('@list', { '∂1': '🟢' })
-         set('@list:has(>@bool)', { '∂2': '🔵' })
-         // set('@list:has(.@group:has(.isActive@bool):has(.content@str))', {
-         //    '∂1': 'yes',
-         //    rules: (s, set) => {
-         //       set('&.@group.isActive', { '∂2': 'yes' })
-         //       set('&.@group.content', { '∂3': 'yes' })
-         //    },
-         // })
+      const schema = b.fields({
+         prompts: b
+            .fields({
+               isActive: b.bool(),
+               content: b.string(),
+            })
+            .list(),
       })
-      const ZZ = Renderer.normalizeRule(x, rule)
+      it('wooh', () => {
+         const x = schema.create()
+         const sub = Renderer.rule((s, set) => {
+            set('&.@group.isActive', { '∂2': '🟢' })
+            set('&.@group.content', { '∂3': '🔵' })
+         })
+         const rule = Renderer.rule((_, set) => {
+            set('@list:has(.@group:has(.isActive@bool):has(.content@str))', { '∂1': 'yes', rules: sub })
+         })
+         x.prompts.addItem()
+         x.prompts.addItem()
+         const renderer = new Renderer(x)
+         const out = renderer.renderTest(x, rule)
+         expect(Renderer.normalizeRule(x, rule)).toEqual([
+            {
+               at: '@list:has(.@group:has(.isActive@bool):has(.content@str))',
+               propsFlat: { rules: sub, '∂1': 'yes' },
+            },
+            {
+               at: '@list:has(.@group:has(.isActive@bool):has(.content@str)).@group.isActive',
+               propsFlat: { '∂2': '🟢' },
+            },
+            {
+               at: '@list:has(.@group:has(.isActive@bool):has(.content@str)).@group.content',
+               propsFlat: { '∂3': '🔵' },
+            },
+         ])
+         //
+         const paths: string[] = []
+         x.zTraverseDepthFirst((f) => void paths.push(f.zPathNice))
+         expect(paths).toEqual([
+            //
+            '$',
+            '$.prompts',
+            '$.prompts[0]',
+            '$.prompts[0].isActive',
+            '$.prompts[0].content',
+            '$.prompts[1]',
+            '$.prompts[1].isActive',
+            '$.prompts[1].content',
+         ])
+         expect(out).toEqual([
+            //
+            { at: '$.prompts', props: { '∂1': 'yes' } },
+            { at: '$.prompts[0].isActive', props: { '∂2': '🟢' } },
+            { at: '$.prompts[0].content', props: { '∂3': '🔵' } },
+            { at: '$.prompts[1].isActive', props: { '∂2': '🟢' } },
+            { at: '$.prompts[1].content', props: { '∂3': '🔵' } },
+         ])
+      })
 
-      // expect(ZZ).toHaveLength(3)
-      const renderer = new Renderer(x)
-      const out = renderer.renderTest(x, rule)
-      expect(out).toEqual([{ at: '$.prompts', props: { '∂1': '🟢', '∂2': '🔵' } }])
+      it('waah', () => {
+         const x = schema.create()
+         // x.prompts.addItem()
+         const rule = Renderer.rule((_, set) => {
+            set('@list', { '∂1': '🟢' })
+            set('@list:has(>@bool)', { '∂2': '🔵' })
+            set('@list:holds(>@bool)', { '∂3': '🟡' })
+         })
+         const renderer = new Renderer(x)
+         const out = renderer.renderTest(x, rule)
+         expect(out).toEqual([{ at: '$.prompts', props: { '∂1': '🟢', '∂2': '🔵' } }])
+      })
    })
 
    it('works with a recursive rule', () => {

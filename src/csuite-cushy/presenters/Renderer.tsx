@@ -1,4 +1,4 @@
-import type { Field, FL_FieldPath } from '../../csuite/model/Field'
+import type { Field, FL_FieldPath, FL_FieldPathNice } from '../../csuite/model/Field'
 import type { RenderProps } from './RenderProps'
 import type { RenderPropsCompiled } from './RenderPropsCompiled'
 import type { ReactNode } from 'react'
@@ -186,7 +186,7 @@ export class Renderer {
       /** field entrypoing */
       field: Field,
       initialRules?: FlattenableRule<FIELD>,
-   ): { at: FL_FieldPath; props: RenderProps<Field> }[] {
+   ): { at: FL_FieldPathNice; props: RenderProps<Field> }[] {
       const rules: RenderRuleFlat<Field>[] =
          initialRules != null ? Renderer.normalizeRule(field, initialRules) : []
 
@@ -196,7 +196,7 @@ export class Renderer {
          renderer: this,
          rules,
       }
-      const out: { at: FL_FieldPath; props: any }[] = []
+      const out: { at: FL_FieldPathNice; props: any }[] = []
       const ctxIn = new WeakMap<Field, RenderCtx>()
 
       field.zTraverseDepthFirst((f) => {
@@ -216,7 +216,7 @@ export class Renderer {
          } = finalProps
 
          if (Object.keys(testProps).length === 0) return
-         out.push({ at: f.zPath, props: testProps })
+         out.push({ at: f.zPathNice, props: testProps })
       })
       return out
    }

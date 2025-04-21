@@ -23,7 +23,10 @@ examples selectors
 */
 
 import type { FieldPattern } from '../../csuite-cushy/presenters/RenderRule'
+import type { Selectorable } from './Selectorable'
 
+import { isField } from '../fields/WidgetUI.DI'
+import { CShape } from '../model/CSchemaAt'
 import { Field } from '../model/Field'
 import { exhaust } from '../utils/exhaust'
 
@@ -51,10 +54,9 @@ export type SelectorToken =
    // LOGIC -------------------------------------------------------------------
    | StepBranches // {or|...,...,...} {and|...,...,...}
    | StepHas // :has()
+   | StepHolds // :holds()
    // EXPERIMENTAL ------------------------------------------------------------
    | StepNot // !() 👉 weird semantic; possibly just a `:has-not()` in disguise
-   // COLLECTION --------------------------------------------------------------
-   | StepCollect // =()
    // FLAGS -------------------------------------------------------------------
    | StepDebug // +
 
@@ -64,11 +66,11 @@ type StepAxis = { type: 'axis'; axis: Axis }
 type StepFilterMountKey = { type: 'mount'; key: string }
 type StepFilterType = { type: 'filterType'; fieldType: string }
 type StepFilterCode = { type: 'filterCode'; filterCode: string }
-type StepCollect = { type: 'collect'; collectCode?: string }
 type StepIndex = { type: 'index'; index: number }
 type StepBranches = { type: 'branches'; branches: SelectorToken[][] }
 type StepNot = { type: 'not'; steps: SelectorToken[] }
 type StepHas = { type: 'has'; steps: SelectorToken[] }
+type StepHolds = { type: 'holds'; steps: SelectorToken[] }
 type StepNesting = { type: 'nesting' }
 type StepHasID = { type: 'hasId'; id: string }
 type StepHasTag = { type: 'hasTag'; tag: string }
@@ -82,8 +84,6 @@ export type Axis =
    | '^' // parent
    | '>' // descendants
    | '<' // ancestors
-// | '$' // root => is Filter
-// | '&' // ownwer => is Filter
 
 enum SelectorMode {
    /**
@@ -91,7 +91,7 @@ enum SelectorMode {
     *  a.b.c  => means (check we're named "c" > then thaw we have a parent . > that is named "b" ...)
     */
    // todo: rename upwards
-   MATCH = 1,
+   MATCH_UPWARDS = 1,
    /** match from start to end of */
    SELECT = 2,
    /** attempt to match on schema */
@@ -147,7 +147,7 @@ export class FieldSelector {
       return new FieldSelector(selector)
    }
 
-   axisSkips: { [key in CATALOG.AllFieldTypes]?: (node: any) => Field } = {
+   private axisSkipsForFields: { [key in CATALOG.AllFieldTypes]?: (node: any) => Field } = {
       shared: (node: Z.FShared<Field>) => node.child,
    }
 
@@ -155,10 +155,7 @@ export class FieldSelector {
    private length: number
    readonly selector: string
 
-   private constructor(
-      selector: string | ParsedSelector,
-      //   public from: Field | null = null,
-   ) {
+   private constructor(selector: string | ParsedSelector) {
       if (typeof selector === 'string') {
          this.selector = selector
          this.length = selector.length
@@ -169,90 +166,40 @@ export class FieldSelector {
       }
    }
 
-   // match mode actually works against those:
-   // get inverse() {
-   //    const { steps } = this.parse()
-   //    const stepsInverse: ASTStep[] = steps.toReversed().map((step) => {
-   //       if (step.type === 'axis') {
-   //          if (step.axis === '.') return { type: 'axis', axis: '^' }
-   //          if (step.axis === '^') return { type: 'axis', axis: '.' }
-   //          if (step.axis === '>') return { type: 'axis', axis: '<' }
-   //          if (step.axis === '<') return { type: 'axis', axis: '>' }
-   //       }
-   //       return step
-   //    })
-   //    return stepsInverse
-   // }
-
-   // #region API
-   matches(
-      //
-      field: Field | Field[],
-      ___?: Map<Field, Field>,
-   ): boolean {
-      const { fields } = this.runMatch(field, ___)
+   matches(field: Field | Field[], ___?: Map<Field, Field>): boolean {
+      const fields = this.runMatch(field, ___)
       return fields.length > 0
    }
 
-   run(
-      //
-      field: Field | Field[],
-      mode: SelectorMode,
-      ___?: Map<Field, Field>,
-      /**
-       * field to use for the nesting filter (`&`).
-       * if not provided, evalutating `&` will crash.
-       */
-      // nestedUnder?: Field,
-   ) {
-      if (mode === SelectorMode.MATCH) return this.runMatch(field, ___ /* nestedUnder */)
-      if (mode === SelectorMode.SELECT) return this.runSelect(field, ___ /* nestedUnder */)
+   run(field: Field | Field[], mode: SelectorMode, ___?: Map<Field, Field>) {
+      if (mode === SelectorMode.MATCH_UPWARDS) return this.runMatch(field, ___)
+      if (mode === SelectorMode.SELECT) return this.runSelect(field, ___)
       throw new Error(`Unknown mode "${mode}"`)
    }
 
    /** returns the roots that given to the selector would select the given fields  */
-   runMatch(
-      /** fields to match */
-      field: Field | Field[],
-      ___?: Map<Field, Field>,
-      // nestedUnder?: Field,
-   ): { fields: Field[]; values: any[] } {
+   runMatch<SCTR extends Selectorable<SCTR>>(field: SCTR | SCTR[], ___?: Map<SCTR, SCTR>): SCTR[] {
       const { steps } = this.parse()
-      return this.selectFrom_(field, steps, SelectorMode.MATCH, ___ /* nestedUnder */)
+      return this.selectFrom_(field, steps, SelectorMode.MATCH_UPWARDS, ___)
    }
-   runSelect(
-      /** fields to return selection against */
-      from: Field | Field[],
-      ___?: Map<Field, Field>,
-      // nestedUnder?: Field,
-   ): { fields: Field[]; values: any[] } {
+
+   runSelect<SCTR extends Selectorable<SCTR>>(from: SCTR | SCTR[], ___?: Map<SCTR, SCTR>): SCTR[] {
       const { steps } = this.parse()
-      return this.selectFrom_(from, steps, SelectorMode.SELECT, ___ /* nestedUnder */)
+      return this.selectFrom_(from, steps, SelectorMode.SELECT, ___)
    }
 
    // #region EVAL
    isDebugEnabled = false
-   private selectSchema(
-      from: Z.Schema[] | Z.Schema,
-      steps_: SelectorToken[],
-      mode: SelectorMode.SELECT_SCHEMA,
-      /** virtual hierachy */
-      ___?: Map<Field, Field>,
-      // nestedUnder?: Field,
-   ) {
-      // todo
-   }
-   private selectFrom_(
-      //
-      from: Field[] | Field,
+
+   private selectFrom_<SCTR extends Selectorable<SCTR>>(
+      from: SCTR[] | SCTR,
       steps_: SelectorToken[],
       mode: SelectorMode,
-      ___?: Map<Field, Field>,
-      // nestedUnder?: Field,
-   ) {
-      let candidates: Field[] = Array.isArray(from) ? from : [from]
-      const steps = mode === SelectorMode.MATCH ? steps_.toReversed() : steps_
-      const values: any[] = []
+      ___?: Map<SCTR, SCTR>,
+   ): SCTR[] {
+      let candidates: SCTR[] = Array.isArray(from) ? from : [from]
+      const steps = mode === SelectorMode.MATCH_UPWARDS ? steps_.toReversed() : steps_
+
       for (const step of steps) {
          if (this.isDebugEnabled) {
             const stepIndex = steps.indexOf(step)
@@ -261,7 +208,7 @@ export class FieldSelector {
             console.log(`[🧠] `, startStr, [candidates.map((c) => c.zPath)])
          }
          // early abort
-         if (candidates.length === 0) return { fields: [], values: values }
+         if (candidates.length === 0) return [] /* values: values */
 
          // mount
          if (step.type === 'mount') {
@@ -301,8 +248,6 @@ export class FieldSelector {
          // nesting
          else if (step.type === 'nesting') {
             throw new Error('nesting should have already been resolved at this point')
-            // if (nestedUnder == null) throw new Error(`No nestedUnder provided for nesting filter`)
-            // candidates = candidates.filter((c) => c.zUid === nestedUnder?.zUid)
          }
 
          // HasID
@@ -315,11 +260,22 @@ export class FieldSelector {
             candidates = candidates.filter((c) => c.zConfig.tags?.includes(step.tag) ?? false)
          }
 
-         // has
+         // has sub-content
+         else if (step.type === 'holds') {
+            candidates = candidates.filter((node) => {
+               const subSelector = FieldSelector.from({ steps: step.steps })
+               const res = subSelector.runSelect(node)[0]
+               return res != null
+            })
+         }
+
+         // has sub-shape
          else if (step.type === 'has') {
             candidates = candidates.filter((node) => {
                const subSelector = FieldSelector.from({ steps: step.steps })
-               const res = node.zSelectFirstOrNull(subSelector)
+               const schemaAt = isField(node) ? node.zShape : node
+               if (schemaAt == null) throw new Error('schemaAt is null')
+               const res = subSelector.runSelect(schemaAt)[0]
                return res != null
             })
          }
@@ -329,49 +285,81 @@ export class FieldSelector {
             // throw new Error('❌ not is not implemented')
             candidates = candidates.filter((node) => {
                const subSelector = FieldSelector.from({ steps: step.steps })
-               const res = node.zSelectFirstOrNull(subSelector)
+               const res = subSelector.runSelect(node)[0]
                return res == null
             })
          }
 
          // axis
          else if (step.type === 'axis') {
-            candidates = this.applyAxis(candidates, step, mode, ___)
+            // candidates = this.applyAxis(candidates, step, mode, ___)
+            const nextNodes: Set<SCTR> = new Set()
+            const addChildNode = (node: Maybe<SCTR>): void => {
+               if (node == null) return
+               const skip_ = isField(node) ? this.axisSkipsForFields[node.zType] : null
+               if (skip_ != null) node = skip_(node) as unknown /* 🔴 */ as SCTR
+               nextNodes.add(node)
+            }
+            const addParentNode = (node: Maybe<SCTR>): void => {
+               if (node == null) return
+               const skip_ = isField(node) ? this.axisSkipsForFields[node.zType] : null
+               if (skip_ != null) node = node.zParent as SCTR
+               if (node == null) return
+               nextNodes.add(node)
+            }
+            for (const at of candidates) {
+               if (mode === SelectorMode.MATCH_UPWARDS) {
+                  if (step.axis === '.') addParentNode(___?.get(at) ?? at.zParent)
+                  else if (step.axis === '^') at.zChildrenAll.forEach(addChildNode)
+                  else if (step.axis === '>') at.zAncestors.forEach(addParentNode)
+                  else if (step.axis === '<') at.zDescendants.forEach(addChildNode)
+                  else throw new Error(`Invalid axis "${step.axis}"`)
+               } else {
+                  if (step.axis === '.') at.zChildrenAll.forEach(addChildNode)
+                  else if (step.axis === '^') addParentNode(___?.get(at) ?? at.zParent)
+                  else if (step.axis === '>') at.zDescendants.forEach(addChildNode)
+                  else if (step.axis === '<') at.zAncestors.forEach(addParentNode)
+                  else throw new Error(`Invalid axis "${step.axis}"`)
+               }
+            }
+
+            candidates = [...nextNodes.values()]
          }
 
-         // axis
+         // yes
          else if (step.type === 'yes') {
             // noop
          }
 
          // branches
          else if (step.type === 'branches') {
-            candidates = this.applyBranch(candidates, step, mode)
+            const next = new Set<SCTR>()
+            for (const branch of step.branches) {
+               const branchSelector = new FieldSelector({ steps: branch })
+               const nexts =
+                  mode === SelectorMode.MATCH_UPWARDS
+                     ? branchSelector.runMatch(candidates, ___)
+                     : branchSelector.runSelect(candidates, ___)
+               for (const n of nexts) next.add(n)
+            }
+            candidates = Array.from(next)
          }
 
          // index
          else if (step.type === 'index') {
-            if (mode === SelectorMode.MATCH) {
+            if (mode === SelectorMode.MATCH_UPWARDS) {
                candidates = candidates
                   .filter((t) => t.zParent?.zChildrenActive.at(step.index) === t)
                   .map((t) => t.zParent!)
-            } else {
-               candidates = candidates.map((c) => c.zChildrenActive.at(step.index)).filter(Boolean) as Field[]
+            }
+            //
+            else {
+               candidates = candidates //
+                  .map((c) => c.zChildrenActive.at(step.index))
+                  .filter(Boolean) as SCTR[]
             }
          }
 
-         // collect
-         else if (step.type === 'collect') {
-            if (step.collectCode) {
-               try {
-                  const func = new Function(`return ${step.collectCode};`)
-                  const result = func.call(candidates)
-                  values.push(result)
-               } catch (e) {
-                  console.error(`Error evaluating collect code "${step.collectCode}":`, e)
-               }
-            }
-         }
          // exhaus
          else {
             exhaust(step)
@@ -379,24 +367,24 @@ export class FieldSelector {
          }
       }
 
-      return { fields: candidates, values }
+      return candidates // { fields: candidates /* 🌩️ values */ }
    }
 
    // #region RENDER
    static renderSteps(steps: SelectorToken[]): string {
       return steps.map(FieldSelector.renderStep).join('')
    }
+
    static renderStep(step: SelectorToken): string {
       if (step.type === 'axis') return step.axis
       if (step.type === 'mount') return `${step.key}`
       if (step.type === 'filterType') return `@${step.fieldType}`
       if (step.type === 'filterCode') return `?(${step.filterCode})`
-      if (step.type === 'collect') return `=(${step.collectCode})`
       if (step.type === 'index') return `[${step.index}]`
-      if (step.type === 'branches')
-         return `{${step.branches.map((b) => b.map(FieldSelector.renderStep).join('|')).join(' | ')}}`
+      if (step.type === 'branches') return `{${step.branches.map((b) => b.map(FieldSelector.renderStep).join('|')).join(' | ')}}` // prettier-ignore
       if (step.type === 'not') return `!(${step.steps.map(FieldSelector.renderStep).join('')})`
       if (step.type === 'has') return `:has(${step.steps.map(FieldSelector.renderStep).join('')})`
+      if (step.type === 'holds') return `:holds(${step.steps.map(FieldSelector.renderStep).join('')})`
       if (step.type === 'root') return `$`
       if (step.type === 'debug') return `+`
       if (step.type === 'yes') return `*`
@@ -405,64 +393,6 @@ export class FieldSelector {
       if (step.type === 'nesting') return `&`
       exhaust(step)
       throw new Error(`Unknown step type "${(step as any).type}"`)
-   }
-
-   // #region MATCH
-   /** Applies an axis step to the current candidates. */
-   private applyAxis(
-      //
-      candidates: Field[],
-      step: StepAxis,
-      mode: SelectorMode,
-      ___?: Map<Field, Field>,
-   ): Field[] {
-      const nextNodes: Set<Field> = new Set()
-      const addChildNode = (node: Field | null): void => {
-         if (node == null) return
-         const skip_ = this.axisSkips[node.zType]
-         if (skip_ != null) node = skip_(node)
-         nextNodes.add(node)
-      }
-      const addParentNode = (node: Field | null): void => {
-         if (node == null) return
-         const skip_ = this.axisSkips[node.zType]
-         if (skip_ != null) node = node.zParent
-         if (node == null) return
-         nextNodes.add(node)
-      }
-      for (const at of candidates) {
-         if (mode === SelectorMode.MATCH) {
-            if (step.axis === '.') addParentNode(___?.get(at) ?? at.zParent)
-            else if (step.axis === '^') at.zChildrenAll.forEach(addChildNode)
-            else if (step.axis === '>') at.zAncestors.forEach(addParentNode)
-            else if (step.axis === '<') at.zDescendants.forEach(addChildNode)
-            else throw new Error(`Invalid axis "${step.axis}"`)
-         } else {
-            if (step.axis === '.') at.zChildrenAll.forEach(addChildNode)
-            else if (step.axis === '^') addParentNode(___?.get(at) ?? at.zParent)
-            else if (step.axis === '>') at.zDescendants.forEach(addChildNode)
-            else if (step.axis === '<') at.zAncestors.forEach(addParentNode)
-            else throw new Error(`Invalid axis "${step.axis}"`)
-         }
-      }
-
-      return [...nextNodes.values()]
-   }
-
-   /** Applies a branch step to the current candidates. */
-   private applyBranch(
-      //
-      candidates: Field[],
-      step: StepBranches,
-      mode: SelectorMode,
-   ): Field[] {
-      let branchResults: Field[] = []
-      for (const branch of step.branches) {
-         const branchSelector = new FieldSelector({ steps: branch })
-         const { fields } = branchSelector.run(candidates, mode)
-         branchResults = branchResults.concat(fields)
-      }
-      return Array.from(new Set(branchResults))
    }
 
    // #region PARSE
@@ -498,12 +428,16 @@ export class FieldSelector {
       else if (char === '*') return this.parseYes()
       else if (char === '$') return this.parseRoot()
       else if (char === '@') return this.parseFilterType()
-      else if (char === '=') return this.parseCollector()
       else if (char === '[') return this.parseIndex()
       else if (char === '?') return this.parseFilterCode()
       else if (char === '!') return this.parseNot()
-      else if (char === ':') return this.parseHas()
-      else if (char === '+') return this.parseDebug()
+      else if (char === ':') {
+         this.consumeCharOrThrow(':')
+         const verb = this.consumeNextWord()
+         if (verb === 'has') return this.parseHas()
+         if (verb === 'holds') return this.parseHolds()
+         throw new Error(`Unknown verb "${verb}" at position ${this.position} in selector "${this.selector}"`)
+      } else if (char === '+') return this.parseDebug()
       else if (char === '&') return this.parseNested()
       else if (char === '#') return this.parseHasId()
       else if (char === '%') return this.parseHasTag()
@@ -586,13 +520,6 @@ export class FieldSelector {
    }
 
    /** Parses a reducer after '='. */
-   parseCollector(): StepCollect {
-      this.consumeCharOrThrow('=')
-      const code: string = this.consumeParenthesisGroup()
-      return { type: 'collect', collectCode: code }
-   }
-
-   /** Parses a reducer after '='. */
    parseIndex(): StepIndex {
       this.consumeCharOrThrow('[')
       const index: number = this.consumeNextNumber()
@@ -613,7 +540,7 @@ export class FieldSelector {
    }
 
    parseHas(): StepHas {
-      this.consumeCharOrThrow(':has(')
+      this.consumeCharOrThrow('(')
       const steps: SelectorToken[] = []
       while (true) {
          if (this.peek() === ')') break
@@ -622,6 +549,17 @@ export class FieldSelector {
       }
       this.consumeCharOrThrow(')')
       return { type: 'has', steps: steps }
+   }
+   parseHolds(): StepHolds {
+      this.consumeCharOrThrow('(')
+      const steps: SelectorToken[] = []
+      while (true) {
+         if (this.peek() === ')') break
+         const step: SelectorToken = this.parseStep()
+         steps.push(step)
+      }
+      this.consumeCharOrThrow(')')
+      return { type: 'holds', steps: steps }
    }
 
    /** Parses a reducer after '='. */
