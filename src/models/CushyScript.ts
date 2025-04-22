@@ -110,10 +110,10 @@ export class CushyScriptL extends BaseInst<TABLES['cushy_script']> {
    }
    // --------------------------------------------------------------------------------------
    /** cache of extracted apps */
-   private _VIEWS: Maybe<LoadedCustomView[]> = null
+   @observable private accessor _VIEWS: Maybe<LoadedCustomView[]> = null
 
    /** cache of extracted views */
-   private _EXECUTABLES: Maybe<Executable[]> = null
+   @observable private accessor _EXECUTABLES: Maybe<Executable[]> = null
 
    /** do not evaluate the script if script is not evaluated yet, nor re-evaluate it if script if missing */
    getExecutable_orNull(appID: CushyAppID): Maybe<Executable> {
@@ -146,9 +146,8 @@ export class CushyScriptL extends BaseInst<TABLES['cushy_script']> {
     *  - 2. upsert apps in db
     *  - 3. bumpt lastEvaluatedAt (and lastSuccessfulEvaluation)
     */
-   evaluateAndUpdateAppsAndViews = (): /* Executable[]  */ void => {
+   evaluateAndUpdateAppsAndViews = (): void => {
       console.log(`[🧐] extracting apps...`)
-      // debugger
       const evalRes = this._EVALUATE_SCRIPT()
       this._EXECUTABLES = evalRes.apps
       this._VIEWS = evalRes.views
