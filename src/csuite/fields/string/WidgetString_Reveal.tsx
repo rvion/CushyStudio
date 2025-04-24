@@ -22,12 +22,17 @@ export const WidgetString_Reveal = obs(function WidgetString_Reveal_({
          onAnchorKeyDown={(ev, rv) => {
             if (ev.key === 'Enter') {
                ev.stopPropagation()
-               rv.anchorRef.focusOnMountOrNowIfMounted_EVEN_IF_FOCUS_ALREADY_INSIDE()
+               rv.anchorRef.focusFirstInputLikeOnMountOrNowIfMounted_EVEN_IF_FOCUS_ALREADY_INSIDE()
                rv.close()
             }
          }}
+         showTriggers={{ keyboardEnterOrLetterWhenAnchorFocused: true, anchorClick: true }}
          placement='above-no-max-size'
-         children={<div tw='overflow-ellipsis line-clamp-1 flex-grow'>{field.zValueUnchecked}</div>}
+         children={
+            <div tabIndex={1} tw='overflow-ellipsis line-clamp-1 flex-grow'>
+               {field.zValueUnchecked}
+            </div>
+         }
          content={content}
       />
    )

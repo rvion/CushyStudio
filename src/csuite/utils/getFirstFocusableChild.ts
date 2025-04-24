@@ -4,7 +4,7 @@ export function getFirstFocusableChild(
 ): HTMLElement | null {
    const inputsLike = (
       [...element.querySelectorAll('input, textarea, select, [contenteditable="true"]')] as HTMLElement[]
-   ).filter((el: HTMLElement) => {
+   ).find((el: HTMLElement) => {
       const tabindex = el.getAttribute('tabindex')
       return (
          !(el as HTMLInputElement).disabled &&
@@ -15,5 +15,6 @@ export function getFirstFocusableChild(
       )
    })
 
-   return inputsLike[0] ?? null
+   return inputsLike ?? null
+   // return inputsLike[0] ?? null
 }

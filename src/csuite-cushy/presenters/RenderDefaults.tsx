@@ -158,9 +158,13 @@ function resetDefaultRules() {
                               content={() => <item.prompt.UI Shell={uy.prompt.WidgetPromptUIBird_d} />}
                               // contentDeps={[item]}
                            >
-                              <uy.misc.Button subtle borderless icon={IKONS.cdiNodes} />
+                              <uy.misc.Button subtle borderless icon={IKONS.mdiFileEdit} />
                            </RevealUI>
+
+                           {/* title */}
                            <item.name.UI Shell={uy.shell.HeaderOnly} Header={uy.string.reveal} />
+
+                           {/* toogle */}
                            <div tw='flex gap-1'>
                               <item.enabled.UI Shell={uy.shell.HeaderOnly} />
                            </div>

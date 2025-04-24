@@ -22,6 +22,18 @@ export class ObservableRef<T extends any> {
       })
    }
 
+   focusFirstInputLikeOnMountOrNowIfMounted_EVEN_IF_FOCUS_ALREADY_INSIDE(): void {
+      this.onMount((value) => {
+         if (value instanceof HTMLElement) {
+            const firstInput = getFirstFocusableChild(value, (el) => !el.hasAttribute('data-focus-trap'))
+            // console.log(`[🤠] AA`, value)
+            // console.log(`[🤠] BB`, firstInput)
+            if (firstInput) firstInput.focus()
+            else value.focus()
+         }
+      })
+   }
+
    focusOnMountOrNowIfMounted_EXCEPT_IF_FOCUS_ALREADY_INSIDE(): void {
       this.onMount((value) => {
          if (value instanceof HTMLElement) {

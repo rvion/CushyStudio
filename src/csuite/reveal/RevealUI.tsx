@@ -85,13 +85,27 @@ export const RevealUI: React.FunctionComponent<RevealProps> = obs(function Revea
    // this is a micro-optimisation hack; it's probably worth it long-term, but
    // if having two code paths prooves a bad idea, we may want to revert that decision
    const shouldClone = ((): boolean => {
+      // if explicitely specified => trust the user
       if (p.UNSAFE_cloned != null) return p.UNSAFE_cloned
+
+      // if more than one child => we can't clone
       const children = p.children != null ? React.Children.toArray(p.children) : []
       if (children.length !== 1) return false
+
+      // if a single child, retrieve it
       const child0 = children[0]!
+      // check if it's a valid element
       const isValidElement = React.isValidElement(child0)
       if (!isValidElement) return false
+
+      // if it's a primitive element (e.g. 'div', 'span', etc.) => we can clone it
+      const isPrimitive = typeof child0.type === 'string'
+      if (isPrimitive) return true
+
+      // if it's a react component, check if it's whitelisted
       if (whitelistedClonableComponents.has(child0.type)) return true
+
+      // otherwise, we can't clone it
       return false
    })()
 
