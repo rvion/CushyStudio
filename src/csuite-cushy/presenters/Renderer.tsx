@@ -15,13 +15,7 @@ import {
 } from '../../csuite/utils/renderFCOrNode'
 import { normalizePattern, toRawFieldSelector } from './normalizePattern'
 import { type RenderCtx, rendererCtx } from './RenderCtx'
-import {
-   convertShortRule,
-   type RenderRule,
-   type RenderRule_asList,
-   type RenderRuleFlat,
-   type RenderRuleFn,
-} from './RenderRule'
+import { convertShortRule, type RenderRule, type RenderRule_asList, type RenderRuleFn } from './RenderRule'
 import { RenderUI } from './RenderUI'
 
 // prettier-ignore
@@ -52,7 +46,7 @@ export class Renderer {
 
       // prefixForNestedSelector = '',
    ) {
-      const out: RenderRuleFlat<Field>[] = []
+      const out: RenderRule<Field>[] = []
       type QueueItem = { rule: FlattenableRule; prefixForNestedSelector: string }
       const queue: QueueItem[] = [
          {
@@ -67,14 +61,13 @@ export class Renderer {
       while (queue.length > 0 && max--) {
          const entry: QueueItem = queue.shift()!
          let rule = entry.rule
-         // console.log(`[🤠] ${100 - max} with (${entry.prefixForNestedSelector})`)
 
          // 1, 2 (null / undefined)
          if (rule == null) continue
 
          // 3 (object ==> renderProps)
          if (typeof rule === 'object' && !Array.isArray(rule)) {
-            rule = [{ at: field, props: rule, /* addedBy: field, */ priority: 99 }] // => 5
+            rule = [{ at: field, props: rule, priority: 99 }] // => 5
          }
 
          // 4 (function ==> renderRule)
@@ -85,10 +78,9 @@ export class Renderer {
          // 5
          if (Array.isArray(rule)) {
             for (const subrule of rule) {
-               const newRule: RenderRuleFlat<Field> = this.removeUndefs({
+               const newRule: RenderRule<Field> = this.removeUndefs({
                   at: subrule.at,
-                  propsFlat: subrule.props,
-                  // addedBy: subrule.addedBy,
+                  props: subrule.props,
                   priority: subrule.priority,
                })
                out.push(newRule)
@@ -124,12 +116,10 @@ export class Renderer {
          // self rule
          if (props.length === 1) {
             Object.assign(OUT, props[0])
-            // 🍿 extraRules.push({ at: field, props: props[0], addedBy: field, priority: 99 })
             extraRules.push({
                at: `#${field?.zUid}`,
                // at: field,
                props: props[0],
-               // addedBy: field,
                priority: 99,
             })
          }
@@ -187,7 +177,7 @@ export class Renderer {
       field: Field,
       initialRules?: FlattenableRule<FIELD>,
    ): { at: FL_FieldPathNice; props: RenderProps<Field> }[] {
-      const rules: RenderRuleFlat<Field>[] =
+      const rules: RenderRule<Field>[] =
          initialRules != null ? Renderer.normalizeRule(field, initialRules) : []
 
       const rootCtx: RenderCtx = {
@@ -240,7 +230,7 @@ export class Renderer {
       // ------------------------------------------------------------------------
       // massive optimization here; just support arbitrary nested arrays
       // and ache the object so we never spread stuff
-      const rules: RenderRuleFlat<Field>[] = [
+      const rules: RenderRule<Field>[] = [
          ...ctx.rules,
          ...Renderer.normalizeRule(field, field.zConfig.uiui),
          ...Renderer.normalizeRule(field, renderProps),
@@ -275,7 +265,7 @@ export class Renderer {
          //    // `[🤠] rule: "${field.zPath}" matches "${normalizePattern(rule.at)}" ${isMatching ? '🟢' : '🔴'}`,
          // }
          if (isMatching) {
-            const newSlots = rule.propsFlat as RenderProps<FIELD>
+            const newSlots = rule.props as RenderProps<FIELD>
             if (newSlots != null && Object.keys(newSlots).length > 0) {
                slots = mergeDefined(slots, newSlots)
             }

@@ -1,5 +1,5 @@
 import type { Field } from '../../csuite/model/Field'
-import type { RenderRuleFlat } from './RenderRule'
+import type { RenderRule } from './RenderRule'
 
 import { createContext, useContext } from 'react'
 
@@ -19,7 +19,7 @@ export type RenderCtx<FIELD extends Field = Field> = {
    ancestors: RenderCtx[]
 
    /** all rules injected by ancestors, */
-   rules: RenderRuleFlat<Field>[]
+   rules: RenderRule<Field>[]
 }
 
 // context for the presenter (render orchestrator, stateful per top-level <field.UI />)

@@ -39,6 +39,7 @@ export const BlenderListUI = obs(function BlenderListUI_<T extends Field_list<CS
       <Frame tw={wrapperCls} className='🔘BlenderListUI'>
          <Frame tw='flex flex-row gap-2 px-2' style={{ minHeight: '100%' }}>
             <ResizableFrame
+               resizeWidth={direction === 'horizontal'}
                tw='overflow-clip min-w-40'
                footer={<BlenderListFooterFilterUI />}
                currentSize={size}
@@ -46,7 +47,7 @@ export const BlenderListUI = obs(function BlenderListUI_<T extends Field_list<CS
                snap={28} // Should be h-input + half of gap-size
                showFooter={false}
             >
-               <div tw='flex flex-col gap-0.5 p-1'>
+               <div tw='flex flex-col gap-0.5 p-1 🔘BlenderListUI_items flex-grow'>
                   {field.items.map((i, ix) => {
                      const selected = x.selectedIx === ix
                      return (
@@ -124,73 +125,6 @@ export const BlenderListUI = obs(function BlenderListUI_<T extends Field_list<CS
             </div>
          </Frame>
          {selectedChild && <selectedChild.UI classNameForShell='grow' />}
-         {/* <Frame // TODO(bird_d/ui/logic): Need an inline collapsible "group" sort of thing here
-            tw='h-input flex-grow items-center text-center'
-            row
-            base={{ contrast: 0.1 }}
-         >
-            <Button borderless subtle icon={IKONS.mdiChevronDown} />
-            <Frame>Prompt</Frame>
-         </Frame> */}
-
-         {/* <Frame
-            // TODO(bird_d/ui/logic): Need an inline collapsible "group" sort of thing here
-            tw='h-input flex-grow items-center text-center'
-            row
-            base={{ contrast: 0.1 }}
-         >
-            <Button borderless subtle icon={IKONS.mdiChevronDown} />
-            <Frame>Options</Frame>
-         </Frame>
-         <div tw='flex flex-col gap-2 px-2'>
-            {x.selectedIx != 0 ? (
-               <>
-                  <Frame
-                     align
-                     border={theme.global.border}
-                     dropShadow={theme.global.shadow}
-                     roundness={theme.global.roundness}
-                  >
-                     <Button //
-                        active
-                        expand
-                        tooltip='Not implemented'
-                     >
-                        Concatenate
-                     </Button>
-                     <Button //
-                        expand
-                        tooltip='Not implemented'
-                     >
-                        Combine
-                     </Button>
-                     <Button //
-                        expand
-                        tooltip='Not implemented'
-                     >
-                        Average
-                     </Button>
-                  </Frame>
-                  <InputNumberUI //
-                     text='Strength'
-                     hideSlider
-                     mode='float'
-                     onValueChange={() => {}}
-                     value={1.0}
-                     tooltip='Not implemented'
-                  />
-               </>
-            ) : (
-               <p tw='opacity-75'>
-                  First Prompt is used as a base and cannot adjust strength/conditioning type
-               </p>
-            )}
-         </div> */}
-         {/* <div // Temporary, just to separate from old stuff
-            tw='h-input'
-         >
-            WOW
-         </div> */}
       </Frame>
    )
 })
@@ -209,25 +143,3 @@ export const BlenderListFooterFilterUI = obs(function BlenderListFooterFilterUI_
       </div>
    )
 })
-
-// {<div tw='flex flex-row gap-2 px-2'>
-//             <ResizableFrame
-//                header={
-//                   </* TODO(bird_d/ui/logic): Need to implement a way to toggle if the
-//                       * resizable frame should take up content or should use size.
-//                       * The buttons here should only need to be activated once for all items, not per item.
-//                       * */>
-//                      <SpacerUI />
-//                      <Button
-//                         borderless
-//                         square
-//                         subtle
-//                         icon={IKONS.mdiArrowExpandVertical}
-//                         tooltip='Automatically resize to prompt'
-//                      />
-//                   </>
-//                }
-//             >
-//                <Frame tw='h-full'>{selectedChild && <selectedChild.UI />}</Frame>
-//             </ResizableFrame>
-//          </div>}

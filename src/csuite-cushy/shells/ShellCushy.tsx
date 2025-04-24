@@ -41,12 +41,7 @@ const CushyShellUI = obs(function CushySHell(
             tw='w-full'
             trigger={'rightClick'}
             relativeTo='mouse'
-            hideTriggers={{
-               backdropClick: true,
-               escapeKey: true,
-               blurAnchor: true,
-               clickAnchor: true,
-            }}
+            hideTriggers={{ backdropClick: true, escapeKey: true, blurAnchor: true, clickAnchor: true }}
             content={() => <fieldActionMenu.MenuEntriesUI field={p.field} provenance={provenance} />}
          >
             {/* <div tw='flex grow'> */}

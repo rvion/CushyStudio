@@ -46,7 +46,7 @@ app({
                         click here
                      </div>
                      <div tw='ml-auto flex flex-nowrap'>
-                        (default UI: 👉 <uy.boolean.default field={widget} /> 👈)
+                        (default UI: 👉 <uy.boolean.Default field={widget} /> 👈)
                      </div>
                   </div>
                ),

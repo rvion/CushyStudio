@@ -50,26 +50,10 @@ export type RenderRule<FIELD extends Field> = {
    // addedBy?: Field | null
 }
 
-/** RenderRules, where every rule is guaranteed not to have any sub-rule */
-export type RenderRuleFlat<FIELD extends Field> = {
-   at: FieldPattern<FIELD>
-   propsFlat: RenderPropsFlat<FIELD>
-   priority?: number
-   // addedBy?: Field | null
-}
-
 // (props when using set() function)
 export type RenderRule_asList<FIELD extends Field> = [
    at: FieldPattern<FIELD>,
    props: RenderProps<FIELD>,
-   priority?: number,
-   // addedBy?: Field | null,
-]
-
-// (props when using set() function)
-export type RenderRuleFalt_asList<FIELD extends Field> = [
-   at: FieldPattern<FIELD>,
-   propsFlat: RenderPropsFlat<FIELD>,
    priority?: number,
    // addedBy?: Field | null,
 ]

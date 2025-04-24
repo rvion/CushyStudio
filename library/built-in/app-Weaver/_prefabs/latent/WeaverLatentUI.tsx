@@ -67,7 +67,7 @@ export const StackLatentUI = obs(function WeaverLatentUI_(p: {
                   )}
                </uy.layout.Col>
             </div>
-            <uy.misc.ResizableFrame startSize={512}>
+            <uy.misc.ResizableFrame startHeight={512}>
                <_EmptyUI field={field} />
             </uy.misc.ResizableFrame>
          </div>

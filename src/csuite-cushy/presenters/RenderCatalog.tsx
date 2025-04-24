@@ -155,7 +155,7 @@ const catalog_enum = {
 }
 
 const catalog_boolean = {
-   default: WidgetBoolUI,
+   Default: WidgetBoolUI,
 }
 
 const catalog_choices = {

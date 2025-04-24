@@ -39,11 +39,12 @@ export interface StandardProps<FIELD extends Field = Field> {
    wrappers: { rp: UIPropsFor<FIELD>; className?: string; children: ReactNode }
 }
 
-export type RenderPropsFlat<out FIELD extends Field = Field> = Omit<
-   // we need a version without subrules so it's not recusrive
-   RenderProps<FIELD>,
-   'rules'
->
+export type RenderPropsFlat<FIELD extends Field = Field> = RenderProps<FIELD>
+// export type RenderPropsFlat<out FIELD extends Field = Field> = Omit<
+//    // we need a version without subrules so it's not recusrive
+//    RenderProps<FIELD>,
+//    'rules'
+// >
 
 export interface RenderProps<out FIELD extends Field = Field> {
    // todo

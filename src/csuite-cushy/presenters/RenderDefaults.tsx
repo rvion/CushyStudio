@@ -28,6 +28,7 @@ import { DefaultWidgetTitleUI } from '../catalog/Title/WidgetLabelTextUI'
 import { CushyHeadUI } from '../shells/CushyHead'
 import { ShellCushyLeftUI, ShellCushyRightUI } from '../shells/ShellCushy'
 import { defaultRulesV2, renderDefaultKey } from './RenderDefaultsKey'
+import { Renderer } from './Renderer'
 
 /**
  * every project can define its own algebra for rendering fields
@@ -76,17 +77,9 @@ const baseslots: RenderProps<Field> = {
    /* 🟣 */ DebugID: null, // WidgetDebugIDUI,
 }
 
-function r<FIELD extends Field>(
-   //
-   selector: string,
-   renderProps: RenderPropsFlat<FIELD>,
-   priority = 10,
-): void {
-   defaultRulesV2.push({
-      at: selector,
-      propsFlat: renderProps,
-      priority,
-   })
+function r<FIELD extends Field>(at: string, props: RenderPropsFlat<FIELD>, priority = 10): void {
+   // const xx = Renderer.normalizeRule(null, selector, renderProps)
+   defaultRulesV2.push({ at, props, priority })
 }
 
 // const K: DisplaySlots<Z.FNumber>={config:{min}}
@@ -116,7 +109,7 @@ function resetDefaultRules() {
    r<Z.FRecord<any>>('@group', { Header: WidgetGroup_LineUI, Body: uy.group.DefaultBody })
    r<Z.FChoices<any>>('@choices', { Header: WidgetChoices_HeaderUI, Body: WidgetChoices_BodyUI })
    r<Z.FColor>('@color', { Header: WidgetColorUI, Body: null })
-   r<Z.FBool>('@bool', { Header: uy.boolean.default, Body: null })
+   r<Z.FBool>('@bool', { Header: uy.boolean.Default, Body: null })
    r<any>('@enum', { Header: uy.enum.default, Body: null })
    r<any>('@prompt', { Header: uy.prompt.DefaultHeaderUI, Body: uy.prompt.DefaultBodyUI })
    r<Field>('$', { collapsible: false })
@@ -133,30 +126,41 @@ function resetDefaultRules() {
    // })
    // '@list:has(.@group.{@image & {name | title}@string})'
 
-   r<Z.FList<Z.Record_>>('@list:has(.@group.)', {
-      Body: (f) => {
-         return (
-            <uy.list.BlenderLike
-               field={f.field}
-               // childRules={{}}
-               renderItem={(item) => {
-                  const zz = <f.field.UI />
-                  const children = item.zChildrenActive
-                  const str = children.find((x) => x.zType === 'str') as Z.FString | undefined
-                  const img = children.find((x) => x.zType === 'image') as Z.FImage | undefined
-                  const txt = str?.zValueUnchecked ?? item.zSummary
-
-                  return (
-                     <div tw='flex'>
-                        {txt || <div tw='text-sm text-gray-500 italic'>no title</div>}
-                        {img && <img src={img.zValue.url} tw='h-widget w-widget' />}
-                     </div>
-                  )
-               }}
-            />
-         )
+   r<Z.FList<Z.Record<{ enabled: Z.Bool; name: Z.String }>>>(
+      '@list:has(.@group:has(.enabled@bool):has(.name@str))',
+      {
+         rules: (f, set) => {
+            set('&.@group.enabled', { Shell: null })
+            set('&.@group.name', { Shell: null })
+            set('&.@group', { Head: null })
+            set('&.@group.prompt', { Head: null })
+            set('&', { Head: null })
+         },
+         Body: (f) => {
+            return (
+               <uy.list.BlenderLike
+                  direction='vertical'
+                  field={f.field}
+                  renderItem={(item) => {
+                     const children = item.zChildrenActive
+                     const str = children.find((x) => x.zType === 'str') as Z.FString | undefined
+                     const img = children.find((x) => x.zType === 'image') as Z.FImage | undefined
+                     const txt = str?.zValueUnchecked ?? item.zSummary
+                     return (
+                        <div tw='flex items-center flex-grow'>
+                           <item.name.UI Shell={uy.shell.HeaderOnly} />
+                           <div>
+                              <item.enabled.UI Shell={uy.shell.HeaderOnly} />
+                           </div>
+                           {img && <img src={img.zValue.url} tw='h-widget w-widget' />}
+                        </div>
+                     )
+                  }}
+               />
+            )
+         },
       },
-   })
+   )
    renderDefaultKey.version++
 }
 runInAction(() => {

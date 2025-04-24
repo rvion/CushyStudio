@@ -1,10 +1,9 @@
 import type { Field_bool } from './FieldBool'
 
 import { InputBoolUI } from '../../checkbox/InputBoolUI'
-import { SpacerUI } from '../../components/SpacerUI'
 import { WidgetTooltipUI } from '../number/WidgetNumberUI'
 
-export const WidgetBoolUI = obs(function WidgetBoolUI_(p: { field: Field_bool }) {
+export const WidgetBoolUI = obs(function WidgetBoolUI_(p: { expand?: boolean; field: Field_bool }) {
    const field = p.field
 
    if (field.zConfig.label2) {
@@ -14,26 +13,22 @@ export const WidgetBoolUI = obs(function WidgetBoolUI_(p: { field: Field_bool })
    }
 
    return (
-      <div tw='flex h-full w-full '>
-         <InputBoolUI
-            // config
-            display={field.zConfig.display}
-            expand={field.zConfig.display === 'button' ? field.zConfig.expand : true}
-            icon={field.zIcon}
-            text={field.zConfig.text ?? field.zConfig.label2}
-            // value
-            value={field.zValueOrZero}
-            onBlur={() => field.zTouch()}
-            onValueChange={(value) => {
-               field.zValue = value
-               p.field.zTouch()
-            }}
-            toggleGroup={field.zUid}
-            // toggleGroup={'field-bool'}
-            tooltip={<WidgetTooltipUI field={field} />}
-         />
-
-         <SpacerUI />
-      </div>
+      <InputBoolUI
+         // config
+         display={field.zConfig.display}
+         expand={p.expand ?? (field.zConfig.display === 'button' ? field.zConfig.expand : true)}
+         icon={field.zIcon}
+         text={field.zConfig.text ?? field.zConfig.label2}
+         // value
+         value={field.zValueOrZero}
+         onBlur={() => field.zTouch()}
+         onValueChange={(value) => {
+            field.zValue = value
+            p.field.zTouch()
+         }}
+         toggleGroup={field.zUid}
+         // toggleGroup={'field-bool'}
+         tooltip={<WidgetTooltipUI field={field} />}
+      />
    )
 })
