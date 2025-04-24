@@ -1,6 +1,7 @@
 import type { OpenRouter_Models } from '../csuite/openrouter/OpenRouter_models'
 import type { OpenRouterRequest } from '../csuite/openrouter/OpenRouter_Request'
 import type { OpenRouterResponse } from '../csuite/openrouter/OpenRouter_Response'
+import type { MediaImageL } from '../models/MediaImage'
 import type { Runtime } from './Runtime'
 
 import { makeAutoObservable } from 'mobx'
@@ -77,13 +78,14 @@ export class RuntimeLLM {
    /** turn any simple prompt into a better one by asking a LLM to rewrite it */
    expandPrompt = async (
       userRequest: string,
-      model: OpenRouter_Models = 'openai/gpt-3.5-turbo-instruct',
+      model: OpenRouter_Models = 'mistralai/mistral-nemo',
       systemPrompt: string = this.defaultSystemPrompt,
+      image?: MediaImageL | undefined,
    ): Promise<{
       prompt: string
       llmResponse: OpenRouterResponse
    }> => {
-      return this.runSystemPrompt(model, systemPrompt, userRequest)
+      return this.runSystemPrompt(model, systemPrompt, userRequest, image)
    }
 
    runSystemPrompt = async (
@@ -91,11 +93,12 @@ export class RuntimeLLM {
        * the list of all openRouter models available
        * 🔶 may not be up-to-date; last updated on 2023-12-03
        * */
-      model: OpenRouter_Models = 'openai/gpt-3.5-turbo-instruct',
+      model: OpenRouter_Models = 'mistralai/mistral-nemo',
       /** master prompt that define how to answer the user request */
       systemPrompt: string = this.defaultSystemPrompt,
       /** description / instruction of  */
       userRequest: string,
+      image: MediaImageL | undefined,
    ): Promise<{
       prompt: string
       llmResponse: OpenRouterResponse
@@ -107,7 +110,22 @@ export class RuntimeLLM {
             model: model,
             messages: [
                { role: 'system', content: systemPrompt },
-               { role: 'user', content: userRequest },
+               image
+                  ? {
+                       role: 'user',
+                       content: [
+                          { type: 'text', text: userRequest },
+                          {
+                             type: 'image_url',
+
+                             image_url: {
+                                url: image.getBase64Url(),
+                             },
+                          },
+                       ],
+                    }
+                  : { role: 'user', content: userRequest },
+
                // { role: 'user', content: 'Who are you?' },
             ],
          },
