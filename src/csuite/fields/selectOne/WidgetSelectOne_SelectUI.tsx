@@ -3,12 +3,10 @@ import type { Field_selectOne } from './FieldSelectOne'
 import type { SelectKey } from './SelectOneKey'
 import type { SelectOption } from './SelectOption'
 
-import { observer } from 'mobx-react-lite'
-
 import { SelectUI } from '../../select/SelectUI'
 import { makeLabelFromPrimitiveValue } from '../../utils/makeLabelFromFieldName'
 
-export const WidgetSelectOne_SelectUI = observer(function WidgetSelectOne_SelectUI_<
+export const WidgetSelectOne_SelectUI = obs(function WidgetSelectOne_SelectUI_<
    VALUE,
    KEY extends SelectKey,
 >(p: {
@@ -26,11 +24,11 @@ export const WidgetSelectOne_SelectUI = observer(function WidgetSelectOne_Select
          <SelectUI<OPTION>
             // 💬 2024-09-16 rvion: still necessary ?
             // | probably not; todo: remove
-            key={field.id}
+            key={field.zUid}
             // 💬 2024-09-16 rvion: weird/tmporary class name here
             // | this is just so we outline the input with a red border
-            //                                    VVVVVVVVVVVVVVVVV
-            tw={[field.mustDisplayErrors && 'rsx-field-error']}
+            //                                                                     VVVVVVVVVVVVVVVVV
+            tw={[field.zOwnTypeSpecificProblems && !field.zIsInsideDisabledBranch && 'rsx-field-error']}
             // 💬 2024-09-16 rvion:
             // | since 2024-09-12, we can't use the value anymore
             // | since the value may not be set anymore, we need to use
@@ -39,30 +37,30 @@ export const WidgetSelectOne_SelectUI = observer(function WidgetSelectOne_Select
             value={() => field.selectedOption_unchecked}
             options={() => field.options}
             getLabelText={(t): string => {
-               if (t == null) return field.config.placeholder ?? '(Empty)'
+               if (t == null) return field.zConfig.placeholder ?? '(Empty)'
                return t.label ?? makeLabelFromPrimitiveValue(t.id)
             }}
             //
-            OptionLabelUI={field.config.OptionLabelUI}
+            OptionLabelUI={field.OptionLabelUI}
             getSearchQuery={() => field.query}
             setSearchQuery={(query) => (field.query = query)}
-            disableLocalFiltering={field.config.disableLocalFiltering}
+            disableLocalFiltering={field.zConfig.disableLocalFiltering}
             equalityCheck={(a, b) => a?.id === b?.id}
-            placeholder={field.config.placeholder}
-            readonly={field.config.readonly}
-            slotAnchorContentUI={field.config.SlotAnchorContentUI}
+            placeholder={field.zConfig.placeholder}
+            readonly={field.zConfig.readonly}
+            slotAnchorContentUI={field.zConfig.SlotAnchorContentUI}
             onCleared={
-               field.canBeToggledWithinParent
+               field.zCanBeToggledWithinParent
                   ? (): void => {
-                       field.disableSelfWithinParent()
-                       field.touch()
+                       field.zDisableSelfWithinParent()
+                       field.zTouch()
                        p.selectProps?.onCleared?.()
                     }
                   : undefined
             }
             onOptionToggled={(option) => {
-               // console.log(`[🤠] option`, option, field.selectedId, option?.id === field.selectedId)
-               field.touch()
+               console.log(`[🤠] option`, option, field.selectedId, option?.id === field.selectedId)
+               field.zTouch()
                if (option == null || field.selectedId === option.id) return field.unset()
                field.selectedId = option.id
             }}
@@ -70,7 +68,7 @@ export const WidgetSelectOne_SelectUI = observer(function WidgetSelectOne_Select
             revealProps={{
                ...p.selectProps?.revealProps,
                onHidden: (reason) => {
-                  field.touch()
+                  field.zTouch()
                   p.selectProps?.revealProps?.onHidden?.(reason)
                },
             }}

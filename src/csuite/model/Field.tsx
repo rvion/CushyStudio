@@ -1,33 +1,37 @@
-import type { Field_list_serial } from '../fields/list/FieldList'
+import type { Field_list_ItemID, Field_list_serial } from '../fields/list/FieldList'
 import type { Field_optional_serial } from '../fields/optional/FieldOptional'
-import type { Field_shared } from '../fields/shared/FieldShared'
-import type { WidgetLabelContainerProps } from '../form/WidgetLabelContainerUI'
-import type { IconName } from '../icons/icons'
+import type { IconName } from '../icons/IconName'
 import type { TintExt } from '../kolor/Tint'
+import type { FieldAnomaly } from '../migration/Anomaly'
+import type { Selectorable } from '../selector/Selectorable'
 import type { ITreeElement } from '../tree/TreeEntry'
-import type { ProplessFC } from '../types/ReactUtils'
-import type { CovariantFC } from '../variance/CovariantFC'
-import type { FieldTypes } from './$FieldTypes'
-import type { BaseSchema } from './BaseSchema'
-import type { DraftLike } from './Draft'
+import type { CovariantFn } from '../variance/BivariantHack'
 import type { AnyFieldSerial } from './EntitySerial'
-import type { FieldConstructor_ViaClass, SerialMigrationFunction, UNVALIDATED } from './FieldConstructor'
+import type { FieldConfigFor } from './FieldConfig'
+import type {
+   FieldConstructor,
+   SchemaDictWithPaths,
+   SerialMigrationFunction,
+   UNVALIDATED,
+} from './FieldConstructor'
 import type { FieldId } from './FieldId'
-import type { FieldSerial } from './FieldSerial'
-import type { Instanciable } from './Instanciable'
+import type { FieldSerialFor } from './FieldSerial'
 import type { Channel, ChannelId } from './pubsub/Channel'
-import type { Producer } from './pubsub/Producer'
+import type { FieldReaction } from './pubsub/FieldReaction'
 import type { Repository } from './Repository'
 import type { Transaction } from './Transaction'
 import type { Problem, Problem_Ext } from './Validation'
-import type { AnnotationsMap } from 'mobx'
 
 import { produce, setAutoFreeze } from 'immer'
-import { $mobx, extendObservable, isObservable, makeObservable, observable, runInAction } from 'mobx'
-import { observer } from 'mobx-react-lite'
-import { createElement, type FC, type ReactNode, useMemo } from 'react'
+import _get from 'lodash/get'
+import _set from 'lodash/set'
+import _unset from 'lodash/unset'
+import { computed, isObservable, observable, reaction, runInAction } from 'mobx'
+import { nanoid } from 'nanoid'
+import { type DependencyList, type FC, type ReactNode, useCallback, useEffect, useMemo } from 'react'
 
 import { csuiteConfig } from '../config/configureCsuite'
+import { isHole } from '../fields/list/HOLE'
 import {
    getFieldSharedClass,
    isFieldChoice,
@@ -38,25 +42,33 @@ import {
    isProbablySerialList,
    isProbablySerialOptional,
    isProbablySomeFieldSerial,
+   isProbablySomeFieldSerialOf,
 } from '../fields/WidgetUI.DI'
-import { FormAsDropdownConfigUI } from '../form/FormAsDropdownConfigUI'
-import { WidgetHeaderContainerUI } from '../form/WidgetHeaderContainerUI'
-import { WidgetLabelContainerUI } from '../form/WidgetLabelContainerUI'
-import { WidgetLabelIconUI } from '../form/WidgetLabelIconUI'
-import { WidgetToggleUI } from '../form/WidgetToggleUI'
 import { hashJSONObjectToNumber } from '../hashUtils/hash'
-import { type FieldAnomaly } from '../migration/Anomaly'
 import { type AnomalyMixin, AnomalyMixinDescriptors } from '../migration/Anomaly.mixin'
-import { annotationsSymbol, makeAutoObservableInheritance } from '../mobx/mobx-store-inheritance'
 import { type SelectorMixin, SelectorMixinDescriptors } from '../selector/selector.mixin'
-import { SimpleSchema } from '../simple/SimpleSchema'
 import { exhaust } from '../utils/exhaust'
+import { getUIDForMemoryStructure } from '../utils/getUIDForMemoryStructure'
 import { makeLabelFromPrimitiveValue } from '../utils/makeLabelFromFieldName'
-import { $FieldSym } from './$FieldSym'
+import { FieldSym } from './$FieldSym'
 import { autofixSerial_20240703 } from './autofix/autofixSerial_20240703'
 import { autofixSerial_20240711 } from './autofix/autofixSerial_20240711'
-import { mkNewFieldId } from './FieldId'
+import { CSchema, type WithConfigOptions } from './CSchema'
+import { CShape } from './CSchemaAt'
+import { type CushyOnlyMixin, CushyOnlyMixinDescriptors } from './CushyOnly.mixin'
+import { FieldEvent, type FieldEvent_ } from './FieldEvent'
+import { mkNewFieldId_v1 } from './FieldId'
 import { type TraversalMixin, TraversalMixinDescriptors } from './FieldTraversal.mixin'
+import {
+   isPatchAdd,
+   isPatchRemove,
+   isPatchReplace,
+   type Patch,
+   type Patch_Common,
+   type PatchAdd,
+   type PatchRemove,
+   type PatchReplace,
+} from './Patch'
 import { __ERROR, __OK, type Result } from './Result'
 import { TreeEntry_Field } from './TreeEntry_Field'
 import { normalizeProblem } from './Validation'
@@ -75,104 +87,100 @@ export const useEnsureObserver = <T extends null | undefined | FC<any>>(fn: T): 
    return useMemo(() => ensureObserver(fn), [fn])
 }
 
-export type VALUE_MODE = 'fail' | 'zero' | 'unchecked'
+export type VALUE_MODE = 'fail' | 'zero' | 'unchecked' | 'set'
 
 export const ensureObserver = <T extends null | undefined | FC<any>>(fn: T): T => {
    if (fn == null) return null as T
    const isObserver = '$$typeof' in fn && fn.$$typeof === Symbol.for('react.memo')
-   const FmtUI = (isObserver ? fn : observer(fn)) as T
+   const FmtUI = (isObserver ? fn : obs(fn)) as T
    return FmtUI
 }
 
 export type KeyedField = { key: string; field: Field }
+export type FL_FieldPathExt = Tagged<string, 'FL_FieldPathExt'>
+export type FL_FieldPathNice = Tagged<string, 'FL_FieldPathNice'>
+export type FL_FieldPath = Tagged<string, 'FL_FieldPath'>
 
-export type FieldCtorProps<F extends FieldTypes = any> = [
-   //
+export type FieldCtorProps<TYPES extends Field = any> = [
    repo: Repository,
    root: Field | null,
    parent: Field | null,
-   schema: BaseSchema<F>,
+   schema: CSchema<TYPES>,
    initialMountKey: string,
-   serial?: F['$Serial'],
+   serial?: TYPES['{serial}'],
 ]
 
-export interface Field<K extends FieldTypes = FieldTypes> {
-   $Type: K['$Type'] /** type only properties; do not use directly; used to make typings good and fast */
-   $Config: K['$Config'] /** type only properties; do not use directly; used to make typings good and fast */
-   $Serial: K['$Serial'] /** type only properties; do not use directly; used to make typings good and fast */
-   $Value: K['$Value'] /** type only properties; do not use directly; used to make typings good and fast */
-   $Field: K['$Field'] /** type only properties; do not use directly; used to make typings good and fast */
-   $Unchecked: K['$Unchecked'] /** type only properties; do not use directly; used to make typings good and fast */
-   $Child: K['$Child'] /** type only properties; do not use directly; used to make typings good and fast */
-   $Reflect: K['$Reflect'] /** type only properties; do not use directly; used to make typings good and fast */
+export type FieldCtorProps_ALT<TYPES extends Field = any> = [
+   repo: Repository,
+   root: Field | null,
+   parent: Field | null,
+   schema: CSchema<any>,
+   initialMountKey: string,
+   serial?: TYPES['{serial}'],
+]
+
+type PathObject = [string, Maybe<PathObject>]
+
+export interface Field {
+   '{type}': CATALOG.AllFieldTypes
+   '{ownConfig}': unknown
+   '{ownSerial}': unknown
+   '{serial}': FieldSerialFor<this>
+   '{config}': FieldConfigFor<this>
+   '{value}': unknown
+   '{setValue}': unknown
+   '{unchecked}': unknown
+   '{child}': unknown
+   '{opts}': unknown
+   '{ownPatch}': Patch_Common<this['{type}']>
+   '{schema}': CSchema<this>
 }
+export abstract class Field implements Selectorable<Field> {
+   // 2025-02-11 new addition
 
-/**
- * Only use this type in the base field, when you can assume
- * it will be properly re-typed in sub-classes
- */
-export type UNSAFE_AnyField = any // Field<any>
-
-export type PathObject = [string, Maybe<PathObject>]
-
-export abstract class Field<out K extends FieldTypes = FieldTypes>
-   implements Instanciable<K['$Field']>, DraftLike<K>
-{
-   static codegenValueType(config: any): string {
-      if (
-         config != null && //
-         typeof config === 'object' &&
-         'type' in config &&
-         typeof config.type === 'string'
-      )
-         return `Field_${config.type}_value`
-      return 'any'
+   get zShape(): CShape {
+      const value = new CShape(this.zSchema, this.zMountKey, this.zParent?.zShape ?? null)
+      Object.defineProperty(value, 'zShape', { value })
+      return value
    }
 
-   /** @internal */
-   static build: 'new' = 'new'
    /**
     * unique Field instance ID;
     * each node in the form tree has one;
     * NOT persisted in serial.
-    * change every time the field is instanciated
+    * change every time the field is instantiated
+    * @undecorated (can't change)
     */
-   readonly id: FieldId
+   readonly zUid: FieldId
 
-   /** wiget serial is the full serialized representation of that widget  */
-   serial: K['$Serial']
+   /** field serial is the full serialized representation of that field */
+   @observable.ref accessor zSerial: this['{serial}']
 
    /**
     * singleton repository for the project
     * allow access to global domain, as well as any other live field
     * and other shared resource
+    * @undecorated (can't change)
     */
-   repo: Repository
+   readonly zRepo: Repository
 
-   /** root of the field tree this field belongs to */
-   root: Field
+   /**
+    * root of the field tree this field belongs to
+    * @undecorated (can't change)
+    */
+   readonly zRoot: Field
 
-   /** alias to root; since that's what `document` is. */
-   get document(): Field {
-      return this.root
-   }
+   private _symField = Symbol.for('Field')
 
    /** parent field, (null when root) */
-   parent: Field | null
+   @observable.ref accessor zParent: Field | null
 
-   /** similar to parent, but skip optionals, and other related */
-   get logicalParent(): Field | null {
-      const parent = this.parent
-      if (parent == null) return null
-      let at = parent
-      while (at.parent?.indentChildren === 0) {
-         at = at.parent
-      }
-      return at
+   /** schema used to instanciate this field */
+   zSchema: CSchema<this>
+
+   get zOpts2(): this['{opts}'] {
+      return this.zConfig.opts!
    }
-
-   /** schema used to instanciate this widget */
-   schema: BaseSchema<this> //K['$Field']>
 
    constructor(
       /**
@@ -185,131 +193,288 @@ export abstract class Field<out K extends FieldTypes = FieldTypes>
       root: Field | null,
       /** parent field, (null when root) */
       parent: Field | null,
-      /** schema used to instanciate this widget */
-      schema: BaseSchema<UNSAFE_AnyField /* K['$Field'] */>,
+      /** schema used to instanciate this field */
+      schema: CSchema<any /* ❓ */>,
       initialMountKey: string,
-      serial?: K['$Serial'],
+      serial?: any /* ❓ */, // this['{serial}'],
    ) {
-      this.id = serial?.uid ?? mkNewFieldId()
-      this.repo = repo
-      this.root = root ?? this
-      this.parent = parent
-      this.schema = schema
-      this.serial = serial ?? this._emptySerial
-      this.mountKey = initialMountKey
-      this.parent?._acknowledgeNewChildSerial(initialMountKey, this.serial)
+      this.zUid = mkNewFieldId_v1()
+      this.zRepo = repo
+      this.zRoot = root ?? this
+      this.zParent = parent
+      this.zSchema = schema
+      this.zSerial = serial ?? this.zSchema.defaultSerial
+      this.zMountKey = initialMountKey
+      this.zParent?.zAcknowledgeNewChildSerial(initialMountKey, this.zSerial)
    }
-
-   // ⏸️ static get mobxOverrideds() {
-   // ⏸️     throw new Error('`mobxOverrideds` should be overridden in subclass')
-   // ⏸️ }
-
-   // ⏸️ static get type(): Field['$Type'] {
-   // ⏸️     throw new Error('This method should be overridden in subclass')
-   // ⏸️ }
 
    /**
     * type of the field (e.g. 'str', 'color', 'group', 'optional', etc.)
     * Retrieved by looking in prototype for static `type` attribute.
+    * @undecorated
     */
-   get type(): Field['$Type'] {
-      return (this.constructor as FieldConstructor_ViaClass<this>).type
+   get zType(): this['{type}'] {
+      return (this.constructor as FieldConstructor<this>).type
    }
 
-   isOfType(...type: CATALOG.AllFieldTypes[]): boolean {
-      return type.includes(this.type)
+   private get zMigrateSerial_(): SerialMigrationFunction<this['{serial}']> {
+      return (this.constructor as FieldConstructor<this>).migrateSerial
    }
 
-   private get _emptySerial(): K['$Serial'] {
-      return (this.constructor as FieldConstructor_ViaClass<this>).emptySerial
-   }
-
-   private get _migrateSerial(): SerialMigrationFunction<K['$Serial']> {
-      return (this.constructor as FieldConstructor_ViaClass<this>).migrateSerial
-   }
-
-   codegenValueType(c: Field['$Config']): string {
-      return (this.constructor as FieldConstructor_ViaClass<this>).codegenValueType(c)
-   }
-
-   /** wiget value is the simple/easy-to-use representation of that widget  */
-   abstract value: K['$Value']
+   /**
+    * field.zValue is for an easy-to-use representation of that field
+    * - must crashes if the value is not set / missing
+    *    @see {@link zValueUnchecked} for an alternative
+    *
+    * - must NOT try to conjure any intented value.
+    *    @see {@link zValueOrZero} for an alternative
+    *
+    * - not guaranteed to be the serializable,
+    *    @see {@link zGetSetValue} for an alternative
+    */
+   abstract zValue: this['{value}']
 
    // 💬 2024-09-09 rvion:
    // | we can't actually use the following code to share get value() implementation
    // | because of mobx. Mobx force getters and setters to live on the same prototype.
    // |
    // | ```ts
-   // | get value(): K['$Value'] {
-   // |     return this.value_or_fail
+   // | get value(): K['{value}'] {
+   // |     return this.zValue
    // | }
    // |
-   // | set value(_newValue: K['$Value']) {
+   // | set value(_newValue: K['{value}']) {
    // |     throw new Error(`❌ field_${this.type}.value = ... failed: setter not implemented`)
    // | }
    // | ```
-
-   /**
-    * crashes if the value is not set.
-    * this method will NOT try to conjure any intented value.
-    * @since 2024-09-03
-    *
-    * @see {@link value_or_zero}
-    * @see {@link value_unchecked}
-    */
-   abstract value_or_fail: K['$Value']
 
    /**
     * Should do its best to return a value,
     * conjuring some default value if necessary
     * but you may THROW if zero does not exists
     * 🔶 do not return null, unless the type allows you to
-    * @since 2024-09-03
     *
-    * @see {@link value_or_fail}
-    * @see {@link value_unchecked}
+    * @see {@link zValue}
+    * @see {@link zValueUnchecked}
     *
     **/
-   abstract value_or_zero: K['$Value']
+   abstract zValueOrZero: this['{value}']
 
    /**
      * this method
-     *  - Always returns the advertized type (`Field['$Unchecked']`).
+     *  - Always returns the advertized type (`Field['{unchecked}']`).
      *  - Never crashes
      *
-     * @since 2024-09-03
-     *
-     * @see {@link value_or_fail}
-     * @see {@link value_or_zero}
+     * @see {@link zValue}
+     * @see {@link zValueOrZero}
 
      */
-   abstract value_unchecked: K['$Unchecked']
+   abstract zValueUnchecked: this['{unchecked}']
 
    /**
-    * @since 2024-08-30
-    * @stability beta
+    * Returns true if the given field has the same value as this field
+    * (only possible if fields are of the same type)
     */
-   static migrateSerial(serial: FieldSerial<unknown>): any {
+   abstract zIsValueEqual(other: Field): boolean
+
+   /**
+    * you should NOT override this method.
+    * you need to override the `generateOwnPatches`
+    * @see zGenerateOwnPatches
+    *
+    * (TODO: since final is not a thing in TS; we may prevent this overridability; configurable: false, writable: false) => probbaly want to wait for decorators first)
+    * @undecorated (pure producer)
+    */
+   public zGeneratePatches(referenceField: this): Patch_Common[] {
+      const patches: Patch_Common[] = []
+      if (this.zType !== referenceField.zType) {
+         throw new Error(`Can't generate patches between fields of different types`)
+         // what do we do here ? 🔴
+         // case where it can happen:
+         //   - hot reload ? different schema ? 🤔
+         // return []
+      }
+      const ownPatches = this.zGenerateOwnPatches(referenceField)
+      patches.push(...ownPatches)
+      patches.push(...this.zGenerateChildrenPatches(referenceField))
+      return patches
+   }
+
+   get zPatchedSerialPaths(): readonly string[] {
+      return (this.constructor as FieldConstructor<this>).patchedSerialPaths
+   }
+
+   get zShorthash(): string {
+      return getUIDForMemoryStructure(this.zSerial)
+   }
+
+   // superFoo=1
+   // יFoo=1
+   // test(){
+   //    this.foo
+   // }
+
+   /**
+    * To be overwritten by subclasses to generate patches for the field itself
+    * for special cases
+    * @undecorated
+    */
+   protected zGenerateOwnPatches(referenceField: this): this['{ownPatch}'][] {
+      if (this.zIsValueEqual(referenceField)) return []
+
+      return this.zPatchedSerialPaths.flatMap((serialPath): Patch<this['{type}']>[] => {
+         const thisValue = _get(this.zSerial, serialPath)
+         const referenceValue = _get(referenceField.zSerial, serialPath)
+
+         if (thisValue === referenceValue) return []
+         if (thisValue === undefined) {
+            return [
+               {
+                  op: 'remove',
+                  fieldType: this.zType,
+                  fieldPath: this.zPath,
+                  serialPath,
+               } as PatchRemove<this['{type}']>,
+            ]
+         }
+         if (referenceValue === undefined) {
+            return [
+               {
+                  op: 'add',
+                  fieldType: this.zType,
+                  fieldPath: this.zPath,
+                  serialPath,
+                  value: thisValue,
+               } as PatchAdd<this['{type}'], unknown>,
+            ]
+         }
+
+         return [
+            {
+               op: 'replace',
+               fieldType: this.zType,
+               fieldPath: this.zPath,
+               serialPath,
+               value: thisValue,
+            } as PatchReplace<this['{type}'], unknown>,
+         ]
+      })
+   }
+
+   /**
+    * generic implementation; must be overriden for every non-leaves
+    * @undecorated (single action setter inside)
+    */
+   zSet(x: this['{setValue}']): this {
+      if (isProbablySomeFieldSerialOf(x, this.zType)) this.zSetSerial(x as this['{serial}'])
+      else if ((x as any) instanceof Field) this.zSetSerial((x as Field).zSerial as this['{serial}'])
+      else this.zSetValue(x)
+      return this
+   }
+
+   /** @undecorated (pure getter function) */
+   zGetSetValue(): this['{setValue}'] | undefined {
+      // console.log(`[💀 getSetValue] `, this.path)
+      return this.zValue
+   }
+
+   /**
+    * To be overwritten by subclasses to generate patches for children
+    * @undecorated (pure getter)
+    */
+   protected zGenerateChildrenPatches(reference: this): Patch_Common[] {
+      return this.zChildrenAll.flatMap((child) => {
+         const referenceChild = reference.zGetChildByKey(child.zMountKey)
+
+         if (referenceChild != null) {
+            return child.zGeneratePatches(referenceChild as Field)
+         }
+
+         return []
+      })
+   }
+
+   /** @undecorated (manual runInAction inside) */
+   public zApplyPatches(patches: Patch_Common[]): void {
+      const thisPatches = patches.filter(
+         (patch) => patch.fieldPath === this.zPath && patch.fieldType === this.zType,
+      )
+      runInAction(() => {
+         this.zApplyOwnPatches(thisPatches)
+         this.zApplyChildrenPatches(patches)
+      })
+   }
+
+   /** @undecorated (manual runInAction inside) */
+   protected zApplyOwnPatches(patches: this['{ownPatch}'][]): void {
+      if (patches.length === 0) return
+      runInAction(() => {
+         const nextState = produce(this.zSerial, (draft) => {
+            patches.forEach((patch) => {
+               if (isPatchReplace(patch) || isPatchAdd(patch)) {
+                  _set(draft, patch.serialPath, patch.value)
+               } else if (isPatchRemove(patch)) {
+                  _unset(draft, patch.serialPath)
+               } else {
+                  throw new Error(`Unknown patch operation: ${patch.op}`)
+               }
+            })
+         })
+         this.zSetSerial(nextState)
+      })
+   }
+
+   /** @undecorated (manual runInAction inside) */
+   protected zApplyChildrenPatches(patches: Patch_Common[]): void {
+      if (patches.length === 0) return
+
+      runInAction(() => {
+         this.zChildrenAll.forEach((child) => {
+            const childPatches = patches.filter(
+               (patch) => patch.fieldPath === child.zPath || patch.fieldPath.startsWith(`${child.zPath}.`),
+            )
+            if (childPatches.length > 0) {
+               child.zApplyPatches(childPatches)
+            }
+         })
+      })
+   }
+
+   /**
+    * @stability beta
+    * @undecorated (base function does nothing)
+    */
+   static migrateSerial(serial: Field['{serial}']): any {
       return serial
+   }
+
+   /** should be overritten by every parent field. */
+   static getChildren(config: any): SchemaDictWithPaths {
+      return {}
+   }
+
+   /** should be overritten by every parent field. */
+   static getTravels(config: any): SchemaDictWithPaths {
+      if (config.getCustomTravels != null)
+         return {
+            ...this.getChildren(config),
+            ...config.getCustomTravels?.(),
+         }
+      return this.getChildren(config)
    }
 
    /**
     * TODO later: make abstract to make sure we
     * have that on every single field + add field config option
     * to customize that. useful for tests.
+    * @undecorated (base function does nothing)
     */
-   randomize(): void {}
+   zRandomize(): void {}
 
    // #region lifecycle
 
    /** field is already instanciated => probably used as a linked */
-   instanciate(
-      //
-      repo: Repository,
-      root: Field<any>,
-      parent: Field | null,
-      serial: any | null,
-   ): Field_shared<this> {
+   zShared(): Z.Shared<this> {
       const FieldSharedClass = getFieldSharedClass()
       // 💬 2024-08-30 rvion:
       // | SimpleSchema usage is OK here, even if your project
@@ -317,8 +482,9 @@ export abstract class Field<out K extends FieldTypes = FieldTypes>
       // | internal plumbing to allow to reuse fields from one tree
       // | in another tree as a linked/Shared field.
       // | 🟢            vvvvvvvvvvvv
-      const schema = new SimpleSchema<Field_shared<this>>(FieldSharedClass, { field: this })
-      return schema.instanciate(repo, root, parent, serial)
+      const schema = CSchema.new<any>(FieldSharedClass, { field: this })
+      return schema
+      // return schema.instanciate(repo, root, parent, serial)
    }
 
    /**
@@ -326,39 +492,47 @@ export abstract class Field<out K extends FieldTypes = FieldTypes>
     * allow for instance to register mobx disposers from reactions
     * and other similar stuff that may need to be cleaned up to
     * avoid memory leak.
+    * @undecorated (will only be called at disposal time; no need to react on additions)
+    *
+    * todo: make lazy; will save an empty array per field.
     */
-   protected disposeFns: (() => void)[] = []
+   protected zDisposeFns: (() => void)[] = []
 
    /**
     * lifecycle method, is called
-    *
-    * @since 2024-07-05
+    * @undecorated (this.repo.runInTransaction already wrapped in runInAction)
     */
-   disposeTree(): void {
-      this.runInTransaction((tct) => this._disposeTree(tct))
+   zDisposeTree(): void {
+      this.zRunInTransaction((tct) => this.zDisposeTree_(tct))
    }
 
-   /* calls itself recursively */
-   private _disposeTree(tct: Transaction): void {
-      this._disposeSelf(tct)
+   /**
+    * calls itself recursively
+    * @undecorated (manual runInAction inside)
+    */
+   private zDisposeTree_(tct: Transaction): void {
+      runInAction(() => {
+         this.zDisposeSelf_(tct)
 
-      // dispose all children
-      for (const sub of this.childrenAll) {
-         sub._disposeTree(tct)
-      }
+         // dispose all children
+         for (const sub of this.zChildrenAll) {
+            sub.zDisposeTree_(tct)
+         }
+      })
    }
 
-   private _disposeSelf(tct: Transaction): void {
+   /** @undecorated (only called by _disposeTree above, which is wrapped in runInAction) */
+   private zDisposeSelf_(tct: Transaction): void {
       // TODO:
       // - disable all publish
       // - disable all reactions
       // - mark as DELETED;  => makes most function throw an error if used
 
       // unregister from repo
-      this.repo._unregisterField(this, tct)
+      this.zRepo._unregisterField(this, tct)
 
       // dispose all reactions/other long-running stuff
-      for (const disposeFn of this.disposeFns) {
+      for (const disposeFn of this.zDisposeFns) {
          disposeFn()
       }
    }
@@ -366,17 +540,16 @@ export abstract class Field<out K extends FieldTypes = FieldTypes>
    /**
     * will be set to true after the first initialization
     * TODO: also use that to wait for whole tree to be patched before applying effects
+    * (may not need to be made observable; review this decision later)
     * */
-   ready: boolean = false
+   @observable accessor zReady: boolean = false
 
    /**
     * if your field need to wait for the document to be ready;
     * this observable getter does that.
-    *
-    * @since 2024-09-04
     */
-   get isDocumentReady(): boolean {
-      return this.root.ready
+   get zIsDocumentReady(): boolean {
+      return this.zRoot.zReady
    }
 
    // #region Serial
@@ -396,14 +569,18 @@ export abstract class Field<out K extends FieldTypes = FieldTypes>
    //
    //    then serial is updated, you can now check probles
 
-   /** YOU PROBABLY DO NOT WANT TO OVERRIDE THIS */
-   setSerial(
+   /**
+    * YOU PROBABLY DO NOT WANT TO OVERRIDE THIS
+    * @undecorated (wrapped in runInTransaction, that is already an action)
+    */
+   zSetSerial(
       /** this serial may be from a previous schema; we need to be able to handle properly */
-      serial: Maybe<K['$Serial']>,
+      serial: Maybe<this['{serial}']>,
    ): void {
-      this.runInTransaction(() => {
+      if (serial === this.zSerial) return
+      this.zRunInTransaction(() => {
          // this.copyCommonSerialFields(serial)
-         this.setOwnSerialWithValidationAndMigrationAndFixes(serial)
+         this.zSetOwnSerialWithValidationAndMigrationAndFixes(serial)
       })
    }
 
@@ -413,26 +590,25 @@ export abstract class Field<out K extends FieldTypes = FieldTypes>
     * This function can only be called by `setOwnSerialWithValidationAndMigration`
     * which itself can only be called by `init` and `setSerial`
     */
-   protected abstract setOwnSerial(serial: K['$Serial']): void
+   protected abstract zSetOwnSerial(serial: this['{serial}']): void
 
    /**
-     * contains the list of all serial problems that occured during the last setSerial
-     * it only contains the **LAST** setSerial problems
-     * => this list will be emptied everytime we call setSerial
-     *
-     * @see {@link recordSerialProblem}
-     * @since 2024-09-11
-
-     */
-   serialProblems: { msg: string; data: any }[] = []
+    * contains the list of all serial problems that occured during the last setSerial
+    * it only contains the **LAST** setSerial problems
+    * => this list will be emptied everytime we call setSerial
+    *
+    * @see {@link zRecordSerialProblem}
+    */
+   zSerialProblems: { msg: string; data: any }[] = []
 
    /**
     * Append a problem to the serialProblems list
     *
-    * @see {@link serialProblems}
-    * @since 2024-09-11
+    * @see {@link zSerialProblems}
     */
-   recordSerialProblem = (msg: string, data: any): number => this.serialProblems.push({ msg, data })
+   zRecordSerialProblem = (msg: string, data: any): void => {
+      this.zSerialProblems.push({ msg, data })
+   }
 
    /*
 
@@ -444,29 +620,31 @@ export abstract class Field<out K extends FieldTypes = FieldTypes>
     //    C.2. global via generated zod-or-similar json schema
 
     */
-   setOwnSerialWithValidationAndMigrationAndFixes(serialish: UNVALIDATED<Maybe<K['$Serial']>>): {
+   zSetOwnSerialWithValidationAndMigrationAndFixes(serialish: UNVALIDATED<Maybe<this['{serial}']>>): {
       problems: { msg: string; data: any }[]
    } {
       const wasNull = serialish == null
       let skipAutoFix: boolean = false
       let serial: object
 
-      // #region 1.1. case `null` => use `_emptySerial`
+      // #region 1.1. case `null` => use `defaultSerial`
       if (serialish == null) {
-         this.recordSerialProblem(`serial is null, using _emptySerial`, serialish)
-         serial = this._emptySerial
+         this.zRecordSerialProblem(`serial is null, using defaultSerial`, serialish)
+         serial = this.zSchema.defaultSerial
          skipAutoFix = true
       }
 
-      // #region 1.2. case `{}` => use `_emptySerial`
-      else if (isEmptyObject(serialish)) {
-         serial = this._emptySerial
+      // #region 1.2. case not an object => use `defaultSerial`
+      else if (typeof serialish !== 'object') {
+         this.zRecordSerialProblem(`serial is not an object, using defaultSerial`, serialish)
+         serial = this.zSchema.defaultSerial
+         skipAutoFix = true
       }
 
-      // #region 1.3. case not an object => use `_emptySerial`
-      else if (typeof serialish !== 'object') {
-         this.recordSerialProblem(`serial is not an object, using _emptySerial`, serialish)
-         serial = this._emptySerial
+      // #region 1.3. empty object => use defaultSerial
+      else if (Object.keys(serialish).length === 0) {
+         this.zRecordSerialProblem(`serial is not an empty object, using defaultSerial`, serialish)
+         serial = this.zSchema.defaultSerial
          skipAutoFix = true
       }
 
@@ -488,26 +666,30 @@ export abstract class Field<out K extends FieldTypes = FieldTypes>
       // #region 3. run the static migrateSerial function from field
       // 🔶 this is probably wrong; and we probably need to get rid of it sooner than later.
       if (!wasNull) {
-         const newSerial = this._migrateSerial(serial)
+         const newSerial = this.zMigrateSerial_(serial)
          if (newSerial != null) serial = newSerial
       }
 
       // #region 4. Legacy (🔴!) run the heuristic migration function
       // 🔶 this is probably wrong; and we probably need to get rid of it sooner than later.
       // TODO: dispatch to various migrateSerial functions within fields themselves
-      if (isProbablySomeFieldSerial(serial) && serial.$ !== this.type) {
+      if (isProbablySomeFieldSerial(serial) && serial.$ !== this.zType) {
          // ADDING LIST
-         if (this.type === 'list') {
-            const next: Field_list_serial<any> = { $: 'list', items_: [serial] }
+         if (this.zType === 'list') {
+            const id = nanoid(6) as Field_list_ItemID
+            const next: Field_list_serial<any> = {
+               $: 'list',
+               items_: [serial],
+               keys: [id],
+            }
             serial = next
          }
 
          // ADDING OPTIONAL
-         else if (this.type === 'optional') {
+         else if (this.zType === 'optional') {
             const next: Field_optional_serial<any> = {
                $: 'optional',
-               active: true,
-               child: serial,
+               y: serial,
             }
             serial = next
          }
@@ -516,27 +698,30 @@ export abstract class Field<out K extends FieldTypes = FieldTypes>
          else if (
             isProbablySerialList(serial) && //
             serial.items_ != null &&
+            Array.isArray(serial.items_) &&
             serial.items_.length >= 1
          ) {
-            serial = serial.items_[0]
+            const item0 = serial.items_[0]!
+            if (isHole(item0)) throw new Error(`invalid serial at '${this.zPath}': hole found in list.`)
+            serial = item0
          }
 
          // REMOVING OPTIONAL
          else if (
             isProbablySerialOptional(serial) && //
-            serial.child != null
+            serial.y != null
          ) {
-            serial = serial.child
+            serial = serial.y
          }
       }
 
       // #region 5. Legacy (🔴!) migration system
       // 🔶 this is probably wrong; and we probably need to get rid of it sooner than later.
-      if (this.config.beforeInit != null) {
+      if (this.zConfig.beforeInit != null) {
          const oldVersion = (serial as any)._version ?? 'default'
-         const newVersion = this.config.version ?? 'default'
+         const newVersion = this.zConfig.version ?? 'default'
          if (oldVersion !== newVersion) {
-            serial = this.config.beforeInit(serial)
+            serial = this.zConfig.beforeInit(serial)
             if (!isProbablySomeFieldSerial(serial)) throw new Error(`invalid serial`)
             serial._version = newVersion
          }
@@ -546,24 +731,24 @@ export abstract class Field<out K extends FieldTypes = FieldTypes>
 
       // #region 7. catch all phase
       if (!isProbablySomeFieldSerial(serial)) {
-         throw new Error(`invalid serial at '${this.path}'`)
+         console.error({ invalidSerial: serial })
+         throw new Error(`invalid serial at '${this.zPath}'`)
       }
-      if (isProbablySomeFieldSerial(serial) && serial.$ !== this.type) {
-         console.log(`[🔶] INVALID SERIAL (expected: ${this.type}, got: ${serial.$})`)
+      if (isProbablySomeFieldSerial(serial) && serial.$ !== this.zType) {
+         console.log(`[🔶] INVALID SERIAL at ${this.zPath} (expected: ${this.zType}, got: ${serial.$})`)
          console.log(`[🔶] INVALID SERIAL:`, JSON.stringify(serial))
-         serial = this._emptySerial // ❌
          const anomaly: FieldAnomaly = {
             type: 'invalid-serial',
             date: Date.now(),
-            path: this.path,
-            pathExt: this.pathExt,
+            path: this.zPath,
+            pathExt: this.zPathExt,
             got: serialish as AnyFieldSerial,
          }
-         if (this.root !== this) {
-            this.root.addAnomaly(anomaly)
-            serial = this._emptySerial
+         if (this.zRoot !== this) {
+            this.zRoot.zAddAnomaly(anomaly)
+            serial = this.zSchema.defaultSerial
          } else {
-            serial = { ...this._emptySerial /* ❌ */, anomalies: [anomaly] }
+            serial = { ...this.zSchema.defaultSerial /* ❌ */, anomalies: [anomaly] }
          }
       }
 
@@ -572,7 +757,7 @@ export abstract class Field<out K extends FieldTypes = FieldTypes>
          return serial
          // TODO
       }
-      const validSerial = ensureValid<K['$Serial']>(serial)
+      const validSerial = ensureValid<this['{serial}']>(serial)
 
       // #region 9. set the now valid serial
       // 💬 2024-09-11 rvion: at this point, we should be able to guarantee that
@@ -580,47 +765,39 @@ export abstract class Field<out K extends FieldTypes = FieldTypes>
       // | the serial is well formed valid.
       // | no data has been discarded.
       // | all validation properly succeeed
-      this.setOwnSerial(validSerial)
-      return { problems: this.serialProblems }
+      this.zSetOwnSerial(validSerial)
+      return { problems: this.zSerialProblems }
    }
 
-   // private copyCommonSerialFields(s: Maybe<FieldSerial_CommonProperties>): void {
-   //     if (s == null) return
-   //     if (s._version != null) this.serial._version = s._version
-   //     if (s.collapsed != null) this.serial.collapsed = s.collapsed
-   //     if (s.custom != null) this.serial.custom = s.custom
-   //     if (s.lastUpdatedAt != null) this.serial.lastUpdatedAt = s.lastUpdatedAt
-   // }
-
    /** unified api to allow setting serial from value */
-   setValue(val: K['$Value']): this {
-      this.value = val
+   zSetValue(val: this['{value}']): this {
+      this.zValue = val
       return this
    }
 
-   RECONCILE<SCHEMA extends Instanciable>(p: {
+   zRECONCILE<SCHEMA extends CSchema>(p: {
       mountKey: string
       existingChild: Maybe<Field>
       correctChildSchema: SCHEMA
       /** the target child to clone/apply into child */
-      targetChildSerial: Maybe<SCHEMA['$Serial']>
+      targetChildSerial: Maybe<SCHEMA['{serial}']>
       /**
        * ONLY CALLED FOR NEW CHILD
        *
        * must attach/register both
        *  - child into parent where it belongs
        *  - child.serial into parent.serial where it belongs  */
-      attach(child: SCHEMA['$Field']): void
+      attach(child: SCHEMA['{field}']): void
    }): void {
       let child = p.existingChild
-      if (child != null && child.type === p.correctChildSchema.type) {
-         child.setSerial(p.targetChildSerial)
+      if (child != null && child.zSchema === p.correctChildSchema) {
+         child.zSetSerial(p.targetChildSerial)
       } else {
-         if (child) child.disposeTree()
+         if (child) child.zDisposeTree()
          child = p.correctChildSchema.instanciate(
             //
-            this.repo,
-            this.root,
+            this.zRepo,
+            this.zRoot,
             this,
             p.mountKey,
             p.targetChildSerial,
@@ -632,112 +809,102 @@ export abstract class Field<out K extends FieldTypes = FieldTypes>
 
    // #region UI
 
-   /** default header UI */
-   // abstract readonly DefaultHeaderUI: CovariantFC<{ field: K['$Field']; readonly?: boolean }> | undefined
-   abstract readonly DefaultHeaderUI: CovariantFC<{ field: UNSAFE_AnyField; readonly?: boolean }> | undefined
-
-   /** default body UI */
-   // abstract readonly DefaultBodyUI: CovariantFC<{ field: K['$Field'] }> | undefined
-   abstract readonly DefaultBodyUI: CovariantFC<{ field: UNSAFE_AnyField }> | undefined
-
    // #region UI HELPERS
    /** @deprecated with the new UI system */
-   get actualWidgetToDisplay(): Field {
+   get zActualWidgetToDisplay(): Field {
       return this
    }
 
-   get indentChildren(): number {
+   get zIndentChildren(): number {
       return 1
    }
 
    /** @deprecated ? with the new UI system */
-   get justifyLabel(): boolean {
-      if (this.config.justifyLabel != null) return this.config.justifyLabel
-      if (this.DefaultBodyUI) return false // 🔴 <-- probably a mistake here
+   get zJustifyLabel(): boolean {
+      if (this.zConfig.justifyLabel != null) return this.zConfig.justifyLabel
       return true
    }
 
-   get depth(): number {
-      if (this.parent == null) return 0
-      return this.parent.depth + this.parent.indentChildren
+   @computed get zDepth(): number {
+      if (this.zParent == null) return 0
+      return this.zParent.zDepth + this.zParent.zIndentChildren
    }
 
    /** DO NOT OVERRIDE; used internally to properly schedule events */
-   get trueDepth(): number {
-      if (this.parent == null) return 0
-      return this.parent.trueDepth + 1
+   @computed get zTrueDepth(): number {
+      if (this.zParent == null) return 0
+      return this.zParent.zTrueDepth + 1
    }
 
    // #region ON/OFF
 
    /**
     * returns true if we can either `setOn` and `setOff` this field
-    * @since 2024-09-03
     */
-   get canBeToggledWithinParent(): boolean {
+   @computed get zCanBeToggledWithinParent(): boolean {
       // if (isFieldOptional(this)) return true
-      if (isFieldList(this.parent)) return true
-      if (isFieldOptional(this.parent)) return true
-      if (isFieldChoices(this.parent)) return true
-      if (isFieldChoice(this.parent)) return false
+      // if (isFieldList(this.zParent)) return true
+      if (isFieldOptional(this.zParent)) return true
+      if (isFieldChoices(this.zParent)) return true
+      if (isFieldChoice(this.zParent)) return false
       return false
    }
 
    /**
     * if parent can be toggled, sets the parent ON
     * throws otherwise
-    * @since 2024-09-03
+    * @undecorated (single child action)
     */
-   enableSelfWithinParent(): void {
-      const parent = this.parent
+   zEnableSelfWithinParent(): void {
+      const parent = this.zParent
       if (isFieldOptional(parent)) return parent.setOn()
-      if (isFieldChoices(parent)) return parent.enableBranch(this.mountKey)
-      if (isFieldChoice(parent)) return parent.enableBranch(this.mountKey)
+      if (isFieldChoices(parent)) return parent.zEnableBranch(this.zMountKey)
+      if (isFieldChoice(parent)) return parent.zEnableBranch(this.zMountKey)
       throw new Error(
-         `(${this.type}@'${this.path}').setOn: parent (${parent?.type}) is not [optional, choice, choices]`,
+         `(${this.zType}@'${this.zPath}').setOn: parent (${parent?.zType}) is neither optional or choices`,
       )
    }
 
    /**
     * if parent can be toggled, sets the parent OFF
     * throws otherwise
-    * @since 2024-09-03
+    * @undecorated (single child action)
     */
-   disableSelfWithinParent(): void {
-      const parent = this.parent
+   zDisableSelfWithinParent(): void {
+      const parent = this.zParent
       if (isFieldOptional(parent)) return parent.setOff()
       if (isFieldList(parent)) return parent.removeItem(this)
-      if (isFieldChoices(parent)) return parent.disableBranch(this.mountKey)
-      if (isFieldChoice(parent)) return parent.disableBranch(this.mountKey)
+      if (isFieldChoices(parent)) return parent.zDisableBranch(this.zMountKey)
+      if (isFieldChoice(parent)) return parent.zDisableBranch(this.zMountKey)
       throw new Error(
-         `(${this.type}@'${this.path}').setOff: (${parent?.type} is not [optional, choice, choices, list]`,
+         `(${this.zType}@'${this.zPath}').setOff: parent (${parent?.zType}) is neither optional or choices`,
       )
    }
 
-   get isDisabledWithinParent(): boolean {
-      return !this.isEnabledWithinParent
+   @computed get zIsInsideDisabledBranch(): boolean {
+      if (this.zParent == null) return false
+      if (this.zParent.zIsInsideDisabledBranch) return true
+      if (isFieldOptional(this.zParent)) return this.zParent.zIsDisabled
+      if (isFieldChoices(this.zParent)) return this.zParent.isBranchDisabled(this.zMountKey)
+      if (isFieldChoice(this.zParent)) return this.zParent.isBranchDisabled(this.zMountKey)
+      return false
    }
 
-   get isEnabledWithinParent(): boolean {
-      if (isFieldOptional(this.parent)) return this.parent.active
-      if (isFieldChoices(this.parent)) return this.parent.isBranchEnabled(this.mountKey)
-      if (isFieldChoice(this.parent)) return this.parent.isBranchEnabled(this.mountKey)
-      return true
+   @computed get zIsDisabledWithinParent(): boolean {
+      return !this.zIsEnabledWithinParent
    }
-   // --------------------------------------------------------
-   get isInsideDisabledBranch(): boolean {
-      if (this.parent == null) return false
-      if (this.parent.isInsideDisabledBranch) return true
-      if (isFieldOptional(this.parent)) return this.parent.isDisabled
-      if (isFieldChoices(this.parent)) return this.parent.isBranchDisabled(this.mountKey)
-      if (isFieldChoice(this.parent)) return this.parent.isBranchDisabled(this.mountKey)
-      return false
+
+   @computed get zIsEnabledWithinParent(): boolean {
+      if (isFieldOptional(this.zParent)) return this.zParent.isActive
+      if (isFieldChoices(this.zParent)) return this.zParent.isBranchEnabled(this.zMountKey)
+      if (isFieldChoice(this.zParent)) return this.zParent.isBranchEnabled(this.zMountKey)
+      return true
    }
 
    // #region Tree
 
    // abstract readonly id: string
-   asTreeElement(key: string): ITreeElement<{ widget: Field; key: string }> {
+   zAsTreeElement(key: string): ITreeElement<{ widget: Field; key: string }> {
       return {
          key: (this as any).id,
          ctor: TreeEntry_Field as any,
@@ -745,104 +912,95 @@ export abstract class Field<out K extends FieldTypes = FieldTypes>
       }
    }
 
-   /** shorthand access to schema.config */
-   get config(): this['$Config'] {
-      return this.schema.config
+   /**
+    * shorthand access to schema.config
+    * @undecorated (static, no need for mobx)
+    */
+   get zConfig(): this['{config}'] {
+      return this.zSchema.config
    }
 
-   getValue(mode: VALUE_MODE): K['$Value'] | K['$Unchecked'] {
-      if (mode === 'fail') return this.value_or_fail
-      if (mode === 'zero') return this.value_or_zero
-      if (mode === 'unchecked') return this.value_unchecked
+   /** @undecorated (not an action; pure; defer to single computed) */
+   zGetValue(mode: VALUE_MODE): this['{value}'] | this['{unchecked}'] {
+      if (mode === 'fail') return this.zValue
+      if (mode === 'zero') return this.zValueOrZero
+      if (mode === 'unchecked') return this.zValueUnchecked
+      if (mode === 'set') return this.zGetSetValue()
       exhaust(mode)
-      throw new Error('unreachable')
-   }
-
-   /** @deprecated */
-   get animateResize(): boolean {
-      return true
    }
 
    /**
-    * return true when widget has no child
-    * return flase when widget has one or more child
+    * return true when field has no child
+    * return false when field has one or more child
     * */
-   get hasNoChild(): boolean {
-      return this.childrenAll.length === 0
+   get zHasNoChild(): boolean {
+      return this.zChildrenAll.length === 0
    }
 
    /**
-    * @status NOT IMPLEMENTED
-    * @deprecated
-    * return a short summary of changes from last snapshot
-    * */
-   get diffSummaryFromSnapshot(): string {
-      throw new Error('❌ not implemented')
-   }
-
-   /**
-    * @since 2024-06-20
     * @status broken
     * return a short summary of changes from default
     */
-   get diffSummaryFromDefault(): string {
+   @computed get zDiffSummaryFromDefault(): string {
       return [
-         this.hasChanges //
-            ? `${this.path}(${this.value?.toString?.() ?? '.'})`
+         this.zHasChanges //
+            ? `${this.zPath}(${this.zValue?.toString?.() ?? '.'})`
             : null,
-         ...this.childrenAll.map((w) => w.diffSummaryFromDefault),
+         ...this.zChildrenAll.map((w) => w.zDiffSummaryFromDefault),
       ]
          .filter(Boolean)
          .join('\n')
    }
 
    /** path within the model */
-   get path(): string {
-      const p = this.parent
+   @computed get zPath(): FL_FieldPath {
+      const p = this.zParent
       if (p == null) return '$'
-      return p.path + '.' + this.mountKey
+      return p.zPath + '.' + this.zMountKey
    }
 
-   /**
-    * akin to reverse polish notation
-    * possibly memory friendly (yes, meaningless in JS)
-    * e.g.
-    *  | when pathis `$.a.b.c.d`
-    *  | pathObject is `['d', ['c', ['b', ['a', ['$']]]]]`
-    */
-   get pathObject(): PathObject {
-      return [this.path, this.parent?.pathObject]
+   @computed get zPathObject(): PathObject {
+      return [this.zPath, this.zParent?.zPathObject]
    }
 
    /** path within the model */
-   get pathExt(): string {
-      const p = this.parent
-      if (p == null) return `@${this.type}`
-      return p.pathExt + '.' + this.mountKey + `@${this.type}`
+   @computed get zPathExt(): FL_FieldPathExt {
+      const p = this.zParent
+      if (p == null) return `@${this.zType}`
+      return p.zPathExt + '.' + this.zMountKey + `@${this.zType}`
    }
 
-   getFieldAt(path: string): Maybe<Field<any>> {
+   /** path within the model */
+   @computed get zPathNice(): FL_FieldPathNice {
+      const p = this.zParent
+      if (p == null) return '$'
+      if (this.zParent?.zType === 'list')
+         return p.zPathNice + `[${this.zParent.zChildrenActive.indexOf(this)}]`
+      return p.zPathNice + '.' + this.zMountKey
+   }
+
+   zGetFieldAt(path: string): Maybe<Field> {
       const parts = path.split('.')
       // eslint-disable-next-line consistent-this
       let current: Maybe<Field> = this
       for (const part of parts) {
          if (part === '$') {
-            current = this.root
+            current = this.zRoot
             continue
          }
-         current = current.getChildrenByKey(part) as Maybe<Field>
+         current = current.zGetChildByKey(part) as Maybe<Field>
          if (current == null) return null
       }
 
       return current
    }
 
-   getChildrenByKey(key: string): Maybe<K['$Child']> {
+   zGetChildByKey(key: string): Maybe<this['{child}']> {
       // TODO: more efficient overrides
-      return this.childrenAll.find((f) => f.mountKey === key)
+      return this.zChildrenAll.find((f) => f.zMountKey === key)
    }
 
-   mountKey: string
+   @observable accessor zMountKey: string
    // get mountKey(): string {
    //     if (this.parent == null) return '$'
    //     if (this.parent.type === 'optional') return 'child' // hack for line below who is wrong
@@ -850,23 +1008,31 @@ export abstract class Field<out K extends FieldTypes = FieldTypes>
    // }
 
    /** collapse all children that can be collapsed */
-   collapseAllChildren(): void {
-      for (const _item of this.childrenAll) {
-         // this allow to make sure we fold though optionals and similar constructs
-         const item = _item.actualWidgetToDisplay
-         if (item.serial.collapsed) continue
-         const isCollapsible = item.isCollapsible
-         if (isCollapsible) item.setCollapsed(true)
-      }
+   zCollapseAllChildren(): void {
+      this.zRunInTransaction(() => {
+         for (const _item of this.zChildrenAll) {
+            // this allow to make sure we fold though optionals and similar constructs
+            const item = _item.zActualWidgetToDisplay
+            if (item.zSerial.collapsed) continue
+            const isCollapsible = item.zIsCollapsible
+            if (isCollapsible) item.zSetCollapsed(true)
+         }
+      })
+   }
+
+   zIsOfType(...type: CATALOG.AllFieldTypes[]): boolean {
+      return type.includes(this.zType)
    }
 
    /** expand all children that can are collapsed */
-   expandAllChildren(): void {
-      for (const _item of this.childrenAll) {
-         // this allow to make sure we fold though optionals and similar constructs
-         const item = _item.actualWidgetToDisplay
-         item.setCollapsed(undefined)
-      }
+   zExpandAllChildren(): void {
+      this.zRunInTransaction(() => {
+         for (const _item of this.zChildrenAll) {
+            // this allow to make sure we fold though optionals and similar constructs
+            const item = _item.zActualWidgetToDisplay
+            item.zSetCollapsed(undefined)
+         }
+      })
    }
 
    // change management ------------------------------------------------
@@ -882,84 +1048,84 @@ export abstract class Field<out K extends FieldTypes = FieldTypes>
     * | simply do a this.setValue(this.defaultValue)
     * | but it feels like a wrong implementation 🤔
     * | it's simpler  though
-    * 🔶 some widget like `WidgetPrompt` would not work with such logic
+    * 🔶 some field like `WidgetPrompt` would not work with such logic
     * */
-   reset(): void {
-      this.setSerial(null)
-      this.touched = false
+   zReset(): void {
+      runInAction(() => {
+         this.zSetSerial(null)
+         this.zTouched = false
+      })
    }
 
    /** return a cloned/detached value object you can use anywhere without care */
-   toValueJSON(): K['$Value'] {
-      return JSON.parse(JSON.stringify(this.value))
+   zToValueJSON(): this['{value}'] {
+      return JSON.parse(JSON.stringify(this.zValue))
    }
 
    /** return a clone/detached serial object you can use anywhere without care */
-   toSerialJSON(): K['$Serial'] {
-      return this.serial // JSON.parse(JSON.stringify(this.serial))
+   zToSerialJSON(): this['{serial}'] {
+      return this.zSerial // JSON.parse(JSON.stringify(this.serial))
    }
 
    /** every child class must implement change detection from its default  */
-   abstract readonly hasChanges: boolean
+   abstract readonly zHasChanges: boolean
 
-   private touched_: boolean = false
+   @observable private accessor zTouched_: boolean = false
 
    /** true when the field contains unsaved changes */
-   get touched(): boolean {
-      return this.touched_
+   get zTouched(): boolean {
+      return this.zTouched_
    }
 
-   set touched(val: boolean) {
-      if (val === true && this.touched_ !== val && this.parent !== this && this.parent != null) {
-         this.parent.touched = true
-      }
-      this.touched_ = val
+   set zTouched(val: boolean) {
+      runInAction(() => {
+         if (
+            val === true && //
+            this.zTouched_ !== val &&
+            this.zParent !== this &&
+            this.zParent != null
+         ) {
+            this.zParent.zTouched = true
+         }
+
+         this.zTouched_ = val
+      })
    }
+   /** Identical to field.touched = true but easier to use when field is nullable */
+   zTouch(): void {
+      runInAction(() => void (this.zTouched = true))
+   }
+
+   zTouchAll(): void {
+      runInAction(() => {
+         if (this.zChildrenAll.length === 0) this.zTouched = true
+         for (const child of this.zChildrenAll) child.zTouchAll()
+      })
+   }
+
+   private $FieldSym: typeof FieldSym = FieldSym // DO NOT REMOVE
 
    /**
-    * Identical to field.touched = true but easier to use when field is nullable
-    */
-   touch = (): void => {
-      this.touched = true
-   }
-
-   touchAll = (): void => {
-      if (this.childrenAll.length === 0) this.touched = true
-
-      for (const child of this.childrenAll) {
-         child.touchAll()
-      }
-   }
-
-   /**
-    * 2024-05-24 rvion: do we want some abstract defaultValue() too ?
-    * feels like it's going to be PITA to use for higher level objects 🤔
-    * but also... why not...
-    * 🔶 some widget like `WidgetPrompt` would not work with such logic
-    * 🔶 some widget like `Optional` have no simple way to retrieve the default value
-    */
-   // abstract readonly defaultValue: this['schema']['$Value'] |
-
-   $FieldSym: typeof $FieldSym = $FieldSym
-
-   /**
-    * when this widget or one of its descendant publishes a value,
+    * when this field or one of its descendant publishes a value,
     * it will be stored here and possibly consumed by other descendants
     */
-   _advertisedValues: Record<ChannelId, any> = {}
+   protected readonly zAdvertisedValues: Record<ChannelId, any> = observable({})
+   protected readonly zLurkers: Map<ChannelId, ((val: any) => void)[]> = new Map()
 
    /**
-    * when consuming an advertised value,
-    * walk upward the parent chain, and look for
-    * a value stored in the advsertised values
+    * when reading a publication, we will walk up the parent chain
+    * and look for a value stored in the advsertised values.
     */
-   consume<T extends any>(chan: Channel<T> | ChannelId): Maybe<T> /* 🔸: T | $EmptyChannel */ {
+   zReadChannel<T extends any>(chan: Channel<T> | ChannelId): Maybe<T> /* 🔸: T | $EmptyChannel */ {
       const channelId = typeof chan === 'string' ? chan : chan.id
       let at = this as any as Field | null
       while (at != null) {
-         if (channelId in at._advertisedValues) return at._advertisedValues[channelId]
-         at = at.parent
+         if (channelId in at.zAdvertisedValues) {
+            return at.zAdvertisedValues[channelId]
+         }
+         at = at.zParent
       }
+      // console.warn(`[🪈] ${channelId} | not found from ${this.path}`)
       return null // $EmptyChannel
    }
 
@@ -967,8 +1133,8 @@ export abstract class Field<out K extends FieldTypes = FieldTypes>
     * return a short string summary that display the value in a simple way.
     * This method is expected to be overriden in most child classes
     */
-   get summary(): string {
-      return JSON.stringify(this.value)
+   @computed get zSummary(): string {
+      return JSON.stringify(this.zValue)
    }
 
    /**
@@ -979,9 +1145,9 @@ export abstract class Field<out K extends FieldTypes = FieldTypes>
     * This data is completely unused internally by CSuite.
     * It is READONLY.
     */
-   getConfigCustom<T = unknown>(): Readonly<T> {
+   zGetConfigCustom<T = unknown>(): Readonly<T> {
       return (
-         this.config.custom ?? //
+         this.zConfig.custom ?? //
          ({} as any)
       )
    }
@@ -994,13 +1160,13 @@ export abstract class Field<out K extends FieldTypes = FieldTypes>
     * You can use them however you want provided you keep them serializable.
     * It's just a quick/hacky place to store stuff
     */
-   getFieldCustom<T = unknown>(): T {
-      return this.serial.custom
+   zGetFieldCustom<T = unknown>(): T {
+      return this.zSerial.custom
    }
 
    // will be easy to type/extend with the new type accumulator strategy when we backport
-   get custom(): any {
-      return this.serial.custom
+   get zCustom(): any {
+      return this.zSerial.custom
    }
 
    /**
@@ -1008,10 +1174,10 @@ export abstract class Field<out K extends FieldTypes = FieldTypes>
     * You can either return a new value, or patch the initial value
     * use `deleteFieldCustomData` instead to replace the value by null or undefined.
     */
-   updateFieldCustom<T = unknown>(fn: (x: Maybe<T>) => T): this {
-      const prev = this.value
+   zUpdateFieldCustom(fn: (x: Maybe<this['{value}']>) => this['zCustom']): this {
+      const prev = this.zValue
       const next = fn(prev) ?? prev
-      return this.patchInTransaction((draft) => {
+      return this.zPatchInTransaction((draft) => {
          // 💬 2024-09-17 rvion:
          // | I'll assume that the custom data is already serializable...
          // | still wrong, but probably a bit less dangerous than naive deep-cloning it.
@@ -1021,8 +1187,8 @@ export abstract class Field<out K extends FieldTypes = FieldTypes>
    }
 
    /** delete field custom data (delete this.serial.custom)  */
-   deleteFieldCustomData(): this {
-      return this.patchInTransaction((draft) => {
+   zDeleteFieldCustomData(): this {
+      return this.zPatchInTransaction((draft) => {
          delete draft.custom
       })
    }
@@ -1030,22 +1196,21 @@ export abstract class Field<out K extends FieldTypes = FieldTypes>
    // 📌 ERROR / VALIDATION ---------------------------------------------------------------|
 
    // 🔶 TEMPORARY HACK UNTIL RENDER BRANCH
-   getFieldUnchecked(): this {
+   zGetFieldUnchecked(): this {
       return this
    }
 
    /**
-    * @since 2024-09-04
     * @category Validation
     */
-   validate(): Result<this, ValidationError> {
-      this.touched = true
-      if (!this.isValid)
+   zValidate(): Result<this, ValidationError> {
+      this.zTouched = true
+      if (!this.zIsValid)
          return __ERROR(
             new ValidationError(
-               `Validation failed for field ${this.type} at '${this.path}'`,
+               `Validation failed for field ${this.zType} at '${this.zPath}'`,
                this,
-               this.allErrorsIncludingChildrenErrors,
+               this.zAllErrorsIncludingChildrenErrors,
             ),
          )
       return __OK(this)
@@ -1054,25 +1219,23 @@ export abstract class Field<out K extends FieldTypes = FieldTypes>
    /**
     * helper function to chain things
     *
-    * @since 2024-09-04
     * @category Validation
     * @see {@link validationOrThrow}
     */
-   validateOrNull(): Maybe<this> {
-      this.touched = true
-      if (!this.isValid) return null
+   zValidateOrNull(): Maybe<this> {
+      this.zTouched = true
+      if (!this.zIsValid) return null
       return this
    }
 
    /**
     * helper function to chain things
     *
-    * @since 2024-09-04
     * @category Validation
-    * @see {@link validateOrNull}
+    * @see {@link zValidateOrNull}
     */
-   validateOrThrow(): this {
-      const res = this.validate()
+   zValidateOrThrow(): this {
+      const res = this.zValidate()
       if (!res.valid) throw res.error
       return this
    }
@@ -1085,46 +1248,45 @@ export abstract class Field<out K extends FieldTypes = FieldTypes>
     * an error is a problem with severity error.
     *
     * @category Validation
-    * @since 2024-09-04
     */
-   get isValid(): boolean {
-      return this.allErrorsIncludingChildrenErrors.length === 0
+   get zIsValid(): boolean {
+      return this.zAllErrorsIncludingChildrenErrors.length === 0
    }
 
    /**
     * returns true if errors.length > 0
     * @category Validation
     */
-   get hasOwnErrors(): boolean {
-      const errors = this.ownErrors
+   get zHasOwnErrors(): boolean {
+      const errors = this.zOwnErrors
       return errors.length > 0
    }
 
-   get mustDisplayErrors(): boolean {
-      return this.hasOwnErrors && !this.isInsideDisabledBranch
-      return this.hasOwnErrors
-      return this.hasOwnErrors && this.touched
+   get zMustDisplayErrors(): boolean {
+      return this.zHasOwnErrors && !this.zIsInsideDisabledBranch
+      return this.zHasOwnErrors
+      return this.zHasOwnErrors && this.zTouched
    }
-
    /**
     * all own errors:
     *  + base/default (built-in field, e.g. minLength for string)
     *  + custom       (user-defined in config)
     * @category Validation
     */
-   get ownErrors(): Problem[] {
+   @computed get zOwnErrors(): Problem[] {
       const i18n = csuiteConfig.i18n
       // If we have a leaf Field, we add its "not set" error (isOwnSet)
-      if (!this.isOwnSet) {
+      if (!this.zIsOwnSet) {
          return [
             {
+               path: this.zPath,
                message: i18n.err.field.not_set,
-               longerMessage: `${i18n.err.field.not_set} (${this.pathExt})`,
+               longerMessage: `${i18n.err.field.not_set} (${this.zPathExt})`,
             },
          ]
       } else {
-         return normalizeProblem(this.ownTypeSpecificProblems) //
-            .concat(this.ownCustomConfigCheckProblems)
+         return normalizeProblem(this, this.zOwnTypeSpecificProblems) //
+            .concat(this.zOwnCustomConfigCheckProblems)
       }
 
       // return errors
@@ -1133,11 +1295,14 @@ export abstract class Field<out K extends FieldTypes = FieldTypes>
    /**
     * @category Validation
     */
-   get allErrorsIncludingChildrenErrors(): Problem[] {
-      const subErrs = this.childrenActive.flatMap((f) => f.allErrorsIncludingChildrenErrors)
-      const errs = this.ownErrors.concat(subErrs)
-      if (!this.isSet) errs.push({ message: `Field ${this.path}(${this.type}) is not set` })
-      return errs
+   @computed get zAllErrorsIncludingChildrenErrors(): Problem[] {
+      const subErrs = this.zChildrenActive.flatMap((f) => f.zAllErrorsIncludingChildrenErrors)
+      if (subErrs.length === 0) return this.zOwnErrors
+
+      const ownErrs = this.zOwnErrors
+      if (ownErrs.length === 0) return subErrs
+
+      return this.zOwnErrors.concat(subErrs)
    }
 
    /**
@@ -1151,10 +1316,10 @@ export abstract class Field<out K extends FieldTypes = FieldTypes>
     * ```
     * @category Validation
     */
-   get ownCustomConfigCheckProblems(): Problem[] {
-      if (this.config.check == null) return []
-      const res = this.config.check(this)
-      return normalizeProblem(res)
+   @computed get zOwnCustomConfigCheckProblems(): Problem[] {
+      if (this.zConfig.check == null) return []
+      const res = this.zConfig.check(this)
+      return normalizeProblem(this, res)
       // return [...normalizeProblem(res), { message: 'foo' }]
    }
 
@@ -1170,118 +1335,194 @@ export abstract class Field<out K extends FieldTypes = FieldTypes>
     *
     * @category Validation
     */
-   abstract readonly ownTypeSpecificProblems: Problem_Ext
-   abstract readonly ownConfigSpecificProblems: Problem_Ext
+   abstract readonly zOwnTypeSpecificProblems: Problem_Ext
+   abstract readonly zOwnConfigSpecificProblems: Problem_Ext
 
    // -----------------------------------------------------------------------|
    /**
     * returns the list of all ancestors, NOT including self
-    * @since 2024-07-08
     */
-   get ancestors(): Field[] {
+   @computed get zAncestors(): Field[] {
       const result: Field[] = []
-      let current: Maybe<Field> = this.parent
+      let current: Maybe<Field> = this.zParent
       while (current) {
          result.push(current)
-         current = current.parent
+         current = current.zParent
       }
       return result
    }
 
    /**
     * returns the list of all ancestors, including self
-    * @since 2024-07-08
     */
-   get ancestorsIncludingSelf(): Field[] {
+   @computed get zAncestorsIncludingSelf(): Field[] {
       const result: Field[] = []
       // eslint-disable-next-line consistent-this
       let current: Maybe<Field> = this
       while (current) {
          result.push(current)
-         current = current.parent
+         current = current.zParent
       }
       return result
    }
 
-   get descendants(): Field[] {
+   @computed get zDescendants(): Field[] {
       const result: Field[] = []
-      for (const child of this.childrenAll) {
+      for (const child of this.zChildrenAll) {
          result.push(child)
-         result.push(...child.descendants)
+         result.push(...child.zDescendants)
       }
       return result
    }
 
-   get descendantsIncludingSelf(): Field[] {
+   @computed get zDescendantsIncludingSelf(): Field[] {
       const result: Field[] = [this]
-      for (const child of this.childrenAll) {
+      for (const child of this.zChildrenAll) {
          result.push(child)
-         result.push(...child.descendants)
+         result.push(...child.zDescendants)
       }
       return result
    }
 
    // BUMP ----------------------------------------------------
+   private z_extraSerialChangesFunction: ((self: Field) => void)[] = [] // 🔶 cannot (but probably need not) type self as K['{field}'] due to variance issues
+   zOnSerialChanges(fn: (self: this) => void): this {
+      this.z_extraSerialChangesFunction.push(fn as any)
+      return this
+   }
+
    /**
     * every time a field serial is updated, we should call this function.
     * this function is called recursively upwards.
     * persistance will usually be done at the root field reacting to this event.
     */
-   INTERNAL_applySerialUpdateEffects(): void {
-      this.config.onSerialChange?.(this)
-      this.config.onValueChange?.(this)
+   zApplySerialUpdateEffects(): void {
+      for (const fn of this.z_extraSerialChangesFunction) fn(this)
+      this.zConfig.onSerialChange?.(this)
+      this.zConfig.onValueChange?.(this)
    }
 
-   /** recursively walk upwards on any field change  */
-   // private applyValueUpdateEffects_OF_CHILD(child: Field): void {
-   //     this.serial.lastUpdatedAt = Date.now() as Timestamp
-   //     this.parent?.applyValueUpdateEffects_OF_CHILD(child)
-   //     this.config.onValueChange?.(this /* TODO: add extra param here:, child  */)
-   //     this.publishValue() // 🔴  should probably be a reaction rather than this
-   // }
+   zSetupSubscriptions(): void {
+      if (this.zConfig.subscriptions == null) return
+      if (this.zConfig.subscriptions.length === 0) return
+      // for every subscription
+      for (const sub of this.zConfig.subscriptions) {
+         // get chanelID
+         const channelId = typeof sub.channel === 'string' ? sub.channel : sub.channel.id
+
+         // build a memory-stable effect lambda (bind effect to this)
+         const effect = (val: any): void => sub.effect(val, this)
+
+         // then walk ancestor chain
+         anc: for (const parent of this.zAncestors) {
+            // and register self as lurker
+            const prev = parent.zLurkers.get(channelId)
+            if (prev == null) parent.zLurkers.set(channelId, [effect])
+            else prev.push(effect)
+
+            // if parent already has a published value,
+            const alreadyHasAPublishedValue = channelId in parent.zAdvertisedValues
+            if (alreadyHasAPublishedValue) {
+               // we run the effect immediately
+               effect(parent.zAdvertisedValues[channelId])
+
+               // and we stop, because assume we'll never read any
+               // channel value from any field above in the field tree
+               break anc
+            }
+         }
+      }
+   }
 
    /**
-    * this method can be heavily optimized
-    * ping @globi
-    * todo:
+    * this method might be optimized
     *  - by storing the published value locally
     *  - by defining a getter on the _advertisedValues object of all parents
     *  - by only setting this getter up once.
+    * but ALSO MAYBE NOT; need to double check mobx interractions
     * */
-   publishValue(this: Field): void {
-      // 💬 2024-09-20 rvion:
-      // | 🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴
-      // | We need to write tests about that.
-      if (!this.isSet) return
 
-      const producers = this.schema.producers
-      if (producers.length === 0) return
+   zRunPublications(mode: FieldEvent_): void {
+      const publicationsAll = this.zConfig.publications
+      if (publicationsAll == null) return
+
+      const publications = publicationsAll.filter((p) => p.on === mode)
+      if (publications.length === 0) return
+
+      // 💬 2024-12-30 rvion:
+      // | seems like a good idea, but is actually a bad idea.
+      // | it completely prevents us from beeing able to 'set' fields that require reading
+      // | a parent publication to know the set of possible values.
+      // | we need to add try-catch instead.
+      // if (!this.isSet) return console.log(`[🤠] skipping publication of ${this.pathExt} because field is not set`)
+      // if (!this.isOwnSet) return console.log(`[🤠] skipping publication of ${this.pathExt} because field is not ownSet`)
+
+      // 💬 2025-04-03 rvion:
+      // | lurkerdNotified is a set of effects.
+      // | effects should be stable per field, so it's a bit like checking we've
+      // |
+      // | -> bug-I-went-though-1. de-duplicating by field will cause misses when
+      // |    (A publish x1 and x2, both beeing subscribed by B)
+      // |
+      // | -> bug-I-went-though-2. storing anything else than the effect in the _lurkers
+      // |    map is less efficient
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
+      const lurkerdNotified = new Set<Function>()
 
       // Create and store values for every producer
-      const producedValues: Record<ChannelId, any> = {}
-      for (const producer of producers) {
-         const channelId = typeof producer.chan === 'string' ? producer.chan : producer.chan.id
-         producedValues[channelId] = producer.produce(this)
-      }
-      // Assign values to every parent widget in the hierarchy
-      let at = this as any as Field | null
-      while (at != null) {
-         Object.assign(at._advertisedValues, producedValues)
-         at = at.parent
+      for (const publication of publications) {
+         if (publication.onlyIfSet && !this.zIsSet) continue
+         if (publication.onlyIfOwnSet && !this.zIsOwnSet) continue
+         if (publication.onlyIfValid && !this.zIsValid) continue
+
+         const channelId =
+            typeof publication.chan === 'string' //
+               ? publication.chan
+               : publication.chan.id
+
+         const value = publication.produce(this)
+         const publishTo = (field: Field): void => {
+            // update value in `_advertisedValues`
+            field.zAdvertisedValues[channelId] = value
+
+            // notify lurkers directly without waiting for mobx transaction
+            const lurkers = field.zLurkers.get(channelId)
+            if (lurkers == null) return
+            for (const lurker of lurkers) {
+               // TODO: if no in-between fields between this lurker and us has ....
+               if (lurkerdNotified.has(lurker)) continue
+               lurkerdNotified.add(lurker)
+               lurker(value)
+            }
+         }
+
+         // if hoist, publish
+         const hoist = publication.hoist
+         let reach =
+            typeof hoist === 'number'
+               ? hoist // number
+               : hoist // boolean
+                 ? Infinity
+                 : 0
+
+         // eslint-disable-next-line consistent-this
+         let at: Maybe<Field> = this
+         while (at != null && reach-- >= 0) {
+            publishTo(at)
+            at = at.zParent
+         }
       }
    }
 
-   get isHidden(): boolean {
-      if (this.config.hidden != null) return this.config.hidden
-      if (isFieldGroup(this) && Object.keys(this.fields).length === 0) return true
+   @computed get zIsHidden(): boolean {
+      if (this.zConfig.hidden != null) return this.zConfig.hidden
+      if (isFieldGroup(this) && Object.keys(this.zFields).length === 0) return true
       return false
    }
 
-   // TODO: remove this getter !!
-   /** whether the widget should be considered inactive */
-   get isDisabled(): boolean {
-      // return isFieldOptional(this) && !this.serial.active
-      return isFieldOptional(this) && !this.active
+   /** whether the field should be considered inactive */
+   @computed get zIsDisabled(): boolean {
+      return isFieldOptional(this) && !this.isActive
    }
 
    // #region UI
@@ -1292,66 +1533,62 @@ export abstract class Field<out K extends FieldTypes = FieldTypes>
    // | schema definition was also the place to write the UI.
 
    // #region UI.Fold
-   setCollapsed(val?: boolean): void {
-      if (this.serial.collapsed === val) return
-      this.patchInTransaction((draft) => {
+   /** @undecorated (single child action)  */
+   zSetCollapsed(val?: boolean): void {
+      if (this.zSerial.collapsed === val) return
+      this.zPatchInTransaction((draft) => {
          draft.collapsed = val
       })
    }
 
-   toggleCollapsed(this: Field): void {
-      this.patchInTransaction((draft) => {
+   /** @undecorated (single child action)  */
+   zToggleCollapsed(this: Field): void {
+      this.zPatchInTransaction((draft) => {
          draft.collapsed = !draft.collapsed
       })
    }
 
-   get isCollapsedByDefault(): boolean {
+   get zIsCollapsedByDefault(): boolean {
       return false
    }
 
-   get isCollapsed(): boolean {
-      if (!this.isCollapsible) return false
-      if (this.serial.collapsed != null) return this.serial.collapsed
-      if (this.parent?.isDisabled) return true
-      return this.isCollapsedByDefault ?? false
+   @computed get zIsCollapsed(): boolean {
+      if (!this.zIsCollapsible) return false
+      if (this.zSerial.collapsed != null) return this.zSerial.collapsed
+      if (this.zParent?.zIsDisabled) return true
+      return this.zIsCollapsedByDefault ?? false
    }
 
    /**
-    * if specified, overrides the default logic to decide if the widget need to be collapsible
+    * if specified, overrides the default logic to decide if the field need to be collapsible
     * @deprecated
     * 🔶 going to be removed ASAP
     */
-   get isCollapsible(): boolean {
-      // top level widget is not collapsible; we may want to revisit this decision
+   @computed get zIsCollapsible(): boolean {
+      // top level field is not collapsible; we may want to revisit this decision
       // if (widget.parent == null) return false
-      if (this.config.collapsed != null) return this.config.collapsed //
-      if (!this.DefaultBodyUI) return false // 🔴 <-- probably a mistake here
-      if (this.config.label === false) return false
+      if (this.zConfig.collapsed != null) return this.zConfig.collapsed //
+      if (this.zConfig.label === false) return false
       return true
    }
 
-   // #region UI.Decorat
-   get background(): TintExt | undefined {
-      return this.config.background
-   }
-
-   /** if provided, override the default logic to decide if the widget need to be bordered */
-   get border(): TintExt {
+   /**
+    * if provided, the default logic to decide if the field need to be bordered
+    * @deprecated
+    */
+   @computed get zBorder(): TintExt {
       // avoif borders for the top level form
-      if (this.parent == null) return false
+      if (this.zParent == null) return false
       // if (this.parent.subWidgets.length === 0) return false
       // if app author manually specify they want no border, then we respect that
-      if (this.config.border != null) return this.config.border
-      // if the widget do NOT have a body => we do not show the border
+      if (this.zConfig.border != null) return this.zConfig.border
+      // if the field do NOT have a body => we do not show the border
       // if (this.DefaultBodyUI == null) return false // 🔴 <-- probably a mistake here
       // default case when we have a body => we show the border
       return false
       // return 8
    }
 
-   // #region UI.Render
-
-   //  => CUSHY
    UI(props: RENDERER.FieldRenderArgs<this> = {}): ReactNode {
       // 💬 2024-10-17 ghusse:
       // | Spreading props here instead of passing them as a single object
@@ -1372,59 +1609,37 @@ export abstract class Field<out K extends FieldTypes = FieldTypes>
       return <window.RENDERER.Render {...props} field={this} />
    }
 
-   /**
-    * @deprecated prefer Field.Render with the proper modal options
-    * allow to quickly render the form in a dropdown button
-    * without having to import any component; usage:
-    * | <div>{x.renderAsConfigBtn()}</div>
-    */
-   renderAsConfigBtn(p?: {
-      // 1. anchor option
-      // ...TODO
-      // 2. popup options
-      title?: string
-      className?: string
-      maxWidth?: string
-      minWidth?: string
-      width?: string
-   }): ReactNode {
-      return createElement(FormAsDropdownConfigUI, { form: this, ...p })
-   }
-
-   // #region UI.Components
-   defaultHeader(this: Field): JSX.Element | undefined {
-      if (this.DefaultHeaderUI == null) return
-      return <this.DefaultHeaderUI field={this} />
-   }
-
-   defaultBody(this: Field): JSX.Element | undefined {
-      if (this.DefaultBodyUI == null) return
-      return <this.DefaultBodyUI field={this} />
-   }
-
-   // 🔴 not sure where this 'readonly' goes, it's a render prop, not a config.
-   // do we have have render props? (active? look?) or do we make different custom components? probably both are required?
-   // currently those kind of "render" config are only available at top level via FormUIProps or via calling field.renderWithLabel(...)
-   // but actually header and renderWithLabel have the same nature, so yeah, they should be here too. See commonalities with WidgetWithLabelProps
-   header(this: Field, p?: { readonly?: boolean }): JSX.Element | undefined {
-      const HeaderUI =
-         'header' in this.config //
-            ? useEnsureObserver(this.config.header)
-            : this.DefaultHeaderUI
-      if (HeaderUI == null) return
-      return <HeaderUI key={this.id} field={this} {...p} />
-   }
-
-   body(this: Field): JSX.Element | undefined {
-      const BodyUI =
-         'body' in this.config //
-            ? useEnsureObserver(this.config.body)
-            : this.DefaultBodyUI
-      if (BodyUI == null) return
-      return <BodyUI field={this} />
-   }
+   // 👉 use `UI`
+   // | Render(props: RENDERER.FieldRenderArgs<this> = {}): ReactNode {
+   // |    return this.UI(props)
+   // | }
 
    // #region CHILDREN
+   /**
+    * return the serial path from the root to this field serial.
+    * somewhat an internal method; usage should remain as low as possible.
+    * @undecorated
+    */
+   zGetOwnSerialPathFromRoot(): string {
+      const segments: string[] = []
+      let at = this.zParent
+      let key = this.zMountKey
+      while (at != null) {
+         segments.push(at.zGetChildrenSerialPath(key))
+         at = at.zParent
+         key = at?.zMountKey ?? '$'
+      }
+      return segments.reverse().join('.')
+   }
+
+   /**
+    * need to be overwritten for all contaienr fields
+    * @undecorated (placeholder made to be overriden)
+    */
+   zGetChildrenSerialPath(key: string): string {
+      return `❌`
+   }
+
    /**
     * list of all children fields that are technically in the in-memory instance tree
     * including those instanciated but only kept in a pending state, or those
@@ -1435,10 +1650,10 @@ export abstract class Field<out K extends FieldTypes = FieldTypes>
     * if you just want to traverse the "active" part of the tree,
     * use `childrenActive` instead
     *
-    * @since 2024-09-09
     * @remarks was previously named `subFields`
+    * @undecorated (placeholder made to be overriden)
     */
-   get childrenAll(): K['$Child']['$Field'][] {
+   get zChildrenAll(): Field[] {
       return []
    }
 
@@ -1447,12 +1662,11 @@ export abstract class Field<out K extends FieldTypes = FieldTypes>
     * use-cases: render, toValue, toSerial, various traversal, etc.
     *
     *
-    * @since 2024-09-11
-    * @remaks expected to be overriden in every field that have children that can be toggled,
+    * @remarks expected to be overriden in every field that have children that can be toggled,
     * like FIeldChoice, FieldOptional
     */
-   get childrenActive(): K['$Child']['$Field'][] {
-      return this.childrenAll
+   get zChildrenActive(): Field[] {
+      return this.zChildrenAll
    }
 
    // TODO: split subFields into two variants: active subFields, and childrenIncludingInactive
@@ -1462,10 +1676,11 @@ export abstract class Field<out K extends FieldTypes = FieldTypes>
    /**
     * list of all subwidgets, without named keys
     * @deprecated
-    * we should be able to trust the `subField.mountKey`
+    * we should be able to trust the `subField.zMountKey`
     * // TODO: remove
+    * @undecorated
     */
-   get subFieldsWithKeys(): KeyedField[] {
+   get zSubFieldsWithKeys(): KeyedField[] {
       return []
    }
 
@@ -1474,36 +1689,43 @@ export abstract class Field<out K extends FieldTypes = FieldTypes>
     * proxy this.repo.action
     * defined to shorted call and allow per-field override
     */
-   runInTransaction<T>(fn: (tct: Transaction) => T): T {
-      return this.repo.runInTransaction(fn)
+   zRunInTransaction<T>(fn: (tct: Transaction) => T): T {
+      return this.zRepo.runInTransaction(fn)
    }
 
    /**
     * equivalent to `runInTransaction(() => patchSerial(() => {....}))`
     */
-   patchInTransaction(fn: (draft: K['$Serial'], tct: Transaction) => undefined): this {
-      this.runInTransaction((tct) => this.patchSerial((draft) => fn(draft, tct)))
+   zPatchInTransaction(fn: (draft: this['{serial}'], tct: Transaction) => undefined): this {
+      this.zRunInTransaction((tct) => this.zPatchSerial((draft) => fn(draft, tct)))
       return this
    }
 
-   // ------------
    /**
     * DO NOT OVERRIDE.
     * @internal
     */
-   protected assignNewSerial(next: K['$Serial']): void {
-      if (this.repo.tct == null)
+   protected zAssignNewSerial(next: this['{serial}']): void {
+      const tct = this.zRepo.tct
+      if (tct == null)
          throw new Error(
             '❌ patchSerial should be called within a transaction; you may want to use `patchInTransaction`',
          )
 
-      if (this.serial === next) return
-      this.repo.tct.trackAsUpdated(this)
-      this.serial = next
-      this.__version__++
-      this.parent?._acknowledgeNewChildSerial(this.mountKey, this.serial)
+      // console.log(`[🤠] ${this.path}`, JSON.stringify(this.serial), JSON.stringify(next), this.serial === next)
+      if (this.zSerial === next) return
+      runInAction(() => {
+         this.zSerial = next
+         // this.__version__++
+         tct.trackAsUpdated(this)
+         this.zRunPublications(FieldEvent.TrackAsUpdated)
+         this.zRunPublications(FieldEvent.TrackAsCreatedOrUpdated)
+         this.zParent?.zAcknowledgeNewChildSerial(this.zMountKey, this.zSerial)
+      })
    }
-   __version__: number = 1
+
+   /** @undecorated (we really don't need this anymore; legacy stuff; to remove) */
+   // __version__: number = 1
 
    /**
     * equivalent to `produce`, followed by `assignNewSerial` (if something did change)
@@ -1512,31 +1734,30 @@ export abstract class Field<out K extends FieldTypes = FieldTypes>
     * true when serial has been updated by the lambda
     * @internal
     */
-   patchSerial(
+   zPatchSerial(
       //
-      fn: (draft: K['$Serial']) => undefined,
+      fn: (draft: this['{serial}']) => undefined,
       /*
-       * cowe uld allow K['$Serial'] and hand it back to the caller
+       * cowe uld allow K['{serial}'] and hand it back to the caller
        * to match immerjs API
-       * | fn: (serial: K['$Serial']) => undefined  | K['$Serial']
+       * | fn: (serial: K['{serial}']) => undefined  | K['{serial}']
        */
    ): boolean {
-      if (this.repo.tct == null)
+      if (this.zRepo.tct == null)
          throw new Error(
             '❌ patchSerial should be called within a transaction; you may want to use `patchInTransaction`',
          )
-
       // console.log(`[🧑‍🦯‍➡️] patch serial called from ${this.pathExt}`)
       // from 2024-09-09, serial are not longer observable objects
-      if (isObservable(this.serial)) throw new Error('❌ serial should not be observable')
+      if (isObservable(this.zSerial)) throw new Error('❌ serial should not be observable')
 
       // apply patch function
-      const nextState = produce(this.serial, fn)
-      const stateChanged = nextState !== this.serial // ⚠️ Ref equality check
+      const nextState = produce(this.zSerial, fn)
+      const stateChanged = nextState !== this.zSerial // ⚠️ Ref equality check
       if (!stateChanged) return false // patch function did nothing; we can safely abort
 
       // otherwise, assign serial to current field, and bubble upwards to the document rot
-      this.assignNewSerial(nextState)
+      this.zAssignNewSerial(nextState)
       return true
    }
 
@@ -1547,219 +1768,105 @@ export abstract class Field<out K extends FieldTypes = FieldTypes>
     *
     * (this method needs a true implementation in every field that use RECONCILE)
     */
-   _acknowledgeNewChildSerial(mountKey: string, serial: any): boolean {
-      throw new Error(`🔴 _acknowledgeNewChildSerial not implemented (${this.pathExt})`)
-   }
-
-   // --------------------------------------------------------------------------------
-   // 🔶 the 5 getters bellow are temporary hacks to make shared keep working
-   // until every shared usage has been migrated
-
-   /** getter that resolve to `this.schema.producers` */
-   get producers(): Producer<any, any>[] {
-      return this.schema.producers
-   }
-
-   /** getter that resolve to `this.schema.publish` */
-   get publish(): BaseSchema['publish'] {
-      return this.schema.publish
-   }
-
-   /** getter that resolve to `this.schema.subscribe` */
-   get subscribe(): BaseSchema['subscribe'] {
-      return this.schema.subscribe
-   }
-
-   /** getter that resolve to `this.schema.reactions` */
-   get reactions(): BaseSchema['reactions'] {
-      return this.schema.reactions
-   }
-
-   /** getter that resolve to `this.schema.addReaction` */
-   get addReaction(): BaseSchema['addReaction'] {
-      return this.schema.addReaction
+   protected zAcknowledgeNewChildSerial(mountKey: string, serial: any): boolean {
+      throw new Error(`🔴 _acknowledgeNewChildSerial not implemented (${this.zPathExt})`)
    }
 
    /** probably the wrong place to retrieve that now that presenter are comming */
-   get icon(): Maybe<IconName> {
-      const x = this.schema.config.icon as any // 🔴 TS BUG / PERF
+   get zIcon(): Maybe<IconName> {
+      const x = this.zSchema.config.icon
+      if (typeof x === 'function') return x(this)
       if (x == null) return null
-      if (typeof x === 'string') return x as any // 🔴 TS BUG / PERF
-      return x(this)
+
+      return x
    }
 
-   private _hasBeenInitialized: boolean = false
+   private zHasBeenInitialized: boolean = false
 
-   /**
-    * This method allow to extend an already observable instance
-    * by adding a few things to the list of what's observable
-    * - all new instance own properties
-    * - all the direct prototype properties
-    *   (first proto in the chain; that correspond to the final subclass)
-    *
-    * This method is used to extend a base class that has been made observable
-    * It's implementation is not definitive, but seems to work well for our
-    * use cases
-    *
-    * @since 2024-08-30
-    * @stability beta
-    */
-   protected autoExtendObservable(overrides?: AnnotationsMap<any, any>): void {
-      const annotations = {} as AnnotationsMap<object, string | symbol>
-      const properties = {} as Record<string | symbol, any>
-      const proto = Object.getPrototypeOf(this)
+   /** allow to add a live reaction on a field */
+   zAddReaction(r: FieldReaction<this>): void {
+      const cleanupFn = reaction(
+         () => r.expr(this),
+         (val) => r.effect(val, this),
+         { fireImmediately: true, name: `Field-_setupReactions@${this.zPath}` },
+      )
+      this.zDisposeFns.push(cleanupFn)
+   }
 
-      const baseAnnotations = proto[annotationsSymbol]
-      // 👆 we expect makeAutoObservableInheritance to be called before this
-      // and the annotations map to have been cached at prototype[annotationsSymbol]
-      // if it's not, we should throw an error
-      if (baseAnnotations == null)
-         throw new Error(
-            '❌ autoExtendObservable can only be called after some base' +
-               'class has been made observable using makeAutoObservableInheritance',
-         )
-
-      const accumPropertiesAndAnnotations = (something: any): void => {
-         Reflect.ownKeys(something).forEach((key) => {
-            // 🔴 exclusion added after investigation, but we still need to check that
-            // calling the function twice has no effect on the object
-            if (
-               key === $mobx || //
-               key === 'constructor' ||
-               //      VVVVVVVVVVVVVVVVV (TODO: review)
-               key === annotationsSymbol
-            )
-               return
-
-            if (key in baseAnnotations) return
-            const annotation = !overrides
-               ? true
-               : key in overrides
-                 ? overrides[key as keyof typeof overrides]!
-                 : true
-            if (annotation === false) return
-            annotations[key] = annotation
-            const p = Object.getOwnPropertyDescriptor(something, key)!
-            Object.defineProperty(properties, key, p)
-         })
+   private zSetupReactions(): void {
+      if (this.zConfig.reactions == null) return
+      for (const reaction of this.zSchema.reactions) {
+         this.zAddReaction(reaction)
       }
-
-      accumPropertiesAndAnnotations(this)
-      accumPropertiesAndAnnotations(proto)
-      extendObservable(this, properties, annotations)
    }
 
+   /** this function MUST be called at the end of every field constructor */
    /** this function MUST be called at the end of every widget constructor */
-   protected init(
-      //
-      serial?: K['$Serial'],
-      mobxOverrides?: any,
-   ): void {
-      if (isObservable(this.serial)) console.error('❌ serial should not be observable (err3829)')
-      // /* 😂 */ console.log(`[🤠] ${getUIDForMemoryStructure(serial)} (field.init)`)
-
-      // 1. ensure field hasn't been initialized yet
-      if (this._hasBeenInitialized)
-         return console.error(`[🔶] Field.init has already been called => ABORTING`)
-      this._hasBeenInitialized = true
-
-      // 2. apply extensiosn
-      this.schema.applyFieldExtensions(this)
-
-      // 3. ...
-      this.runInTransaction((tct) => {
-         // this.copyCommonSerialFields(serial)
-         this.repo._registerField(this, tct)
-         //   VVVVVVVVVVVV this is where we hydrate children
-         this.setOwnSerialWithValidationAndMigrationAndFixes(serial)
-
-         // 🔶 const observable = (x: any, _: any): any => x
-         // 🔶 const makeAutoObservableInheritance = (x: any, ...args: any[]): any => x
-         // 🔶 const OPTS: CreateObservableOptions = {}
-         // 🔶 if (this.root.config.options?.skipMobxAutoBind) {
-         // 🔶     OPTS.autoBind = false
-         // 🔶 }
-
-         if (this.root.config.instanciationOption?.altMobx) {
-            makeObservable(this, { serial: observable.ref })
-         } else {
-            // make the object deeply observable including this base class
-            makeAutoObservableInheritance(
-               this,
-               {
-                  // schema should not be able
-                  schema: false,
-                  serial: observable.ref,
-
-                  // overrides retrieved from parents
-                  ...mobxOverrides,
-
-                  // misc
-                  getValue: false,
-
-                  // Render
-                  Render: false,
-                  render: false,
-
-                  // Actions that have been micro-optimized:
-                  traverse: false,
-                  traverseAllDepthFirst: false,
-                  traverseAlltraverseBreadthFirst: false,
-                  traverseBreadthFirst: false,
-                  traverseDepthFirst: false,
-               },
-               {},
-               2,
-            )
-         }
-
-         this.UI = this.UI.bind(this)
-         this.renderAsConfigBtn = this.renderAsConfigBtn.bind(this) // TODO: remove
-
-         this.ready = true
-      })
+   protected init(serial?: this['{serial}']): void {
+      if (this.zHasBeenInitialized) return console.error(`[🔶] Field.init already called => ABORTING`)
+      this.zHasBeenInitialized = true
+      const transaction = this.zRepo.ASSERT_IS_RUNNING_IN_TRANSACTION()
+      this.zRepo._registerField(this)
+      transaction.trackAsCreated(this)
+      //   VVVVVVVVVVVV this is where we hydrate children
+      this.zSetOwnSerialWithValidationAndMigrationAndFixes(serial)
+      this.zSetupReactions()
+      this.zSetupSubscriptions()
+      this.zRunPublications(FieldEvent.CommitUpdate)
+      this.zRunPublications(FieldEvent.TrackAsCreated)
+      this.zRunPublications(FieldEvent.TrackAsCreatedOrUpdated)
+      this.UI = this.UI.bind(this)
+      this.zReady = true
    }
 
-   // TODO: rename as clone as standalone document
-   cloneWithoutParent(): this {
-      return this.schema.create(this.serial) as this
+   zCloneWithoutParent(): this {
+      return this.zSchema.create(this.zSerial) as this
    }
 
-   cloneTheWholeTree(): this {
-      const r = this.root.cloneWithoutParent()
-      return r.getFieldAt(this.path) as this
+   zCloneTheWholeTree(): this {
+      const r = this.zRoot.zCloneWithoutParent()
+      return r.zGetFieldAt(this.zPath) as this
    }
 
-   cloneWithConfig(config: Partial<K['$Config']>): this {
-      return this.schema.withConfig(config).create(this.serial) as this
+   zCloneWithConfig(config: Partial<this['{config}']>, opts?: WithConfigOptions): this {
+      return this.zSchema.withConfig(config, opts).create(this.zSerial) as this
+   }
+
+   zCodeForTypescriptValue(p?: { indent?: number }): string {
+      return this.zSchema.codeForTypescriptValue(p)
    }
    // ---------------------------------------------------------------
 
-   get hasSnapshot(): boolean {
-      return this.serial.snapshot != null
+   @computed get zHasFoldableSubfieldsThatAreUnfolded(): boolean {
+      return this.zChildrenAll.some((f) => f.zIsCollapsible && !f.zSerial.collapsed)
    }
 
-   get hasFoldableSubfieldsThatAreUnfolded(): boolean {
-      return this.childrenAll.some((f) => f.isCollapsible && !f.serial.collapsed)
+   @computed get zHasFoldableSubfieldsThatAreFolded(): boolean {
+      return this.zChildrenAll.some((f) => f.zIsCollapsible && Boolean(f.zSerial.collapsed))
    }
 
-   get hasFoldableSubfieldsThatAreFolded(): boolean {
-      return this.childrenAll.some((f) => f.isCollapsible && f.serial.collapsed)
+   @computed get zHasFoldableSubfields(): boolean {
+      return this.zChildrenAll.some((f) => f.zIsCollapsible)
    }
 
-   get hasFoldableSubfields(): boolean {
-      return this.childrenAll.some((f) => f.isCollapsible)
-   }
-
-   deleteSnapshot(): void {
-      this.patchInTransaction((draft) => {
+   zDeleteSnapshot(): void {
+      this.zPatchInTransaction((draft) => {
          delete draft.snapshot
       })
    }
 
+   // ['🤭caht'] = 1 // 🔶
+   // ['-caht'] = 1; // 🔶
+   // ['/chat'] = 1; // 🔶
+   // ['{chat}'] = 1; // 🟢
+   // ['ܔchat'] = 1;
+   get zHasSnapshot(): boolean {
+      return this.zSerial.snapshot != null
+   }
+
    /** update current field snapshot */
-   saveSnapshot(): this['$Serial'] {
-      const snapshot = produce(this.serial, (draft) => {
+   zSaveSnapshot(): this['{serial}'] {
+      const snapshot = produce(this.zSerial, (draft) => {
          // a bad person would say: "Yo, Dawg; I heard you liked snapshots. So I put a snapshot in your snapshot, so you can snapshot while snapshotting"
          // but it's wrong. we don't want snapshotception.
          // so we delete the snapshot from the snapshot before it's too late.
@@ -1767,89 +1874,113 @@ export abstract class Field<out K extends FieldTypes = FieldTypes>
          // Snapshot.
          delete draft.snapshot
       })
-
-      // delete snapshot.snapshot
-
-      this.patchInTransaction((draft) => void (draft.snapshot = snapshot))
+      this.zPatchInTransaction((draft) => void (draft.snapshot = snapshot))
       return snapshot
    }
 
-   /** rever to the last snapshot */
-   revertToSnapshot(): void {
+   /** revert to the last snapshot */
+   zRevertToSnapshot(): void {
       // 🔘 IX++
       // 🔘 console.log(`[🤠] #${IX} seri`, getUIDForMemoryStructure(this.serial))
       // 🔘 console.log(`[🤠] #${IX} snap`, getUIDForMemoryStructure(this.serial.snapshot))
 
       // 🔘 console.log(`[🤠] #${IX} seri.values`, getUIDForMemoryStructure(this.serial?.values))
       // 🔘 console.log(`[🤠] #${IX} snap.values`, getUIDForMemoryStructure(this.serial.snapshot?.values))
-      if (this.serial.snapshot == null) {
+      if (this.zSerial.snapshot == null) {
          // 🔘 console.log(`[🤠] #${IX} RESET`)
-         return this.reset()
+         return this.zReset()
       }
       // 🔘 console.log(`[🤠] #${IX} SNAP=`, deepCopyNaive(this.serial.snapshot))
-      this.setSerial(this.serial.snapshot)
+      this.zSetSerial(this.zSerial.snapshot)
    }
 
-   get isDirtyFromSnapshot_UNSAFE(): boolean {
-      const { snapshot, ...currentSerial } = this.serial
+   get zIsDirtyFromSnapshot_UNSAFE(): boolean {
+      const { snapshot, ...currentSerial } = this.zSerial
       if (snapshot == null) return false
       return hashJSONObjectToNumber(snapshot) !== hashJSONObjectToNumber(currentSerial)
    }
 
-   // TODO: rename fastSerialHash
-   get hashSerial(): number {
-      return hashJSONObjectToNumber(this.serial)
+   get zHashSerial(): number {
+      return hashJSONObjectToNumber(this.zSerial)
    }
 
-   abstract isOwnSet: boolean
+   abstract zIsOwnSet: boolean
 
    /**
     * return true if and only if self and every descendant is set.
     * [not made to be overriden]
     */
-   get isSet(): boolean {
-      if (!this.isOwnSet) return false
-      if (this.childrenActive.some((f) => !f.isSet)) return false
+   get zIsSet(): boolean {
+      if (!this.zIsOwnSet) return false
+      if (this.zChildrenActive.some((f) => !f.zIsSet)) return false
       return true
    }
 
-   get labelText(): string {
-      if (this.config.label == null) {
-         const mountKey = this.parent?.type === 'optional' ? this.parent.mountKey : this.mountKey
+   get zLabelText(): string {
+      if (this.zConfig.label == null) {
+         const mountKey = this.zParent?.zType === 'optional' ? this.zParent.zMountKey : this.zMountKey
          return makeLabelFromPrimitiveValue(mountKey)
       }
-      if (this.config.label === false) return '' // not sure about the config.label doc
-      return this.config.label
+      if (this.zConfig.label === false) return '' // not sure about the config.label doc
+      return this.zConfig.label
    }
 
-   // TODO: remove that
-   public async saveChanges(): Promise<void> {
-      await this.root.config.saveChanges?.(this.root)
-      this.touched = false
+   // legacy => migrate to new event system
+   private zExtraSaveChangesFunction: (() => Promise<void> | void)[] = []
+   zOnSaveChanges(fn: () => Promise<void> | void): void { this.zExtraSaveChangesFunction.push(fn) } // prettier-ignore
+   public async zSaveChanges(): Promise<void> {
+      for (const fn of this.zExtraSaveChangesFunction) await fn()
+      this.zTouched = false
    }
 
-   // TODO: remove that
+   // ---------------------------------------------------------------------------
+   private zCallbacks_: { [key in FieldEvent_]?: ((field: any) => void)[] } = {}
+
+   /** @internal */
+   zInternalRunCallbacksForEvent(event: FieldEvent_): void {
+      if (this.zCallbacks_[event] == null) return
+      for (const cb of this.zCallbacks_[event]!) {
+         cb(this)
+      }
+   }
+   zOn(event: FieldEvent_, cb: CovariantFn<[field: this], void>): void {
+      if (this.zCallbacks_[event] == null) this.zCallbacks_[event] = []
+      this.zCallbacks_[event]?.push(cb)
+   }
+
+   zOff(event: FieldEvent_, cb: CovariantFn<[field: this], void>): void {
+      if (this.zCallbacks_[event] == null) return console.warn(`[🔶] Field.off: no callbacks for ${event}`)
+      const i = this.zCallbacks_[event]?.indexOf(cb)
+      if (i === -1) return console.warn(`[🔶] Field.off callback not found for ${event}`)
+      this.zCallbacks_[event]?.splice(i, 1)
+   }
+
    /**
-    * 🔶 Not sure if we should handle snapshots here
-    * @deprecated: not sure when we would need it if every form creates a draft and doesn't edit original field until save
+    * this function allow to register temporary events callbacks
+    * on a field that last while the component is mounted
     */
-   public async cancelChanges(): Promise<void> {
-      await this.root.config.cancelChanges?.(this.root)
-      this.touched = false
+   zReactUseEvent(event: FieldEvent_, cb: CovariantFn<[field: this], void>, deps: DependencyList): void {
+      const cbStable = useCallback(cb, deps)
+      useEffect(() => {
+         this.zOn(event, cbStable)
+         return (): void => this.zOff(event, cbStable)
+      }, [cbStable, event])
+   }
+
+   get zDescription(): string | undefined {
+      return this.zConfig.description
    }
 }
 
-function isEmptyObject(obj: any): boolean {
-   if (obj == null) return true
-   if (typeof obj !== 'object') return false
-   return Object.keys(obj).length === 0
-}
-
-export interface Field<out K extends FieldTypes = FieldTypes> extends SelectorMixin {}
-Object.defineProperties(Field.prototype, SelectorMixinDescriptors)
-
-export interface Field<out K extends FieldTypes = FieldTypes> extends AnomalyMixin {}
+// #region Mixins
+export interface Field extends AnomalyMixin {}
 Object.defineProperties(Field.prototype, AnomalyMixinDescriptors)
 
-export interface Field<out K extends FieldTypes = FieldTypes> extends TraversalMixin {}
+export interface Field extends SelectorMixin {}
+Object.defineProperties(Field.prototype, SelectorMixinDescriptors)
+
+export interface Field extends TraversalMixin {}
 Object.defineProperties(Field.prototype, TraversalMixinDescriptors)
+
+export interface Field extends CushyOnlyMixin {}
+Object.defineProperties(Field.prototype, CushyOnlyMixinDescriptors)

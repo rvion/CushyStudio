@@ -1,5 +1,3 @@
-import { observer } from 'mobx-react-lite'
-
 import { usePanel } from '../../router/usePanel'
 import { Button } from '../button/Button'
 import { MenuItem } from '../dropdown/MenuItem'
@@ -19,7 +17,7 @@ import { RevealUI } from '../reveal/RevealUI'
  * </PanelHeaderUI>
  * ```
  */
-export const PanelHeaderUI = observer(function PanelHeader({
+export const PanelHeaderUI = obs(function PanelHeader({
    // own props ---------------------------------------------------------------------
    /** extensible flag makes the panel header have minh-widget instead of h-widget */
    extensibleHeight,
@@ -36,7 +34,7 @@ export const PanelHeaderUI = observer(function PanelHeader({
    //
 } & FrameProps) {
    const state = usePanel()
-   const theme = cushy.preferences.theme.value
+   const theme = cushy.preferences.theme.zValue
 
    if (!state.showHeader) {
       return (
@@ -45,7 +43,7 @@ export const PanelHeaderUI = observer(function PanelHeader({
             style={{ right: theme.global.roundness > 30 ? `${theme.global.roundness}px` : '30px' }}
             size='xs'
             square
-            icon='mdiChevronDown'
+            icon={IKONS.mdiChevronDown}
             onClick={() => {
                state.showHeader = !state.showHeader
             }}
@@ -53,7 +51,7 @@ export const PanelHeaderUI = observer(function PanelHeader({
       )
    }
 
-   const adjustedPadding = cushy.preferences.theme.value.global.roundness + 2
+   const adjustedPadding = theme.global.roundness + 2
 
    return (
       <RevealUI
@@ -63,7 +61,7 @@ export const PanelHeaderUI = observer(function PanelHeader({
          content={() => (
             <MenuItem //
                label='Show Header'
-               icon={state.showHeader ? 'mdiCheck' : 'mdiCheckboxBlank'}
+               icon={state.showHeader ? IKONS.mdiCheck : IKONS.mdiCheckboxBlank}
                onClick={() => (state.showHeader = !state.showHeader)}
             />
          )}

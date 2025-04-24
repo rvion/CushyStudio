@@ -1,22 +1,37 @@
-import type { Field_list_config } from './FieldList'
+/* eslint-disable vitest/require-to-throw-message */
+import type { Patch } from '../../model/Patch'
 
-import { describe, expect, it } from 'bun:test'
 import { toJS } from 'mobx'
+import { describe, expect, it, vitest } from 'vitest'
 
-import { simpleBuilder as b } from '../../index'
 import { expectJSON } from '../../model/TESTS/utils/expectJSON'
+import { simpleBuilder as b } from '../../simple/SimpleFactory'
+import { Field_optional } from '../optional/FieldOptional'
+import { Field_string } from '../string/FieldString'
+import {
+   Field_list,
+   type Field_list_config,
+   type Field_list_ItemID,
+   type Field_list_patch,
+   type Field_list_serial,
+} from './FieldList'
 
 describe('FieldList', () => {
    const S1 = b.string({ default: '🔵' }).list({ defaultLength: 3 })
    const S123 = b.string({ default: '🔵' }).list()
 
-   describe('reset', () => {
+   describe('caching', () => {
       it('works', () => {
-         const S = b.int({ default: 3 }).list({ defaultLength: 3 })
-         const E = S.create()
-         E.value = [1, 2, 3]
-         E.reset()
-         expectJSON(E.value).toEqual([3, 3, 3])
+         let suffix = ''
+         const doc = b
+            .fields(() => {
+               suffix += '!'
+               return { a: b.string({ default: suffix }) }
+            })
+            .list({ min: 3 })
+            .create()
+         expect(suffix).toBe('!')
+         expectJSON(doc.zValue).toMatchObject([{ a: '!' }, { a: '!' }, { a: '!' }])
       })
    })
 
@@ -24,13 +39,13 @@ describe('FieldList', () => {
       it('is true with list()', () => {
          const S_def = b.int().list()
          const E_def = S_def.create()
-         expect(E_def.isSet).toBe(true)
+         expect(E_def.zIsSet).toBeTruthy()
       })
 
       it('is false with list_()', () => {
          const S_nodef = b.int().list_()
          const E_nodef = S_nodef.create()
-         expect(E_nodef.isSet).toBe(false)
+         expect(E_nodef.zIsSet).toBe(false)
       })
 
       type VisualValid = '✅' | '❌'
@@ -90,8 +105,8 @@ describe('FieldList', () => {
             const E = S.create()
             expect({
                TC,
-               set: E.isSet,
-               valid: E.isValid,
+               set: E.zIsSet,
+               valid: E.zIsValid,
             }).toEqual({
                TC,
                set: set === '🟢',
@@ -101,21 +116,21 @@ describe('FieldList', () => {
       })
    })
 
-   describe('yolo', () => {
-      it('works', () => {
+   describe('addItem', () => {
+      it('adds an item at the right index', () => {
          const S = b.int().list({ min: 3 })
          const E = S.create()
-         expect(E.value.length).toEqual(3)
-         expect(E.value[0]).toEqual(0)
-         expect(E.value[1]).toEqual(0)
-         expect(E.value[2]).toEqual(0)
+         expect(E.zValue).toHaveLength(3)
+         expect(E.zValue[0]).toBe(0)
+         expect(E.zValue[1]).toBe(0)
+         expect(E.zValue[2]).toBe(0)
          // 🔴 proxy error when using `expect`
          // VVVVV
-         expectJSON(E.value).toEqual([0, 0, 0])
+         expectJSON(E.zValue).toEqual([0, 0, 0])
 
          E.addItem({ at: 1, value: 8 })
-         expectJSON(E.value).toEqual([0, 8, 0, 0])
-         expectJSON(E.serial).toEqual({
+         expectJSON(E.zValue).toEqual([0, 8, 0, 0])
+         expectJSON(E.zSerial).toMatchObject({
             $: 'list',
             items_: [
                { $: 'number', value: 0 },
@@ -123,6 +138,23 @@ describe('FieldList', () => {
                { $: 'number', value: 0 },
                { $: 'number', value: 0 },
             ],
+            keys: ['0', E.items[1]?.zMountKey, '1', '2'],
+         })
+      })
+
+      it('adds an item at the end', () => {
+         const S = b.int().list({ min: 1 })
+         const E = S.create()
+
+         E.addItem({ value: 8 })
+         expectJSON(E.zValue).toEqual([0, 8])
+         expectJSON(E.zSerial).toMatchObject({
+            $: 'list',
+            items_: [
+               { $: 'number', value: 0 },
+               { $: 'number', value: 8 },
+            ],
+            keys: [E.items[0]?.zMountKey, E.items[1]?.zMountKey],
          })
       })
    })
@@ -136,11 +168,11 @@ describe('FieldList', () => {
             },
          })
          const a = S2.create()
-         expect(a.length).toBe(2)
-         expectJSON(a.value).toEqual([0, ''])
+         expect(a).toHaveLength(2)
+         expectJSON(a.zValue).toEqual([0, ''])
 
-         a.setValue([1, 2])
-         expectJSON(a.value).toEqual([1, '2'])
+         a.zSetValue([1, 2])
+         expectJSON(a.zValue).toEqual([1, '2'])
       })
    })
 
@@ -148,79 +180,101 @@ describe('FieldList', () => {
    describe('instanciation', () => {
       it('works without default', () => {
          const E1 = S123.create()
-         expectJSON(E1.value).toEqual([])
+         expectJSON(E1.zValue).toEqual([])
       })
 
       it('works WITH default', () => {
          const S1 = b.string({ default: '🔵' }).list({ defaultLength: 3 })
          const E1 = S1.create()
-         expectJSON(E1.value).toEqual(['🔵', '🔵', '🔵'])
-         expectJSON(E1.serial).toMatchObject({
-            // prettier-ignore
-            items_: [
-                    { value: '🔵' },
-                    { value: '🔵' },
-                    { value: '🔵' },
-                ],
-         })
+         expectJSON(E1.zValue).toEqual(['🔵', '🔵', '🔵'])
+         expect(Object.values(E1.zSerial.items_ ?? {})).toEqual([
+            { $: 'str', value: '🔵' },
+            { $: 'str', value: '🔵' },
+            { $: 'str', value: '🔵' },
+         ])
       })
    })
 
    // SET SERIAL ----------------------
    describe('setSerial', () => {
-      it('works', () => {
+      it('works on a set field', () => {
          const S1 = b.string({ default: '🔵' }).list({ defaultLength: 3 })
          const E1 = S1.create()
-         expectJSON(E1.value).toEqual(['🔵', '🔵', '🔵'])
-         expect(E1.length).toBe(3)
-         const serial = {
+         expectJSON(E1.zValue).toEqual(['🔵', '🔵', '🔵'])
+         expect(E1).toHaveLength(3)
+         const serial: Field_list_serial<Z.String> = {
             $: 'list' as const,
             items_: [
                { $: 'str' as const, value: '🔵' },
                { $: 'str' as const, value: '🟢' },
             ],
+            keys: ['UUID1' as Field_list_ItemID, 'UUID2' as Field_list_ItemID],
          }
 
-         E1.setSerial(serial)
-         expect(E1.serial === serial).toBe(true)
-         expect(E1.length).toBe(2)
-         expectJSON(E1.value).toEqual(['🔵', '🟢'])
-         expect(toJS(E1.serial)).toMatchObject(serial)
+         E1.zSetSerial(serial)
+         expect(E1.zSerial === serial).toBeTruthy()
+         expect(E1).toHaveLength(2)
+         expectJSON(E1.zValue).toEqual(['🔵', '🟢'])
+         expect(toJS(E1.zSerial)).toMatchObject(serial)
+         expect(E1.items[0]?.zMountKey).toBe('UUID1')
+         expect(E1.items[1]?.zMountKey).toBe('UUID2')
+      })
+
+      it('works on an unset field', () => {
+         const S1 = b.string_().list()
+         const E1 = S1.create()
+
+         expect(E1).toHaveLength(0)
+
+         const serial: Field_list_serial<Z.String> = {
+            $: 'list' as const,
+            items_: [
+               { $: 'str' as const, value: '🔵' },
+               { $: 'str' as const, value: '🟢' },
+            ],
+            keys: ['UUID1' as Field_list_ItemID, 'UUID2' as Field_list_ItemID],
+         }
+
+         E1.zSetSerial(serial)
+         expect(E1.zSerial === serial).toBeTruthy()
+         expect(E1).toHaveLength(2)
+         expectJSON(E1.zValue).toEqual(['🔵', '🟢'])
+         expect(toJS(E1.zSerial)).toMatchObject(serial)
+         expect(E1.items[0]?.zMountKey).toBe('UUID1')
+         expect(E1.items[1]?.zMountKey).toBe('UUID2')
       })
    })
 
    describe('setValue', () => {
       it('works', () => {
          const E1 = S1.create()
-         expectJSON(E1.value).toEqual(['🔵', '🔵', '🔵'])
-         expect(E1.length).toBe(3)
-         E1.value = ['🔵', '🟢']
-         expect(E1.length).toBe(2)
-         expectJSON(E1.value).toEqual(['🔵', '🟢'])
-         expect(toJS(E1.serial)).toMatchObject({
-            $: 'list' as const,
-            items_: [
-               { $: 'str' as const, value: '🔵' },
-               { $: 'str' as const, value: '🟢' },
-            ],
-         })
+         expectJSON(E1.zValue).toEqual(['🔵', '🔵', '🔵'])
+         expect(E1).toHaveLength(3)
+         E1.zValue = ['🔵', '🟢']
+         expect(E1).toHaveLength(2)
+         expectJSON(E1.zValue).toEqual(['🔵', '🟢'])
+         expect(Object.values(E1.zSerial.items_ ?? {})).toEqual([
+            { $: 'str', value: '🔵' },
+            { $: 'str', value: '🟢' },
+         ])
       })
 
       it('updates the serial without touching the old one', () => {
          const S1 = b.string({ default: '🔵' }).list({ defaultLength: 3 })
          const E1 = S1.create()
-         const oldSerial = E1.serial
-         expect(oldSerial.items_?.length).toBe(3)
-         E1.value = ['🔵', '🟢']
-         expect(oldSerial.items_?.length).toBe(3)
-         const newSerial = E1.serial
-         expect(newSerial.items_?.length).toBe(2)
+         const oldSerial = E1.zSerial
+         expect(Object.values(oldSerial.items_ ?? {})).toHaveLength(3)
+         E1.zValue = ['🔵', '🟢']
+         expect(Object.values(oldSerial.items_ ?? {})).toHaveLength(3)
+         const newSerial = E1.zSerial
+         expect(Object.values(newSerial.items_ ?? {})).toHaveLength(2)
          expect(toJS(newSerial)).toMatchObject({
             $: 'list' as const,
             items_: [
-               { $: 'str' as const, value: '🔵' },
-               { $: 'str' as const, value: '🟢' },
+               { $: 'str', value: '🔵' },
+               { $: 'str', value: '🟢' },
             ],
+            keys: [E1.items[0]?.zMountKey, E1.items[1]?.zMountKey],
          })
       })
    })
@@ -228,20 +282,20 @@ describe('FieldList', () => {
    // STRUCTURAL SHARING --------------
    it('generate a new serial for each field', () => {
       const E1 = S1.create()
-      const E2 = S1.create(E1.serial)
+      const E2 = S1.create(E1.zSerial)
 
       // same shape
-      expect(E1.items.length).toBe(3)
-      expect(E1.serial).toEqual(E2.serial)
-      expect(E1.at(1)!.serial).toEqual(E2.at(1)!.serial)
+      expect(E1.items).toHaveLength(3)
+      expect(E1.zSerial).toEqual(E2.zSerial)
+      expect(E1.at(1)!.zSerial).toEqual(E2.at(1)!.zSerial)
 
       // same refs
-      expect(E1.serial === E2.serial).toBe(true)
-      expect(E1.at(1)!.serial === E2.at(1)!.serial).toBe(true)
+      expect(E1.zSerial === E2.zSerial).toBeTruthy()
+      expect(E1.at(1)!.zSerial === E2.at(1)!.zSerial).toBeTruthy()
    })
 
    // EFFECTS -------------------------
-   it('doesnt apply serial effect nor value effect on instanciation ', () => {
+   it.skip('doesnt apply serial effect nor value effect on instanciation', () => {
       // 🔴 TODO
    })
 
@@ -249,55 +303,55 @@ describe('FieldList', () => {
       it('is mutable', () => {
          const S2 = b.int({ default: 3 }).list({ defaultLength: 1 })
          const a = S2.create()
-         expect(a.length).toBe(1)
-         expectJSON(a.value).toEqual([3])
+         expect(a).toHaveLength(1)
+         expectJSON(a.zValue).toEqual([3])
 
-         a.value[0] = 8
+         a.zValue[0] = 8
 
-         expect(a.length).toBe(1)
-         expectJSON(a.value).toEqual([8])
+         expect(a).toHaveLength(1)
+         expectJSON(a.zValue).toEqual([8])
       })
 
       it('can ADD/PUSH/POP/SPLICE/... items at the end/start/middle/...', () => {
          const S2 = b.int({ default: 3 }).list({ defaultLength: 1 })
          const a = S2.create()
-         expectJSON(a.value).toEqual([3])
+         expectJSON(a.zValue).toEqual([3])
 
-         a.value[1] = 8
-         expectJSON(a.value).toEqual([3, 8])
+         a.zValue[1] = 8
+         expectJSON(a.zValue).toEqual([3, 8])
 
-         a.value.push(9)
-         expectJSON(a.value).toEqual([3, 8, 9])
+         a.zValue.push(9)
+         expectJSON(a.zValue).toEqual([3, 8, 9])
 
-         a.value.pop()
-         expectJSON(a.value).toEqual([3, 8])
+         a.zValue.pop()
+         expectJSON(a.zValue).toEqual([3, 8])
 
-         a.value.unshift(4)
-         expectJSON(a.value).toEqual([4, 3, 8])
+         a.zValue.unshift(4)
+         expectJSON(a.zValue).toEqual([4, 3, 8])
 
-         a.value.shift()
-         expectJSON(a.value).toEqual([3, 8])
+         a.zValue.shift()
+         expectJSON(a.zValue).toEqual([3, 8])
       })
 
       it('can .removeAllItems()', () => {
          const S2 = b.int({ default: 3 }).list({ min: 3 })
          const a = S2.create()
-         expectJSON(a.value).toEqual([3, 3, 3])
+         expectJSON(a.zValue).toEqual([3, 3, 3])
 
-         a.value.push(8)
-         a.value.push(8)
-         expectJSON(a.value).toEqual([3, 3, 3, 8, 8])
+         a.zValue.push(8)
+         a.zValue.push(8)
+         expectJSON(a.zValue).toEqual([3, 3, 3, 8, 8])
 
          a.removeAllItems()
-         expectJSON(a.value).toEqual([3, 3, 3])
+         expectJSON(a.zValue).toEqual([3, 3, 3])
       })
 
       describe('map', () => {
          it('should map items', () => {
             const S2 = b.int({ default: 3 }).list({ min: 3 })
             const a = S2.create()
-            expectJSON(a.value).toEqual([3, 3, 3])
-            const r = a.value.map((x) => x + 1)
+            expectJSON(a.zValue).toEqual([3, 3, 3])
+            const r = a.zValue.map((x) => x + 1)
 
             expect(r).toEqual([4, 4, 4])
          })
@@ -308,10 +362,10 @@ describe('FieldList', () => {
             const S = b.int().list()
             const f = S.create()
 
-            f.value = [1, 2, 3, 4, 5, 6]
-            expectJSON(f.value).toEqual([1, 2, 3, 4, 5, 6])
+            f.zValue = [1, 2, 3, 4, 5, 6]
+            expectJSON(f.zValue).toEqual([1, 2, 3, 4, 5, 6])
 
-            const filtered = f.value.filter((x) => x > 3)
+            const filtered = f.zValue.filter((x) => x > 3)
             expect(filtered).toEqual([4, 5, 6])
          })
       })
@@ -321,33 +375,98 @@ describe('FieldList', () => {
    it('field.reset() should always yield same serial as schema.create(null) except for updatedAt', () => {
       const S2 = b.int({ default: 3 }).list({ min: 3 })
       const a1 = S2.create()
-      expect(a1.length).toBe(3)
+      expect(a1).toHaveLength(3)
 
       // set value then reset
-      const a2 = S2.create()
-      a2.value[3] = 8
-      expectJSON(a2.value).toEqual([3, 3, 3, 8])
-      expect(a2.length).toBe(4)
+      const a2 = S2.create(a1.zSerial)
+      a2.zValue[3] = 8
+      expectJSON(a2.zValue).toEqual([3, 3, 3, 8])
+      expect(a2).toHaveLength(4)
 
       // reset
-      a2.reset()
-      expect(a2.length).toBe(3)
+      a2.zReset()
+      expect(a2).toHaveLength(3)
 
       // should be same serial since we reset
-      expect(toJS(a2.serial)).toMatchObject(toJS(a1.serial))
+      expect(Object.values(a2.zSerial.items_ ?? {})).toEqual(Object.values(a1.zSerial.items_ ?? {}))
       // expect(toJS(a1.serial)).toEqual(toJS(a2.serial))
    })
 
    describe('.moveItem', () => {
-      it('properly update indexes', () => {
+      it('properly update indexes when moving an item one index on the right', () => {
          const S = b.int().list({ defaultLength: 8 })
          const E = S.create()
-         E.value = E.value.map((_, ix) => ix)
-         expectJSON(E.value).toEqual([0, 1, 2, 3, 4, 5, 6, 7])
-         E.moveItem(0, 1)
-         expectJSON(E.value).toEqual([1, 0, 2, 3, 4, 5, 6, 7])
-         expect(E.items[0]?.mountKey).toBe('0')
-         expect(E.items[1]?.mountKey).toBe('1')
+         E.zValue = E.zValue.map((_, ix) => ix)
+         expectJSON(E.zValue).toEqual([0, 1, 2, 3, 4, 5, 6, 7])
+         E.moveItem(3, 4)
+         expectJSON(E.zValue).toEqual([0, 1, 2, 4, 3, 5, 6, 7])
+         expect(E.zSerial.keys as any[]).toEqual([
+            E.items[0]?.zMountKey,
+            E.items[1]?.zMountKey,
+            E.items[2]?.zMountKey,
+            E.items[3]?.zMountKey,
+            E.items[4]?.zMountKey,
+            E.items[5]?.zMountKey,
+            E.items[6]?.zMountKey,
+            E.items[7]?.zMountKey,
+         ])
+      })
+
+      it('properly update indexes when moving an item three indices on the right', () => {
+         const S = b.int().list({ defaultLength: 8 })
+         const E = S.create()
+         E.zValue = E.zValue.map((_, ix) => ix)
+         expectJSON(E.zValue).toEqual([0, 1, 2, 3, 4, 5, 6, 7])
+         E.moveItem(3, 6)
+         expectJSON(E.zValue).toEqual([0, 1, 2, 4, 5, 6, 3, 7])
+         expect(E.zSerial.keys as any[]).toEqual([
+            E.items[0]?.zMountKey,
+            E.items[1]?.zMountKey,
+            E.items[2]?.zMountKey,
+            E.items[3]?.zMountKey,
+            E.items[4]?.zMountKey,
+            E.items[5]?.zMountKey,
+            E.items[6]?.zMountKey,
+            E.items[7]?.zMountKey,
+         ])
+      })
+
+      it('properly update indexes when moving an item one index on the left', () => {
+         const S = b.int().list({ defaultLength: 8 })
+         const E = S.create()
+         E.zValue = E.zValue.map((_, ix) => ix)
+         expectJSON(E.zValue).toEqual([0, 1, 2, 3, 4, 5, 6, 7])
+         E.moveItem(4, 3)
+         expectJSON(E.zValue).toEqual([0, 1, 2, 4, 3, 5, 6, 7])
+         expect(E.zSerial.keys as any[]).toEqual([
+            E.items[0]?.zMountKey,
+            E.items[1]?.zMountKey,
+            E.items[2]?.zMountKey,
+            E.items[3]?.zMountKey,
+            E.items[4]?.zMountKey,
+            E.items[5]?.zMountKey,
+            E.items[6]?.zMountKey,
+            E.items[7]?.zMountKey,
+         ])
+      })
+
+      it('properly update indexes when moving an item three indices on the left', () => {
+         const S = b.int().list({ defaultLength: 8 })
+         const E = S.create()
+         E.zValue = E.zValue.map((_, ix) => ix)
+         expectJSON(E.zValue).toEqual([0, 1, 2, 3, 4, 5, 6, 7])
+         E.moveItem(6, 3)
+         expectJSON(E.zValue).toEqual([0, 1, 2, 6, 3, 4, 5, 7])
+         expect(E.zSerial.keys as any[]).toEqual([
+            E.items[0]?.zMountKey,
+            E.items[1]?.zMountKey,
+            E.items[2]?.zMountKey,
+            E.items[3]?.zMountKey,
+            E.items[4]?.zMountKey,
+            E.items[5]?.zMountKey,
+            E.items[6]?.zMountKey,
+            E.items[7]?.zMountKey,
+         ])
       })
    })
 
@@ -355,37 +474,415 @@ describe('FieldList', () => {
       it('properly update indexes', () => {
          const S = b.int().list({ defaultLength: 8 })
          const E = S.create()
-         E.value = E.value.map((_, ix) => ix)
-         expectJSON(E.value).toEqual([0, 1, 2, 3, 4, 5, 6, 7])
+         E.zValue = E.zValue.map((_, ix) => ix)
+         expectJSON(E.zValue).toEqual([0, 1, 2, 3, 4, 5, 6, 7])
          E.splice(3, 2)
-         expectJSON(E.value).toEqual([0, 1, 2, 5, 6, 7])
-         expect(E.items[0]?.mountKey).toBe('0')
-         expect(E.items[1]?.mountKey).toBe('1')
-         expect(E.items[2]?.mountKey).toBe('2')
-         expect(E.items[3]?.mountKey).toBe('3')
-         expect(E.items[4]?.mountKey).toBe('4')
-         expect(E.items[5]?.mountKey).toBe('5')
+         expectJSON(E.zValue).toEqual([0, 1, 2, 5, 6, 7])
+
+         // E.items.forEach((item) => {
+         //    expect(item.zMountKey).toMatch(/^[0-9a-z_-]{6}$/i)
+         // })
+
+         expect(E.zSerial.keys as any[]).toEqual([
+            E.items[0]?.zMountKey,
+            E.items[1]?.zMountKey,
+            E.items[2]?.zMountKey,
+            E.items[3]?.zMountKey,
+            E.items[4]?.zMountKey,
+            E.items[5]?.zMountKey,
+         ])
       })
    })
 
    it('properly forwards value mode through proxy', () => {
       const S = b.string_().list({ defaultLength: 3 })
       const E = S.create()
-      E.value[0] = 'zero'
+      E.zValue[0] = 'zero'
 
-      expect(E.value_unchecked[0]).toBe('zero')
-      expect(E.value_unchecked[1]).toBeUndefined()
-      expect(E.value_unchecked[2]).toBeUndefined()
-      expect(E.value_unchecked.map((x) => x)).toEqual(['zero', undefined, undefined])
+      expect(E.zValueUnchecked[0]).toBe('zero')
+      expect(E.zValueUnchecked[1]).toBeUndefined()
+      expect(E.zValueUnchecked[2]).toBeUndefined()
+      expect(E.zValueUnchecked.map((x) => x)).toEqual(['zero', undefined, undefined])
 
-      expect(E.value[0]).toBe('zero')
-      expect(() => E.value[1]).toThrow()
-      expect(() => E.value[2]).toThrow()
-      expect(() => E.value.map((x) => x)).toThrow()
+      expect(E.zValue[0]).toBe('zero')
+      expect(() => E.zValue[1]).toThrow()
+      expect(() => E.zValue[2]).toThrow()
+      expect(() => E.zValue.map((x) => x)).toThrow()
 
-      expect(E.value_or_zero[0]).toBe('zero')
-      expect(E.value_or_zero[1]).toBe('')
-      expect(E.value_or_zero[2]).toBe('')
-      expect(E.value_or_zero.map((x) => x)).toEqual(['zero', '', ''])
+      expect(E.zValueOrZero[0]).toBe('zero')
+      expect(E.zValueOrZero[1]).toBe('')
+      expect(E.zValueOrZero[2]).toBe('')
+      expect(E.zValueOrZero.map((x) => x)).toEqual(['zero', '', ''])
+   })
+
+   describe('isValueEqual', () => {
+      describe('equality', () => {
+         it('should return true if both fields are undefined', () => {
+            const field = b.string({}).list({ defaultLength: 3 }).create()
+            const field2 = b.string({}).list({ defaultLength: 3 }).create()
+
+            expect(field.zIsValueEqual(field2)).toBeTruthy()
+         })
+
+         it('should return true if both fields are equal', () => {
+            const field = b.string({}).list({ defaultLength: 3 }).create()
+            field.zValue = ['One', 'Two', 'Three']
+            const field2 = b.string({}).list({ defaultLength: 3 }).create()
+            field2.zValue = ['One', 'Two', 'Three']
+
+            expect(field.zIsValueEqual(field2)).toBeTruthy()
+         })
+      })
+
+      describe('difference', () => {
+         it('should return false if both fields are different', () => {
+            const field = b.string({}).list({ defaultLength: 3 }).create()
+            field.zValue = ['One', 'Two', 'Three']
+            const field2 = b.string({}).list({ defaultLength: 3 }).create()
+            field2.zValue = ['One', 'Two', 'Four']
+
+            expect(field.zIsValueEqual(field2)).toBe(false)
+         })
+
+         it('should return false if one field is undefined and the other is not', () => {
+            const field = b.string({}).list({ defaultLength: 3 }).create()
+            const field2 = b.string({}).list({ defaultLength: 3 }).create()
+            field2.zValue = ['One', 'Two', 'Three']
+            expect(field.zIsValueEqual(field2)).toBe(false)
+         })
+
+         it('should return false if types are different', () => {
+            const field = b.string({}).list({ defaultLength: 3 }).create()
+            field.zValue = ['One', 'Two', 'Three']
+            const field2 = b.string().create()
+            field2.zValue = 'One'
+
+            expect(field.zIsValueEqual(field2 as any)).toBe(false)
+         })
+      })
+   })
+
+   describe('generatePatches & applyPatches', () => {
+      describe('when a child is modified', () => {
+         it('should generate a patch for the modified child', () => {
+            const schema = b.string().list()
+            const field1 = schema.create()
+            field1.zValue = ['One', 'Two', 'Three']
+            const field2 = field1.zCloneTheWholeTree()
+
+            field1.zValue[1] = 'Four'
+
+            const patches = field1.zGeneratePatches(field2) as Patch[]
+
+            expect(patches).toEqual([
+               {
+                  op: 'replace',
+                  fieldPath: `$.${field1.items[1]!.zMountKey}`,
+                  serialPath: 'value',
+                  value: 'Four',
+                  fieldType: 'str',
+               },
+            ])
+
+            field2.zApplyPatches(patches)
+            expectJSON(field2.zValue).toEqual(['One', 'Four', 'Three'])
+            expect(field2.zSerial.keys).toEqual(field1.zSerial.keys as any)
+            expect(field2.zSerial.items_).toEqual(field1.zSerial.items_ as any)
+         })
+
+         it('should not overwrite the other children', () => {
+            const schema = b.string().list()
+            const field1 = schema.create()
+            field1.zValue = ['One', 'Two', 'Three']
+            const field2 = field1.zCloneTheWholeTree()
+
+            field1.zValue[1] = 'PATCHED'
+
+            const patches = field1.zGeneratePatches(field2) as Patch[]
+
+            expect(patches).toEqual([
+               {
+                  op: 'replace',
+                  fieldType: 'str',
+                  fieldPath: `$.${field1.items[1]!.zMountKey}`,
+                  serialPath: 'value',
+                  value: 'PATCHED',
+               },
+            ])
+
+            field2.zValue[0] = 'MODIFIED'
+            field2.zApplyPatches(patches)
+            expectJSON(field2.zValue).toEqual(['MODIFIED', 'PATCHED', 'Three'])
+         })
+
+         it('should not remove inserted children', () => {
+            const schema = b.string().list()
+            const field1 = schema.create()
+            field1.zValue = ['One', 'Two', 'Three']
+            const field2 = field1.zCloneTheWholeTree()
+
+            field1.zValue[1] = 'PATCHED'
+
+            const patches = field1.zGeneratePatches(field2) as Patch[]
+
+            expect(patches).toEqual([
+               {
+                  op: 'replace',
+                  fieldPath: `$.${field1.items[1]!.zMountKey}`,
+                  serialPath: 'value',
+                  value: 'PATCHED',
+                  fieldType: 'str',
+               },
+            ])
+
+            field2.push('INSERTED')
+            field2.zApplyPatches(patches)
+            expectJSON(field2.zValue).toEqual(['One', 'PATCHED', 'Three', 'INSERTED'])
+         })
+
+         it('should not do anything if the given field has been removed', () => {
+            const schema = b.string().list()
+            const field1 = schema.create()
+            field1.zValue = ['One', 'Two', 'Three']
+            const field2 = field1.zCloneTheWholeTree()
+
+            field1.zValue[1] = 'PATCHED'
+
+            const patches = field1.zGeneratePatches(field2) as Patch[]
+
+            expect(patches).toEqual([
+               {
+                  op: 'replace',
+                  fieldPath: `$.${field1.items[1]!.zMountKey}`,
+                  fieldType: 'str',
+                  serialPath: 'value',
+                  value: 'PATCHED',
+               },
+            ])
+
+            field2.removeItemAt(1)
+            field2.zApplyPatches(patches)
+            expectJSON(field2.zValue).toEqual(['One', 'Three'])
+         })
+      })
+
+      describe('when a child is added', () => {
+         describe('when adding at the end', () => {
+            it('should generate a patch that adds the child and sets its serial', () => {
+               const schema = b.string().list()
+               const field1 = schema.create()
+               field1.zValue = ['One', 'Two', 'Three']
+               const field2 = field1.zCloneTheWholeTree()
+
+               field1.zValue.push('ADDED')
+
+               const patches = field1.zGeneratePatches(field2) as Field_list_patch<Z.String>[]
+
+               field2.zApplyPatches(patches)
+               expectJSON(field2.zValue as any[]).toEqual(['One', 'Two', 'Three', 'ADDED'])
+               expect(field2.zSerial.keys).toEqual(field1.zSerial.keys as any)
+               expect(field2.zSerial.items_).toEqual(field1.zSerial.items_ as any)
+
+               expect(patches).toEqual([
+                  {
+                     op: 'insert',
+                     fieldPath: '$',
+                     fieldType: 'list',
+                     key: field1.items[3]!.zMountKey as Field_list_ItemID,
+                     order: [
+                        field1.items[0]!.zMountKey as Field_list_ItemID,
+                        field1.items[1]!.zMountKey as Field_list_ItemID,
+                        field1.items[2]!.zMountKey as Field_list_ItemID,
+                        field1.items[3]!.zMountKey as Field_list_ItemID,
+                     ],
+                     value: {
+                        $: 'str',
+                        value: 'ADDED',
+                     },
+                  },
+               ])
+            })
+
+            it('should place the element at the end, with other inserted element', () => {
+               const schema = b.string().list()
+               const field1 = schema.create()
+               field1.zValue = ['One']
+               const field2 = field1.zCloneTheWholeTree()
+
+               field1.zValue.push('NEW ELEMENT')
+
+               const patches = field1.zGeneratePatches(field2) as Field_list_patch<Z.String>[]
+
+               field2.push('INSERTED')
+               field2.zApplyPatches(patches)
+               expectJSON(field2.zValue).toEqual(['One', 'INSERTED', 'NEW ELEMENT'])
+
+               expect(patches).toEqual([
+                  {
+                     op: 'insert',
+                     fieldPath: `$`,
+                     fieldType: 'list',
+                     order: [
+                        field1.items[0]!.zMountKey as Field_list_ItemID,
+                        field1.items[1]!.zMountKey as Field_list_ItemID,
+                     ],
+                     key: field1.items[1]!.zMountKey as Field_list_ItemID,
+                     value: {
+                        $: 'str',
+                        value: 'NEW ELEMENT',
+                     },
+                  },
+               ])
+            })
+         })
+
+         describe('when adding an element that already exists', () => {
+            it("should ignore the patch and don't do anything", () => {
+               const schema = b.string().list()
+               const field1 = schema.create()
+               field1.zValue = ['One', 'Two', 'Three']
+
+               const field2 = field1.zCloneTheWholeTree()
+
+               field1.zValue.push('ADDED')
+
+               const mountKeysBeforeMessingWithPatches = [...field1.zSerial.keys!]
+
+               // Generating a patch for field2
+               const patches = field1.zGeneratePatches(field2)
+
+               // But applying the patch to field1
+               field1.zApplyPatches(patches)
+
+               expectJSON(field1.zValue).toEqual(['One', 'Two', 'Three', 'ADDED'])
+               expect(field1.zSerial).toEqual({
+                  $: 'list',
+                  items_: [
+                     { $: 'str', value: 'One' },
+                     { $: 'str', value: 'Two' },
+                     { $: 'str', value: 'Three' },
+                     { $: 'str', value: 'ADDED' },
+                  ],
+                  keys: mountKeysBeforeMessingWithPatches,
+               })
+            })
+         })
+
+         describe('when adding in the middle', () => {
+            it('should generate a patch that adds the child in the middle and sets its serial', () => {
+               const schema = b.string().list()
+               const field1 = schema.create()
+               field1.zValue = ['One', 'Two', 'Three']
+               const field2 = field1.zCloneTheWholeTree()
+
+               field1.addItem({ at: 1, value: 'NEW ELEMENT' })
+
+               const patches = field1.zGeneratePatches(field2)
+
+               field2.zApplyPatches(patches)
+               expectJSON(field2.zValue).toEqual(['One', 'NEW ELEMENT', 'Two', 'Three'])
+               expect(field2.zSerial.keys).toEqual(field1.zSerial.keys as any)
+               expect(field2.zSerial.items_).toEqual(field1.zSerial.items_ as any)
+            })
+
+            it('should correctly handle when the patched field has removed a child before', () => {
+               const schema = b.string().list()
+
+               const field1 = schema.create()
+               field1.zValue = ['One', 'Two']
+
+               const field2 = field1.zCloneTheWholeTree()
+
+               field1.addItem({ at: 1, value: 'NEW ELEMENT' })
+
+               const patches = field1.zGeneratePatches(field2)
+
+               field2.removeItemAt(0)
+               field2.zApplyPatches(patches)
+
+               expectJSON(field2.zValue as string[]).toEqual(['NEW ELEMENT', 'Two'])
+               expect(field2.zSerial.keys as any[]).toEqual([
+                  field2.items[0]!.zMountKey,
+                  field2.items[1]!.zMountKey,
+               ])
+            })
+
+            it('should correctly handle when the patched field has removed a child after', () => {
+               const schema = b.string().list()
+
+               const field1 = schema.create()
+               field1.zValue = ['One', 'Two']
+
+               const field2 = field1.zCloneTheWholeTree()
+
+               field1.addItem({ at: 1, value: 'NEW ELEMENT' })
+
+               const patches = field1.zGeneratePatches(field2)
+
+               field2.removeItemAt(1)
+               field2.zApplyPatches(patches)
+
+               expectJSON(field2.zValue).toEqual(['One', 'NEW ELEMENT'])
+               expect(field2.zSerial.keys as any[]).toEqual([
+                  field2.items[0]!.zMountKey,
+                  field2.items[1]!.zMountKey,
+               ])
+            })
+         })
+      })
+   })
+
+   describe('create perf', () => {
+      describe('without a serial', () => {
+         describe('without a default length', () => {
+            it('should create the field with the empty serial and not patch it', () => {
+               const patchSerial = vitest.spyOn(Field_list.prototype, 'zPatchSerial')
+               const S = b.string_().list_()
+               const E = S.create()
+
+               expect(patchSerial).not.toHaveBeenCalled()
+               expect(E.zSerial).toBe(S.defaultSerial)
+            })
+         })
+
+         describe('with a default length', () => {
+            it('should create the field with the default length and patch it', () => {
+               const patchSerial = vitest.spyOn(Field_list.prototype, 'zPatchSerial')
+               const S = b.string_().list({ defaultLength: 3 })
+               const E = S.create()
+
+               expect(patchSerial).not.toHaveBeenCalled()
+               expect(E.zSerial).toBe(S.defaultSerial)
+            })
+
+            describe('when the target field has a default value', () => {
+               it('should create the field with the default length and patch it', () => {
+                  const patchSerial = vitest.spyOn(Field_list.prototype, 'zPatchSerial')
+                  const S = b.string({ default: 'DEFAULT' }).list({ defaultLength: 3 })
+                  const E = S.create()
+
+                  expect(patchSerial).not.toHaveBeenCalled()
+                  expect(E.zSerial).toBe(S.defaultSerial)
+               })
+            })
+         })
+
+         describe('optional', () => {
+            it('should not patch any serial', () => {
+               const optionalPatchSerial = vitest.spyOn(Field_optional.prototype, 'zPatchSerial')
+               const listPatchSerial = vitest.spyOn(Field_list.prototype, 'zPatchSerial')
+               const stringPatchSerial = vitest.spyOn(Field_string.prototype, 'zPatchSerial')
+
+               const S = b.string().list().optional()
+               const E = S.create()
+
+               expect(optionalPatchSerial).not.toHaveBeenCalled()
+               expect(listPatchSerial).not.toHaveBeenCalled()
+               expect(stringPatchSerial).not.toHaveBeenCalled()
+
+               expect(E.zSerial).toBe(S.defaultSerial)
+            })
+         })
+      })
    })
 })

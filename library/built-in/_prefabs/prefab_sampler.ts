@@ -2,13 +2,13 @@ import type { Runtime } from '../../../src/runtime/Runtime'
 import type { OutputFor } from './_prefabs'
 
 // UI -----------------------------------------------------------
-export type UI_Sampler = X.XGroup<{
-   denoise: X.XNumber
-   steps: X.XNumber
-   cfg: X.XNumber
-   seed: X.XSeed
-   sampler_name: X.XEnum<'KSampler.sampler_name'>
-   scheduler: X.XEnum<'KSampler.scheduler'>
+export type UI_Sampler = Z.Group<{
+   denoise: Z.Number
+   steps: Z.Number
+   cfg: Z.Number
+   seed: Z.Seed
+   sampler_name: Z.Enum<'KSampler.sampler_name'>
+   scheduler: Z.Enum<'KSampler.scheduler'>
 }>
 
 type UiSampleProps = {
@@ -20,7 +20,7 @@ type UiSampleProps = {
    startCollapsed?: boolean
 }
 export function ui_sampler(p?: UiSampleProps): UI_Sampler {
-   const form: X.Builder = getCurrentForm()
+   const form: Z.Builder = getBuilder()
    return form.fields(
       {
          denoise: form.float({ step: 0.1, min: 0, max: 1, default: p?.denoise ?? 1, label: 'Denoise' }),
@@ -37,15 +37,15 @@ export function ui_sampler(p?: UiSampleProps): UI_Sampler {
          }),
       },
       {
-         icon: 'mdiTimerSandComplete',
+         icon: IKONS.mdiTimerSandComplete,
          // box: { base: { hue: 120, chroma: 0.03 } },
-         toSummary: ({ value: ui }): string => {
+         toString_: ({ zValue: ui }): string => {
             return `denoise:${ui.denoise} steps:${ui.steps} cfg:${ui.cfg} sampler:${ui.sampler_name}/${ui.scheduler}`
          },
          startCollapsed: p?.startCollapsed ?? false,
          presets: [
-            { label: 'default', apply: (w) => w.setPartialValue({ denoise: 1, steps: 20, cfg: 7 }) },
-            { label: 'low changes', apply: (w) => w.setPartialValue({ denoise: 0.6, steps: 20, cfg: 5 }) },
+            { label: 'default', apply: (w) => w.zSet({ denoise: 1, steps: 20, cfg: 7 }) },
+            { label: 'low changes', apply: (w) => w.zSet({ denoise: 0.6, steps: 20, cfg: 5 }) },
          ],
          // actions: edit definition > current file
       },

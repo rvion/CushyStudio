@@ -1,5 +1,3 @@
-import { observer } from 'mobx-react-lite'
-
 import { Button } from '../../csuite/button/Button'
 import { ToggleButtonUI } from '../../csuite/checkbox/InputBoolToggleButtonUI'
 import { Dropdown } from '../../csuite/dropdown/Dropdown'
@@ -7,7 +5,7 @@ import { InputNumberUI } from '../../csuite/input-number/InputNumberUI'
 import { PanelHeaderUI } from '../../csuite/panel/PanelHeaderUI'
 import { useUnifiedCanvas } from './states/UnifiedCanvasCtx'
 
-export const PanelCanvasHeaderUI = observer(function PanelCanvasHeaderUI_(p: {}) {
+export const PanelCanvasHeaderUI = obs(function PanelCanvasHeaderUI_(p: {}) {
    const canvas = useUnifiedCanvas()
    return (
       <PanelHeaderUI tw='grid grid-cols-[1fr_1fr_1fr]'>
@@ -18,7 +16,7 @@ export const PanelCanvasHeaderUI = observer(function PanelCanvasHeaderUI_(p: {})
                {/* <Button
                 onClick={() => cushy.activityManager.startFromClass(UCAGenerate, canvas)}
                 children='test'
-                icon='mdiAbTesting'
+                icon={IKONS.mdiAbTesting}
             /> */}
                <InputNumberUI //
                   text='Brush Size'
@@ -34,7 +32,7 @@ export const PanelCanvasHeaderUI = observer(function PanelCanvasHeaderUI_(p: {})
                   toggleGroup='canvas'
                   value={canvas.usePenPressure}
                   onValueChange={() => (canvas.usePenPressure = !canvas.usePenPressure)}
-                  icon={canvas.usePenPressure ? 'mdiPencil' : 'mdiPencilOff'}
+                  icon={canvas.usePenPressure ? IKONS.mdiPencil : IKONS.mdiPencilOff}
                   tooltip='(Not implemented) Whether or not pressure affects the radius size of a brush stroke'
                />
             </div>
@@ -43,7 +41,7 @@ export const PanelCanvasHeaderUI = observer(function PanelCanvasHeaderUI_(p: {})
             >
                <Button //
                   square
-                  icon='mdiUndo'
+                  icon={IKONS.mdiUndo}
                   tooltip='Undo'
                   disabled={!canvas.canUndo}
                   onClick={() => canvas.undo()}
@@ -51,7 +49,7 @@ export const PanelCanvasHeaderUI = observer(function PanelCanvasHeaderUI_(p: {})
                <Button
                   square
                   disabled={!canvas.canRedo}
-                  icon='mdiRedo'
+                  icon={IKONS.mdiRedo}
                   tooltip='Redo (Not implemented)'
                   onClick={() => canvas.redo()}
                />
@@ -70,12 +68,12 @@ export const PanelCanvasHeaderUI = observer(function PanelCanvasHeaderUI_(p: {})
             />
             <ToggleButtonUI
                toggleGroup='canvas'
-               icon={canvas.snapToGrid ? 'mdiMagnetOn' : 'mdiMagnet'}
+               icon={canvas.snapToGrid ? IKONS.mdiMagnetOn : IKONS.mdiMagnet}
                value={canvas.snapToGrid}
+               tooltip='Enable Snapping'
                onValueChange={(v) => {
                   canvas.snapToGrid = !canvas.snapToGrid
                }}
-               tooltip='Enable Snapping'
             />
          </div>
          <div tw='flex items-end justify-end'>
@@ -83,12 +81,12 @@ export const PanelCanvasHeaderUI = observer(function PanelCanvasHeaderUI_(p: {})
                toggleGroup='canvas'
                value={canvas.enableOverlay}
                onValueChange={(_) => (canvas.enableOverlay = !canvas.enableOverlay)}
-               icon={canvas.enableOverlay ? 'mdiDrawing' : 'mdiDrawingBox'}
+               icon={canvas.enableOverlay ? IKONS.mdiDrawing : IKONS.mdiDrawingBox}
                tooltip={'(Not Implemented) Show Canvas Overlays'}
             />
             <Dropdown
                title=''
-               startIcon={'mdiChevronDown'}
+               startIcon={IKONS.mdiChevronDown}
                content={() => (
                   <
                      //

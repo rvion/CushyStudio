@@ -1,8 +1,6 @@
 import type { Prompt_Lora, Prompt_WeightedExpression } from '../../grammar/grammar.practical'
 import type { WidgetPromptUISt } from '../../WidgetPromptUISt'
 
-import { observer } from 'mobx-react-lite'
-
 import { openExternal } from '../../../app/layout/openExternal'
 import { MessageErrorUI } from '../../../csuite'
 import { Button } from '../../../csuite/button/Button'
@@ -12,7 +10,7 @@ import { InputNumberUI } from '../../../csuite/input-number/InputNumberUI'
 import { InputStringUI } from '../../../csuite/input-string/InputStringUI'
 import { SelectUI } from '../../../csuite/select/SelectUI'
 
-export const LoraBoxUI = observer(function LoraBoxUI_(p: {
+export const LoraBoxUI = obs(function LoraBoxUI_(p: {
    //
    uist: WidgetPromptUISt
    loraASTNode: Prompt_Lora
@@ -26,7 +24,7 @@ export const LoraBoxUI = observer(function LoraBoxUI_(p: {
    const associatedText = loraMetadata?.text ?? ''
    const associatedUrl = loraMetadata?.url ?? ''
    const weighted = p.weightedASTNode
-   const theme = cushy.preferences.theme.value
+   const theme = cushy.preferences.theme.zValue
 
    // const numbers = def.ref.node.getChildren('Number')
    return (
@@ -57,7 +55,7 @@ export const LoraBoxUI = observer(function LoraBoxUI_(p: {
             <Button //
                tw='WIDGET-FIELD join-item w-8'
                size='xs'
-               icon='mdiDeleteForever'
+               icon={IKONS.mdiDeleteForever}
                onClick={p.onDelete}
             />
          </Frame>
@@ -65,7 +63,7 @@ export const LoraBoxUI = observer(function LoraBoxUI_(p: {
                    <div tw='flex-0 flex-grow'></div>
                    <Button //
                        size='xs'
-                       icon='mdiDeleteForever'
+                       icon={IKONS.mdiDeleteForever}
                        onClick={p.onDelete}
                        tw='h-full'
                    /> */}
@@ -189,9 +187,8 @@ export const LoraBoxUI = observer(function LoraBoxUI_(p: {
                   }}
                />
                <Button
-                  //
                   tooltip='Open associated URL in external browser'
-                  icon='mdiOpenInNew'
+                  icon={IKONS.mdiOpenInNew}
                   onClick={() => openExternal(associatedUrl)}
                />
             </Frame>

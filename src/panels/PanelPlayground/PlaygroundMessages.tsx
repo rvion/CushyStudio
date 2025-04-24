@@ -1,5 +1,3 @@
-import { observer } from 'mobx-react-lite'
-
 import { ErrorBoundaryUI } from '../../csuite/errors/ErrorBoundaryUI'
 import { InputStringUI } from '../../csuite/input-string/InputStringUI'
 import { sampleInputStringUIProps } from '../../csuite/input-string/sampleInputStringUIProps'
@@ -8,7 +6,7 @@ import { MessageInfoUI } from '../../csuite/messages/MessageInfoUI'
 import { MessageWarningUI } from '../../csuite/messages/MessageWarningUI'
 
 /** Freely modify this as you like, then pick the "Scratch Pad" option in the top left. Do not commit changes made to this. */
-export const PlaygroundMessages = observer(function PlaygroundImportFromComfy_(p: {}) {
+export const PlaygroundMessages = obs(function PlaygroundImportFromComfy_(p: {}) {
    return (
       <ErrorBoundaryUI>
          <div tw='flex flex-col gap-1'>
@@ -19,8 +17,8 @@ export const PlaygroundMessages = observer(function PlaygroundImportFromComfy_(p
                <InputStringUI tw='w-96' {...sampleInputStringUIProps} buffered={null} />
                <div tw='divider my-0'>text buffered</div>
                <InputStringUI tw='w-96' {...sampleInputStringUIProps} />
-               <InputStringUI tw='w-96' icon='mdiText' {...sampleInputStringUIProps} />
-               <InputStringUI tw='w-96' icon='mdiAccessPointCheck' {...sampleInputStringUIProps} />
+               <InputStringUI tw='w-96' icon={IKONS.mdiText} {...sampleInputStringUIProps} />
+               <InputStringUI tw='w-96' icon={IKONS.mdiAccessPointCheck} {...sampleInputStringUIProps} />
             </div>
             <div tw='divider my-0'>w-fit on container</div>
             <div tw='w-fit'>

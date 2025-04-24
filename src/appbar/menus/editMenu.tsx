@@ -14,7 +14,7 @@ export const editMenu: Menu = defineMenu({
       b.SimpleMenuAction({
          label: 'Preferences',
          onClick: () => cushy.layout.open('Config', {}),
-         // icon: 'mdiCog',
+         // icon: IKONS.mdiCog,
       }),
    ],
 })

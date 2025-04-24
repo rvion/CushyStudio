@@ -1,11 +1,9 @@
 import type { BadgeProps } from '../badge/BadgeUI'
 
-import { observer } from 'mobx-react-lite'
-
 import { BadgeUI } from '../badge/BadgeUI'
 import { Frame } from '../frame/Frame'
 
-export const SelectDefaultOptionUI = observer(function SelectDefaultOptionUI_({
+export const SelectDefaultOptionUI = obs(function SelectDefaultOptionUI_({
    // own
    label,
    closeFn,
@@ -14,6 +12,7 @@ export const SelectDefaultOptionUI = observer(function SelectDefaultOptionUI_({
    // modified
    autoHue,
    children, // need to to override ?
+   hue,
 
    // rest
    ...rest
@@ -29,8 +28,10 @@ export const SelectDefaultOptionUI = observer(function SelectDefaultOptionUI_({
    }
    return (
       <BadgeUI //
-         autoHue={autoHue ?? label}
-         linkButton={link ? (): void => (window as any).loco.router.goToURL(link()) : undefined}
+         noColorStuff={hue === false}
+         autoHue={autoHue ?? (hue === false ? false : label)}
+         hue={hue === false ? null : hue}
+         // 🚂 linkButton={link ? (): void => loco.router.goToURL(link()) : undefined}
          {...rest}
       >
          {label}
@@ -49,7 +50,7 @@ export const SelectDefaultOptionUI = observer(function SelectDefaultOptionUI_({
                   ev.preventDefault()
                   ev.stopPropagation()
                }}
-               icon='mdiClose'
+               icon={IKONS.mdiClose}
                iconSize='0.8rem'
             />
          )}

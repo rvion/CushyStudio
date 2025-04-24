@@ -26,6 +26,7 @@ import type { MediaImageL } from '../models/MediaImage'
 import type { ProjectL } from '../models/Project'
 import type { StepL } from '../models/Step'
 import type { PreferenceMode } from '../panels/PanelPreferences/PanelPreferences'
+import type { Field_prompt } from '../prompt/FieldPrompt'
 import type { Database } from '../supa/database.types'
 import type { CleanedEnumResult } from '../types/EnumUtils'
 import type { StepOutput } from '../types/StepOutput'
@@ -53,6 +54,7 @@ import { Channel } from '../csuite' // WIP remove me 2024-06-25 🔴
 import { activityManager, type ActivityManager } from '../csuite/activity/ActivityManager'
 import { commandManager, type CommandManager } from '../csuite/commands/CommandManager'
 import { CSuite_ThemeCushy } from '../csuite/ctx/CSuite_ThemeCushy'
+import { KNOWN_FIELDS } from '../csuite/fields/WidgetUI.DI'
 import { run_tint } from '../csuite/kolor/prefab_Tint'
 import { getGlobalRepository } from '../csuite/model/Repository'
 import { regionMonitor } from '../csuite/regions/RegionMonitor'
@@ -151,6 +153,9 @@ export class STATE {
    userTags = UserTags.build()
    actionTags: ActionTagMethodList = []
    importer: ComfyImporter
+   field: CATALOG.AllFields = KNOWN_FIELDS
+
+   activePrompt?: Field_prompt = undefined
 
    _updateTime(): void {
       const now = Date.now()
@@ -448,9 +453,7 @@ export class STATE {
    }
 
    comfyUIIframeRef = createRef<HTMLIFrameElement>()
-   // dndVisualRef = createRef<HTMLDivElement>()
-   dndHandler = new CushyDnDHandler()
-
+   dndHandler: CushyDnDHandler
    expandNodes: boolean = false
 
    showConfettiAndBringFun = async (): Promise<void> => {
@@ -463,7 +466,7 @@ export class STATE {
       node_vsep: number
       forceLeft: boolean
    } {
-      const fv = this.graphConf.value
+      const fv = this.graphConf.zValue
       return {
          node_hsep: fv.hsep,
          node_vsep: fv.vsep,
@@ -482,7 +485,7 @@ export class STATE {
       {
          name: 'Graph Visualisation',
          serial: () => readJSON('settings/graph-visualization.json'),
-         onSerialChange: (form) => writeJSON('settings/graph-visualization.json', form.serial),
+         onSerialChange: (form) => writeJSON('settings/graph-visualization.json', form.zSerial),
       },
    )
 
@@ -507,11 +510,11 @@ export class STATE {
       {
          name: 'Civitai Conf',
          serial: () => readJSON('settings/civitai.json'),
-         onSerialChange: (form) => writeJSON('settings/civitai.json', form.serial),
+         onSerialChange: (form) => writeJSON('settings/civitai.json', form.zSerial),
       },
    )
-   get favbar(): $schemaFavbar['$Field'] {
-      return this.preferences.interface.fields.favBar
+   get favbar(): $schemaFavbar['{field}'] {
+      return this.preferences.interface.zFields.favBar
    }
    // favbar = cushyFactory.document(
    //     (b) =>
@@ -524,7 +527,7 @@ export class STATE {
    //     {
    //         name: 'SideBar Conf',
    //         serial: () => readJSON('settings/sidebar.json'),
-   //         onSerialChange: (form) => writeJSON('settings/sidebar.json', form.serial),
+   //         onSerialChange: (form) => writeJSON('settings/sidebar.json', form.zSerial),
    //     },
    // )
 
@@ -541,7 +544,7 @@ export class STATE {
             cutout: b.number({ label: 'cutout', min: 0, max: 1, step: 0.01, default: 0.08 }),
             removeBackground: b.number({ label: 'remove bg', min: 0, max: 1, step: 0.01, default: 0.2 }),
             ambientLightIntensity: b.number({ label: 'light', min: 0, max: 8, default: 1.5 }),
-            ambientLightColor: b.colorV2({ label: 'light color', default: '#ffffff' }),
+            ambientLightColor: b.stringColor({ label: 'light color', default: '#ffffff' }),
             isSymmetric: b.boolean({ label: 'Symmetric Model' }),
             // takeScreenshot: form.inlineRun({ label: 'Screenshot' }),
             metalness: b.float({ min: 0, max: 1 }),
@@ -553,7 +556,7 @@ export class STATE {
       {
          name: 'Displacement Conf',
          serial: () => readJSON<AnyFieldSerial>('settings/displacement.json'),
-         onSerialChange: (form) => writeJSON('settings/displacement.json', form.serial),
+         onSerialChange: (form) => writeJSON('settings/displacement.json', form.zSerial),
       },
    )
 
@@ -601,13 +604,9 @@ export class STATE {
       this.project = this.getProject()
       this.auth = new AuthState(this)
       this.danbooru = DanbooruTags.build(this)
-
+      this.dndHandler = new CushyDnDHandler()
       // 🔴 ensure getters are called at least once so we upsert the two core virtual hosts
       // 💬 2024-10-26 rvion: this is just bad
-      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-      // this.virtualHostBase
-      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-      // this.virtualHostFull
       // eslint-disable-next-line @typescript-eslint/no-unused-expressions
       this.standardHost
 
@@ -667,6 +666,7 @@ export class STATE {
          comfyUIIframeRef: false,
          wildcards: false,
          Channel: false, // WIP remove me 2024-06-25 🔴
+         field: false,
       })
       void this.startupFileIndexing()
       setTimeout(() => quickBench.printAllStats(), 1000)
@@ -970,17 +970,20 @@ export class STATE {
       writeFileSync(absPath, content, 'utf-8')
    }
 
-   preferences = {
-      interface: interfaceConf,
-      system: systemConf,
-      theme: themeConf,
-   }
+   readonly preferences = observable(
+      {
+         interface: interfaceConf,
+         system: systemConf,
+         theme: themeConf,
+      },
+      {
+         interface: observable.ref,
+         system: observable.ref,
+         theme: observable.ref,
+      },
+   )
 
    csuite: CSuiteConfig = new CSuite_ThemeCushy(this)
-
-   get themeText(): Tint {
-      return run_tint(this.preferences.theme.value.text)
-   }
 
    resolveFromRoot(relativePath: RelativePath): AbsolutePath {
       return asAbsolutePath(join(this.rootPath, relativePath))

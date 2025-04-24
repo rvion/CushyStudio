@@ -1,12 +1,11 @@
 import type { HostL } from '../../models/Host'
 
-import { observer } from 'mobx-react-lite'
 import { useEffect, useRef } from 'react'
 
 import { Frame } from '../../csuite/frame/Frame'
 import { usePromise } from '../../csuite/utils/usePromise'
 
-export const HostComfyLogsUI = observer(function HostComfyLogsUI_({
+export const HostComfyLogsUI = obs(function HostComfyLogsUI_({
    host,
    refreshEvery = 500,
    ...rest

@@ -1,8 +1,6 @@
 import type { ReactNode } from 'react'
 
-import { observer } from 'mobx-react-lite'
-
-export const BadgeContainerUI = observer(function BadgeGroupUI_(p: {
+export const BadgeContainerUI = obs(function BadgeGroupUI_(p: {
    /** @default true */
    wrap?: boolean
    children?: ReactNode

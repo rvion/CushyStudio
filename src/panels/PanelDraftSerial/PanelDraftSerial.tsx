@@ -6,6 +6,6 @@ export const PanelDraftSerial = new Panel({
    widget: (): React.FC<PanelDraftSerialProps> => PanelDraftSerialUI,
    header: (p): PanelHeader => ({ title: 'DraftJsonSerial' }),
    def: (): PanelDraftSerialProps => ({ draftID: cushy.db.draft.lastOrCrash().id }),
-   icon: 'mdiCodeBlockBraces',
+   icon: IKONS.mdiCodeBlockBraces,
    category: 'developper',
 })

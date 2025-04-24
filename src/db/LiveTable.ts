@@ -7,10 +7,9 @@ import type { DeleteQueryBuilder, SelectQueryBuilder } from 'kysely'
 
 // 💬 2024-03-14 commented serial checks for now
 // import { Value, ValueError } from '@sinclair/typebox/value'
-import { action, type AnnotationMapEntry } from 'mobx'
+import { computed, observable, runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
 
-import { makeAutoObservableInheritance } from '../csuite/mobx/mobx-store-inheritance'
 import { kysely } from '../DB'
 import { sqlbench, sqlbenchRaw } from '../utils/microbench'
 import { DEPENDS_ON } from './LiveHelpers'
@@ -23,7 +22,7 @@ export interface LiveEntityClass<TABLE extends TableInfo> {
 export class LiveTable<
    //
    TABLE extends TableInfo<keyof KyselyTables>,
-   AAAAA extends {
+   InstanceClass extends {
       new (
          ...args: any[]
          //
@@ -128,15 +127,6 @@ export class LiveTable<
       return x as any[] // return the result
    }
 
-   query1: SelectQueryBuilder<KyselyTables, TABLE['$TableName'], TABLE['$T']> = kysely
-      .selectFrom(this.name)
-      .selectAll(this.name)
-   query2: SelectQueryBuilder<KyselyTables, TABLE['$TableName'], /*    */ {}> = kysely
-      .selectFrom(this.name)
-      .selectAll(this.name)
-   query3: SelectQueryBuilder<KyselyTables, TABLE['$TableName'], /*    */ {}> = kysely.selectFrom(this.name)
-
-   delete_: DeleteQueryBuilder<KyselyTables, TABLE['$TableName'], /*    */ {}> = kysely.deleteFrom(this.name)
    delete2(
       fn: (
          x: DeleteQueryBuilder<KyselyTables, TABLE['$TableName'], /*    */ {}>,
@@ -153,8 +143,7 @@ export class LiveTable<
    // ⏸️ query3: SelectQueryBuilder<KyselyTables, TABLE['$TableName'], TABLE['$T']> = dbxx.selectFrom(this.name).selectAll() as any
 
    // private Ktor: LiveEntityClass<TABLE>
-   liveEntities = new Map<string, TABLE['$L']>()
-   schema: TABLE = schemas[this.name] as any
+   readonly liveEntities = observable(new Map<string, TABLE['$L']>())
    $DATA!: TABLE['$T']
    // 🟢 --------------------------------------------------------------------------------
 
@@ -180,14 +169,12 @@ export class LiveTable<
 
    // 🟢 --------------------------------------------------------------------------------
    /** return first entity from table, or null if table is empty */
-   stmt_first = this.db.compileSelectOne_<TABLE>(
-      this.schema,
-      `select * from ${this.name} order by createdAt asc limit 1`,
-   )
+
    first = (): Maybe<TABLE['$L']> => {
       return this.first_
    }
-   get first_(): Maybe<TABLE['$L']> {
+
+   @computed get first_(): Maybe<TABLE['$L']> {
       const data = this.stmt_first()
       // 2023-11-30 rvion:
       // 👇 first should mosltly not depends on anything
@@ -206,9 +193,6 @@ export class LiveTable<
    }
 
    // 🟢 --------------------------------------------------------------------------------
-   /** return last entity from table, or null if table is empty */
-   stmt_query: string = `select * from ${this.name} order by createdAt desc limit 1`
-   stmt_last = this.db.compileSelectOne_<TABLE>(this.schema, this.stmt_query)
 
    // 💬 2024-06-13 rvion; perf issue was caused by this
    // beeing a function instead of a getter;
@@ -216,7 +200,7 @@ export class LiveTable<
       return this.last_
    }
 
-   get last_(): Maybe<TABLE['$L']> {
+   @computed get last_(): Maybe<TABLE['$L']> {
       console.log(`[🤠] last ${this.name} (hash=size:${this.liveEntities.size})`)
       const data = sqlbenchRaw(this.stmt_query, this.stmt_last) // sqlbench(this.stmt_last, 0 as any)
       DEPENDS_ON(this.liveEntities.size)
@@ -233,38 +217,58 @@ export class LiveTable<
       return lst
    }
 
+   query1: SelectQueryBuilder<KyselyTables, TABLE['$TableName'], TABLE['$T']>
+   query2: SelectQueryBuilder<KyselyTables, TABLE['$TableName'], /*    */ {}>
+   query3: SelectQueryBuilder<KyselyTables, TABLE['$TableName'], /*    */ {}>
+   delete_: DeleteQueryBuilder<KyselyTables, TABLE['$TableName'], /*    */ {}>
+   schema: TABLE
+
+   private SKL_getLastN: (args: number) => TABLE['$T'][]
+   private stmt_getByID: (args: string) => Maybe<TABLE['$T']>
+   stmt_first: () => Maybe<TABLE['$T']>
+   /** return last entity from table, or null if table is empty */
+   stmt_query: string
+   stmt_last: () => Maybe<TABLE['$T']>
+
    constructor(
       public db: LiveDB,
       public name: TableNameInDB,
       public emoji: string,
-      public Ktor: AAAAA, // LiveEntityClass<TABLE>,
+      public Ktor: InstanceClass, // LiveEntityClass<TABLE>,
       public opts?: { singleton?: boolean },
    ) {
       // register
       this.db._tables.push(this)
-   }
+      this.schema = schemas[this.name] as any
+      this.query1 = kysely.selectFrom(this.name).selectAll(this.name)
+      this.query2 = kysely.selectFrom(this.name).selectAll(this.name)
+      this.query3 = kysely.selectFrom(this.name)
+      this.delete_ = kysely.deleteFrom(this.name)
 
-   init(obs?: { [key: string]: AnnotationMapEntry } | undefined): void {
-      makeAutoObservableInheritance(this, {
-         // @ts-ignore (private properties are untyped in this function)
-         Ktor: false,
-         _createInstance: action,
-         get: action,
-         ...obs,
-      })
+      this.SKL_getLastN = this.db.compileSelectMany<number, TABLE>(
+         this.schema,
+         `select * from ${this.name} order by createdAt desc limit ?`,
+      )
+      this.stmt_getByID = this.db.compileSelectOne<string, TABLE>(
+         this.schema,
+         `select * from ${this.name} where id = ?`,
+      )
+      this.stmt_first = this.db.compileSelectOne_<TABLE>(
+         this.schema,
+         `select * from ${this.name} order by createdAt asc limit 1`,
+      )
+      this.stmt_query = `select * from ${this.name} order by createdAt desc limit 1`
+      this.stmt_last = this.db.compileSelectOne_<TABLE>(this.schema, this.stmt_query)
    }
 
    // UTILITIES -----------------------------------------------------------------------
-   private SKL_getLastN = this.db.compileSelectMany<number, TABLE>( //
-      this.schema,
-      `select * from ${this.name} order by createdAt desc limit ?`,
-   )
+
    getLastN = (amount: number): TABLE['$L'][] => {
       DEPENDS_ON(this.liveEntities.size)
       const ts = this.SKL_getLastN(amount)
       return ts.map((data) => this.getOrCreateInstanceForExistingData(data))
    }
-   get Last10(): TABLE['$L'][] {
+   @computed get Last10(): TABLE['$L'][] {
       DEPENDS_ON(this.liveEntities.size)
       const ts = this.SKL_getLastN(10)
       return ts.map((data) => this.getOrCreateInstanceForExistingData(data))
@@ -275,24 +279,22 @@ export class LiveTable<
 
    // UTILITIES -----------------------------------------------------------------------
 
-   private stmt_getByID = this.db.compileSelectOne<string, TABLE>(
-      this.schema,
-      `select * from ${this.name} where id = ?`,
-   )
    get = (id: Maybe<string>): Maybe<TABLE['$L']> => {
-      // if (id === 'main-schema') debugger
-      if (id == null) return null
+      return runInAction(() => {
+         // if (id === 'main-schema') debugger
+         if (id == null) return null
 
-      // 1. check if instance exists in the entity map
-      const val = this.liveEntities.get(id)
-      if (val) return val
+         // 1. check if instance exists in the entity map
+         const val = this.liveEntities.get(id)
+         if (val) return val
 
-      // 2. check if data is on sqlite
-      const x = this.stmt_getByID(id)
-      if (x == null) return null
+         // 2. check if data is on sqlite
+         const x = this.stmt_getByID(id)
+         if (x == null) return null
 
-      // 3. create instance form data
-      return this._createInstance(x)
+         // 3. create instance form data
+         return this._createInstance(x)
+      })
    }
 
    getOrThrow = (id: string): TABLE['$L'] => {
@@ -563,26 +565,28 @@ export class LiveTable<
 
    /** only call this with some data already in the database */
    _createInstance = (data: TABLE['$T']): TABLE['$L'] => {
-      const instance = new this.Ktor(
-         //
-         this.db,
-         cushy,
-         this,
-         data,
-      )
-      // TYPE CHECKING --------------------
-      // /* ⏸️ */ const schema = this.schema.schema
-      // /* ⏸️ */ const valid = Value.Check(schema, data)
-      // /* ⏸️ */ if (!valid) {
-      // /* ⏸️ */     const errors: ValueError[] = [...Value.Errors(schema, data)]
-      // /* ⏸️ */     console.log('❌', this.name)
-      // /* ⏸️ */     for (const i of errors) console.log(`❌`, JSON.stringify(i))
-      // /* ⏸️ */     // debugger
-      // /* ⏸️ */ }
-      // --------------------
-      instance.init(data)
-      this.liveEntities.set(data.id, instance)
-      this.db.bump(this.name as LiveDBSubKeys)
-      return instance
+      return runInAction(() => {
+         const instance = new this.Ktor(
+            //
+            this.db,
+            cushy,
+            this,
+            data,
+         )
+         // TYPE CHECKING --------------------
+         // /* ⏸️ */ const schema = this.schema.schema
+         // /* ⏸️ */ const valid = Value.Check(schema, data)
+         // /* ⏸️ */ if (!valid) {
+         // /* ⏸️ */     const errors: ValueError[] = [...Value.Errors(schema, data)]
+         // /* ⏸️ */     console.log('❌', this.name)
+         // /* ⏸️ */     for (const i of errors) console.log(`❌`, JSON.stringify(i))
+         // /* ⏸️ */     // debugger
+         // /* ⏸️ */ }
+         // --------------------
+         instance.init(data)
+         this.liveEntities.set(data.id, instance)
+         this.db.bump(this.name as LiveDBSubKeys)
+         return instance
+      })
    }
 }

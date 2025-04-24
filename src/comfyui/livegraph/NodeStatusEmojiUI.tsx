@@ -1,12 +1,10 @@
 import type { ComfyNode } from './ComfyNode'
 
-import { observer } from 'mobx-react-lite'
-
 import { Ikon } from '../../csuite/icons/iconHelpers'
 import { Loader } from '../../csuite/inputs/Loader'
 import { exhaust } from '../../csuite/utils/exhaust'
 
-export const NodeStatusEmojiUI = observer(function NodeStatusEmojiUI_(p: { node: ComfyNode<any, any> }) {
+export const NodeStatusEmojiUI = obs(function NodeStatusEmojiUI_(p: { node: ComfyNode<any, any> }) {
    const s = p.node.status
    if (s === 'executing') return <Loader />
    if (s === 'cached') return <Ikon.mdiBookmark tw='text-green-600' />

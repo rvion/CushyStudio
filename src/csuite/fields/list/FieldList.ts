@@ -1,210 +1,295 @@
-import type { BaseSchema } from '../../model/BaseSchema'
-import type { FieldConfig } from '../../model/FieldConfig'
-import type { FieldSerial } from '../../model/FieldSerial'
+import type { CSchema } from '../../model/CSchema'
+import type { CodegenOpts, FieldConstructor, SchemaDictWithPaths } from '../../model/FieldConstructor'
+import type { Patch_Common } from '../../model/Patch'
 import type { Repository } from '../../model/Repository'
 import type { Problem_Ext } from '../../model/Validation'
 
-import { reaction } from 'mobx'
+import { computed, observable, reaction } from 'mobx'
+import { nanoid } from 'nanoid'
 
 import { Field, type KeyedField, type VALUE_MODE } from '../../model/Field'
+import { isFieldSerial } from '../../model/FieldSerial'
 import { bang } from '../../utils/bang'
 import { clamp_or_min_or_zero } from '../../utils/clamp'
 import { registerFieldClass } from '../WidgetUI.DI'
+import { numberToListKey } from './FieldListId'
 import { hole, type HOLE } from './HOLE'
-import { ListButtonAdd100ItemsUI } from './ListButtonAdd100ItemsUI'
-import { ListButtonAddUI } from './ListButtonAddUI'
-import { ListButtonClearUI } from './ListButtonClearUI'
-import { ListButtonFoldUI } from './ListButtonFoldUI'
-import { ListButtonUnfoldUI } from './ListButtonUnfoldUI'
-import { WidgetList_BodyUI } from './WidgetList_BodyUI'
-import { WidgetList_LineUI } from './WidgetList_LineUI'
 
 // #region 🔶AUTO
-interface AutoBehaviour<out T extends BaseSchema> {
+interface AutoBehaviour<out T extends CSchema> {
    /** list of keys that must be present */
-   keys(self: T['$Field']): string[] // ['foo', 'bar', 'baz']
+   keys(self: T['{field}']): string[] // ['foo', 'bar', 'baz']
 
-   /** for every item given by the list above */
-   getKey(self: T['$Field'], ix: number): string
+   /**
+    * @deprecated
+    * for every item given by the list above
+    */
+   getKey?(self: T['{field}'], ix: number): string
 
-   /** once an item if  */
-   init(key: string /* foo */): T['$Value']
+   /** initialization  */
+   init?(key: string /* foo */): T['{setValue}']
 }
 
 // #region CONFIG
-export interface Field_list_config<out T extends BaseSchema>
-   extends FieldConfig<
-      {
-         /**
-          * item schema;
-          * function notation to support tuples
-          */
-         element: ((ix: number) => T) | T
+export type Field_list_config<T extends CSchema> = Field_list<T>['{config}']
+type Field_list_ownConfig<out T extends CSchema> = {
+   /**
+    * item schema;
+    * function notation to support tuples
+    */
+   element: ((ix: number) => T) | T
 
-         /**
-          * when specified, the list will work in some AUTOMATIC mode
-          *  - disable the "add" button
-          *  - disable the "remove" button
-          *  - disable the "clear" button
-          *  - automatically add or remove missing items when reaction
-          *  - subscribe via mobx to anything you want
-          */
-         auto?: AutoBehaviour<T>
+   /**
+    * when specified, the list will work in some AUTOMATIC mode
+    *  - disable the "add" button
+    *  - disable the "remove" button
+    *  - disable the "clear" button
+    *  - automatically add or remove missing items when reaction
+    *  - subscribe via mobx to anything you want
+    */
+   auto?: AutoBehaviour<T>
 
-         /** @default: true */
-         sortable?: boolean
+   /** @default: true */
+   sortable?: boolean
 
-         // #region config DEFAULT
-         /**
-          * mininum length;
-          * if min > 0, list will be populated on creation
-          * if length < min, list will be populated with empty items
-          * if length <= min, list will not be clearable
-          * */
-         min?: number
+   // #region config DEFAULT
+   /**
+    * mininum length;
+    * if min > 0, list will be populated on creation
+    * if length < min, list will be populated with empty items
+    * if length <= min, list will not be clearable
+    * */
+   min?: number
 
-         /** max length */
-         max?: number
+   /** max length */
+   max?: number
 
-         defaultLength?: number
-      },
-      Field_list_types<T>
-   > {}
-
-// #region SERIAL type
-export type Field_list_serial<T extends BaseSchema> = FieldSerial<{
-   $: 'list'
-   /** when undefined, means the list has not be `set` yet */
-   items_?: (T['$Serial'] | HOLE)[]
-   size?: number
-}>
-
-// #region VALUE type
-export type Field_list_value<T extends BaseSchema> = T['$Value'][]
-export type Field_list_unchecked<T extends BaseSchema> = T['$Unchecked'][]
-
-// #region $FieldType
-export type Field_list_types<T extends BaseSchema> = {
-   $Type: 'list'
-   $Config: Field_list_config<T>
-   $Serial: Field_list_serial<T>
-   $Value: Field_list_value<T>
-   $Unchecked: Field_list_unchecked<T>
-   $Field: Field_list<T>
-   $Child: T['$Field']
-   $Reflect: Field_list_types<T>
+   defaultLength?: number
 }
 
+// #region SERIAL type
+export type Field_list_ItemID = Tagged<string, 'Field_list_ItemID'>
+
+export type Field_list_serial<T extends CSchema> = Field_list<T>['{serial}']
+type Field_list_ownSerial<T extends CSchema> = {
+   $: 'list'
+   /** when undefined, means the list has not be `set` yet */
+   items_?: (T['{serial}'] | HOLE)[]
+   keys?: Field_list_ItemID[]
+}
+
+// #region VALUE type
+export type Field_list_value<T extends CSchema> = T['{value}'][]
+export type Field_list_SetValue<T extends CSchema> = T['{setValue}'][]
+export type Field_list_unchecked<T extends CSchema> = T['{unchecked}'][]
+
+export type Field_list_patch<T extends CSchema> =
+   | Field_list_patch_insert<T>
+   | Field_list_patch_remove
+   | Field_list_patch_move
+export type Field_list_patch_insert<T extends CSchema> = Patch_Common<'list'> & {
+   op: 'insert'
+   order: Field_list_ItemID[]
+   key: Field_list_ItemID
+   value: T['{serial}']
+}
+export type Field_list_patch_remove = Patch_Common<'list'> & {
+   op: 'remove'
+   key: Field_list_ItemID
+}
+
+export type Field_list_patch_move = Patch_Common<'list'> & {
+   op: 'move'
+   order: Field_list_ItemID[]
+}
+
+// #region $FieldType
+// 💬 2025-02-14#212 rvion: we need ~3 different types to properly handle the 3 different
+// list usages:
+// 1. regular lists:     e.g. T[]
+// 2. tuple lists:       e.g. [T1,T2,T2]
+// 3. "dict" (auto mode) e.g. [x:T1, y:T2, z:T3]
+
 // #region STATE
-export class Field_list<T extends BaseSchema> //
-   extends Field<Field_list_types<T>>
-{
+export interface Field_list<T extends CSchema> {
+   '{type}': 'list'
+   '{ownConfig}': Field_list_ownConfig<T>
+   '{ownSerial}': Field_list_ownSerial<T>
+   '{value}': Field_list_value<T>
+   '{setValue}': Field_list_SetValue<T>
+   '{unchecked}': Field_list_unchecked<T>
+   '{child}': T['{field}']
+   '{opts}': unknown
+   '{ownPatch}': Field_list_patch<T>
+   // own
+   '{subfields}': T
+}
+export class Field_list<T extends CSchema> extends Field {
    // #region TYPE
    static readonly type: 'list' = 'list'
-   static readonly emptySerial: Field_list_serial<any> = { $: 'list' }
-   static codegenValueType(config: Field_list_config<any>): string {
-      // 💬 2024-10-11 rvion:
-      // | we should finally remove support for dynamic children without going first though dynamic !
-      const schemaAt0 = typeof config.element === 'function' ? config.element(0) : config.element
-      return `${schemaAt0.codegenValueType()}[]`
+   static readonly codeForTypescriptValue = (
+      config: Field_list_config<CSchema>,
+      opts: CodegenOpts,
+   ): string => {
+      const childSchema = typeof config.element === 'function' ? config.element(0) : config.element
+      const childTypeCode = childSchema.codeForTypescriptValue(opts)
+      return `${childTypeCode}[]`
    }
-   static migrateSerial(): undefined {}
+   static override migrateSerial(serial: object): Maybe<Field_list_serial<any>> {
+      if (!isFieldSerial(serial)) return undefined
+      if (serial.$ !== 'list') return undefined
+      if (isSerialWithMountKeys(serial)) return serial
+      if (isSerialList(serial)) {
+         const serialItems = serial.items_
+         if (serialItems == null) return { $: 'list' }
 
-   // #region UI
-   DefaultHeaderUI = WidgetList_LineUI
-   DefaultBodyUI = WidgetList_BodyUI
-
-   // #region UI/preview
-   /** size of the preview */
-   get size(): number {
-      return this.serial.size ?? this._defaultPreviewSize
-   }
-
-   set size(val: number) {
-      this.runInTransaction(() => {
-         this.patchSerial((serial) => {
-            if (val === this._defaultPreviewSize) delete serial.size
-            else serial.size = val
-         })
-      })
+         return {
+            $: 'list',
+            items_: serialItems,
+            keys: serialItems.map((_, ix) => Field_list.zGenerateListItemKey(ix)),
+         }
+      }
+      return undefined
    }
 
-   private get _defaultPreviewSize(): number {
-      return 128
+   static override getChildren(config: Field_list_config<CSchema>): SchemaDictWithPaths {
+      const element = config.element
+      const keys = [0] // TODO: make that based on the list mode (tuple, auto, etc.)
+      const schemaDict: SchemaDictWithPaths = {}
+      for (const key of keys)
+         schemaDict[key.toString()] = {
+            schema: typeof element === 'function' ? element(key) : element,
+            serialPath: `items_[${key}]`,
+         }
+      return schemaDict
    }
 
-   // #region ....
-   get isOwnSet(): boolean {
-      return this.serial.items_ != null
+   private static readonly unsetSerial: Field_list_serial<any> = { $: 'list' }
+   static generateSerial(
+      setValue: Maybe<Field_list<CSchema>['{setValue}']>,
+      config: Field_list_config<CSchema>,
+   ): Field_list_serial<CSchema> {
+      if (setValue == null && config.defaultLength == null) return this.unsetSerial
+
+      const length = Math.max(config.defaultLength ?? 0, setValue?.length ?? 0)
+
+      return {
+         $: 'list',
+         items_: Array(length)
+            .fill(undefined)
+            .map((_, ix) => {
+               if (setValue != null && ix < setValue.length) {
+                  const itemValue = setValue[ix]
+                  const schema = typeof config.element === 'function' ? config.element(ix) : config.element
+                  return schema.generateSerial(itemValue)
+               }
+
+               return typeof config.element === 'function'
+                  ? config.element(ix).generateSerial(undefined)
+                  : config.element.generateSerial(undefined)
+            }),
+         keys: Array(length)
+            .fill(undefined)
+            .map((_, ix) => Field_list.zGenerateListItemKey(ix)),
+      }
+   }
+
+   // static override getChild(config: Field_list_config<CSchema>, key: string): Maybe<CSchema> {
+   //    return Field_group.getSchemaDict(config)[key]
+   // }
+   protected static zGenerateListItemKey(
+      /**
+       * do not use this option when adding an element,
+       * except if you are generating a default serial or something like that
+       */
+      nth?: number,
+   ): Field_list_ItemID {
+      // by default, let's use a nanoid, so real collaborative edition, we'll
+      // avoid multiple people generating items with the same key on their respective
+      // devices
+      if (nth == null) return nanoid(8) as string as Field_list_ItemID
+
+      // wehn instanciating a field, let's do the oposite and use a simple number-ish
+      // string so we can guarantee the keys are always the same. this allow to cache
+      // the default empty serial
+      return numberToListKey(nth) // conflict ?
+   }
+
+   get firstOrNull(): Maybe<T['{field}']> {
+      return this.items_[0]
+   }
+   get firstOrCrash() {
+      const first = this.items_[0]
+      if (first == null) throw new Error(`❌ FieldList.firstOrCrash: no items`)
+      return first
+   }
+
+   get zIsOwnSet(): boolean {
+      return this.zSerial.items_ != null
    }
 
    get length(): number {
-      return this.items.length
+      return this.items_.length
    }
 
-   items: T['$Field'][] = []
-
-   get last(): T['$Field'] | null {
-      return this.items[this.items.length - 1] ?? null
-   }
-   get first(): T['$Field'] | null {
-      return this.items[0] ?? null
+   private readonly items_: T['{field}'][] = observable([])
+   public get items(): readonly T['{field}'][] { return this.items_ } // prettier-ignore
+   public get _(): readonly T['{field}'][] { return this.items_ } // prettier-ignore
+   map<U>(fn: (item: T['{field}'], ix: number) => U): U[] {
+      return this.items_.map(fn)
    }
 
-   get hasChanges(): boolean {
+   @computed get zHasChanges(): boolean {
       // 💬 2024-06-?? rvion:
       //  | in auto mode, length is managed,
       //  | so we must not take it into account
       // 💬 2024-07-05 rvion:
       //   | ^^^ 🤔< NOT SURE about my previous opinion here
       //   |         I'll add some '🔴' for future review
-      if (!this.config.auto) {
+      if (!this.zConfig.auto) {
          const defaultLength = clamp_or_min_or_zero(
-            this.config.defaultLength,
-            this.config.min,
-            this.config.max,
+            this.zConfig.defaultLength,
+            this.zConfig.min,
+            this.zConfig.max,
          )
-         if (this.items.length !== defaultLength) return true
+         if (this.items_.length !== defaultLength) return true
       }
       // check if any remaining item has changes
-      return this.items.some((i) => i.hasChanges)
+      return this.items_.some((i) => i.zHasChanges)
    }
 
-   // resetSmart(): void {
-   //     // fix size
-   //     if (!this.config.auto) {
-   //         const defaultLength = clampOpt(this.config.defaultLength, this.config.min, this.config.max)
-   //         for (let i = this.items.length; i > defaultLength; i--) this.removeItem(this.items[i - 1]!)
-   //         for (let i = this.items.length; i < defaultLength; i++) this.addItem({ skipBump: true })
-   //     }
-
-   //     // reset all remaining values
-   //     for (const i of this.items) i.reset()
-   // }
+   override zReset(): void {
+      super.zReset()
+      this.zChildrenAll.forEach((i) => i.zReset()) // fixme this should not be here
+   }
 
    findItemIndexContaining(widget: Field): number | null {
       let at = widget as Field | null
       let child = at
       while (at != null) {
-         at = at.parent
+         at = at.zParent
          if (at === this) {
-            return this.items.indexOf(child as T['$Field'])
+            return this.items_.indexOf(child as T['{field}'])
          }
          child = at
       }
       return null
    }
 
-   get childrenAll(): T['$Field'][] {
-      return this.items
+   override zGetChildrenSerialPath(branchName: string): string {
+      return `items_.[${branchName}]`
    }
 
-   get subFieldsWithKeys(): KeyedField[] {
-      return this.items.map((field, ix) => ({ key: ix.toString(), field }))
+   override get zChildrenAll(): T['{field}'][] {
+      return this.items_
+   }
+
+   override get zSubFieldsWithKeys(): KeyedField[] {
+      return this.items_.map((field, ix) => ({ key: ix.toString(), field }))
    }
 
    schemaAt(ix: number): T {
-      const _schema = this.config.element
+      const _schema = this.zConfig.element
       const schema: T =
          typeof _schema === 'function' //
             ? _schema(ix)
@@ -213,166 +298,201 @@ export class Field_list<T extends BaseSchema> //
    }
 
    get isAuto(): boolean {
-      return this.config.auto != null
+      return this.zConfig.auto != null
    }
 
    // probably slow and clunky;
    // TODO: rewrite this piece of crap
    private startAutoBehaviour(): void {
-      const auto = this.config.auto
+      const auto = this.zConfig.auto
       if (auto == null) return
 
       const disposeFn = reaction(
-         () => auto.keys(this),
+         (): string[] => {
+            try {
+               return auto.keys(this)
+            } catch (e) {
+               console.error(`🔶 list.auto reaction failed; please avoid crashing.`)
+               console.error(e)
+               return []
+            }
+         },
          (keys: string[]) => {
-            this.runInTransaction(() => {
+            if (keys == null) {
+               console.error(`[❌ INVARIANT VIOLATION] FList.config.auto => keys() returned null `)
+               keys = []
+            }
+            this.zRunInTransaction(() => {
                // 1. Add missing entries
-               const currentKeys: string[] = this.items.map((i, ix) => auto.getKey(i, ix))
+               const getKeyFn = auto.getKey
+               const currentKeys: string[] =
+                  getKeyFn != null
+                     ? this.items_.map((i, ix) => getKeyFn(i, ix))
+                     : this.items_.map((i) => i.zMountKey as string)
                const missingKeys: string[] = keys.filter((k) => !currentKeys.includes(k))
                for (const k of missingKeys) {
-                  this.addItem({ value: auto.init(k) })
+                  // console.log(`[super🔴] adding`, { valueExt: auto.init?.(k) ?? {}, itemKey: k })
+                  if (auto.init != null) this.addItem({ valueExt: auto.init(k), itemKey: k })
+                  else this.addItem({ itemKey: k })
                }
 
                // 2. delete items that must be removed.
                let ix = 0
-               for (const item of this.items.slice()) {
-                  const isExtra = !keys.includes(auto.getKey(item, ix++))
+               for (const item of this.items_.slice()) {
+                  const itemKey = getKeyFn != null ? getKeyFn(item, ix++) : item.zMountKey
+                  const isExtra = !keys.includes(itemKey)
                   if (!isExtra) continue
                   this.removeItem(item)
                }
             })
          },
-         { fireImmediately: true },
+         { fireImmediately: true, name: `list-auto@${this.zPath}` },
       )
 
-      this.disposeFns.push(disposeFn)
+      this.zDisposeFns.push(disposeFn)
    }
 
    constructor(
       repo: Repository,
       root: Field | null,
       parent: Field | null,
-      schema: BaseSchema<Field_list<T>>,
+      schema: CSchema<Field_list<T>>,
       initialMountKey: string,
       serial?: Field_list_serial<T>,
    ) {
       super(repo, root, parent, schema, initialMountKey, serial)
-      this.init(serial, {
-         // UI
-         DefaultHeaderUI: false,
-         DefaultBodyUI: false,
-
-         // values
-         value_or_fail: false,
-         value_or_zero: false,
-         value_unchecked: false,
-      })
+      this.init(serial)
       this.startAutoBehaviour()
    }
 
-   at(ix: number): T['$Field'] | undefined {
-      return this.items[ix]
+   at(ix: number): T['{field}'] | undefined {
+      return this.items_.at(ix)
    }
 
    get valueArr(): Field_list_value<T> {
-      return this.items.map((i) => i.value)
+      return this.items_.map((i) => i.zValue)
    }
 
    valueArrMode(mode: VALUE_MODE): Field_list_value<T> | Field_list_unchecked<T> {
-      return this.items.map((i) => i.getValue(mode))
+      return this.items_.map((i) => i.zGetValue(mode))
    }
 
-   _acknowledgeNewChildSerial(
+   override zAcknowledgeNewChildSerial(
       //
-      mountKey: string,
+      mountKey: Field_list_ItemID,
       nextChildSerial: any,
    ): boolean {
       // parse index
-      const index = parseInt(mountKey, 10)
+      const index = this.zSerial.keys?.indexOf(mountKey) ?? -1
 
       // ensure index is valid
-      if (isNaN(index))
-         throw new Error(`❌ FieldList._acknowledgeNewChildSerial: parsed index is Nan (raw=${mountKey})`)
       if (index < 0) throw new Error(`❌ FieldList._acknowledgeNewChildSerial: index(${index}) is < 0`)
-      if (index > this.items.length)
+      if (index > (this.zSerial.items_ ?? []).length)
          throw new Error(`❌ FieldList._acknowledgeNewChildSerial: index is OOB (${index}`)
+
+      if (this.zSerial.items_?.[index] === nextChildSerial) return false
 
       // make sure the serial.items_ is set (akin to saying that from now-on, the field is `set`)
       // 💬 2024-09-11 rvion:
       // | 🔴 we could actually throw here 🤔
       // | it's probably possible to make sure this is set before, since we're in control of
       // | all primitive actions on that field.
-      if (this.serial.items_ == null) {
-         this.patchSerial((draft) => void (draft.items_ = []))
+      if (this.zSerial.items_ == null || this.zSerial.keys == null) {
+         this.zPatchSerial((draft) => {
+            draft.items_ ??= []
+            draft.keys ??= []
+         })
       }
 
       // swap the pointer in the serial.items_ array at given index to new serial
-      return this.patchSerial((draft) => {
+      return this.zPatchSerial((draft) => {
          draft.items_![index] = nextChildSerial
       })
    }
 
-   get isCollapsible(): boolean {
-      return this.length > 0
-   }
-
-   protected setOwnSerial(next: Field_list_serial<T>): void {
-      // reset every previous value (🔴 pretty bad; reconciliation would be better)
-      for (const item of this.items) item.disposeTree()
-
-      // reset the instance list (🔴 again, pretty bad; reconciliation would be better)
-      this.items = []
-
-      // 2. ASSIGN SERIAL
-      this.assignNewSerial(next)
-
+   protected zSetOwnSerial(next: Field_list_serial<T>): void {
       // apply default value
       // IF AND ONLY IF both
       //  - we are NOT in auto mode
       //  - we are not set yet
-      if (next.items_ == null) {
-         if (!this.config.auto) {
-            const defaultLength = this.config.defaultLength // clamp_or_null(this.config.defaultLength, this.config.min, this.config.max)
+      if (next.items_ == null || next.keys == null) {
+         for (const item of this.items_) item.zDisposeTree()
+         this.items_.length = 0
+
+         // 2. ASSIGN SERIAL
+
+         this.zAssignNewSerial(next)
+
+         if (!this.zConfig.auto) {
+            const defaultLength = this.zConfig.defaultLength // clamp_or_null(this.config.defaultLength, this.config.min, this.config.max)
             // console.log(`[🤠] AA defaultLength`, defaultLength)
             if (defaultLength == null) {
                // no default, we never set the `draft.items_`, so the
                // field remains unset
                return
             }
-
-            this.patchSerial((draft) => void (draft.items_ = []))
-            for (let i = this.items.length; i < defaultLength; i++) {
+            this.zPatchSerial((draft) => {
+               draft.items_ ??= []
+               draft.keys ??= []
+            })
+            for (let i = this.items_.length; i < defaultLength; i++) {
                this.addItem({ applyEvenIfAtMaxLen: true })
             }
          }
          return
       }
 
-      const nextChildrenSerials = next.items_
-      for (const [ix, subSerial] of nextChildrenSerials.entries()) {
+      const nextItems = next.items_
+      const nextMountKeys = next.keys
+      const nextIds = new Set(nextMountKeys)
+
+      const remainingEntries = this.items_.filter((item) => nextIds.has(item.zMountKey as Field_list_ItemID))
+      const deletedEntries = this.items_.filter((item) => !nextIds.has(item.zMountKey as Field_list_ItemID))
+
+      // Remove deleted elements
+      deletedEntries.forEach((item) => {
+         item.zDisposeTree()
+      })
+      // Update the list of items with only the remaining entries
+      this.items_.length = 0
+      this.items_.push(...remainingEntries)
+
+      this.zAssignNewSerial(next)
+
+      // Add new elements
+      for (let ix = 0; ix < nextItems.length; ix++) {
+         const mountKey = nextMountKeys[ix] as Field_list_ItemID
+         const nextSerial = nextItems[ix]
+
+         if (mountKey == null) throw new Error('❌ List item key is null')
+         if (nextSerial == null) throw new Error('❌ List item serial is null')
+         if (nextSerial == hole) throw new Error('❌ List item serial is hole')
+
          const schema = this.schemaAt(ix)
-         const mountKey = ix.toString()
 
-         if (subSerial == null) throw new Error('❌ List item serial is null; invariant violation')
-         if (subSerial == hole) throw new Error('❌ List item serial is hole; invariant violation')
-
-         this.RECONCILE({
+         this.zRECONCILE({
             mountKey,
             correctChildSchema: schema,
-            existingChild: null,
-            targetChildSerial: subSerial,
-            // ⏸️ targetChildSerial: subSerial === hole ? null : subSerial,
-            // ⏸️ targetChildSerial: subSerial === hole ? schema.fieldConstructor.emptySerial : subSerial,
+            existingChild: remainingEntries.find((i) => i.zMountKey === mountKey),
+            targetChildSerial: nextSerial,
             attach: (sub) => {
-               // console.log(`[🤠] setOwnSerial > reconciled created a new child`, mountKey)
                // push instead of doing [ix]= ... since we're re-creating them in order
-               this.items.push(sub)
+               this.items_.push(sub)
                // bang(this.serial.items_).push(sub.serial)
             },
          })
          // const subWidget = schema.instanciate(this.repo, this.root, this, subSerial)
          // this.items.push(subWidget)
       }
+
+      // Reorder items to match the order of the serial
+      // TODO repace by a faster (inplace?) impl; this seems wrong.
+      const indicesByKeys = new Map(nextMountKeys.map((key, ix) => [key, ix]))
+      this.items_.sort((a, b) => {
+         const aIndex = indicesByKeys.get(a.zMountKey as Field_list_ItemID) ?? -1
+         const bIndex = indicesByKeys.get(b.zMountKey as Field_list_ItemID) ?? -1
+         return aIndex - bIndex
+      })
 
       // 💬 2024-09-10: 🙅🙅‍♀️🙅‍♂️ < NO LONGER TRUE !!
       // | we don't want to invent data by default
@@ -386,59 +506,91 @@ export class Field_list<T extends BaseSchema> //
       // | ```
    }
 
-   /**
-    * code below is very wtf, and surprisingly simple for what it achieve
-    * see `src/csuite/model/TESTS/proxy.test.ts` if you're not scared
-    */
-
-   value_or_fail: Field_list_value<T> = new Proxy([], this.makeValueProxy('fail'))
-   value_or_zero: Field_list_value<T> = new Proxy([], this.makeValueProxy('zero'))
-   value_unchecked: Field_list_unchecked<T> = new Proxy([], this.makeValueProxy('unchecked'))
-
-   // 🦊 get value_or_fail(): Field_list_value<T> {
-   // 🦊     const x: this['$Value'] = new Proxy([], this.makeValueProxy('fail'))
-   // 🦊     Object.defineProperty(this, 'value_or_fail', { value: x })
-   // 🦊     return x
-   // 🦊 }
-
-   // 🦊 get value_or_zero(): Field_list_value<T> {
-   // 🦊     const x: this['$Value'] = new Proxy([], this.makeValueProxy('zero'))
-   // 🦊     Object.defineProperty(this, 'value_or_zero', { value: x })
-   // 🦊     return x
-   // 🦊 }
-
-   // 🦊 get value_unchecked(): Field_list_unchecked<T> {
-   // 🦊     const x: this['$Unchecked'] = new Proxy([], this.makeValueProxy('unchecked'))
-   // 🦊     Object.defineProperty(this, 'value_unchecked', { value: x })
-   // 🦊     return x
-   // 🦊 }
-
-   get value(): Field_list_value<T> {
-      return this.value_or_fail
-   }
-
-   set value(val: Field_list_value<T>) {
-      this.runInTransaction(() => {
+   /** results, but only for active branches */
+   private zValue__setter(val: Field_list_value<T>) {
+      this.zRunInTransaction(() => {
          for (let i = 0; i < val.length; i++) {
             // 1. replace existing items
-            if (i < this.items.length) {
-               this.items[i]!.value = val[i]
-            }
+            if (i < this.items_.length) this.items_[i]!.zValue = val[i]
             // 2. add missing items
-            else {
-               this.addItem()
-               this.items[i]!.value = val[i]
-            }
+            else this.addItem({ at: i, value: val[i] })
          }
          this.splice(val.length)
       })
+   }
+
+   set zValue(val: Field_list_value<T>) { this.zValue__setter(val) } // prettier-ignore
+   get zValue(): Field_list_value<T> {
+      const value = new Proxy([], this.makeValueProxy('fail'))
+      void this.zSerial
+      Object.defineProperty(this, 'zValue', {
+         get: () => (void this.zSerial, value),
+         set: (val: Field_list_value<T>) => this.zValue__setter(val),
+      })
+      return value
+   }
+
+   get zValueOrZero(): Field_list_value<T> {
+      const value = new Proxy([], this.makeValueProxy('zero'))
+      void this.zSerial
+      Object.defineProperty(this, 'zValueOrZero', {
+         get: () => (void this.zSerial, value),
+      })
+      return value
+   }
+   get zValueUnchecked(): Field_list_unchecked<T> {
+      const value = new Proxy([], this.makeValueProxy('unchecked'))
+      void this.zSerial
+      Object.defineProperty(this, 'zValueUnchecked', {
+         get: () => (void this.zSerial, value),
+      })
+      return value
+   }
+
+   set zValuePartial(val: Field_list_SetValue<T>) { this.zSet(val) } // prettier-ignore
+   get zValuePartial(): Field_list_SetValue<T> {
+      const value = new Proxy([], this.makeValueProxy('set'))
+      void this.zSerial
+      Object.defineProperty(this, 'zValuePartial', {
+         get: () => (void this.zSerial, value),
+         set: (val: Field_list_SetValue<T>) => this.zSet(val),
+      })
+      return value
+   }
+
+   [Symbol.iterator](): IterableIterator<T['{field}']> {
+      return this.items_[Symbol.iterator]()
+   }
+
+   // 💬 2025-01-21 rvion: all of those `setSerial()`, `set()`, and `set value()` are wrong and should have
+   // some kind of basic keyed reconciliation.
+   // I really want to do better; should be super cheap and will avoid days of crying and/or waiting later.
+   override zSet(x: Field_list_SetValue<T>): this {
+      this.zRunInTransaction(() => {
+         for (let i = 0; i < x.length; i++) {
+            // 1. replace existing items
+            if (i < this.items_.length) this.items_[i]!.zSet(x[i])
+            // 2. add missing items
+            else this.addItem({ at: i, valueExt: x[i] })
+         }
+         this.splice(x.length)
+      })
+      return this
+   }
+
+   public zIsValueEqual(other: Field): boolean {
+      if (this === other) return true
+      if (!(other instanceof Field_list)) return false
+      if (this.items_.length !== other.items_.length) return false
+
+      return this.items_.every((item, ix) => other.items_[ix] != null && item.zIsValueEqual(other.items_[ix]))
    }
 
    private makeValueProxy(mode: VALUE_MODE): ProxyHandler<never> {
       return {
          get: (_, prop: any): any => {
             // ⏸️ console.log(`[GET]`, prop)
-            const target = this.items as any
+            const target = this.items_ as any
             if (typeof prop === 'symbol') return target[prop]
 
             // MOBX HACK ----------------------------------------------------
@@ -449,14 +601,14 @@ export class Field_list<T extends BaseSchema> //
             if (prop === 'unshift') return (...args: any[]) => this.unshift(...args)
             if (prop === 'push') return (...args: any[]) => this.push(...args)
             if (prop === 'map') return (...args: [any, any]) => this.valueArrMode(mode).map(...args)
+            // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
             if (prop === 'filter') return (...args: [any, any]) => this.valueArrMode(mode).filter(...args)
-
             // MOBX HACK ----------------------------------------------------
 
             // handle numbers (1) and number-like ('1')
             if (parseInt(prop, 10) === +prop) {
-               const field: Maybe<Field> = this.items[+prop]
-               return field?.getValue(mode)
+               const field: Maybe<Field> = this.items_[+prop]
+               return field?.zGetValue(mode)
                // return target[+prop]?.getvalue
             }
 
@@ -469,11 +621,11 @@ export class Field_list<T extends BaseSchema> //
             if (typeof prop === 'symbol') return false
             if (parseInt(prop, 10) === +prop) {
                const index = +prop
-               if (index === this.items.length) {
+               if (index === this.items_.length) {
                   this.addItem({ value })
                   return true
-               } else if (this.items[prop]) {
-                  this.items[prop]!.value = value
+               } else if (this.items_[prop]) {
+                  this.items_[prop]!.zValue = value
                   return true
                }
             }
@@ -486,27 +638,32 @@ export class Field_list<T extends BaseSchema> //
       }
    }
 
+   override zGetSetValue(): this['{setValue}'] | undefined {
+      // console.log(`[💀 getSetValue] `, this.path)
+      return this.zValuePartial
+   }
+
    // #region Validation
-   get ownConfigSpecificProblems(): Problem_Ext {
+   get zOwnConfigSpecificProblems(): Problem_Ext {
       return null
    }
 
-   get ownTypeSpecificProblems(): string[] {
+   get zOwnTypeSpecificProblems(): string[] {
       // console.log(`[🤠] `, this.config.min, this.length)
       // console.log(`[🤠] `, this.config.max, this.length)
       const out: string[] = []
       if (
          //
-         this.config.min != null &&
-         this.length < this.config.min
+         this.zConfig.min != null &&
+         this.length < this.zConfig.min
       ) {
          out.push(`List is too short`)
       }
 
       if (
          //
-         this.config.max != null &&
-         this.length > this.config.max
+         this.zConfig.max != null &&
+         this.length > this.zConfig.max
       ) {
          out.push(`List is too long`)
       }
@@ -514,47 +671,32 @@ export class Field_list<T extends BaseSchema> //
    }
 
    // ADDING ITEMS -------------------------------------------------
-   duplicateItemAtIndex(ix: number): Maybe<T['$Field']> {
-      const item = this.items[ix]!
-      return this.addItem({
-         at: ix + 1,
-         value: item.isValid ? item.value : undefined,
-      })
+   duplicateItemAtIndex(ix: number): Maybe<T['{field}']> {
+      const item = bang(this.items_[ix])
+      return this.addItem({ at: ix, value: item.zIsValid ? item.zValue : undefined })
    }
 
-   // TODO: support partial values ?
    /**
     * Appends new elements to the end of an array,
     * and returns the new length of the array.
     */
-   push(...values: T['$Value'][]): number {
+   push(...values: T['{setValue}'][]): number {
       if (values.length === 0) return this.length
-      this.runInTransaction(() => {
+      this.zRunInTransaction(() => {
          for (const v of values) {
-            this.addItem({ value: v })
+            this.addItem({ valueExt: v })
          }
       })
       return this.length
    }
 
-   // TODO: add that:
-   // pushSerials(...serials: T['$Serial'][]): number {
-   //     if (serials.length === 0) return this.length
-   //     this.runInValueTransaction(() => {
-   //         for (const s of serials) {
-   //             this.addItem({ serial: s })
-   //         }
-   //     })
-   //     return this.length
-   // }
-
    /**
     * Inserts new elements at the start of an array,
     * and returns the new length of the array.
     */
-   unshift(...values: T['$Value'][]): number {
+   unshift(...values: T['{value}'][]): number {
       if (values.length === 0) return this.length
-      this.runInTransaction(() => {
+      this.zRunInTransaction(() => {
          for (const v of values) {
             this.addItem({ value: v, at: 0 })
          }
@@ -562,36 +704,65 @@ export class Field_list<T extends BaseSchema> //
       return this.length
    }
 
+   // TODO: remove holes
    addItem(
       p: {
+         // at
          at?: number
-         value?: T['$Value']
-         serial?: T['$Serial']
          applyEvenIfAtMaxLen?: boolean
+         /** 🔶 only use this param if you know what you're doing */
+         itemKey?: string
+         // value
+         value?: T['{value}']
+         valueExt?: T['{setValue}']
+         serial?: T['{serial}']
       } = {},
-   ): Maybe<T['$Field']> {
+   ): Maybe<T['{field}']> {
       if (p.at != null && p.at < 0) return void console.log(`[🔶] list.addItem: at is negative`)
-      if (p.at != null && p.at > this.items.length)
+      if (p.at != null && p.at > this.items_.length)
          return void console.log(`[🔶] list.addItem: at is out of bounds`)
-      if (!Boolean(p.applyEvenIfAtMaxLen) && this.config.max != null && this.items.length >= this.config.max)
+      if (
+         !Boolean(p.applyEvenIfAtMaxLen) &&
+         this.zConfig.max != null &&
+         this.items_.length >= this.zConfig.max
+      )
          return void console.log(`[🔶] list.addItem: list is already at max length`)
 
-      return this.runInTransaction(() => {
-         const at: number = p.at ?? this.items.length
-         this.patchSerial((draft) => {
-            if (draft.items_ == null) {
+      return this.zRunInTransaction(() => {
+         const itemId = p.itemKey ?? Field_list.zGenerateListItemKey()
+
+         // get position
+         let at: number = p.at ?? this.items_.length
+         if (at < 0) at = this.items_.length + at
+
+         // should we crash instead ?
+         if (at < 0) {
+            console.warn(`[🔶] field ${this.zPathExt} tried to insert a value at index ${at}; clamping to 0`)
+            at = 0
+         }
+         if (at > this.items_.length) {
+            console.warn(`[🔶] field ${this.zPathExt} tried to insert a value at index ${at} (length=${this.items_.length}); clamping to ${this.items_.length}`) // prettier-ignore
+            at = this.items_.length
+         }
+
+         this.zPatchSerial((draft) => {
+            if (draft.items_ == null || draft.keys == null) {
                if (at !== 0) throw new Error('❌ Field_list is not sparsed')
                draft.items_ = [hole]
+               draft.keys = [itemId]
             } else {
                draft.items_.splice(at, 0, hole)
+               draft.keys.splice(at, 0, itemId)
             }
          })
+
          const schema = this.schemaAt(at) // TODO: evaluate schema in the form loop
-         const item = schema.instanciate(this.repo, this.root, this, at.toString(), p.serial ?? null)
-         if (p.value) item.value = p.value
-         this.items.splice(at, 0, item)
-         for (let i = at + 1; i < this.items.length; i++) bang(this.items[i]).mountKey = i.toString()
-         // 👉 lists are assume not to be sparsed         ^^^^
+         const item = schema.instanciate(this.zRepo, this.zRoot, this, itemId, p.serial ?? null)
+         if (p.value !== undefined) item.zValue = p.value
+         if (p.valueExt !== undefined) item.zSet(p.valueExt)
+
+         this.items_.splice(at, 0, item)
+         // 👉 lists are assumed not to be sparsed        ^^^^
          return item
       })
    }
@@ -603,30 +774,29 @@ export class Field_list<T extends BaseSchema> //
       /** new index in the list to move the item to */
       newIndex: number,
    ): void {
+      if (this.zSerial.items_ == null || this.zSerial.keys == null) return console.log(`[🔶] list.moveItem: list is not set`) // prettier-ignore
       if (oldIndex === newIndex) return console.log(`[🔶] list.moveItem: oldIndex === newIndex`)
-      if (oldIndex < 0 || oldIndex >= this.length)
-         return console.log(`[🔶] list.moveItem: oldIndex out of bounds`)
-      if (newIndex < 0 || newIndex >= this.length)
-         return console.log(`[🔶] list.moveItem: newIndex out of bounds`)
+      if (oldIndex < 0 || oldIndex >= this.length) return console.log(`[🔶] list.moveItem: oldIndex out of bounds`) // prettier-ignore
+      if (newIndex < 0 || newIndex >= this.length) return console.log(`[🔶] list.moveItem: newIndex out of bounds`) // prettier-ignore
 
-      this.runInTransaction(() => {
-         this.patchSerial((draft) => {
-            // serials
-            const serials = draft.items_
-            if (serials == null) throw new Error('❌ Field_list is not set yet')
-            serials.splice(newIndex, 0, bang(serials.splice(oldIndex, 1)[0]))
+      // serials
 
-            // instances
-            const instances = this.items
-            instances.splice(newIndex, 0, bang(instances.splice(oldIndex, 1)[0]))
+      this.zRunInTransaction(() => {
+         this.zPatchSerial((draft) => {
+            const items = draft.items_
+            const mountKeys = draft.keys
+            if (items == null || mountKeys == null) return // should never be the case
 
-            // update mountKeys
-            const minIndex = Math.min(oldIndex, newIndex)
-            const maxIndex = Math.max(oldIndex, newIndex)
-            for (let ix = minIndex; ix <= maxIndex; ix++) {
-               bang(instances[ix]).mountKey = ix.toString()
-            }
+            const removedItems = items.splice(oldIndex, 1)
+            const removedKeys = mountKeys.splice(oldIndex, 1)
+
+            items.splice(newIndex, 0, bang(removedItems[0]))
+            mountKeys.splice(newIndex, 0, bang(removedKeys[0]))
          })
+
+         // instances
+         const instances = this.items_
+         instances.splice(newIndex, 0, bang(instances.splice(oldIndex, 1)[0]))
       })
    }
 
@@ -641,26 +811,25 @@ export class Field_list<T extends BaseSchema> //
       start: number,
       /** The number of elements to remove. */
       deleteCount: number = Infinity,
-   ): T['$Field'][] {
+   ): T['{field}'][] {
       if (deleteCount === 0) return []
       if (start >= this.length) return []
-      let deleted: T['$Field'][] = []
-      this.runInTransaction(() => {
+      let deleted: T['{field}'][] = []
+      this.zRunInTransaction(() => {
          // remove from serial
-         this.patchSerial((draft) => {
-            if (draft.items_ == null) throw new Error('❌ Field_list is not set yet')
-            draft.items_.splice(start, deleteCount)
+         this.zPatchSerial((draft) => {
+            const mountKeys = draft.keys
+            const items = draft.items_
+            if (mountKeys == null || items == null) throw new Error('❌ Field_list is not set yet')
+
+            draft.items_?.splice(start, deleteCount)
+            draft.keys?.splice(start, deleteCount)
          })
          // remove from instance list
-         deleted = this.items.splice(start, deleteCount)
+         deleted = this.items_.splice(start, deleteCount)
 
          // dispose every removed children
-         for (const x of deleted) x.disposeTree()
-
-         // update mountKeys of every children after the removal start index
-         for (let ix = start; ix < this.items.length; ix++) {
-            bang(this.items[ix]).mountKey = ix.toString()
-         }
+         for (const x of deleted) x.zDisposeTree()
       })
       return deleted
    }
@@ -669,14 +838,14 @@ export class Field_list<T extends BaseSchema> //
     * Removes all elements from the array and
     * @returns An array containing the elements that were deleted.
     */
-   removeAllItems(): T['$Field'][] {
+   removeAllItems(): T['{field}'][] {
       // ensure list is not empty
       if (this.length === 0) {
          console.log(`[🔶] list.removeAllItems: list is already empty`)
          return []
       }
       // ensure list is not at min len already
-      const minLen = this.config.min ?? 0
+      const minLen = this.zConfig.min ?? 0
       if (this.length <= minLen) {
          console.log(`[🔶] list.removeAllItems: list is already at min lenght`)
          return []
@@ -689,9 +858,9 @@ export class Field_list<T extends BaseSchema> //
       // })
    }
 
-   removeItem(item: T['$Field']): Maybe<T['$Field']> {
+   removeItem(item: T['{field}']): Maybe<T['{field}']> {
       // ensure item is in the list
-      const i = this.items.indexOf(item)
+      const i = this.items_.indexOf(item)
       if (i === -1) {
          // 💬 2024-07-11 rvion: should we throw
          return void console.log(`[🔶] list.removeItem: item not found`)
@@ -701,22 +870,234 @@ export class Field_list<T extends BaseSchema> //
    }
 
    pop(): void {
-      this.removeItemAt(this.items.length - 1)
+      this.removeItemAt(this.items_.length - 1)
    }
 
    /**
     * Removes the first element from an array and returns it.
     * If the array is empty, undefined is returned and the array is not modified.
     */
-   shift(): Maybe<T['$Field']> {
+   shift(): Maybe<T['{field}']> {
       return this.removeItemAt(0)
    }
 
-   removeItemAt(i: number): Maybe<T['$Field']> {
+   removeItemAt(i: number): Maybe<T['{field}']> {
       if (this.length < i) return null
       return this.splice(i, 1)[0]
+   }
+
+   // #region Patches
+   public static readonly patchedSerialPaths: readonly string[] = Object.freeze(['keys_'])
+
+   protected override zGenerateOwnPatches(referenceField: this): Field_list_patch<T>[] {
+      const patches: Field_list_patch<T>[] = []
+      const thisSerials = this.zSerial.items_ ?? []
+
+      const refMountKeys = referenceField.zSerial.keys ?? []
+      const refMountKeysSet = new Set(refMountKeys)
+
+      const thisMountKeys = this.zSerial.keys ?? []
+      const thisMountKeysSet = new Set(thisMountKeys)
+
+      const added = thisMountKeys
+         .map((mountKey, ix) => ({
+            mountKey,
+            serial: thisSerials[ix] as T['{serial}'],
+         }))
+         // It's easier to filter afterwards, because the map function needs the index
+         // to get the serial
+         .filter(({ mountKey }) => !refMountKeysSet.has(mountKey))
+
+      const removed = refMountKeys.filter((mountKey) => !thisMountKeysSet.has(mountKey))
+
+      const inCommonKeysThisSorted = thisMountKeys.filter((mountKey) => refMountKeysSet.has(mountKey))
+      const inCommonKeysRefSorted = refMountKeys.filter((mountKey) => thisMountKeysSet.has(mountKey))
+
+      patches.push(
+         ...removed.map(
+            (id): Field_list_patch_remove => ({
+               op: 'remove',
+               key: id,
+               fieldPath: this.zPath,
+               fieldType: 'list',
+            }),
+         ),
+      )
+
+      if (inCommonKeysThisSorted.some((id, ix) => inCommonKeysRefSorted[ix] !== id)) {
+         patches.push({
+            op: 'move',
+            order: inCommonKeysThisSorted,
+            fieldPath: this.zPath,
+            fieldType: 'list',
+         })
+      }
+
+      patches.push(
+         ...added.map(
+            ({ mountKey, serial }): Field_list_patch_insert<T> => ({
+               op: 'insert',
+               key: mountKey,
+               order: thisMountKeys,
+               value: serial,
+               fieldPath: this.zPath,
+               fieldType: 'list',
+            }),
+         ),
+      )
+
+      return patches
+   }
+
+   protected override zApplyOwnPatches(patches: Field_list_patch<T>[]): void {
+      if (patches.length === 0) return
+
+      this.zRunInTransaction(() => {
+         this.zPatchSerial((draft) => {
+            patches.forEach((patch) => {
+               const thisMountKeys = draft.keys
+               const items = draft.items_
+               if (isPatchRemove(patch)) {
+                  if (items == null || thisMountKeys == null) return
+                  const index = thisMountKeys.indexOf(patch.key)
+                  if (index === -1) return
+
+                  items.splice(index, 1)
+                  thisMountKeys.splice(index, 1)
+               } else if (isPatchMove(patch)) {
+                  if (items == null || thisMountKeys == null) return
+
+                  const currentIndexByKey = new Map(thisMountKeys.map((key, ix) => [key, ix]))
+
+                  const patchIndices = new Map(patch.order.map((key, ix) => [key, ix]))
+
+                  const newMountKeys = thisMountKeys.sort((a, b): number => {
+                     let aNewIndex = patchIndices.get(a)
+                     let bNewIndex = patchIndices.get(b)
+
+                     if (aNewIndex != null && bNewIndex != null) return aNewIndex - bNewIndex
+                     if (aNewIndex == null && bNewIndex == null)
+                        return currentIndexByKey.get(a)! - currentIndexByKey.get(b)!
+
+                     if (aNewIndex == null) aNewIndex = estimateIndex(a, patchIndices, thisMountKeys)
+                     if (bNewIndex == null) bNewIndex = estimateIndex(b, patchIndices, thisMountKeys)
+
+                     return aNewIndex - bNewIndex
+                  })
+
+                  draft.keys = newMountKeys
+                  draft.items_ = newMountKeys.map((id) => items[currentIndexByKey.get(id)!]!)
+               } else if (isPatchInsert(patch)) {
+                  const newItems = items ?? []
+                  const newMountKeys = thisMountKeys ?? []
+                  draft.keys = newMountKeys
+                  draft.items_ = newItems
+
+                  const previousIndexByMountKey = new Map(newMountKeys.map((key, ix) => [key, ix]))
+                  if (previousIndexByMountKey.get(patch.key) != null) return // Weird case
+
+                  const indexEstimation = Math.min(
+                     newItems.length ?? 0,
+                     Math.max(0, Math.ceil(estimateIndex(patch.key, previousIndexByMountKey, patch.order))),
+                  )
+
+                  newMountKeys.splice(indexEstimation, 0, patch.key)
+                  newItems.splice(indexEstimation, 0, patch.value as T['{serial}'])
+               } else {
+                  throw new Error('❌ Field_list.applyOwnPatches: unknown patch')
+               }
+            })
+         })
+
+         for (const patch of patches) {
+            if (isPatchRemove(patch)) {
+               const removedIndex = this.items_.findIndex((i) => i.zMountKey === patch.key)
+
+               if (removedIndex > -1) {
+                  const removedItem = this.items_.splice(removedIndex, 1)[0]!
+                  removedItem.zDisposeTree()
+               }
+            } else if (isPatchInsert(patch)) {
+               const index = this.zSerial.keys!.indexOf(patch.key)
+
+               if (this.items_.find((i) => i.zMountKey === patch.key)) return // already exists, weird case
+               if (index == -1) throw new Error('❌ Field_list.applyOwnPatches: patch.key not found')
+
+               this.zRECONCILE({
+                  mountKey: patch.key,
+                  correctChildSchema: this.schemaAt(index),
+                  existingChild: null,
+                  targetChildSerial: patch.value as Field_list_serial<T>,
+                  attach: (sub) => {
+                     this.items_.push(sub)
+                  },
+               })
+            }
+         }
+
+         const itemsByKey = new Map(this.items_.map((i) => [i.zMountKey, i]))
+         this.items_.length = 0
+         this.items_.push(...(this.zSerial.keys ?? []).map((key) => itemsByKey.get(key)!))
+      })
    }
 }
 
 // DI
 registerFieldClass('list', Field_list)
+Field_list satisfies FieldConstructor<Field_list<any>>
+
+function isSerialList(serial: any): serial is Field_list_serial<any> {
+   return serial.$ === 'list'
+}
+
+function isSerialWithMountKeys(serial: any): serial is Field_list_serial<any> {
+   return (
+      isSerialList(serial) &&
+      (serial.items_ == null || serial.keys != null) &&
+      serial.items_?.length === serial.keys?.length
+   )
+}
+
+function isPatchInsert<T extends CSchema>(patch: Field_list_patch<T>): patch is Field_list_patch_insert<T> {
+   return patch.op === 'insert'
+}
+
+function isPatchRemove<T extends CSchema>(patch: Field_list_patch<T>): patch is Field_list_patch_remove {
+   return patch.op === 'remove'
+}
+
+function isPatchMove<T extends CSchema>(patch: Field_list_patch<T>): patch is Field_list_patch_move {
+   return patch.op === 'move'
+}
+
+function estimateIndex(
+   key: Field_list_ItemID,
+   targetIndices: Map<Field_list_ItemID, number>,
+   sourceOrder: Field_list_ItemID[],
+): number {
+   const sourceIndex = sourceOrder.indexOf(key)
+   if (sourceIndex === -1) throw new Error('❌ Field_list.generateCorrespondingIndex: key not found')
+
+   let leftIndex = -1
+   let rightIndex = targetIndices.size
+
+   for (let ix = sourceIndex - 1; ix >= 0; ix -= 1) {
+      const key = sourceOrder[ix]!
+      const index = targetIndices.get(key)
+      if (index != null) {
+         leftIndex = index + 1
+         break
+      }
+   }
+
+   for (let ix = sourceIndex + 1; ix < sourceOrder.length; ix += 1) {
+      const key = sourceOrder[ix]!
+      const index = targetIndices.get(key)
+      if (index != null) {
+         rightIndex = index - 1
+         break
+      }
+   }
+
+   return (leftIndex + rightIndex) / 2
+}

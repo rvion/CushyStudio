@@ -1,7 +1,5 @@
 import type { ReactNode } from 'react'
 
-import { observer } from 'mobx-react-lite'
-
 import { Ikon } from '../icons/iconHelpers'
 import { exhaust } from '../utils/exhaust'
 
@@ -15,7 +13,7 @@ const messageIcon = (type: MessageType): ReactNode => {
    return null
 }
 
-export const LegacyMessageUI = observer(function LegacyMessageUI_(p: {
+export const LegacyMessageUI = obs(function LegacyMessageUI_(p: {
    //
    type: MessageType
    header?: ReactNode

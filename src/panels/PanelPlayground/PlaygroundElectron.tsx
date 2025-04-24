@@ -1,9 +1,7 @@
-import { observer } from 'mobx-react-lite'
-
 import { Button } from '../../csuite/button/Button'
 import { toastInfo } from '../../csuite/utils/toasts'
 
-export const PlaygroundElectronUI = observer(function PlaygroundElectronUI_(p: {}) {
+export const PlaygroundElectronUI = obs(function PlaygroundElectronUI_(p: {}) {
    return (
       <div>
          <Button

@@ -1,17 +1,15 @@
 import { _cushySDXLLayout } from './_cushySDXLLayout'
 import { _cushySDXLRun } from './_cushySDXLRun'
-import { type $CushySDXLUI, _cushySDXLSchema } from './_cushySDXLSchema'
+import { CushySDXLSchema } from './_cushySDXLSchema'
 
-export type FIELD = $CushySDXLUI['$Field']
-
-app<FIELD>({
+app<CushySDXLSchema>({
    metadata: {
       name: 'Cushy SDXL',
       illustration: 'library/built-in/_illustrations/mc.jpg',
       description: 'An example app to play with various stable diffusion technologies. Feel free to contribute improvements to it.', // prettier-ignore
    },
-   ui: _cushySDXLSchema,
-   layout: _cushySDXLLayout(),
+   ui: CushySDXLSchema.schema,
+   layout: _cushySDXLLayout,
    run: _cushySDXLRun,
 })
 
@@ -21,7 +19,7 @@ const noobAIUrls = {
    noobAI2: 'https://noobai.com',
 }
 
-app<FIELD>({
+app<CushySDXLSchema>({
    metadata: {
       name: 'NoobAI',
       illustration: 'library/built-in/noobai.webp',
@@ -32,7 +30,7 @@ app<FIELD>({
          `[Usage Guide](https://civitai.com/articles/8962/noobai-xl-quick-guide)`,
       ].join('\n'),
    },
-   ui: _cushySDXLSchema,
-   layout: _cushySDXLLayout(),
+   ui: CushySDXLSchema.schema,
+   layout: _cushySDXLLayout,
    run: _cushySDXLRun,
 })

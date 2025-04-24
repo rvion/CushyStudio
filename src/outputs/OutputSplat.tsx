@@ -1,10 +1,7 @@
 import type { MediaSplatL } from '../models/MediaSplat'
 import type { StepL } from '../models/Step'
 
-import { observer } from 'mobx-react-lite'
-
-
-export const OutputSplatPreviewUI = observer(function OutputImagePreviewUI_(p: {
+export const OutputSplatPreviewUI = obs(function OutputImagePreviewUI_(p: {
    //
    step?: Maybe<StepL>
    output: MediaSplatL
@@ -21,10 +18,7 @@ export const OutputSplatPreviewUI = observer(function OutputImagePreviewUI_(p: {
    )
 })
 
-export const OutputSplatUI = observer(function OutputSplatUI_(p: {
-   step?: Maybe<StepL>
-   output: MediaSplatL
-}) {
+export const OutputSplatUI = obs(function OutputSplatUI_(p: { step?: Maybe<StepL>; output: MediaSplatL }) {
    return (
       <iframe //
          tabIndex={-1}

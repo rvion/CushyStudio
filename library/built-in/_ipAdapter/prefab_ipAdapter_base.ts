@@ -12,18 +12,18 @@ import { ui_ipadapter_modelSelection } from './ui_ipadapter_modelSelection'
 
 // 🅿️ IPAdapter Basic ===================================================
 
-export type UI_subform_IPAdapter = X.XGroup<
+export type UI_subform_IPAdapter = Z.Group<
    {
-      models: X.XGroup<{
-         cnet_model_name: X.XEnum<'IPAdapter_plus.IPAdapterModelLoader.ipadapter_file'>
-         clip_name: X.XEnum<'CLIPVisionLoader.clip_name'>
+      models: Z.Group<{
+         cnet_model_name: Z.Enum<'IPAdapter_plus.IPAdapterModelLoader.ipadapter_file'>
+         clip_name: Z.Enum<'CLIPVisionLoader.clip_name'>
       }>
-      help: X.XMarkdown
+      help: Z.Markdown
    } & UI_subform_IPAdapter_common
 >
 
 export function ui_subform_IPAdapter(): UI_subform_IPAdapter {
-   const form = getCurrentForm()
+   const form = getBuilder()
    return form
       .group({
          label: 'IPAdapter',

@@ -45,12 +45,10 @@ let _styleElement: HTMLStyleElement | null = null
 function getStyleElement(): HTMLStyleElement {
    if (_styleElement != null) return _styleElement
    // let styleElement = document.querySelector('[title="dynamic-theme-css"]') as HTMLStyleElement
-   if (_styleElement) {
-      _styleElement = _styleElement
-   } else {
-      _styleElement = _styleElement ?? document.createElement('style')
-      _styleElement.title = 'dynamic-theme-css'
-      document.head.appendChild(_styleElement)
-   }
+
+   _styleElement = document.createElement('style')
+   _styleElement.title = 'dynamic-theme-css'
+   document.head.appendChild(_styleElement)
+
    return _styleElement!
 }

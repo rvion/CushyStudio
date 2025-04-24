@@ -1,79 +1,82 @@
-import type { CompiledRenderProps } from '../presenters/RenderTypes'
+import type { RenderPropsCompiled } from '../presenters/RenderPropsCompiled'
+import type React from 'react'
 import type { ReactNode } from 'react'
-
-import { observer } from 'mobx-react-lite'
 
 import { fieldActionMenu } from '../../csuite/form/fieldActionMenu'
 import { WidgetLabelContainerUI } from '../../csuite/form/WidgetLabelContainerUI'
 import { Frame } from '../../csuite/frame/Frame'
 import { useProvenance } from '../../csuite/provenance/Provenance'
 import { RevealUI } from '../../csuite/reveal/RevealUI'
-import { AnimatedSizeUI } from '../../csuite/smooth-size/AnimatedSizeUI'
+import { renderFCOrNode, renderFCOrNodeWithWrapper } from '../../csuite/utils/renderFCOrNode'
 import { WidgetPresetsUI } from '../catalog/Presets/WidgetPresets'
 
-const CushyShellUI = observer(function CushySHell(
-   p: CompiledRenderProps & {
-      // card?: boolean
+const CushyShellUI = obs(function CushySHell(
+   p: RenderPropsCompiled & {
       border?: boolean
-      HEADER: ReactNode
+      HEADER: React.JSX.Element
    },
 ) {
    const field = p.field
-   const utils = p.presenter.utils
    const provenance = useProvenance()
    const isCollapsed = ((): boolean => {
       if (p.collapsible != null) return p.collapsible // UI config most important
-      if (!p.field.isCollapsible) return false
-      return field.isCollapsed
+      if (!p.field.zIsCollapsible) return false
+      return field.zIsCollapsed
    })()
-   if (p.field.isHidden && !p.shouldShowHiddenFields) return null
+   if (p.field.zIsHidden && !p.shouldShowHiddenFields) return null
 
-   const theme = cushy.preferences.theme.value
+   const theme = cushy.preferences.theme.zValue
 
    let WUI: ReactNode = (
       <Frame
          className={p.className ?? undefined}
-         tw={['UI-WidgetWithLabel !border-b-0 !border-l-0 !border-r-0']}
+         tw={['UI-WidgetWithLabel !border-b-0 !border-l-0 !border-r-0', p.classNameForShell]}
          roundness={theme.global.roundness}
-         base={field.background}
+         // base={field.background}
          // border={p.card ? 1 : field.border}
-         {...p.field.config.box}
+         {...p.field.zConfig.box}
       >
+         {renderFCOrNode(p.OnTop, { field })}
          <RevealUI
             tw='w-full'
             trigger={'rightClick'}
             relativeTo='mouse'
-            hideTriggers={{
-               backdropClick: true,
-               escapeKey: true,
-               blurAnchor: true,
-               clickAnchor: true,
-            }}
+            hideTriggers={{ backdropClick: true, escapeKey: true, blurAnchor: true, clickAnchor: true }}
             content={() => <fieldActionMenu.MenuEntriesUI field={p.field} provenance={provenance} />}
          >
-            {utils.renderFCOrNodeWithWrapper(p.HEADER, {}, p.Head, p)}
+            {/* <div tw='flex grow'> */}
+            {renderFCOrNode(
+               p.Head,
+               p, //
+               renderFCOrNode(p.HEADER, {}),
+            )}
          </RevealUI>
          {isCollapsed
             ? null
-            : utils.renderFCOrNodeWithWrapper(p.Body, p, p.ContainerForBody, {
+            : renderFCOrNodeWithWrapper(p.Body, p, p.ContainerForBody, {
                  className: p.classNameAroundBodyAndHeader ?? undefined,
                  border: p.border,
               })}
-
          {/* ERRORS  */}
-         {utils.renderFCOrNode(p.Errors, { field })}
+         {renderFCOrNode(p.Errors, { field })}
+         {renderFCOrNode(p.OnBottom, { field })}
       </Frame>
    )
 
-   WUI = <AnimatedSizeUI>{WUI}</AnimatedSizeUI>
-   if (p.Decoration) WUI = utils.renderFCOrNode(p.Decoration, { children: WUI })
+   // WUI = <AnimatedSizeUI>{WUI}</AnimatedSizeUI>
+   if (p.Decoration != null)
+      // WUI = renderFCOrNode(p.Decoration, {
+      WUI = renderFCOrNode(p.Decoration, {
+         className: p.classNameForShell ?? undefined,
+         children: WUI,
+         rp: p,
+      })
    return WUI
 })
 
-export const ShellCushyLeftUI = observer(function ShellCushyLeft(p: CompiledRenderProps) {
+export const ShellCushyLeftUI = obs(function ShellCushyLeft(p: RenderPropsCompiled) {
    const field = p.field
    const originalField = field /* 🔴 */
-   const utils = p.presenter.utils
 
    return (
       <CushyShellUI // 1️⃣
@@ -81,26 +84,26 @@ export const ShellCushyLeftUI = observer(function ShellCushyLeft(p: CompiledRend
          HEADER={
             <>
                {/* prettier-ignore */}
-               <WidgetLabelContainerUI tooltip={field.config.tooltip} justify>
-                        {utils.renderFCOrNode(p.Indent,      { depth: field.depth })}
-                        {utils.renderFCOrNode(p.DragKnob,    { field })}
-                        {utils.renderFCOrNode(p.Caret,       { field, placeholder: true })}
-                        {utils.renderFCOrNode(p.Icon,        { field, className: 'mr-1' })}
-                        {utils.renderFCOrNode(p.Title,       { field })}
-                        {utils.renderFCOrNode(p.Presets,     { field })}
-                        {utils.renderFCOrNode(p.DebugID,     { field })}
-                    </WidgetLabelContainerUI>
-               {utils.renderFCOrNode(p.Toogle, { field: originalField, className: 'ml-0.5' })}
+               <WidgetLabelContainerUI tooltip={field.zDescription} justify>
+                  {renderFCOrNode(p.Indent,      { depth: field.zDepth })}
+                  {renderFCOrNode(p.DragKnob,    { field })}
+                  {renderFCOrNode(p.Icon,        { field, className: 'mr-1' })}
+                  {renderFCOrNode(p.Caret,       { ...p, placeholder: true })}
+
+                  {renderFCOrNode(p.Title,       { field })}
+                  {renderFCOrNode(p.Presets,     { field })}
+                  {renderFCOrNode(p.DebugID,     { field })}
+               </WidgetLabelContainerUI>
+               {renderFCOrNode(p.Toogle, { field: originalField, className: 'ml-0.5' })}
             </>
          }
       />
    )
 })
 
-export const ShellCushyList1UI = observer(function ShellCushyList1(p: CompiledRenderProps) {
+export const ShellCushyList1UI = obs(function ShellCushyList1(p: RenderPropsCompiled) {
    const field = p.field
    const originalField = field /* 🔴 */
-   const utils = p.presenter.utils
 
    return (
       <CushyShellUI // 1️⃣
@@ -108,26 +111,25 @@ export const ShellCushyList1UI = observer(function ShellCushyList1(p: CompiledRe
          HEADER={
             <>
                {/* prettier-ignore */}
-               <WidgetLabelContainerUI tooltip={field.config.tooltip} justify>
-                        {utils.renderFCOrNode(p.Indent,      { depth: field.depth })}
-                        {utils.renderFCOrNode(p.DragKnob,    { field })}
-                        {utils.renderFCOrNode(p.Caret,       { field, placeholder: true })}
-                        {utils.renderFCOrNode(p.Icon,        { field, className: 'mr-1' })}
-                        {utils.renderFCOrNode(p.Toogle, { field: originalField })}
-                        {utils.renderFCOrNode(p.Title,       { field })}
-                        {utils.renderFCOrNode(p.DebugID,     { field })}
-                    </WidgetLabelContainerUI>
-               {utils.renderFCOrNode(p.Presets, { field })}
+               <WidgetLabelContainerUI tooltip={field.zDescription} justify>
+                  {renderFCOrNode(p.Indent,      { depth: field.zDepth })}
+                  {renderFCOrNode(p.DragKnob,    { field })}
+                  {renderFCOrNode(p.Caret,       { field, placeholder: true })}
+                  {renderFCOrNode(p.Icon,        { field, className: 'mr-1' })}
+                  {renderFCOrNode(p.Toogle, { field: originalField })}
+                  {renderFCOrNode(p.Title,       { field })}
+                  {renderFCOrNode(p.DebugID,     { field })}
+               </WidgetLabelContainerUI>
+               {renderFCOrNode(p.Presets, { field })}
             </>
          }
       />
    )
 })
 
-export const ShellCushyRightUI = observer(function ShellCushyRight(p: CompiledRenderProps) {
+export const ShellCushyRightUI = obs(function ShellCushyRight(p: RenderPropsCompiled) {
    const field = p.field
    const originalField = field /* 🔴 */
-   const utils = p.presenter.utils
 
    return (
       <CushyShellUI // 2️⃣2️⃣
@@ -135,31 +137,30 @@ export const ShellCushyRightUI = observer(function ShellCushyRight(p: CompiledRe
          HEADER={
             <>
                <WidgetLabelContainerUI //
-                  tooltip={field.config.tooltip}
+                  tooltip={field.zDescription}
                   justify
                >
-                  {utils.renderFCOrNode(p.Indent /*    */, { depth: field.depth })}
-                  {utils.renderFCOrNode(p.DragKnob /*  */, { field })}
-                  {utils.renderFCOrNode(p.Caret /*     */, { field, className: 'mr-auto' })}
-                  {utils.renderFCOrNode(p.Presets /*   */, { field, className: 'self-start mr-2' })}
+                  {renderFCOrNode(p.Indent /*    */, { depth: field.zDepth })}
+                  {renderFCOrNode(p.DragKnob /*  */, { field })}
+                  {renderFCOrNode(p.Caret /*     */, { field, caretClassName: 'mr-auto' })}
+                  {renderFCOrNode(p.Presets /*   */, { field, className: 'self-start mr-2' })}
                   {/* {p.field.isCollapsible ? 'collapsible' : 'not collapsible'} */}
                   {/* {!p.field.isCollapsed && !p.field.isCollapsible && <div tw='mr-auto' />} */}
                   <div tw='mr-auto' />
-                  {utils.renderFCOrNode(p.Title /*     */, { field, className: 'mr-2' })}
-                  {utils.renderFCOrNode(p.DebugID /*   */, { field })}
-                  {utils.renderFCOrNode(p.Icon /*      */, { field, className: 'mx-1' })}
+                  {renderFCOrNode(p.Title /*     */, { field, className: 'mr-2' })}
+                  {renderFCOrNode(p.DebugID /*   */, { field })}
+                  {renderFCOrNode(p.Icon /*      */, { field, className: 'mx-1' })}
                </WidgetLabelContainerUI>
-               {utils.renderFCOrNode(p.Toogle, { field: originalField })}
+               {renderFCOrNode(p.Toogle, { field: originalField })}
             </>
          }
       />
    )
 })
 
-export const ShellCushyFluidUI = observer(function ShellCushyFluid(p: CompiledRenderProps) {
+export const ShellCushyFluidUI = obs(function ShellCushyFluid(p: RenderPropsCompiled) {
    const field = p.field
    const originalField = field /* 🔴 */
-   const utils = p.presenter.utils
 
    return (
       <CushyShellUI // 3️⃣3️⃣3️⃣
@@ -167,16 +168,16 @@ export const ShellCushyFluidUI = observer(function ShellCushyFluid(p: CompiledRe
          HEADER={
             <>
                <WidgetLabelContainerUI //
-                  tooltip={field.config.tooltip}
+                  tooltip={field.zDescription}
                   justify={false}
                >
-                  {utils.renderFCOrNode(p.Indent, /*    */ { depth: field.depth })}
-                  {utils.renderFCOrNode(p.DragKnob, /*  */ { field })}
-                  {utils.renderFCOrNode(p.Caret, /*     */ { field })}
-                  {utils.renderFCOrNode(p.Toogle, /*    */ { field: originalField, className: 'mr-1' })}
-                  {utils.renderFCOrNode(p.Icon, /*      */ { field, className: 'mr-1' })}
-                  {utils.renderFCOrNode(p.Title, /* */ { field })}
-                  {utils.renderFCOrNode(p.DebugID, /*   */ { field })}
+                  {renderFCOrNode(p.Indent, /*    */ { depth: field.zDepth })}
+                  {renderFCOrNode(p.DragKnob, /*  */ { field })}
+                  {renderFCOrNode(p.Caret, /*     */ { field })}
+                  {renderFCOrNode(p.Toogle, /*    */ { field: originalField, className: 'mr-1' })}
+                  {renderFCOrNode(p.Icon, /*      */ { field, className: 'mr-1' })}
+                  {renderFCOrNode(p.Title, /* */ { field })}
+                  {renderFCOrNode(p.DebugID, /*   */ { field })}
                   <WidgetPresetsUI field={field} />
                </WidgetLabelContainerUI>
             </>

@@ -1,5 +1,5 @@
-import { describe, expect, it } from 'bun:test'
 import { makeAutoObservable, observable } from 'mobx'
+import { describe, expect, it } from 'vitest'
 
 import { expectPotato } from '../model/TESTS/utils/expectJSON'
 import { potatoClone } from './potatoClone'
@@ -8,12 +8,12 @@ describe('smartClone', () => {
    //
    it('can detect basic objects', () => {
       // NOT object
-      expect([].constructor === Object).toBe(false)
-      expect(new (class Foo {})().constructor === Object).toBe(false)
+      expect([].constructor).not.toBe(Object)
+      expect(new (class Foo {})().constructor).not.toBe(Object)
 
       // YES object
-      expect({ a: 1 }.constructor === Object).toBe(true)
-      expect(observable({ a: 1 }).constructor === Object).toBe(true)
+      expect({ a: 1 }.constructor).toBe(Object)
+      expect(observable({ a: 1 }).constructor).toBe(Object)
    })
 
    it('works with stuff that have getters', () => {
@@ -26,7 +26,7 @@ describe('smartClone', () => {
       ).toEqual({ a: { x: 1 } })
    })
 
-   it(`DISCARD proxy or getters `, () => {
+   it(`DISCARD proxy or getters`, () => {
       const x = {
          foo: 1,
          get bar(): number {
@@ -35,7 +35,7 @@ describe('smartClone', () => {
       }
       const y = potatoClone(x)
       y.foo = 2
-      expect(y.bar).toEqual(1)
+      expect(y.bar).toBe(1)
    })
 
    it('can somewhat-clone most stuff', () => {
@@ -66,10 +66,10 @@ describe('smartClone', () => {
       }
       const B = potatoClone(A)
 
-      expect(A === B).toBe(false)
-      expect(A.c === B.c).toBe(false)
-      expect(A.fn1 === B.fn1).toBe(true)
-      expect(A.fn2 === B.fn2).toBe(true)
+      expect(A).not.toBe(B)
+      expect(A.c).not.toBe(B.c)
+      expect(A.fn1).toBe(B.fn1)
+      expect(A.fn2).toBe(B.fn2)
 
       expectPotato(A).toEqual(B)
       expect(A.a).toEqual(B.a)

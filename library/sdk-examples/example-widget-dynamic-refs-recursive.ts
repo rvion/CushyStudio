@@ -1,15 +1,17 @@
-import type { CushySchema } from '../../src/controls/CushySchema'
+import type { CSchema } from '../../src/controls/CSchema.cushy'
 import type { Field_choices } from '../../src/csuite/fields/choices/FieldChoices'
 import type { Field_group } from '../../src/csuite/fields/group/FieldGroup'
 import type { Field_image } from '../../src/csuite/fields/image/FieldImage'
 import type { Field_list } from '../../src/csuite/fields/list/FieldList'
 
-type ListItem = X.XGroup<{
-   uid: X.XString /* UID */
-   value: X.XChoice<{
-      image: X.XImage
-      latent: X.XGroup<{ size: X.XSize; batch: X.XNumber }>
-      process: X.XSelectOne_<string /* UID */> // <---- recursion here
+import { sb } from '../../src/csuite/simple/SimpleFactory'
+
+type ListItem = Z.Group<{
+   uid: Z.String /* UID */
+   value: Z.Choice<{
+      image: Z.Image
+      latent: Z.Group<{ size: Z.Size; batch: Z.Number }>
+      process: Z.XSelectOne_<string /* UID */> // <---- recursion here
    }>
 }>
 
@@ -23,22 +25,20 @@ app({
             // if choices is a function, the form root is injected as first parameter
             //                           VVVVVVVVVVV
             process: b.selectOneOptionId((self) => {
-               const formRoot = self.root as Field_group<any>
+               const formRoot = self.zRoot as Field_group<any>
 
                // 🔶 null when the form is not yet fully initialized
-               if (formRoot.fields.samplerUI == null) return []
+               if (formRoot.zFields.samplerUI == null) return []
 
                // 🔶 self-referencing => typescript can't infer the type here
                // so to make sure code is correct, we need to cast it to the correct type
                // (and yes, types are slighly verbose for now)
-               const steps = formRoot.fields.samplerUI as Field_list<
-                  CushySchema<
-                     Field_choices<{
-                        sampler_output_abc_asdf: CushySchema<X.SelectOne_<any>>
-                        empty_latent: CushySchema<Field_group<any>>
-                        pick_image: CushySchema<Field_image>
-                     }>
-                  >
+               const steps = formRoot.zFields.samplerUI as Field_list<
+                  Z.Choice<{
+                     sampler_output_abc_asdf: Z.OneOf_<any>
+                     empty_latent: Z.Record<any>
+                     pick_image: Z.Image
+                  }>
                >
 
                // return a list of items
@@ -50,11 +50,11 @@ app({
                   // 🔶 probably useless check now (bis)
                   if (_selectOne == null) console.log(`[🔴] err 2: firstActiveBranchWidget is null`, _selectOne) // prettier-ignore
 
-                  const _actualChoice = _selectOne?.value
+                  const _actualChoice = _selectOne?.zValue
                   return {
-                     id: _selectOne?.id ?? 'error',
+                     id: _selectOne?.zUid ?? 'error',
                      disabled: _actualChoice == null,
-                     name: _selectOne?.type ?? '❌ ERROR',
+                     name: _selectOne?.zType ?? '❌ ERROR',
                      label: `${ix + 1}th (${choiceWidget.firstActiveBranchName ?? '❓'})`,
                   }
                })

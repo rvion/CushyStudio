@@ -1,44 +1,6 @@
-import type { FieldTypes } from './$FieldTypes'
+import type { Field } from './Field'
 import type { Result } from './Result'
 import type { ValidationError } from './ValidationError'
-
-/**
- * this class is just a tiny wrapper around
- * a field that is not yet validated, so we are forced to run validation
- * before accessing a field
- */
-export class Draft<T extends FieldTypes> implements DraftLike<T> {
-   constructor(private field: T['$Field']) {}
-
-   // 🔶 TEMPORARY HACK UNTIL RENDER BRANCH
-   getFieldUnchecked(): T['$Field'] {
-      return this.field
-   }
-
-   // FIELDS ------------------------------------------------------------
-   // 🧪
-   validate(): Result<T['$Field'], ValidationError> {
-      return this.field.validate()
-   }
-
-   validateOrNull(): Maybe<T['$Field']> {
-      return this.field.validateOrNull()
-   }
-
-   validateOrThrow(): T['$Field'] {
-      return this.field.validateOrThrow()
-   }
-}
-
-// injecting field types into draft, because why not
-export interface Draft<T extends FieldTypes> {
-   $Type: T['$Type']
-   $Config: T['$Config']
-   $Serial: T['$Serial']
-   $Value: T['$Value']
-   $Field: T['$Field']
-   $Unchecked: T['$Unchecked']
-}
 
 /** 🧪 might be useful:
  *    - In function parameters -> enforce early validation by the callee
@@ -67,31 +29,11 @@ export interface Draft<T extends FieldTypes> {
  * 🤔 Might also make `Draft` completely useless if all the methods are defined on fields
  * But maybe we will want draft specific functionally at some point ? Hard to tell
  */
-export interface DraftLike<T extends FieldTypes> {
-   $Type: T['$Type']
-   $Config: T['$Config']
-   $Serial: T['$Serial']
-   $Value: T['$Value']
-   $Field: T['$Field']
-   $Unchecked: T['$Unchecked']
-
+export interface DraftLike<FIELD extends Field> {
    // 🔶 TEMPORARY HACK UNTIL RENDER BRANCH
-   getFieldUnchecked(): T['$Field']
+   zGetFieldUnchecked(): FIELD
 
-   validate(): Result<T['$Field'], ValidationError>
-   validateOrNull(): Maybe<T['$Field']>
-   validateOrThrow(): T['$Field']
+   zValidate(): Result<FIELD, ValidationError>
+   zValidateOrNull(): Maybe<FIELD>
+   zValidateOrThrow(): FIELD
 }
-
-// 💬 2024-09-04 rvion:
-// | we finally decided to go with some explicit type
-// | template ($Unchecked) availalbe in $FieldTypes
-// | instead of:
-// |
-// | ```ts
-// | prettier-ignore
-// | export type PossiblyWrong<T>
-// |     = T extends (infer Item)[] ? PossiblyWrong<Item>[] | null
-// |     : T extends Record<any, any> ? { [key in keyof T]: PossiblyWrong<T[key]> | null } | null
-// |     : Maybe<T>
-// | ```

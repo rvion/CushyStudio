@@ -1,6 +1,6 @@
+import type { Field_selectOne_ } from '../../csuite/fields/selectOne/FieldSelectOne'
 import type { NO_PROPS } from '../../csuite/types/NO_PROPS'
 
-import { observer } from 'mobx-react-lite'
 import { type FC, Fragment } from 'react'
 
 import { openFolderInOS } from '../../app/layout/openExternal'
@@ -17,7 +17,7 @@ export type PreferenceMode = 'hosts' | 'input' | 'interface' | 'legacy' | 'syste
 
 export const PanelPreferences = new Panel({
    name: 'Preferences',
-   icon: 'mdiCog',
+   icon: IKONS.mdiCog,
    category: 'settings',
    widget: (): FC<NO_PROPS> => PanelPreferencesUI,
    header: (p): PanelHeader => ({ title: 'Preferences', icon: undefined }),
@@ -28,7 +28,7 @@ export type PanelPreferencesProps = NO_PROPS
 
 const PreferenceTabs: PreferenceMode[] = ['hosts', 'input', 'interface', 'legacy', 'system', 'theme']
 
-export const PanelPreferencesUI = observer(function Panel_Preferences_(p: PanelPreferencesProps) {
+export const PanelPreferencesUI = obs(function Panel_Preferences_(p: PanelPreferencesProps) {
    const panel = usePanel()
 
    const panelState = panel.usePersistentModel('abcd', (ui) =>
@@ -39,9 +39,9 @@ export const PanelPreferencesUI = observer(function Panel_Preferences_(p: PanelP
       }),
    )
 
-   const modeField = panelState.fields.preferenceMode
-   const page: JSX.Element = ((): JSX.Element => {
-      switch (modeField.value) {
+   const modeField = panelState.preferenceMode
+   const page: React.JSX.Element = ((): React.JSX.Element => {
+      switch (modeField.zValue) {
          case 'hosts': {
             return <PanelComfyHostsUI />
          }
@@ -108,10 +108,10 @@ export const PanelPreferencesUI = observer(function Panel_Preferences_(p: PanelP
    )
 })
 
-const PreferenceTabButtonUI = observer(function PreferenceTabButtonUI_(p: {
+const PreferenceTabButtonUI = obs(function PreferenceTabButtonUI_(p: {
    //
    mode: PreferenceMode
-   field: X.SelectOne_<PreferenceMode>
+   field: Field_selectOne_<PreferenceMode>
 }) {
    return (
       <ToggleButtonUI //
@@ -119,7 +119,7 @@ const PreferenceTabButtonUI = observer(function PreferenceTabButtonUI_(p: {
          tw='!h-10 capitalize'
          value={p.field.is(p.mode)}
          text={p.mode}
-         onValueChange={(_) => p.field.setValue(p.mode)}
+         onValueChange={(_) => p.field.zSetValue(p.mode)}
       />
    )
 })

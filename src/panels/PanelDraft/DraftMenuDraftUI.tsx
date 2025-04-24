@@ -1,16 +1,11 @@
 import type { DraftL } from '../../models/Draft'
 
-import { observer } from 'mobx-react-lite'
-
 import { KEYS } from '../../app/shortcuts/shorcutKeys'
 import { Dropdown } from '../../csuite/dropdown/Dropdown'
 import { MenuDivider } from '../../csuite/dropdown/MenuDivider'
 import { MenuItem } from '../../csuite/dropdown/MenuItem'
 
-export const DraftMenuDraftUI = observer(function DraftMenuDraftUI_(p: {
-   draft: DraftL
-   className?: string
-}) {
+export const DraftMenuDraftUI = obs(function DraftMenuDraftUI_(p: { draft: DraftL; className?: string }) {
    const draft = p.draft
 
    return (
@@ -21,19 +16,19 @@ export const DraftMenuDraftUI = observer(function DraftMenuDraftUI_(p: {
             <>
                <MenuItem
                   label={draft.isFavorite ? 'Un-Favorite' : 'Favorite'}
-                  icon={draft.isFavorite ? 'mdiStarMinus' : 'mdiStar'}
+                  icon={draft.isFavorite ? IKONS.mdiStarMinus : IKONS.mdiStar}
                   onClick={() => draft.setFavorite(!draft.isFavorite)}
                />
 
                <MenuDivider />
                <MenuItem //
                   label='New'
-                  icon='mdiFileDocumentPlus'
+                  icon={IKONS.mdiFileDocumentPlus}
                   onClick={() => draft.app.createDraft()}
                />
                <MenuItem
                   label='Duplicate'
-                  icon='mdiContentCopy'
+                  icon={IKONS.mdiContentCopy}
                   localShortcut={KEYS.duplicateCurrentDraft}
                   onClick={() => draft.duplicateAndFocus()}
                />
@@ -48,7 +43,7 @@ export const DraftMenuDraftUI = observer(function DraftMenuDraftUI_(p: {
                <MenuDivider />
                <MenuItem
                   label='Reset'
-                  icon='mdiUndoVariant'
+                  icon={IKONS.mdiUndoVariant}
                   tooltip='Resets all fields of a Draft to their default value'
                   onClick={() => {
                      const confirm = window.confirm('Are you sure you want to delete this draft?')
@@ -56,12 +51,12 @@ export const DraftMenuDraftUI = observer(function DraftMenuDraftUI_(p: {
                   }}
                />
 
-               {cushy.preferences.interface.value.developerOptions.showMenuItems && (
+               {cushy.preferences.interface.zValue.developerOptions.showMenuItems && (
                   <>
                      <MenuDivider />
                      <MenuItem //
                         label={`Copy ID`}
-                        icon='mdiClipboard'
+                        icon={IKONS.mdiClipboard}
                         tooltip={`Copy draft ID to clipboard\n${draft.id}`}
                         onClick={() => navigator.clipboard.writeText(draft.id)}
                      />
@@ -80,7 +75,7 @@ export const DraftMenuDraftUI = observer(function DraftMenuDraftUI_(p: {
                <MenuDivider />
                <MenuItem
                   label='Delete'
-                  icon='mdiDelete'
+                  icon={IKONS.mdiDelete}
                   onClick={() => {
                      const confirm = window.confirm('Are you sure you want to delete this draft?')
                      if (confirm) draft.delete({})

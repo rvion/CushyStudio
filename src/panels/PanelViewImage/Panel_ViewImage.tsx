@@ -1,6 +1,5 @@
 import type { MediaImageL } from '../../models/MediaImage'
 
-import { observer } from 'mobx-react-lite'
 import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch'
 
 import { Button } from '../../csuite/button/Button'
@@ -20,18 +19,18 @@ export const PanelViewImage = new Panel({
    name: 'Image',
    category: 'outputs',
    widget: (): React.FC<PanelViewImageProps> => PanelViewImageUI,
-   header: (p): PanelHeader => ({ title: 'Image', icon: 'mdiCameraImage' }),
+   header: (p): PanelHeader => ({ title: 'Image', icon: IKONS.mdiCameraImage }),
    def: (): PanelViewImageProps => ({}),
-   icon: 'mdiCameraImage',
+   icon: IKONS.mdiCameraImage,
 })
 
 export const PanelLastImage = new Panel({
    name: 'LastImage',
    category: 'outputs',
    widget: (): React.FC<PanelViewImageProps> => PanelViewImageUI,
-   header: (p): PanelHeader => ({ title: 'LastImage', icon: 'mdiImageSyncOutline' }),
+   header: (p): PanelHeader => ({ title: 'LastImage', icon: IKONS.mdiImageSyncOutline }),
    def: (): PanelViewImageProps => ({}),
-   icon: 'mdiImageSyncOutline',
+   icon: IKONS.mdiImageSyncOutline,
 })
 
 export type PanelViewImageProps = {
@@ -39,10 +38,11 @@ export type PanelViewImageProps = {
    imageID?: MediaImageID | 'latent'
 }
 
-export const PanelViewImageUI = observer(function PanelViewImage(p: PanelViewImageProps) {
-   const img: Maybe<MediaImageL> = p.imageID //
-      ? cushy.db.media_image.get(p.imageID)
-      : cushy.db.media_image.last()
+export const PanelViewImageUI = obs(function PanelViewImage(p: PanelViewImageProps) {
+   const img: Maybe<MediaImageL> =
+      p.imageID != null //
+         ? cushy.db.media_image.get(p.imageID)
+         : cushy.db.media_image.last()
    const url = img?.url
    // 🛝 const background = st.galleryConf.value.galleryBgColor ?? undefined
 
@@ -105,7 +105,7 @@ export const PanelViewImageUI = observer(function PanelViewImage(p: PanelViewIma
    )
 })
 
-export const ImageActionBarUI = observer(function ImageActionBar(p: { img?: Maybe<MediaImageL> }) {
+export const ImageActionBarUI = obs(function ImageActionBar(p: { img?: Maybe<MediaImageL> }) {
    const img = p.img
    const isStarred = Boolean(img?.data.star)
    const showTags = usePanel().usePersistentModel('showTags', (ui) =>
@@ -116,7 +116,7 @@ export const ImageActionBarUI = observer(function ImageActionBar(p: { img?: Mayb
          <PanelHeaderUI>
             <Button // rating button
                square
-               icon={isStarred ? 'mdiStarMinus' : 'mdiStar'}
+               icon={isStarred ? IKONS.mdiStarMinus : IKONS.mdiStar}
                tooltip={isStarred ? 'Un-Favorite' : 'Favorite'}
                // active={isStarred}
                borderless
@@ -128,19 +128,19 @@ export const ImageActionBarUI = observer(function ImageActionBar(p: { img?: Mayb
             <Button // Canvas Button
                onClick={() => img?.openInCanvasEditor()}
                disabled={img == null}
-               icon='mdiVectorSquareEdit'
+               icon={IKONS.mdiVectorSquareEdit}
                borderless
                children='Canvas'
             />
             <Button // Paint Button
-               icon='mdiBrush'
+               icon={IKONS.mdiBrush}
                disabled={img == null}
                borderless
                onClick={() => img?.openInImageEditor()}
             >
                Paint
             </Button>
-            <showTags.UI rule={(f) => f.set('', { ShellName: 'Inline' })} />
+            <showTags.UI rules={[{ at: '', props: { Shell: uy.shell.Inline } }]} />
             <SpacerUI />
             {img && (
                <RevealUI
@@ -164,7 +164,7 @@ export const ImageActionBarUI = observer(function ImageActionBar(p: { img?: Mayb
             <Button // Delete button
                look='warning'
                tooltip='Delete Image'
-               icon='mdiDeleteForever'
+               icon={IKONS.mdiDeleteForever}
                iconSize='1.2rem'
                onClick={() => {
                   if (img == null) return
@@ -173,9 +173,9 @@ export const ImageActionBarUI = observer(function ImageActionBar(p: { img?: Mayb
             />
          </PanelHeaderUI>
          <div>
-            {img && showTags.value && (
+            {img && showTags.zValue && (
                <SelectUI<string> //
-                  startIcon='mdiTagEdit'
+                  startIcon={IKONS.mdiTagEdit}
                   multiple
                   options={(q) =>
                      img.tags.includes(q) || !Boolean(q) //
@@ -189,7 +189,7 @@ export const ImageActionBarUI = observer(function ImageActionBar(p: { img?: Mayb
             )}
             {/*
                 <InputStringUI
-                    icon='mdiTagEdit'
+                    icon={IKONS.mdiTagEdit}
                     getValue={() => img?.data.tags ?? ''}
                     setValue={(next) => {
                         if (!img) return

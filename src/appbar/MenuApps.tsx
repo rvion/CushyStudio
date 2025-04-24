@@ -1,12 +1,10 @@
-import { observer } from 'mobx-react-lite'
-
 import { AppIllustrationUI } from '../cards/fancycard/AppIllustrationUI'
 import { DraftIllustrationUI } from '../cards/fancycard/DraftIllustration'
 import { Dropdown } from '../csuite/dropdown/Dropdown'
 import { MenuItem } from '../csuite/dropdown/MenuItem'
 import { _formatAsRelativeDateTime } from '../updater/_getRelativeTimeString'
 
-export const MenuAppsUI = observer(function MenuAppsUI_(p: {}) {
+export const MenuAppsUI = obs(function MenuAppsUI_(p: {}) {
    return (
       <Dropdown
          title='Apps'
@@ -14,7 +12,7 @@ export const MenuAppsUI = observer(function MenuAppsUI_(p: {}) {
             <>
                {/* <MenuItem
                         onClick={() => cushy.layout.FOCUS_OR_CREATE('Marketplace', {}, 'RIGHT_PANE_TABSET')}
-                        icon='mdiCloudDownload'
+                        icon={IKONS.mdiCloudDownload}
                         localShortcut={KEYS.openPage_Marketplace}
                         label='Civitai'
                     /> */}
@@ -28,7 +26,7 @@ export const MenuAppsUI = observer(function MenuAppsUI_(p: {}) {
    )
 })
 
-export const RecentDrafMenuEntriesUI = observer(function RecentDrafMenuEntriesUI_(p: {}) {
+export const RecentDrafMenuEntriesUI = obs(function RecentDrafMenuEntriesUI_(p: {}) {
    return (
       <>
          {cushy.db.draft
@@ -57,7 +55,7 @@ export const RecentDrafMenuEntriesUI = observer(function RecentDrafMenuEntriesUI
    )
 })
 
-export const RecentAppMenuEntriesUI = observer(function RecentAppMenuEntriesUI_(p: {}) {
+export const RecentAppMenuEntriesUI = obs(function RecentAppMenuEntriesUI_(p: {}) {
    return (
       <>
          {cushy.db.cushy_app

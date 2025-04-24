@@ -1,14 +1,12 @@
 import type { Layer$ } from '../stateV2/Layer$'
 
-import { observer } from 'mobx-react-lite'
-
 import { ShellInputOnly } from '../../../csuite-cushy/shells/ShellInputOnly'
 import { Button } from '../../../csuite/button/Button'
 import { Frame } from '../../../csuite/frame/Frame'
 import { UCMenuEntryContainerUI } from './UCMenuEntryContainerUI'
 
 type UCMenuLayerEntryUIProps = {
-   layer: Layer$['$Field']
+   layer: Layer$['{field}']
    index: number
    active?: boolean
    children?: React.ReactNode
@@ -16,12 +14,12 @@ type UCMenuLayerEntryUIProps = {
    onClick?: () => void
 }
 
-export const UCMenuLayerEntryUI = observer(function UCMenuLayerEntryUI_(p: UCMenuLayerEntryUIProps) {
-   const inputHeight = cushy.preferences.interface.value.inputHeight
-   const isVisible: boolean = p.layer.Visible.value
-   const image = p.layer.Content.match({
-      aiGeneration: (t) => t.fields.image.value_or_zero,
-      image: (t) => t.value_or_zero,
+export const UCMenuLayerEntryUI = obs(function UCMenuLayerEntryUI_(p: UCMenuLayerEntryUIProps) {
+   const inputHeight = cushy.preferences.interface.zValue.inputHeight
+   const isVisible: boolean = p.layer.visible.zValue
+   const image = p.layer.content.matchExhaustive({
+      aiGeneration: (t) => t.zFields.image.zValueOrZero,
+      image: (t) => t.zValueOrZero,
    })
 
    // TEMP
@@ -57,7 +55,7 @@ export const UCMenuLayerEntryUI = observer(function UCMenuLayerEntryUI_(p: UCMen
                 /> */}
          </Frame>
          <div tw='flex w-full flex-col'>
-            <p.layer.Name.UI Shell={ShellInputOnly} />
+            <p.layer.name.UI Shell={ShellInputOnly} />
             {p.children}
          </div>
 
@@ -65,21 +63,21 @@ export const UCMenuLayerEntryUI = observer(function UCMenuLayerEntryUI_(p: UCMen
             {/* <Button //
                   // base={{ hue: 250, chroma: 0.1, contrast: 0.5 }}
                   onClick={() => p.layer.Visible.toggle()}
-                  icon='mdiBrush'
+                  icon={IKONS.mdiBrush}
                /> */}
 
             {/* <SpacerUI /> */}
             <Button
                tooltip='Delete'
-               onClick={() => p.layer.disableSelfWithinParent()}
-               icon={'mdiDeleteOutline'}
+               onClick={() => p.layer.zDisableSelfWithinParent()}
+               icon={IKONS.mdiDeleteOutline}
                borderless
                subtle
             />
             <Button
                tooltip='visibility'
-               onClick={() => p.layer.Visible.toggle()}
-               icon={isVisible ? 'mdiEyeOutline' : 'mdiEyeClosed'}
+               onClick={() => p.layer.visible.toggle()}
+               icon={isVisible ? IKONS.mdiEyeOutline : IKONS.mdiEyeClosed}
                borderless
                subtle
             />

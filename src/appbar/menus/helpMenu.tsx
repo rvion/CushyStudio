@@ -11,18 +11,18 @@ import { menuCommands } from './menuCommands'
                   onClick={() => {
                      void window.require('electron').shell.openExternal('https://www.CushyStudio.com/blog')
                   }}
-                  icon={'mdiPost'}
+                  icon={IKONS.mdiPost}
                   label='Blog'
                />
                {cushy.auth.isConnected ? (
                   <MenuItem //
-                     icon='mdiLogout'
+                     icon={IKONS.mdiLogout}
                      onClick={() => cushy.auth.logout()}
                      label='Logout'
                   />
                ) : (
                   <MenuItem //
-                     icon='mdiLogin'
+                     icon={IKONS.mdiLogin}
                      onClick={() => void cushy.auth.startLoginFlowWithGithub()}
                      label='Login with Github'
                   />
@@ -40,21 +40,21 @@ export const helpMenu: Menu = defineMenu({
       b.Divider,
       b.SimpleMenuAction({
          label: 'Github',
-         icon: 'mdiGithub',
+         icon: IKONS.mdiGithub,
          onClick: () => {
             void window.require('electron').shell.openExternal('https://github.com/rvion/CushyStudio#readme')
          },
       }),
       b.SimpleMenuAction({
          label: 'Documentation',
-         icon: 'mdiWeb',
+         icon: IKONS.mdiWeb,
          onClick: () => {
             void window.require('electron').shell.openExternal('https://www.CushyStudio.com')
          },
       }),
       b.SimpleMenuAction({
          label: 'Blog',
-         icon: 'mdiPost',
+         icon: IKONS.mdiPost,
          onClick: () => {
             void window.require('electron').shell.openExternal('https://www.CushyStudio.com/blog')
          },
@@ -62,12 +62,12 @@ export const helpMenu: Menu = defineMenu({
       b.Divider,
       cushy.auth.isConnected
          ? b.SimpleMenuAction({
-              icon: 'mdiLogout',
+              icon: IKONS.mdiLogout,
               label: 'Logout',
               onClick: () => cushy.auth.logout(),
            })
          : b.SimpleMenuAction({
-              icon: 'mdiLogin',
+              icon: IKONS.mdiLogin,
               label: 'Login with Github',
               onClick: () => void cushy.auth.startLoginFlowWithGithub(),
            }),
@@ -75,7 +75,7 @@ export const helpMenu: Menu = defineMenu({
    // TODO(bird): Properly do this
    /**<RevealUI content={() => <JsonViewUI value={cushy.auth.user} />}>
                   <MenuItem //
-                     icon='mdiInformation'
+                     icon={IKONS.mdiInformation}
                      label={cushy.auth.user?.email ?? '<no-email>'}
                   />
                </RevealUI> */

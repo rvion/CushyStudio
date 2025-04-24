@@ -1,18 +1,16 @@
 import type { Field_enum } from './FieldEnum'
 
-import { observer } from 'mobx-react-lite'
-
 import { InputBoolUI } from '../../checkbox/InputBoolUI'
 
-export const WidgetEnum_TabUI = observer(function WidgetEnum_TabUI_(p: { field: Field_enum<any> }) {
+export const WidgetEnum_TabUI = obs(function WidgetEnum_TabUI_(p: { field: Field_enum<any> }) {
    const field = p.field
-   const selected = field.serial.val
+   const selected = field.zSerial.val
    return (
       <div
          tw={[
             //
             'flex flex-1',
-            (field.config.wrap ?? true) && 'flex-wrap',
+            (field.zConfig.wrap ?? true) && 'flex-wrap',
             'rounded',
             'select-none',
             'gap-x-0.5 gap-y-0',
@@ -22,14 +20,14 @@ export const WidgetEnum_TabUI = observer(function WidgetEnum_TabUI_(p: { field: 
             const isSelected = selected === c
             return (
                <InputBoolUI
-                  toggleGroup={field.id}
+                  toggleGroup={field.zUid}
                   key={c}
                   value={isSelected}
                   display='button'
                   text={c.toString()}
                   onValueChange={(value) => {
                      if (value === isSelected) return
-                     field.value = c
+                     field.zValue = c
                   }}
                />
             )

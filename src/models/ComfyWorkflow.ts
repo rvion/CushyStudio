@@ -22,6 +22,7 @@ import type { MouseEvent } from 'react'
 
 import { existsSync, mkdirSync, writeFileSync } from 'fs'
 import { marked } from 'marked'
+import { action } from 'mobx'
 import { join } from 'pathe'
 
 import { ComfyWorkflowBuilder } from '../back/NodeBuilder'
@@ -61,14 +62,10 @@ export const GraphIDCache = new Map<string, number>()
 export class ComfyWorkflowRepo extends LiveTable<TABLES['comfy_workflow'], typeof ComfyWorkflowL> {
    constructor(liveDB: LiveDB) {
       super(liveDB, 'comfy_workflow', '📊', ComfyWorkflowL)
-      this.init()
    }
 }
 
 export class ComfyWorkflowL extends BaseInst<TABLES['comfy_workflow']> {
-   instObservabilityConfig: undefined
-   dataObservabilityConfig: undefined
-
    /** number of node in the graph */
    get size(): number {
       return this.nodes.length
@@ -430,7 +427,7 @@ export class ComfyWorkflowL extends BaseInst<TABLES['comfy_workflow']> {
    }
 
    /** compute autolayout */
-   RUNLAYOUT = (p?: {
+   @action RUNLAYOUT = (p?: {
       /** @default: 20 */
       node_vsep?: number
       /** @default: 20 */

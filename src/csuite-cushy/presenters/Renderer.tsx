@@ -1,48 +1,149 @@
-import type { DisplaySlots } from './RenderSlots'
-import type { CompiledRenderProps, DisplaySlotExt } from './RenderTypes'
+import type { Field, FL_FieldPath, FL_FieldPathNice } from '../../csuite/model/Field'
+import type { RenderProps } from './RenderProps'
+import type { RenderPropsCompiled } from './RenderPropsCompiled'
 import type { ReactNode } from 'react'
 
-import { createElement } from 'react'
-
-import { Field } from '../../csuite/model/Field'
 import { FieldSelector } from '../../csuite/selector/selector'
+import { bang } from '../../csuite/utils/bang'
 import { extractComponentName } from '../../csuite/utils/extractComponentName'
-import { getUIDForMemoryStructure } from '../../csuite/utils/getUIDForMemoryStructure'
 import { mergeDefined } from '../../csuite/utils/mergeDefined'
-import { _isFC, renderFCOrNode, renderFCOrNodeWithWrapper } from '../../csuite/utils/renderFCOrNode'
-import { QuickForm } from '../catalog/group/QuickForm'
-import { widgetsCatalog } from './RenderCatalog'
-import { renderPresets } from './RenderPresets'
+import {
+   _isFC,
+   type FCOrNode,
+   renderFCOrNode,
+   renderFCOrNodeWithWrapper,
+} from '../../csuite/utils/renderFCOrNode'
+import { normalizePattern, toRawFieldSelector } from './normalizePattern'
+import { type RenderCtx, rendererCtx } from './RenderCtx'
+import { convertShortRule, type RenderRule, type RenderRule_asList, type RenderRuleFn } from './RenderRule'
 import { RenderUI } from './RenderUI'
 
-// 👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇
-// Those types are made folling a language design principle:
-// every field/config/override is based on what UX people may request
-// so we have a quick vocabulary to ajdust look and feel.
-// see src/csuite-cushy/presenters/presenter.readme.md
-// 👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆
+// prettier-ignore
+type FlattenableRule<FIELD extends Field = Field> =
+   | undefined           // 1 == null
+   | null                // 2 == null
+   | RenderProps<FIELD>  // 3 typeof === 'object'
+   | RenderRuleFn<FIELD> // 4 typeof === 'function'
+   | RenderRule<Field>[] // 5 Array.isArray
 
-// #region Presenter
 // see `src/csuite/form/presenters/presenter.readme.md`
 /**
  * retrieve * Shell + Slots for each field,
  * and convenient method to call the Wrapper bound to field and slots
  */
-export class Presenter {
-   /** list of all the ruleOrConf, indexed by field, added during this presenter lifecycle  */
-   rules: {
-      addedBy: Field | null
-      selector: FieldSelector
-      uiconf: DisplaySlotExt<Field>
-   }[] = []
-
-   constructor(rootField: Field) {
-      this.rules.push({
-         addedBy: null,
-         selector: FieldSelector.from(''),
-         uiconf: defaultRenderRules,
-      })
+export class Renderer {
+   static count = 0
+   constructor(public rootField: Field) {
+      Renderer.count++
    }
+
+   static normalizeRule(
+      /** field adding the rule */
+      field: Field,
+
+      /** rule definrion */
+      intent: FlattenableRule,
+
+      // prefixForNestedSelector = '',
+   ) {
+      const out: RenderRule<Field>[] = []
+      type QueueItem = { rule: FlattenableRule; prefixForNestedSelector: string }
+      const queue: QueueItem[] = [
+         {
+            rule: intent,
+            prefixForNestedSelector: ``,
+            // prefixForNestedSelector: `#${field.zUid}`,
+         },
+      ]
+
+      // step 2.
+      let max = 100
+      while (queue.length > 0 && max--) {
+         const entry: QueueItem = queue.shift()!
+         let rule = entry.rule
+
+         // 1, 2 (null / undefined)
+         if (rule == null) continue
+
+         // 3 (object ==> renderProps)
+         if (typeof rule === 'object' && !Array.isArray(rule)) {
+            rule = [{ at: field, props: rule, priority: 99 }] // => 5
+         }
+
+         // 4 (function ==> renderRule)
+         if (typeof rule === 'function') {
+            rule = this._evalRenderRuleFn(field, rule, entry.prefixForNestedSelector) // => 5
+         }
+
+         // 5
+         if (Array.isArray(rule)) {
+            for (const subrule of rule) {
+               const newRule: RenderRule<Field> = this.removeUndefs({
+                  at: subrule.at,
+                  props: subrule.props,
+                  priority: subrule.priority,
+               })
+               out.push(newRule)
+               if (subrule.props.rules != null) {
+                  const prefixForNestedSelector = toRawFieldSelector(newRule.at)
+                  queue.push({ rule: subrule.props.rules, prefixForNestedSelector })
+               }
+            }
+            continue
+         }
+
+         // we should have it a continue here already
+         throw new Error(`rulesDef is not an array or a function`)
+      }
+
+      return out
+   }
+
+   private static _evalRenderRuleFn(
+      //
+      field: Maybe<Field>,
+      uiFn: RenderRuleFn<any>,
+      prefixForNestedSelector: string,
+   ): RenderRule<Field>[] {
+      if (field == null) throw new Error('form not loaded yet')
+
+      const extraRules: RenderRule<any>[] = []
+      const OUT: RenderProps = {}
+
+      function set<F extends Z.Field>(...props: RenderRule_asList<F>): void
+      function set<F extends Z.Field>(prop: RenderProps<any>): void
+      function set(...props: any[]) {
+         // self rule
+         if (props.length === 1) {
+            Object.assign(OUT, props[0])
+            extraRules.push({
+               at: `#${field?.zUid}`,
+               // at: field,
+               props: props[0],
+               priority: 99,
+            })
+         }
+         // child rule
+         else {
+            const extraRule = convertShortRule(props as RenderRule_asList<Field>)
+            const childSelector = normalizePattern(extraRule.at, prefixForNestedSelector)
+            extraRules.push({ ...extraRule, at: childSelector })
+         }
+      }
+
+      uiFn(field, set)
+      return extraRules
+   }
+
+   private static removeUndefs<T extends object>(obj: T): T {
+      for (const key in obj) {
+         if (obj[key] === undefined) {
+            delete obj[key]
+         }
+      }
+      return obj
+   }
+
    /**
     * MAIN METHOD TO RENDER A FIELD
     * this method is both for humans (calling render on field root)
@@ -51,155 +152,166 @@ export class Presenter {
    render<FIELD extends Field>(
       //
       field: FIELD,
-      finalRuleOrConf: DisplaySlots<FIELD>,
-      // extraRules_: PresenterRule<FIELD> | PresenterRule<FIELD>[],
+      renderProps: RenderProps<FIELD>,
+      ctx: RenderCtx<FIELD>,
    ): ReactNode {
-      // ⏸️ console.log(`[💄] rendering ${field.path}`)
-      // slots accumulator
-      let slots: DisplaySlots<FIELD> = {} //
+      const { nextCtx, Shell, finalProps } = this.render_<FIELD>(field, renderProps, ctx)
+      return <rendererCtx.Provider value={nextCtx}>{renderFCOrNode(Shell, finalProps)}</rendererCtx.Provider>
+   }
 
-      // 🔴 SUPER SLOW
-      this.rules = this.rules.filter((rule) => rule.addedBy !== field)
+   /**
+    * helper to define rules as variables without importing types
+    * nor manually annotating them
+    */
+   static rule<RULE extends FlattenableRule<Field>>(initialRules: RULE): RULE {
+      return initialRules
+   }
 
-      // console.log(`[🤠] ${field.pathExt}`)
-      // const shouldLog = field.pathExt === '📄[group]-latent->[link]-b->[choices]-emptyLatent->[group]-batchSize->[shared]'
+   /**
+    * Helper to test the renderer engine
+    * not using react, but traversing all fields depth first
+    * and building a list of all props for every field
+    */
+   renderTest<FIELD extends Field>(
+      /** field entrypoing */
+      field: Field,
+      initialRules?: FlattenableRule<FIELD>,
+   ): { at: FL_FieldPathNice; props: RenderProps<Field> }[] {
+      const rules: RenderRule<Field>[] =
+         initialRules != null ? Renderer.normalizeRule(field, initialRules) : []
 
-      const self = this
-
-      /**
-       * a field can add rules for  any of it's children, not only itself.
-       * that where the magic happen; since fields know the extra type of their children,
-       * any field can quickly add a bunch of rule for all of it's descendants.
-       */
-      function /* A */ addForField(x: DisplaySlotExt<FIELD>): void
-      function /* B */ addForField(selector: string, x: DisplaySlotExt<Field>): void
-      function /* C */ addForField(selector: FieldSelector, x: DisplaySlotExt<Field>): void
-      function /* D */ addForField<Sub extends Field>(field: Maybe<Sub>, x: DisplaySlotExt<Sub>): void
-      function addForField<SUB extends Field>(
-         x: unknown,
-         y?: unknown,
-         // sub: Maybe<SUB>,
-         // ruleOrConf: RuleOrConf<SUB>,
-      ): void {
-         // #region A
-         if (y === undefined) {
-            evalRuleOrConf(x as DisplaySlotExt<FIELD>)
-            return
-         }
-
-         // #region B
-         if (typeof x === 'string') {
-            const selectorStr = x as string
-            const selector = FieldSelector.from(selectorStr)
-            const ruleOrConf = y as DisplaySlotExt<Field>
-            self.rules.push({ selector, addedBy: field, uiconf: ruleOrConf })
-            return
-         }
-
-         // #region  C
-         if (x instanceof FieldSelector) {
-            const ruleOrConf = y as DisplaySlotExt<Field>
-            self.rules.push({ selector: x, addedBy: field, uiconf: ruleOrConf })
-            return
-         }
-
-         // #region D
-         if (x instanceof Field) {
-            const ruleOrConf = y as DisplaySlotExt<SUB>
-            if (x === field) {
-               evalRuleOrConf(ruleOrConf as DisplaySlotExt<FIELD>)
-               return
-            }
-            const sub = x as SUB
-            self.rules.push({
-               selector: FieldSelector.from(sub.path),
-               addedBy: field,
-               uiconf: ruleOrConf,
-            })
-         }
+      const rootCtx: RenderCtx = {
+         parent: null,
+         ancestors: [],
+         renderer: this,
+         rules,
       }
+      const out: { at: FL_FieldPathNice; props: any }[] = []
+      const ctxIn = new WeakMap<Field, RenderCtx>()
 
-      /**
-       * render SHOULD ONLY (!!) eval rules for current (FIELD)
-       * enforce at type-level here                  VVVVV */
-      const evalRuleOrConf = (ruleOrConf: DisplaySlotExt<FIELD>): void => {
-         if (typeof ruleOrConf === 'function') {
-            const _slots = ruleOrConf({
-               field,
-               set: addForField,
-               presets: renderPresets,
-            }) as Maybe<DisplaySlots<FIELD>> // 🔴🔴🔴
-            if (_slots) slots = mergeDefined(slots, _slots)
-         } else {
-            const { rule, ...slotsOverride } = ruleOrConf
-            slots = mergeDefined(slots, slotsOverride)
-            if (rule != null) {
-               evalRuleOrConf(rule)
-            }
-         }
+      field.zTraverseDepthFirst((f) => {
+         const ctx = f.zParent ? bang(ctxIn.get(f.zParent)) : rootCtx
+         const { nextCtx, Shell, finalProps } = this.render_<Field>(f, {}, ctx)
+         ctxIn.set(f, nextCtx)
+
+         const {
+            //useless
+            field,
+            presenter,
+            // those are still here only to avoid creating new JS object
+            // but sub-rules have been flatten already
+            rules,
+            // what we care about
+            ...testProps
+         } = finalProps
+
+         if (Object.keys(testProps).length === 0) return
+         out.push({ at: f.zPathNice, props: testProps })
+      })
+      return out
+   }
+
+   static getVisualAncestors(ctx: RenderCtx<any>): Field[] {
+      const out = ctx.ancestors.slice(1).map((c) => bang(c.parent))
+      if (ctx.parent != null) out.push(ctx.parent)
+      return out
+   }
+   render_<FIELD extends Field>(
+      //
+      field: FIELD,
+      renderProps: RenderProps<FIELD>,
+      ctx: RenderCtx<FIELD>,
+   ): {
+      nextCtx: RenderCtx
+      Shell: FCOrNode<RenderPropsCompiled<FIELD>>
+      finalProps: RenderPropsCompiled<FIELD>
+   } {
+      const debug = false // field.path === '...'
+      // ------------------------------------------------------------------------
+      // massive optimization here; just support arbitrary nested arrays
+      // and ache the object so we never spread stuff
+      const rules: RenderRule<Field>[] = [
+         ...ctx.rules,
+         ...Renderer.normalizeRule(field, field.zConfig.uiui),
+         ...Renderer.normalizeRule(field, renderProps),
+      ]
+
+      // ------------------------------------------------------------------------
+      // override parents if need be
+      const ancestors = Renderer.getVisualAncestors(ctx)
+      const virtualParents: Map<Field, Field> = new Map<Field, Field>()
+      for (let i = 0; i < ancestors.length - 1; i++) {
+         const parent_ = ancestors[i]!
+         const child_ = ancestors[i + 1]!
+         if (child_.zParent !== parent_) virtualParents.set(child_, parent_)
       }
-      // #region EVALUATING/MERGING ALL RULES
+      if (ctx.parent && ctx.parent !== field.zParent) virtualParents.set(field, ctx.parent)
+      // const directParent_ = ancestors[ancestors.length - 1]?.parent
+      // if (directParent_ && field.zParent !== directParent_) virtualParents.set(field, directParent_)
+      // if (virtualParents.size > 0)
+      //    console.log(`[      🟢 >] rendering ${field.path} at ${getVisualPath(ctx)}`, virtualParents)
 
+      // ------------------------------------------------------------------------
+      let slots: RenderProps<FIELD> = {}
       // eval rule from config
-      if (field.config.uiui != null) {
-         evalRuleOrConf(field.config.uiui)
+      // if (field.config.uiui != null) xxx.evalRule(field.config.uiui, RENDER_PRIORITY_UIUI)
+      for (const rule of rules) {
+         const isMatching = FieldSelector.match(rule.at, field, virtualParents)
+         // if (field.zPath === '$.c.kkk.t1' && normalizePattern(rule.at) === 'c.') {
+         //    this.debugVirtualParents(virtualParents)
+         //    console.log(`[🤠] 🔴1`, FieldSelector.match(rule.at, field))
+         //    console.log(`[🤠] 🔴2`, FieldSelector.match(rule.at, field, virtualParents))
+         //    console.log(`[🤠] 🔴3 ${Object.keys(virtualParents).length}`)
+         //    // `[🤠] rule: "${field.zPath}" matches "${normalizePattern(rule.at)}" ${isMatching ? '🟢' : '🔴'}`,
+         // }
+         if (isMatching) {
+            const newSlots = rule.props as RenderProps<FIELD>
+            if (newSlots != null && Object.keys(newSlots).length > 0) {
+               slots = mergeDefined(slots, newSlots)
+            }
+         }
       }
-
-      const debug = null // '$.latent.b' // '$.positive'
-      for (const rule of this.rules) {
-         // starts from this, and ensures the result contains the field.
-         // we probably want contains in many place.
-         //                 VVVVVVVVVVVVVV
-         const isMatching = field.matches(rule.selector)
-         if (field.path === debug)
-            console.log(
-               `[🤠] ${field.pathExt}`,
-               isMatching ? '🟢' : '🔴',
-               rule.selector.selector,
-               typeof rule.uiconf !== 'function' ? this.explainSlots(rule.uiconf) : '<function...>',
-            )
-         if (isMatching) evalRuleOrConf(rule.uiconf as DisplaySlotExt<FIELD>)
-      }
-
-      evalRuleOrConf(finalRuleOrConf)
-
-      // #region MAKING SENSE OF THE COMPILED SLOTS OBJECT
-
-      // override `Body` if `chidlren` is specified
-      const layout = slots.layout
-      if (layout != null) {
-         slots.Body = createElement(QuickForm, { field, items: layout(field) })
-      }
-
-      // bad logic
-      const Shell = slots.ShellName
-         ? UY.Shell[slots.ShellName]
-         : slots.Shell //
-           ? slots.Shell
-           : UY.Shell.Default
-
-      // console.log(`[🤠] slots.ShellName`, slots.ShellName, field.path, Shell === catalog.Shell.Inline)
-      if (!Shell) throw new Error('Shell is not defined')
+      const Shell = slots.Shell
 
       // COMPILED
-      const finalProps: CompiledRenderProps<FIELD> = { field, UI: UY, presenter: this, ...slots }
+      const finalProps: RenderPropsCompiled<FIELD> = {
+         field,
+         presenter: this,
+         ...slots,
+      }
 
-      if (field.path === debug) this.debugFinalProps(finalProps)
+      if (debug) this.debugFinalProps(finalProps)
       // if (field.path === '$.latent.b.image.resize') this.debugFinalProps(finalProps)
       // console.log(`[🤠] Shell for ${field.path} is `, Shell)
-      return renderFCOrNode(Shell, finalProps)
+      // console.log(`[🦊] slots for`, field.path, slots)
+      // console.log(`[🦊🟢FINAL] slots for`, field.path, slots.Head)
+      // return renderFCOrNode(Shell, finalProps)
+      const nextCtx: RenderCtx = {
+         parent: field,
+         ancestors: [...ctx.ancestors, ctx],
+         renderer: this,
+         rules,
+      }
+      const out = { nextCtx, Shell, finalProps }
+      return out
    }
 
-   debugFinalProps(finalProps: CompiledRenderProps<any>): void {
-      console.log(`[🤠] `, finalProps.field.path, this.explainSlots(finalProps))
+   debugVirtualParents(virtualParents: Map<Field, Field>): void {
+      console.log(`[🦊] virtual parents = { `)
+      for (const [child, parent] of virtualParents.entries()) {
+         console.log(`[🦊]    ${child.zPath}.parent --is-> ${parent.zPath}`)
+      }
+      console.log(`[🦊] } `)
    }
-   private explainSlots(slots: DisplaySlots<any>): Record<string, any> {
+   debugFinalProps(finalProps: RenderPropsCompiled<any>): void {
+      console.log(`[🦊----------->>>>>] `, finalProps.field.path, this.explainSlots(finalProps))
+   }
+
+   private explainSlots(slots: RenderProps<any>): Record<string, any> {
       return Object.fromEntries(
          Object.entries(slots).map(([k, v]) => [
             k,
-            _isFC(v) && 'type' in v //
-               ? (extractComponentName(v.type) ?? v)
-               : v,
+            _isFC(v) && 'type' in v ? (extractComponentName(v.type) ?? v) : v,
          ]),
       )
    }
@@ -207,12 +319,46 @@ export class Presenter {
    utils = {
       renderFCOrNode: renderFCOrNode,
       renderFCOrNodeWithWrapper: renderFCOrNodeWithWrapper,
-      // _isFC: _isFC,
    }
 }
 
 // #region 'window' mixin
 // Renderer is injected, to help with using csuite in other codebases.
-window.RENDERER = {
+const window_ = globalThis as any as typeof window
+window_.RENDERER = {
    Render: RenderUI,
 }
+
+function isBool(x: unknown): x is boolean {
+   return typeof x === 'boolean'
+}
+
+// fieldRenderers: WeakMap<Field, RenderXXX<any>> = new WeakMap()
+// getFieldRenderer<FIELD extends Field>(field: FIELD): RenderXXX<FIELD> {
+//    let proc = this.fieldRenderers.get(field)
+//    if (proc == null) {
+//       proc = new RenderXXX(this, field)
+//       this.fieldRenderers.set(field, proc)
+//    }
+//    return proc
+// }
+
+/** all fields in document */
+// get allFields(): Field[] {
+//    const fields: Field[] = []
+//    this.rootField.traverseAllDepthFirst((field) => {
+//       fields.push(field)
+//    })
+//    return fields
+// }
+
+// get allFieldRenderers(): RenderXXX<Field>[] {
+//    return this.allFields.map((field) => this.getFieldRenderer(field))
+// }
+
+// get allRules(): RuleEntry[] {
+//    return this.allFieldRenderers
+//       .flatMap((proc) => proc.final.rulesForSubtree)
+//       .concat(defaultRulesV2)
+//       .sort((a, b) => a.priority - b.priority)
+// }

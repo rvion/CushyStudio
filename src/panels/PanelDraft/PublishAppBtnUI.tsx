@@ -1,10 +1,8 @@
 import type { CushyAppL } from '../../models/CushyApp'
 
-import { observer } from 'mobx-react-lite'
-
 import { Button, type ButtonProps } from '../../csuite/button/Button'
 
-export const PublishAppBtnUI = observer(function PublishAppBtnUI_({
+export const PublishAppBtnUI = obs(function PublishAppBtnUI_({
    // own props
    app,
 
@@ -13,7 +11,7 @@ export const PublishAppBtnUI = observer(function PublishAppBtnUI_({
    loading,
    icon,
    square,
-   tooltip,
+   tooltip: tooltip,
    onClick,
 
    // rest
@@ -26,7 +24,7 @@ export const PublishAppBtnUI = observer(function PublishAppBtnUI_({
          tw='ml-auto'
          disabled={disabled ?? !app.canBePublishedByUser}
          loading={loading ?? app.isPublishing}
-         icon={icon ?? 'mdiPublish'}
+         icon={icon ?? IKONS.mdiPublish}
          square={square ?? true}
          tooltip={tooltip ?? 'Publish app to the Cushy App Store'}
          onClick={async (ev) => {

@@ -1,7 +1,5 @@
 import type { Field } from '../model/Field'
 
-import { observer } from 'mobx-react-lite'
-
 import { ErrorBoundaryUI } from '../errors/ErrorBoundaryUI'
 import { Frame, type FrameProps } from '../frame/Frame'
 
@@ -9,7 +7,7 @@ export type WidgetHeaderContainerProps = {
    field: Field
 } & FrameProps
 
-export const WidgetHeaderContainerUI = observer(function WidgetHeaderContainerUI_({
+export const WidgetHeaderContainerUI = obs(function WidgetHeaderContainerUI_({
    // own
    field,
 
@@ -20,7 +18,7 @@ export const WidgetHeaderContainerUI = observer(function WidgetHeaderContainerUI
    // rest
    ...rest
 }: WidgetHeaderContainerProps) {
-   const isCollapsed = field.isCollapsed
+   const isCollapsed = field.zIsCollapsed
    return (
       <ErrorBoundaryUI>
          <Frame
@@ -34,17 +32,17 @@ export const WidgetHeaderContainerUI = observer(function WidgetHeaderContainerUI
 
                // 💬 2024-06-03 rvion, changing 'items-center' to 'items-start'
                // as well as adding some `h-input` class to <WidgetLabelContainerUI />
-               'items-center',
+               'items-start',
             ]}
             // hover={2} // 🚂 we prefer to not have this hover
             triggerOnPress={triggerOnPress ?? { startingState: isCollapsed, toggleGroup: 'collapse' }}
             onClick={
                onClick ??
                ((ev): void => {
-                  if (ev.button != 0 || !field.isCollapsible) return
+                  if (ev.button != 0 || !field.zIsCollapsible) return
                   const target = ev.target as HTMLElement
                   if (!target.classList.contains('COLLAPSE-PASSTHROUGH')) return
-                  field.setCollapsed(!isCollapsed)
+                  field.zSetCollapsed(!isCollapsed)
                })
             }
             {...rest}

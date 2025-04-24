@@ -1,7 +1,5 @@
 import type { MediaImageL } from '../../../models/MediaImage'
 
-import { observer } from 'mobx-react-lite'
-
 import { ImageUI } from '../../../widgets/galleries/ImageUI'
 
 type UCDraftImagePickerHorizontalUIProps = {
@@ -10,7 +8,7 @@ type UCDraftImagePickerHorizontalUIProps = {
    draftID: DraftID
 }
 
-export const UCDraftImagePickerHorizontalUI: React.FC<UCDraftImagePickerHorizontalUIProps> = observer(
+export const UCDraftImagePickerHorizontalUI: React.FC<UCDraftImagePickerHorizontalUIProps> = obs(
    function UCDraftImagePickerHorizontalUI_({ draftID, size = 64, onCLick }) {
       const draft = cushy.db.draft.get(draftID)
       if (!draft) return `❌ draft not found: ${draftID}`

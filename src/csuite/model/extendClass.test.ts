@@ -1,11 +1,21 @@
-import type { FieldCtorProps } from './Field'
+/* eslint-disable vitest/require-to-throw-message */
+import type { SimpleBuilder } from '../simple/SimpleBuilder'
 
-import { describe, expect, it } from 'bun:test'
-import { isAction, isComputedProp, isObservableProp, reaction } from 'mobx'
+import {
+   action,
+   computed,
+   isAction,
+   isComputedProp,
+   isObservableProp,
+   observable,
+   reaction,
+   runInAction,
+} from 'mobx'
+import { describe, expect, it } from 'vitest'
 
-import { simpleBuilder as b, simpleFactory as f } from '../'
+import { type CSchema, type SchemaDict, simpleBuilder as b, simpleFactory as f } from '../'
 import { Field_bool } from '../fields/bool/FieldBool'
-import { Field_group, type Field_group_types } from '../fields/group/FieldGroup'
+import { Field_group, type MAGICFIELDS } from '../fields/group/FieldGroup'
 
 const r = f.repository
 
@@ -13,114 +23,58 @@ describe('field customizations', () => {
    describe('multiple custom class', () => {
       it('fails when useClass + useClass', () => {
          const S0 = b.fields({ foo: b.int({ default: 10 }) })
-         const S1 = S0.useClass(() => class extends Field_group<any> {})
-         expect(() => S1.useClass(() => class extends Field_group<any> {})).toThrow()
-      })
-      it('fails when useBuilder + useClass', () => {
-         const S0 = b.fields({ foo: b.int({ default: 10 }) })
-         const S1 = S0.useBuilder((...args) => new (class extends Field_group<any> {})(...args))
-         expect(() => S1.useClass(() => class extends Field_group<any> {})).toThrow()
-      })
-      it('fails when useClass + useBuilder', () => {
-         const S0 = b.fields({ foo: b.int({ default: 10 }) })
-         const S1 = S0.useClass(() => class extends Field_group<any> {})
-         expect(() => S1.useBuilder((...args) => new (class extends Field_group<any> {})(...args))).toThrow()
-      })
-      it('useBuilder + useBuilder', () => {
-         const S0 = b.fields({ foo: b.int({ default: 10 }) })
-         const S1 = S0.useBuilder((...args) => new (class extends Field_group<any> {})(...args))
-         expect(() => S1.useBuilder((...args) => new (class extends Field_group<any> {})(...args))).toThrow()
+         class A extends Field_group<any> {}
+         const S1 = S0.useClass(A)
+         class B extends Field_group<any> {}
+         expect(() => S1.useClass(B)).toThrow()
       })
    })
 
    describe('useClass', () => {
-      it('works with prims like Field_number or Field_bool ', () => {
+      it('works with prims like Field_number or Field_bool', (): void => {
          class F extends Field_bool {
-            $Field!: F
-            constructor(...args: FieldCtorProps) {
-               super(...args)
-               this.autoExtendObservable()
-            }
-            get inverse(): boolean {
-               return !this.value
+            @computed get inverse(): boolean {
+               return !this.zValue
             }
          }
-         const S1 = b.bool().useClass(() => F)
+         // const z: CSchema<CSchema<F>> = 0 as any
+         const S1 = b.bool().useClass(F, null)
          const E1 = S1.create()
-         expect(E1.value).toBe(false)
+         E1 satisfies CSchema<CSchema<F>['{field}']>['{field}']
+         E1 satisfies CSchema<CSchema<CSchema<F>['{field}']>['{field}']>['{field}']
+
+         expect(E1.zValue).toBe(false)
          expect(E1.inverse).toBe(true)
-      })
-
-      it('works with inline class', () => {
-         //
-         const S0 = b.fields({ foo: b.int({ default: 10 }) })
-         const S1 = S0.useClass((FIELD) => {
-            return class Foo extends FIELD {
-               $Field!: Foo
-               static HELLO = 'WORLD'
-               volatile1 = 12
-               get volatile2(): number {
-                  return 33
-               }
-               get bar2(): number {
-                  return this.value.foo * 2
-               }
-            }
-         })
-
-         const E1 = S1.create()
-         // proper constructor
-         expect((E1.constructor as any).HELLO).toBe('WORLD')
-
-         // proper
-         expect(E1.value.foo).toBe(10)
-         expect(E1.bar2).toBe(20)
-         E1.value.foo++
-         expect(E1.value.foo).toBe(11)
-         expect(E1.bar2).toBe(22)
-
-         // make sure the prop is observable
-         expect(isObservableProp(E1, 'bar2')).toBeFalsy()
-         // expect(isObservableProp(E1, 'volatile1')).toBeFalsy()
-         expect(isObservableProp(E1, 'volatile2')).toBeFalsy()
-         let xx = 0
-         reaction(
-            () => E1.bar2,
-            (val) => xx++,
-         )
-         E1.value.foo++
-         E1.value.foo++
-         E1.value.foo++
-         E1.value.foo++
-         expect(xx).toBe(4)
       })
 
       it('works with external class', () => {
          const S0 = b.fields({ foo: b.int({ default: 10 }) })
-         type T0 = { foo: S.SNumber }
-         class Foo2 extends Field_group<Field_group_types<T0>> {
-            $Field!: Foo2
+
+         type T0 = Field_group<{ foo: Z.Number }>['{subfields}']
+
+         interface Foo2 extends MAGICFIELDS<T0> {}
+         class Foo2 extends Field_group<T0> {
             static HELLO: string = 'WORLD'
             volatile1: number = 12
             get volatile2(): number {
                return 33
             }
             get bar2(): number {
-               return this.value.foo * 2
+               return this.zValue.foo * 2
             }
          }
 
-         const S1 = S0.useClass(() => Foo2)
+         const S1 = S0.useClass(Foo2)
 
          const E1: Foo2 = S1.create()
          // proper constructor
          expect((E1.constructor as any).HELLO).toBe('WORLD')
 
          // proper
-         expect(E1.value.foo).toBe(10)
+         expect(E1.zValue.foo).toBe(10)
          expect(E1.bar2).toBe(20)
-         E1.value.foo++
-         expect(E1.value.foo).toBe(11)
+         E1.zValue.foo++
+         expect(E1.zValue.foo).toBe(11)
          expect(E1.bar2).toBe(22)
 
          // make sure the prop is observable
@@ -132,50 +86,138 @@ describe('field customizations', () => {
             () => E1.bar2,
             (val) => xx++,
          )
-         E1.value.foo++
-         E1.value.foo++
-         E1.value.foo++
-         E1.value.foo++
+         E1.zValue.foo++
+         E1.zValue.foo++
+         E1.zValue.foo++
+         E1.zValue.foo++
          expect(xx).toBe(4)
       })
    })
-
-   describe('useBuilder', () => {
-      it('works via `useBuilder` ', () => {
-         const S0 = b.fields({ foo: b.int({ default: 10 }) })
-
-         type T0 = Field_group_types<{ foo: S.SNumber }>
-
-         class Foo3 extends Field_group<T0> {
-            $Field!: Foo3
-            constructor(
-               public hello: string,
-               ...args: FieldCtorProps<any>
-            ) {
-               super(...args)
-               this.autoExtendObservable()
-            }
-            static HELLO: string = 'WORLD'
-            volatile1: number = 12
-            get volatile2(): number {
-               return 33
-            }
-            get bar2(): number {
-               return this.value.foo * 2
+   describe('multi-extensibility', () => {
+      it('works well enough', () => {
+         class MyCollection<T extends SchemaDict> extends Field_group<T> {
+            @action save(): void {
+               console.log('save')
             }
          }
 
-         const S1 = S0.useBuilder((...args) => new Foo3('world', ...args))
+         type FooStuff = {
+            a: Z.Number
+            b: Z.Record<{
+               points: Z.List<Z.Record<{ x: Z.Number; y: Z.Number }>>
+            }>
+         }
+
+         // 💬 2025-02-06 rvion:
+         // until we pick a better default for MagicFields, I can't find an other way
+         // than just having it merged at the final subclass.
+         interface MyFooCollection extends MAGICFIELDS<FooStuff> {  } // prettier-ignore
+         class MyFooCollection extends MyCollection<FooStuff> {
+            static schema = (b: SimpleBuilder): CSchema<MyFooCollection> =>
+               b
+                  .fields({
+                     a: b.number(),
+                     b: b.fields({ points: b.fields({ x: b.number(), y: b.number() }).list() }),
+                  })
+                  .useClass<MyFooCollection>(MyFooCollection, null)
+            @action upTwice_action(): void {
+               this.up()
+               this.up()
+            }
+            upTwice_notAction(): void {
+               this.up()
+               this.up()
+            }
+            @computed get distance(): number {
+               let dist = 0
+               for (let p = 1; p < this.zValue.b.points.length; p++) {
+                  const prev = this.zValue.b.points[p - 1]!
+                  const curr = this.zValue.b.points[p]!
+                  const segmentLen = Math.sqrt((curr.x - prev.x) ** 2 + (curr.y - prev.y) ** 2)
+                  dist += segmentLen
+               }
+               return dist
+            }
+            get X():number{return this.zFields.b.zFields.points.at(-1)?.zFields.x.zValue??0} // prettier-ignore
+            get Y(): number {
+               return this.zFields.b.zFields.points.at(-1)?.zFields.y.zValue ?? 0
+            }
+            @action up(): void {
+               this.zFields.b.zFields.points.push({ x: this.X, y: this.Y - 1 })
+            }
+            @action down():void{this.zFields.b.zFields.points.push({x: this.X, y: this.Y+1})} // prettier-ignore
+         }
+
+         const t1 = MyFooCollection.schema(b)
+            .create()
+            .zSet({
+               b: {
+                  points: [
+                     { x: 0, y: 0 },
+                     { x: 0, y: 2 },
+                  ],
+               },
+            })
+
+         const emmittedDistances: number[] = []
+         reaction(
+            () => t1.distance,
+            (val) => emmittedDistances.push(val),
+         )
+         expect(emmittedDistances).toEqual([])
+         expect(t1.distance).toBe(2)
+         t1.up()
+         expect(JSON.parse(JSON.stringify(t1.zValue))).toMatchObject({
+            a: 0,
+            b: {
+               points: [
+                  { x: 0, y: 0 },
+                  { x: 0, y: 2 },
+                  { x: 0, y: 1 },
+               ],
+            },
+         })
+         expect(t1.distance).toBe(3)
+         t1.up()
+         runInAction(() => {
+            t1.up()
+            t1.up()
+         })
+         expect(t1.distance).toBe(6)
+         expect(emmittedDistances).toEqual([3, 4, 6])
+         t1.upTwice_action()
+         t1.upTwice_notAction()
+         expect(emmittedDistances).toEqual([3, 4, 6, 8, 9, 10])
+      })
+   })
+   describe('useBuilder', () => {
+      it('works via `useBuilder`', () => {
+         const S0 = b.fields({ foo: b.int({ default: 10 }) })
+
+         type T0 = { foo: Z.Number }
+         interface Foo3 extends MAGICFIELDS<{ foo: Z.Number }> {}
+         class Foo3 extends Field_group<T0> {
+            static HELLO: string = 'WORLD'
+            volatile1: number = 12
+            @computed get volatile2(): number {
+               return 33
+            }
+            @computed get bar2(): number {
+               return this.zValue.foo * 2
+            }
+         }
+
+         const S1 = S0.useClass(Foo3)
 
          const E1: Foo3 = S1.create()
          // proper constructor
          expect((E1.constructor as any).HELLO).toBe('WORLD')
 
          // proper
-         expect(E1.value.foo).toBe(10)
+         expect(E1.zValue.foo).toBe(10)
          expect(E1.bar2).toBe(20)
-         E1.value.foo++
-         expect(E1.value.foo).toBe(11)
+         E1.zValue.foo++
+         expect(E1.zValue.foo).toBe(11)
          expect(E1.bar2).toBe(22)
 
          // make sure the prop is observable
@@ -187,70 +229,47 @@ describe('field customizations', () => {
             () => E1.bar2,
             (val) => xx++,
          )
-         E1.value.foo++
-         E1.value.foo++
-         E1.value.foo++
-         E1.value.foo++
+         E1.zValue.foo++
+         E1.zValue.foo++
+         E1.zValue.foo++
+         E1.zValue.foo++
          expect(xx).toBe(4)
       })
    })
 
-   describe('autoExtendObservable', () => {
-      it.skip('throw when called twice', () => {
-         const S0 = b.empty()
-         const S1 = S0.useClass(
-            () =>
-               class extends Field_group<any> {
-                  constructor(...args: FieldCtorProps<any>) {
-                     super(...args)
-                     this.autoExtendObservable()
-                     this.autoExtendObservable()
-                  }
-               },
-         )
-         // TypeError: Attempting to change enumerable attribute of unconfigurable property.
-         expect(() => S1.create()).toThrow()
-      })
-
+   describe('observability', () => {
       it('allow the subclass to configure its fields/methods observability', () => {
          const S0 = b.fields({ foo: b.int({ default: 10 }) })
 
-         const S1 = S0.useClass(
-            () =>
-               class Glux extends Field_group<any> {
-                  $Field!: Glux
-                  constructor(...args: FieldCtorProps<any>) {
-                     super(...args)
-                     this.autoExtendObservable({
-                        attrNotObs: false,
-                        getterNotObs: false,
-                        instanceFnNotAction: false,
-                        protoFnNotAction: false,
-                     })
-                  }
+         interface Glux extends MAGICFIELDS<any> {}
+         class Glux extends Field_group<any> {
+            // constructor(...args: FieldCtorProps<any>) {
+            //    super(...args)
+            // }
 
-                  attrObs = 1
-                  attrNotObs = 1
-                  get getterObs(): number {
-                     return 2
-                  }
-                  get getterNotObs(): number {
-                     return 2
-                  }
-                  protoFnAction(): number {
-                     return 3
-                  }
-                  protoFnNotAction(): number {
-                     return 3
-                  }
-                  instanceFnAction = (): number => {
-                     return 3
-                  }
-                  instanceFnNotAction = (): number => {
-                     return 3
-                  }
-               },
-         )
+            @observable accessor attrObs = 1
+            attrNotObs = 1
+            @computed get getterObs(): number {
+               return 2
+            }
+            get getterNotObs(): number {
+               return 2
+            }
+            @action protoFnAction(): number {
+               return 3
+            }
+            protoFnNotAction(): number {
+               return 3
+            }
+            @action instanceFnAction = (): number => {
+               return 3
+            }
+            instanceFnNotAction = (): number => {
+               return 3
+            }
+         }
+
+         const S1 = S0.useClass(Glux)
          for (let i = 0; i < 3; i++) {
             const E1 = S1.create()
             expect({
@@ -262,10 +281,8 @@ describe('field customizations', () => {
                protoFnNotAction: isAction(E1.protoFnNotAction),
                instanceFnAction: isAction(E1.instanceFnAction),
                instanceFnNotAction: isAction(E1.instanceFnNotAction),
-               // 🔶 these actually pass for bad reasons: the Glux autoExtendObservable will fill them
-               // even if the makeAutoObservableInheritance called missed them
-               fieldGroupAttr: isObservableProp(E1, 'fields'),
-               baseFieldAttr: isObservableProp(E1, 'ready'),
+               fieldGroupAttr: isObservableProp(E1, 'zFields'),
+               baseFieldAttr: isObservableProp(E1, 'zReady'),
             }).toMatchObject({
                attrObs: true,
                attrNotObs: false,
@@ -275,7 +292,7 @@ describe('field customizations', () => {
                protoFnNotAction: false,
                instanceFnAction: true,
                instanceFnNotAction: false,
-               fieldGroupAttr: true,
+               fieldGroupAttr: false,
                baseFieldAttr: true,
             })
          }
@@ -283,32 +300,31 @@ describe('field customizations', () => {
       it('have the right observability for parents when we subclass but not extend', () => {
          const S0 = b.fields({ foo: b.int({ default: 10 }) })
 
-         const S1 = S0.useClass(
-            () =>
-               class Glux extends Field_group<any> {
-                  $Field!: Glux
-                  attrObs = 1
-                  attrNotObs = 1
-                  get getterObs(): number {
-                     return 2
-                  }
-                  get getterNotObs(): number {
-                     return 2
-                  }
-                  protoFnAction(): number {
-                     return 3
-                  }
-                  protoFnNotAction(): number {
-                     return 3
-                  }
-                  instanceFnAction = (): number => {
-                     return 3
-                  }
-                  instanceFnNotAction = (): number => {
-                     return 3
-                  }
-               },
-         )
+         interface Glux extends MAGICFIELDS<any> {}
+         class Glux extends Field_group<any> {
+            attrObs = 1
+            attrNotObs = 1
+            get getterObs(): number {
+               return 2
+            }
+            get getterNotObs(): number {
+               return 2
+            }
+            protoFnAction(): number {
+               return 3
+            }
+            protoFnNotAction(): number {
+               return 3
+            }
+            instanceFnAction = (): number => {
+               return 3
+            }
+            instanceFnNotAction = (): number => {
+               return 3
+            }
+         }
+
+         const S1 = S0.useClass(Glux)
          for (let i = 0; i < 1; i++) {
             const E1 = S1.create()
             expect({
@@ -320,10 +336,8 @@ describe('field customizations', () => {
                protoFnNotAction: isAction(E1.protoFnNotAction),
                instanceFnAction: isAction(E1.instanceFnAction),
                instanceFnNotAction: isAction(E1.instanceFnNotAction),
-               // 🔶 these actually pass for bad reasons: the Glux autoExtendObservable will fill them
-               // even if the makeAutoObservableInheritance called missed them
-               fieldGroupAttr: isObservableProp(E1, 'fields'),
-               baseFieldAttr: isObservableProp(E1, 'ready'),
+               fieldGroupAttr: isObservableProp(E1, 'zFields'),
+               baseFieldAttr: isObservableProp(E1, 'zReady'),
             }).toMatchObject({
                attrObs: false,
                attrNotObs: false,
@@ -333,25 +347,10 @@ describe('field customizations', () => {
                protoFnNotAction: false,
                instanceFnAction: false,
                instanceFnNotAction: false,
-               fieldGroupAttr: true,
+               fieldGroupAttr: false,
                baseFieldAttr: true,
             })
          }
       })
-      // it.only('work simple', () => {
-      //     //
-      //     class Test {
-      //         foo = b.int({ default: 10 })
-      //         bar = b.string()
-      //         sub = {
-      //             point: b
-      //                 .fields({
-      //                     x: b.int(),
-      //                     y: b.int(),
-      //                 })
-      //                 .list(),
-      //         }
-      //     }
-      // })
    })
 })

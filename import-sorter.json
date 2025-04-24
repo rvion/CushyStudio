@@ -5,7 +5,15 @@
     "formatExports": false,
     "groupRules": [{ "importType": true, "regex": ".*" }, {}, "^src/|^[.]"],
 
-    "excludeGlob": ["dist", "doc", "lib", "tmp", "node_modules"],
+    "excludeGlob": [
+        "dist",
+        "doc",
+        "lib",
+        "tmp",
+        "node_modules",
+        "./src/setup.ts",
+        "setup.ts"
+    ],
     "// notes": {
         "manual": [
             "./node_modules/.bin/format-imports --config import-sorter.json -d -e ts src/**/*.ts",

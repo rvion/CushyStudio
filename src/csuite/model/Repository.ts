@@ -1,5 +1,4 @@
 import type { Field } from './Field'
-import type { FieldId } from './FieldId'
 
 import { runInAction } from 'mobx'
 
@@ -10,33 +9,21 @@ import { Transaction } from './Transaction'
  * you need one, and only one (singleton) per project
  * allow to inject the proper form config for your specific project.
  * to avoid problem with hot-reload, export an instance from a module directly and use it from there.
+ *
+ * 🔶 this class is not observable as of 2025-02-07
  */
 export class Repository {
-   constructor() {}
-   /* STORE ------------------------------------------------------------ */
-   /** all root fields (previously called entities) */
-   allDocuments: Map<FieldId, Field> = new Map()
-   get documentCount(): number {
-      return this.allDocuments.size
+   ASSERT_IS_RUNNING_IN_TRANSACTION(): Transaction {
+      if (this.tct == null) throw new Error('❌ invariant violation: ASSERT_IS_RUNNING_IN_TRANSACTION')
+      return this.tct
    }
-
-   /** all fiels, root or not */
-   allFields: Map<FieldId, Field> = new Map()
-   get fieldCount(): number {
-      return this.allFields.size
+   /**
+    * @deprecated
+    * unimplemented; probably worth adding back as non-observable weakmap
+    */
+   getFieldByID(promptID: any): Field {
+      throw new Error('Method not implemented.')
    }
-
-   /** all fields by given type */
-   allFieldsByType: Map<string, Map<string, Field>> = new Map()
-
-   getEntityByID(entityId: FieldId): Maybe<Field> {
-      return this.allDocuments.get(entityId)
-   }
-
-   getFieldByID(fieldId: FieldId): Maybe<Field> {
-      return this.allFields.get(fieldId)
-   }
-
    /* 📌 STATS --------------------------------------------------------- */
    /** how many transactions have been executed on that repo */
    transactionCount: number = 0
@@ -44,16 +31,19 @@ export class Repository {
    createCount: number = 0
    deleteCount: number = 0
 
+   fieldCount: number = 0
+   documentCount: number = 0
+
    /* 📌 FULL-CLEAR ---------------------------------------------------- */
    /**
     * fully clear the entity-map + reset stats
-    * @since 2024-07-08
     * @stability unstable
     */
    reset(): void {
+      this.fieldCount = 0
+      this.documentCount = 0
       // we must reset entities first, since reseting entities is done in a transaction
       // so it will increase the number of additions and deletions
-      this.resetEntities()
       this.resetStats()
    }
 
@@ -63,98 +53,51 @@ export class Repository {
       this.createCount = 0
       this.deleteCount = 0
    }
-   resetEntities(): void {
-      this.runInTransaction(() => {
-         for (const root of this.allDocuments.values()) {
-            root.disposeTree()
-         }
-      })
-      if (this.allFields.size !== 0) {
-         throw new Error(
-            `[❌] INVARIANT VIOLATION: allFields should be empty but it's ${this.allFields.size} (${[
-               ...this.allFields.values(),
-            ].map((i) => [i.type, i.summary])})`,
-         )
-      }
-      if (this.allDocuments.size !== 0)
-         throw new Error(
-            `[❌] INVARIANT VIOLATION: allRoots should be empty but it's ${this.allDocuments.size} (${[
-               ...this.allDocuments.values(),
-            ].map((i) => [i.type, i.summary])})`,
-         )
-   }
 
    /* 📌 TEMP ---------------------------------------------------------- */
+   private logsEnabled = false
    private logs: string[] = []
    startRecording(): void {
-      this.logs.splice(0, this.logs.length)
+      this.logsEnabled = true
+      this.logs.length = 0
    }
 
    debugLog(msg: string): void {
+      if (!this.logsEnabled) return
+
       this.logs.push(msg)
    }
 
    endRecording(): string[] {
-      // console.log(this.logs.join('\n'))
+      this.logsEnabled = false
       return this.logs.slice()
    }
 
    endRecordingAndLog(): string[] {
       console.log(this.logs.join('\n'))
-      return this.logs.slice()
+      const logs = this.logs.slice()
+      this.logs.length = 0
+      return logs
    }
 
    /* ------------------------------------------------------------------ */
-   /**
-    * return all currently instanciated widgets
-    * field of a given input type
-    */
-   getWidgetsByType = <W extends Field = Field>(type: string): W[] => {
-      const typeStore = this.allFieldsByType.get(type)
-      if (!typeStore) return []
-      return Array.from(typeStore.values()) as W[]
-   }
 
    /**
     * un-register field
     * should ONLY be called by `field.dispose()`
     */
    _unregisterField(field: Field, tct: Transaction): void {
-      // unregister field in `this._allWidgets`
-      this.allFields.delete(field.id)
-      this.allDocuments.delete(field.id)
+      this.fieldCount -= 1
+      if (field.zRoot == field) this.documentCount -= 1
 
       // unregister field in `this._allWidgetsByType(<type>)`
       tct.trackAsDeleted(field)
-
-      const typeStore = this.allFieldsByType.get(field.type)
-      if (typeStore) typeStore.delete(field.id)
    }
 
    /** only called when  a new field is created */
-   _registerField(field: Field, tct: Transaction): void {
-      // creations
-      if (this.allFields.has(field.id)) {
-         throw new Error(`[🔴] INVARIANT VIOLATION: field already registered: ${field.id}`)
-      }
-
-      // 🔴 creations ⁉️
-      tct.trackAsCreated(field)
-
-      if (field.root == field) {
-         this.allDocuments.set(field.id, field)
-      }
-
-      // register field in `this._allWidgets
-      this.allFields.set(field.id, field)
-
-      // register field in `this._allWidgetsByType(<type>)
-      const prev = this.allFieldsByType.get(field.type)
-      if (prev == null) {
-         this.allFieldsByType.set(field.type, new Map([[field.id, field]]))
-      } else {
-         prev.set(field.id, field)
-      }
+   _registerField(field: Field): void {
+      this.fieldCount += 1
+      if (field.zRoot == field) this.documentCount += 1
    }
 
    tct: Maybe<Transaction> = null
@@ -173,21 +116,34 @@ export class Repository {
        */
       // field: Field,
    ): A {
-      return runInAction(() => {
-         const isRoot = this.tct == null
-         const tct = (this.tct ??= new Transaction(this /* tctMode */))
-         const OUT = fn(tct)
+      try {
+         return runInAction(() => {
+            const isRoot = this.tct == null
+            const tct = (this.tct ??= new Transaction(this /* tctMode */))
+            const OUT = fn(tct)
 
-         // ONLY COMMIT THE ROOT TRANSACTION
-         if (isRoot) {
-            // for now, we execute the commit callbacks outside of the transaction
-            // we may consider swapping the order of the next two lines if need be.
-            this.tct = null
-            tct.commit() // <-- apply the callback once every update is done, OUTSIDE of the transaction
-            this.lastTransaction = tct
-         }
-         return OUT
-      })
+            // ONLY COMMIT THE ROOT TRANSACTION
+            if (isRoot) {
+               // for now, we execute the commit callbacks outside of the transaction
+               // we may consider swapping the order of the next two lines if need be.
+               this.tct = null
+               tct.commit()
+               this.lastTransaction = tct
+            }
+            return OUT
+         })
+      } catch (err) {
+         console.error(`[❌ TRANSACTION FAILED] cannot rollback; salvaging the mutation and proceeding.`)
+         console.error(err)
+         // 💬 2025-03-13 rvion:
+         // this is critical, we must not let the transaction in a bad state.
+         // because otherwise, every future transaction will be scoped under the failed
+         // transaction, and we will NEVER call commit => we will NEVER run the onChange callbacks
+         // and everything will be slightly broken in weird ways.
+         //   VVVVVVVVVV
+         this.tct = null
+         throw err
+      }
    }
 
    /**
@@ -222,27 +178,7 @@ export type RepositoryStats = {
 // REPOSITORY DI -------------------------------------------------------------------------
 let globalRepository: Maybe<Repository> = null
 
-// export function registerRepository(repository: Repository): void {
-//     // RepositoryDI[name] = repository
-//     if (globalRepository == null) {
-//         globalRepository = repository
-//     } else {
-//         throw new Error('Repository already registered')
-//     }
-// }
-
 export function getGlobalRepository(): Repository {
    globalRepository = globalRepository ||= new Repository()
    return bang(globalRepository)
-}
-
-/**
- * sometimes, we want to get a fake repository that does not interfere with anything
- * and that consume as little CPU/memory as possible (e.g. to do codegen on schema
- * that include dynamic fields relying on having intermediate instanciations)
- */
-let globalFakeRepository: Maybe<Repository> = null
-export function getFakeRepository(): Repository {
-   globalFakeRepository = globalFakeRepository ||= new Repository()
-   return bang(globalFakeRepository)
 }

@@ -1,61 +1,49 @@
 import type { Field_seed } from './FieldSeed'
 
-import { observer } from 'mobx-react-lite'
-
 import { Button } from '../../button/Button'
 import { ToggleButtonUI } from '../../checkbox/InputBoolToggleButtonUI'
 import { useCSuite } from '../../ctx/useCSuite'
 import { Frame } from '../../frame/Frame'
 import { InputNumberUI } from '../../input-number/InputNumberUI'
 
-export const WidgetSeedUI = observer(function WidgetSeedUI_(p: { field: Field_seed }) {
+export const WidgetSeedUI = obs(function WidgetSeedUI_(p: { field: Field_seed }) {
    const field = p.field
-   const val = field.value_or_zero
-   const theme = cushy.preferences.theme.value
+   const val = field.zValueOrZero
+   const csuite = useCSuite()
 
    return (
-      <Frame
-         tw={[
-            //
-            'h-input',
-            'flex flex-1 items-center',
-            // bird_d: Need to put this as a tw alias or make a wrapper component
-         ]}
-         align
-         roundness={theme.global.roundness}
-         border={theme.global.border}
-      >
+      <Frame border={csuite.inputBorder} tw={['h-input', 'flex flex-1 items-center']}>
          <ToggleButtonUI // Random
-            toggleGroup={field.id}
-            icon='mdiAutoFix'
-            value={field.serial.mode === 'randomize'}
+            icon={IKONS.mdiAutoFix}
+            value={field.zSerial.mode === 'randomize'}
             onValueChange={() => {
                field.setToRandomize()
-               field.touch()
+               field.zTouch()
             }}
+            toggleGroup={field.zUid}
             // text='Random'
          />
          <ToggleButtonUI // Fixed
-            toggleGroup={field.id}
-            icon='mdiNumeric1CircleOutline'
-            value={field.serial.mode === 'fixed'}
+            icon={IKONS.mdiNumeric1CircleOutline}
+            value={field.zSerial.mode === 'fixed'}
             onValueChange={() => {
                field.setToFixed()
-               field.touch()
+               field.zTouch()
             }}
+            toggleGroup={field.zUid}
             // text='Fixed'
          />
          <InputNumberUI // Fixed value
-            disabled={field.serial.mode === 'randomize'}
+            disabled={field.zSerial.mode === 'randomize'}
             tw={['flex-1 !border-none']}
-            min={field.config.min}
-            max={field.config.max}
+            min={field.zConfig.min}
+            max={field.zConfig.max}
             step={1}
             value={val}
             mode='int'
             onValueChange={(value) => {
-               field.value = value
-               field.touch()
+               field.zValue = value
+               field.zTouch()
             }}
          />
          <Button // reset fixed value
@@ -63,9 +51,9 @@ export const WidgetSeedUI = observer(function WidgetSeedUI_(p: { field: Field_se
             tw='!border-l !border-r-0'
             onClick={() => {
                field.setToFixed(Math.floor(Math.random() * 100000000))
-               field.touch()
+               field.zTouch()
             }}
-            icon='mdiAutorenew'
+            icon={IKONS.mdiAutorenew}
             square
          />
       </Frame>

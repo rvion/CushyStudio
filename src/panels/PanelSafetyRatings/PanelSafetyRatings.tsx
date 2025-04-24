@@ -1,5 +1,4 @@
 import { sql } from 'kysely'
-import { observer } from 'mobx-react-lite'
 
 import { Button } from '../../csuite/button/Button'
 import { UI } from '../../csuite/components/UI'
@@ -17,7 +16,7 @@ export const PanelSafetyRatings = new Panel({
    category: 'outputs',
    widget: (): React.FC<PanelSafetyRatingsProps> => PanelSafetyRatingsUI,
    header: (p: PanelSafetyRatingsProps): PanelHeader => ({ title: 'SafetyRatings' }),
-   icon: 'mdiShieldSunOutline',
+   icon: IKONS.mdiShieldSunOutline,
    def: (): PanelSafetyRatingsProps => ({}),
 })
 
@@ -28,7 +27,7 @@ export type PanelSafetyRatingsProps = {
    onClick?: (img: MediaImageL) => void
 }
 
-export const PanelSafetyRatingsUI = observer(function PanelSafetyRatings(p: PanelSafetyRatingsProps) {
+export const PanelSafetyRatingsUI = obs(function PanelSafetyRatings(p: PanelSafetyRatingsProps) {
    const conf = useGalleryConf()
    const xxx = usePanel().usePersistentModel('uist', (ui) =>
       ui.fields({
@@ -59,12 +58,12 @@ export const PanelSafetyRatingsUI = observer(function PanelSafetyRatings(p: Pane
             <Button
                size='lg'
                look='success'
-               children={`compute ${xxx.value.amout} more`}
+               children={`compute ${xxx.zValue.amout} more`}
                onClick={() =>
                   MediaImageL.cacheMissingSafetyRatings({
-                     amount: xxx.value.amout,
-                     delay: xxx.value.delay,
-                     onProcess: (image) => (xxx.value.image = image),
+                     amount: xxx.zValue.amout,
+                     delay: xxx.zValue.delay,
+                     onProcess: (image) => (xxx.zValue.image = image),
                   })
                }
             />
@@ -95,9 +94,9 @@ export const PanelSafetyRatingsUI = observer(function PanelSafetyRatings(p: Pane
                            {JSON.parse(r.ids)
                               .map((imgID: string): MediaImageL => cushy.db.media_image.get(imgID)!)
                               .sort((a: MediaImageL, b: MediaImageL) => b.data.updatedAt - a.data.updatedAt)
-                              .slice(0, xxx.value.preview)
+                              .slice(0, xxx.zValue.preview)
                               .map((img: MediaImageL) => (
-                                 <ImageSimpleUI size={xxx.value.previewSize} key={img.id} img={img!} />
+                                 <ImageSimpleUI size={xxx.zValue.previewSize} key={img.id} img={img!} />
                               ))}
                         </div>
                      ),
@@ -106,7 +105,7 @@ export const PanelSafetyRatingsUI = observer(function PanelSafetyRatings(p: Pane
          />
 
          <QuickTableUI
-            key={xxx.Image.value?.id}
+            key={xxx.zValue.image?.id}
             tw='bd m-2'
             rows={cushy.db.media_image.selectRaw2((r) =>
                r

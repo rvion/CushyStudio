@@ -1,9 +1,10 @@
-import type { IconName } from '../../csuite/icons/icons'
+import type { IconName } from '../../csuite/icons/IconName'
 
 import { makeAutoObservable } from 'mobx'
 
 import { getAllIcons } from '../../csuite/icons/getAllIcons'
 import { iconAliases } from '../../csuite/icons/iconAliases'
+import { uncastIcon } from '../../csuite/icons/icons'
 import { toastError, toastInfo } from '../../csuite/utils/toasts'
 
 export class IconPanelStableState {
@@ -15,7 +16,7 @@ export class IconPanelStableState {
       return getAllIcons()
    }
 
-   aliasesFor(iconName: IconName): Maybe<string[]> {
+   aliasesFor(iconName: IconName): Maybe<IconName[]> {
       return iconAliases[iconName]
    }
 
@@ -25,9 +26,9 @@ export class IconPanelStableState {
       return this.allIcons_unfiltered.filter((x) => {
          return (
             // primary name matches
-            x.toLowerCase().includes(this.query) ||
+            uncastIcon(x).toLowerCase().includes(this.query) ||
             // alias matches
-            iconAliases[x]?.some((y) => y.includes(this.query))
+            iconAliases[x]?.some((y) => uncastIcon(y).includes(this.query))
          )
       })
    }
@@ -48,8 +49,9 @@ export class IconPanelStableState {
 
       try {
          // Probably should check if it errored, but lazy.
-         await navigator.clipboard.writeText(icon)
-         toastInfo(`'${icon}' copied to clipboard`)
+         const iconStr = uncastIcon(icon)
+         await navigator.clipboard.writeText(iconStr)
+         toastInfo(`'${iconStr}' copied to clipboard`)
       } catch (e) {
          toastError(`Error copying to clipboard: ${e}`)
       }

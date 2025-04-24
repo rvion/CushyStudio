@@ -12,15 +12,15 @@ export type SimpleShape = {
    depth: number
 
    // scale
-   scaleX?: number
-   scaleY?: number
-   scaleZ?: number
+   scaleX?: Maybe<number>
+   scaleY?: Maybe<number>
+   scaleZ?: Maybe<number>
 
    // color
-   fill?: string
+   fill: string
 
    // rotation
-   rotation?: number
+   rotation?: Maybe<number>
 
    // interraction
    isSelected: boolean
@@ -28,7 +28,7 @@ export type SimpleShape = {
    isResizing: boolean
 }
 
-export const mkPlacement = (p: Partial<SimpleShape>): SimpleShape$['$Value'] => {
+export const mkPlacement = (p: Partial<SimpleShape>): SimpleShape => {
    return {
       x: 0,
       y: 0,
@@ -48,21 +48,21 @@ export const mkPlacement = (p: Partial<SimpleShape>): SimpleShape$['$Value'] => 
    }
 }
 
-export type SimpleShape$ = S.SGroup<{
-   x: S.SNumber
-   y: S.SNumber
-   z: S.SNumber
-   width: S.SNumber
-   height: S.SNumber
-   depth: S.SNumber
-   scaleX: S.SOptional<S.SNumber>
-   scaleY: S.SOptional<S.SNumber>
-   scaleZ: S.SOptional<S.SNumber>
-   fill: S.SColor
-   rotation: S.SOptional<S.SNumber>
-   isSelected: S.SBool
-   isDragging: S.SBool
-   isResizing: S.SBool
+export type SimpleShape$ = Z.Record<{
+   x: Z.Number
+   y: Z.Number
+   z: Z.Number
+   width: Z.Number
+   height: Z.Number
+   depth: Z.Number
+   scaleX: Z.Optional<Z.Number>
+   scaleY: Z.Optional<Z.Number>
+   scaleZ: Z.Optional<Z.Number>
+   fill: Z.Color
+   rotation: Z.Optional<Z.Number>
+   isSelected: Z.Bool
+   isDragging: Z.Bool
+   isResizing: Z.Bool
 }>
 
 export function simpleShape$(def?: Partial<SimpleShape>): SimpleShape$ {
@@ -85,7 +85,7 @@ export function simpleShape$(def?: Partial<SimpleShape>): SimpleShape$ {
          scaleZ: b.number().optional(),
 
          // color
-         fill: b.colorV2(),
+         fill: b.color(),
 
          // rotation
          rotation: b.number().optional(),

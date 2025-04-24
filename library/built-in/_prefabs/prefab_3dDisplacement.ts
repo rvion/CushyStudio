@@ -3,25 +3,25 @@ import type { OutputFor } from './_prefabs'
 
 import { exhaust } from '../../../src/csuite/utils/exhaust'
 
-export type UI_3dDisplacement = X.XGroup<{
-   normal: X.XSelectOne_<'MiDaS' | 'BAE' | 'None'>
-   depth: X.XChoice<{
-      MiDaS: X.XEmpty
-      Zoe: X.XEmpty
-      LeReS: X.XEmpty
-      Marigold: ReturnType<X.Builder['auto']['Marigold.MarigoldDepthEstimation']>
+export type UI_3dDisplacement = Z.Group<{
+   normal: Z.XSelectOne_<'MiDaS' | 'BAE' | 'None'>
+   depth: Z.Choice<{
+      MiDaS: Z.Empty
+      Zoe: Z.Empty
+      LeReS: Z.Empty
+      Marigold: ReturnType<Z.Builder['auto']['Marigold.MarigoldDepthEstimation']>
    }>
 }>
 
 export function ui_3dDisplacement(): UI_3dDisplacement {
-   const form = getCurrentForm()
+   const form = getBuilder()
    return form
       .group({
-         icon: 'mdiRotate3d',
+         icon: IKONS.mdiRotate3d,
          label: '3D Displacement',
          items: {
             normal: form.selectOneString(['MiDaS', 'BAE', 'None'], {
-               tooltip: 'no Normal map may be better, bad model yields bumpy stuff',
+               description: 'no Normal map may be better, bad model yields bumpy stuff',
                default: 'None',
             }),
             depth: form.choice(

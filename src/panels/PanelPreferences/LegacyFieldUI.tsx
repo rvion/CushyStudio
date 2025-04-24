@@ -1,8 +1,6 @@
-import { observer } from 'mobx-react-lite'
-
 import { WidgetLabelContainerUI } from '../../csuite/form/WidgetLabelContainerUI'
 
-export const LegacyFieldUI = observer(function LegacyFieldUI_(p: {
+export const LegacyFieldUI = obs(function LegacyFieldUI_(p: {
    required?: boolean
    label?: string
    help?: string

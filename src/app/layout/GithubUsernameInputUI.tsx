@@ -1,17 +1,9 @@
-import type { ReactNode } from 'react'
-
-import { observer } from 'mobx-react-lite'
-
 import { BadgeUI } from '../../csuite/badge/BadgeUI'
 import { InputStringUI } from '../../csuite/input-string/InputStringUI'
 import { RevealUI } from '../../csuite/reveal/RevealUI'
 import { assets } from '../../utils/assets/assets'
 
-export type RsuiteSize = 'lg' | 'md' | 'sm' | 'xs'
-export const GithubUsernameInputUI = observer(function GithubUsernameInputUI_(p: {
-   //
-   children?: ReactNode
-}) {
+export const GithubUsernameInputUI = obs(function GithubUsernameInputUI_(p: {}) {
    const githubUsername = cushy.configFile.value.githubUsername || '<your-github-username>'
    return (
       <div tw='join w-auto'>
@@ -38,7 +30,7 @@ export const GithubUsernameInputUI = observer(function GithubUsernameInputUI_(p:
          </div>
          <InputStringUI
             tw='csuite-basic-input'
-            icon='mdiGithub'
+            icon={IKONS.mdiGithub}
             placeholder='your github username'
             getValue={() => githubUsername}
             setValue={(next) => void cushy.configFile.update({ githubUsername: next })}

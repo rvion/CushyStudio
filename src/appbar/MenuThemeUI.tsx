@@ -1,8 +1,6 @@
-import { observer } from 'mobx-react-lite'
-
 import { Dropdown } from '../csuite/dropdown/Dropdown'
 
-export const MenuThemeUI = observer(function MenuThemeUI_(p: {}) {
+export const MenuThemeUI = obs(function MenuThemeUI_(p: {}) {
    return (
       <Dropdown //
          title='Theme'

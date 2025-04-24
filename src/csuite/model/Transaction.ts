@@ -1,46 +1,28 @@
 import type { Field } from './Field'
 import type { Repository } from './Repository'
 
-export type TransactionSummary1 = {
+import { FieldEvent } from './FieldEvent'
+
+type TransactionSummary = {
    created: string[]
    updated: string[]
    deleted: string[]
 }
 
-export type TransactionSummary2 = TransactionSummary2Item[]
-export type TransactionSummary2Item = {
-   path: string
-   type: 'create' | 'update' | 'delete'
-}
-
 export class Transaction {
-   tower: Field[] = []
+   static UID: number = 0
+   uid = Transaction.UID++
 
-   constructor(
-      public repo: Repository, // 🔴 Transaction mode is not used yet // public mode: TransactionMode,
-   ) {}
-
-   get summary1(): TransactionSummary1 {
-      return {
-         created: [...this.createdFields.values()].map((f) => f.path),
-         updated: [...this.updatedFields.values()].map((f) => f.path),
-         deleted: [...this.deletedFields.values()].map((f) => f.path),
-      }
+   constructor(public repo: Repository) {
+      this.repo.transactionCount++
    }
 
-   private _mkTransactionSummary2Item = (x: TransactionSummary2Item): TransactionSummary2Item => x
-   get summary2(): TransactionSummary2 {
-      return [
-         ...[...this.createdFields.values()].map((f) =>
-            this._mkTransactionSummary2Item({ path: f.path, type: 'create' }),
-         ),
-         ...[...this.updatedFields.values()].map((f) =>
-            this._mkTransactionSummary2Item({ path: f.path, type: 'update' }),
-         ),
-         ...[...this.deletedFields.values()].map((f) =>
-            this._mkTransactionSummary2Item({ path: f.path, type: 'delete' }),
-         ),
-      ]
+   get summary1(): TransactionSummary {
+      return {
+         created: [...this.createdFields.values()].map((f) => f.zPath),
+         updated: [...this.updatedFields.values()].map((f) => f.zPath),
+         deleted: [...this.deletedFields.values()].map((f) => f.zPath),
+      }
    }
 
    createdFields: Set<Field> = new Set()
@@ -48,35 +30,25 @@ export class Transaction {
    deletedFields: Set<Field> = new Set()
 
    trackAsCreated(field: Field): void {
-      // console.log(`[🤠] 🟢`, field.path)
       if (this.createdFields.has(field)) return
       if (this.updatedFields.has(field)) throw new Error("❌ you're trying to mark as 'Created' a field that is already updated (so created before)") // prettier-ignore
       if (this.deletedFields.has(field)) throw new Error("❌ you're trying to mark as 'Created' a field that is already deleted") // prettier-ignore
       this.createdFields.add(field)
-      // NO NEED TO BUBBLING HERE !
    }
    trackAsUpdated(field: Field): void {
-      // console.log(`[🤠] 👛`, field.path)
       if (this.updatedFields.has(field)) return
       if (this.createdFields.has(field)) return
       if (this.deletedFields.has(field)) throw new Error("❌ you're trying to mark as 'Updated' a field that is already deleted") // prettier-ignore
-
       this.updatedFields.add(field)
-      // NO NEED TO BUBBLING HERE !
-      // if (field.parent) this.trackAsUpdated(field.parent)
    }
    trackAsDeleted(field: Field): void {
-      // console.log(`[🤠] ❌`, field.path)
       if (this.deletedFields.has(field)) return
       if (this.createdFields.has(field)) this.createdFields.delete(field)
       if (this.updatedFields.has(field)) this.updatedFields.delete(field)
       this.deletedFields.add(field)
-      // NO NEED TO BUBBLING HERE !
    }
 
    commit(): void {
-      // bump transaction
-      this.repo.transactionCount++
       this.repo.createCount += this.createdFields.size
       this.repo.updateCount += this.updatedFields.size
       this.repo.deleteCount += this.deletedFields.size
@@ -85,37 +57,42 @@ export class Transaction {
       // compute all nodes from leaves that need to call effects
       // call them in order, non recursively.
       const createdFieldList = Array.from(this.createdFields.values())
-         .map((field) => ({ field, depth: field.trueDepth }))
+         .map((field) => ({ field, depth: field.zTrueDepth }))
          .sort((a, b) => b.depth - a.depth)
 
       for (const { field } of createdFieldList) {
-         this.repo.debugLog(`🟢 ${`create`.padEnd(10)} ${field.path}`)
-         field.config.onInit?.(field)
+         this.repo.debugLog(`🟢 ${`create`.padEnd(10)} ${field.zPath}`)
+         field.zConfig.onInit?.(field)
       }
 
       // #region Update
       // compute all nodes from leaves that need to call effects
       // call them in order, non recursively.
       const updatedFieldList = Array.from(this.updatedFields.values())
-         .map((field) => ({ field, depth: field.trueDepth }))
+         .map((field) => ({ field, depth: field.zTrueDepth }))
          .sort((a, b) => b.depth - a.depth)
 
       for (const { field } of updatedFieldList) {
-         this.repo.debugLog(`👛 ${`update`.padEnd(10)} ${field.path}`)
-         field.INTERNAL_applySerialUpdateEffects()
+         this.repo.debugLog(`👛 ${`update`.padEnd(10)} ${field.zPath}`)
+         field.zApplySerialUpdateEffects()
       }
 
       for (const { field } of updatedFieldList) {
-         this.repo.debugLog(`💙 ${`publish`.padEnd(10)} ${field.path}`)
-         field.publishValue()
+         this.repo.debugLog(`💙 ${`publish`.padEnd(10)} ${field.zPath}`)
+         field.zRunPublications(FieldEvent.CommitUpdate)
+         field.zInternalRunCallbacksForEvent(FieldEvent.CommitUpdate)
+      }
+
+      for (const { field } of updatedFieldList) {
+         field.zInternalRunCallbacksForEvent(FieldEvent.CommitUpdate2)
       }
 
       // #region Delete
       const deletedFieldList = Array.from(this.deletedFields.values())
-         .map((field) => ({ field, depth: field.trueDepth }))
+         .map((field) => ({ field, depth: field.zTrueDepth }))
          .sort((a, b) => b.depth - a.depth)
       for (const { field } of deletedFieldList) {
-         this.repo.debugLog(`❌ ${`delete`.padEnd(10)} ${field.path}`)
+         this.repo.debugLog(`❌ ${`delete`.padEnd(10)} ${field.zPath}`)
          // field.INTERNAL_applyOnDelete() // TODO
       }
    }

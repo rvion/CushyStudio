@@ -1,13 +1,11 @@
 import type { Command } from '../../csuite/commands/Command'
 
-import { observer } from 'mobx-react-lite'
-
 import { BadgeListUI } from '../../csuite/badge/BadgeListUI'
 import { BadgeUI } from '../../csuite/badge/BadgeUI'
 import { commandManager, parseShortcutToInputSequence } from '../../csuite/commands/CommandManager'
 import { Frame, type FrameProps } from '../../csuite/frame/Frame'
 
-export const CommandHistoryTableUI = observer(function CommandHistoryTable(p: FrameProps) {
+export const CommandHistoryTableUI = obs(function CommandHistoryTable(p: FrameProps) {
    const lastX = commandManager.inputHistory.slice(-3)
    const out: { shortcut: string; commands: Command[] }[] = []
    for (let x = 0; x < lastX.length; x++) {

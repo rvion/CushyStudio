@@ -1,17 +1,15 @@
-import { observer } from 'mobx-react-lite'
-
 import { Button } from '../../csuite/button/Button'
 import { ToggleButtonUI } from '../../csuite/checkbox/InputBoolToggleButtonUI'
 import { Frame, type FrameProps } from '../../csuite/frame/Frame'
 import { IkonOf } from '../../csuite/icons/iconHelpers'
 import { DebugShortcutsFloatingUI } from './DebugShortcutsFloatingUI'
 
-export const FooterBarUI = observer(function FooterBarUI_(p: FrameProps) {
-   const theme = cushy.preferences.theme.value
+export const FooterBarUI = obs(function FooterBarUI_(p: FrameProps) {
+   const theme = cushy.preferences.theme.zValue
    return (
       <Frame
          border={0}
-         base={cushy.preferences.theme.value.appbar ?? { contrast: -0.077 }}
+         base={theme.appbar ?? { contrast: -0.077 }}
          tw='line-clamp-1 flex items-center truncate px-1 py-1'
          {...p}
       >
@@ -20,12 +18,11 @@ export const FooterBarUI = observer(function FooterBarUI_(p: FrameProps) {
             tooltip='Show Command Visualizer'
             onValueChange={(next) => (cushy.showCommandHistory = next)}
             value={cushy.showCommandHistory}
-            icon='mdiKeyboard'
+            icon={IKONS.mdiKeyboard}
             toggleGroup='footer-conf'
          />
 
          <div tw='flex-1' />
-         {/* {tooltipStuff.deepest && <div>{tooltipStuff.deepest.text}</div>} */}
          {cushy.showCommandHistory && <DebugShortcutsFloatingUI />}
          <Frame // Git/Version info
             align
@@ -44,18 +41,18 @@ export const FooterBarUI = observer(function FooterBarUI_(p: FrameProps) {
                         ? { contrast: 0.2, chromaBlend: 25 }
                         : undefined
                   }
-                  // roundness={theme.global.roundness}
                >
                   <Frame
                      square
                      tw='relative h-full w-full flex-1 '
-                     icon={cushy.updater.hasUpdateAvailable ? 'mdiSourceBranchSync' : 'mdiSourceBranch'}
+                     icon={
+                        cushy.updater.hasUpdateAvailable ? IKONS.mdiSourceBranchSync : IKONS.mdiSourceBranch
+                     }
                   >
                      {cushy.updater.hasUpdateAvailable && (
                         <Frame
                            tw='absolute bottom-0.5 right-0.5 h-1.5 w-1.5'
                            roundness={'100%'}
-                           // border={theme.global.border}
                            dropShadow={theme.global.shadow}
                            base={{ contrast: 0.5, chromaBlend: 100, hue: 180 }}
                         />
@@ -64,9 +61,9 @@ export const FooterBarUI = observer(function FooterBarUI_(p: FrameProps) {
                   {(cushy.updater.behindCount != 0 || cushy.updater.aheadCount != 0) && (
                      <Frame line tw='flex-1 !gap-0'>
                         {cushy.updater.behindCount}
-                        <IkonOf name='mdiArrowDownThick' />
+                        <IkonOf name={IKONS.mdiArrowDownThick} />
                         {cushy.updater.aheadCount}
-                        <IkonOf name='mdiArrowUpThick' />
+                        <IkonOf name={IKONS.mdiArrowUpThick} />
                      </Frame>
                   )}
                </Frame>

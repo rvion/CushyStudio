@@ -1,10 +1,9 @@
-import { observer } from 'mobx-react-lite'
 import { Fragment } from 'react/jsx-runtime'
 
 import { ActivityContainerUI } from './ActivityContainerUI'
 import { activityManager } from './ActivityManager'
 
-export const ActivityStackUI = observer(function ActivityStackUI_(p: {}) {
+export const ActivityStackUI = obs(function ActivityStackUI_(p: {}) {
    return (
       <Fragment>
          {activityManager.routines.map((routine, ix) => {

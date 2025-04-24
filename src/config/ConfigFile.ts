@@ -1,4 +1,4 @@
-import type { IJsonModel } from 'flexlayout-react'
+import type { IJsonModel } from '../flexlayout-react'
 
 // import { ComfyHostID } from './ComfyHostDef'
 

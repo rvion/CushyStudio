@@ -1,7 +1,5 @@
 import type { ComfyWorkflowL } from '../../models/ComfyWorkflow'
 
-import { observer } from 'mobx-react-lite'
-
 import { LegacyProgressLineUI } from '../../csuite/inputs/LegacyProgressLineUI'
 import { LegacySurfaceUI } from '../../csuite/inputs/LegacySurfaceUI'
 import { RevealUI } from '../../csuite/reveal/RevealUI'
@@ -10,7 +8,7 @@ import { JSONHighlightedCodeUI } from '../misc/TypescriptHighlightedCodeUI'
 import { ButtonDownloadFilesUI } from './ButtonDownloadFilesUI'
 import { ButtonOpenInComfyUI } from './ButtonOpenInComfyUI'
 
-export const GraphSummaryUI = observer(function GraphSummaryUI_(p: { graph: ComfyWorkflowL }) {
+export const GraphSummaryUI = obs(function GraphSummaryUI_(p: { graph: ComfyWorkflowL }) {
    const graph = p.graph
    return (
       <LegacySurfaceUI tw='relative [min-width:2rem]'>
@@ -21,7 +19,7 @@ export const GraphSummaryUI = observer(function GraphSummaryUI_(p: { graph: Comf
             <ButtonDownloadFilesUI graph={graph} />
             <ButtonOpenInComfyUI graph={graph} />
          </div>
-         <div className='overflow-auto'>
+         <div>
             {graph.size === 0 && <div>Empty Graph</div>}
             {graph.pendingNodes.length > 0 && <div>+{graph.pendingNodes.length} nodes remaining</div>}
             {graph.nodesByUpdatedAt.map((n, ix) => (
@@ -31,9 +29,7 @@ export const GraphSummaryUI = observer(function GraphSummaryUI_(p: { graph: Comf
                      <span>{n.statusEmoji}</span>
                   </RevealUI>
                   <NodeRefUI size={1.1} label={ix.toString()} node={n} />
-                  <span tw='overflow-hidden text-ellipsis whitespace-nowrap text-sm'>
-                     {n.$schema.nameInComfy}
-                  </span>
+                  <span tw='text-ellipsis whitespace-nowrap text-sm'>{n.$schema.nameInComfy}</span>
                </div>
             ))}
          </div>
@@ -41,14 +37,14 @@ export const GraphSummaryUI = observer(function GraphSummaryUI_(p: { graph: Comf
    )
 })
 
-export const NodeProgressUI = observer(function NodeProgressUI_(p: { graph: ComfyWorkflowL }) {
+export const NodeProgressUI = obs(function NodeProgressUI_(p: { graph: ComfyWorkflowL }) {
    const graph = p.graph
    if (graph == null) return <>no execution yet</>
    const pgr = graph.progressCurrentNode
    return <LegacyProgressLineUI status={pgr?.isDone ? 'success' : 'active'} percent={pgr?.percent} />
 })
 
-export const GraphProgressUI = observer(function NodeProgressUI_(p: { graph: ComfyWorkflowL }) {
+export const GraphProgressUI = obs(function NodeProgressUI_(p: { graph: ComfyWorkflowL }) {
    const graph = p.graph
    if (graph == null) return null
    const pgr = graph.progressGlobal

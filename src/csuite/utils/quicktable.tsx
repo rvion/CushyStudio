@@ -1,9 +1,8 @@
-import { observer } from 'mobx-react-lite'
 import { isValidElement } from 'react'
 
 import { Frame } from '../frame/Frame'
 
-export const QuickTableUI = observer(function QuickTable({
+export const QuickTableUI = obs(function QuickTable({
    // own props
    rows,
    dense,
@@ -50,7 +49,7 @@ export const QuickTableUI = observer(function QuickTable({
    )
 })
 
-function formatCell(x: unknown): string | JSX.Element {
+function formatCell(x: unknown): string | React.JSX.Element {
    if (typeof x === 'string') return x
    if (typeof x === 'number') return x.toString()
    if (isValidElement(x)) return x

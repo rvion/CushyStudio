@@ -1,62 +1,60 @@
 import type { MediaImageL } from '../models/MediaImage'
 
-import { observer } from 'mobx-react-lite'
-
 import { openExternal, showItemInFolder } from '../app/layout/openExternal'
 import { DraftIllustrationUI } from '../cards/fancycard/DraftIllustration'
 import { Button } from '../csuite/button/Button'
 import { Dropdown } from '../csuite/dropdown/Dropdown'
 import { MenuItem } from '../csuite/dropdown/MenuItem'
 
-export const ImageDropdownUI = observer(function ImageDropdownUI_(p: { img: MediaImageL }) {
+export const ImageDropdownUI = obs(function ImageDropdownUI_(p: { img: MediaImageL }) {
    const img = p.img
    return (
       <Dropdown //
          debugName='<ImageDropdownUI>'
          title='Actions'
-         // startIcon='mdiMenu'
+         // startIcon=IKONS.mdiMenu
          content={() => <ImageDropdownMenuUI img={img} />}
       />
    )
 })
 
-export const ImageDropdownMenuUI = observer(function ImageDropdownMenuUI_(p: { img: MediaImageL }) {
+export const ImageDropdownMenuUI = obs(function ImageDropdownMenuUI_(p: { img: MediaImageL }) {
    const img = p.img
    return (
       <>
          <MenuItem //
-            icon='mdiDelete'
+            icon={IKONS.mdiDelete}
             disabled={!img?.absPath}
             onClick={() => img.delete({})}
             label='Delete'
          />
          <MenuItem.Divider children='Send to' />
          <MenuItem //
-            icon='mdiContentCopy'
+            icon={IKONS.mdiContentCopy}
             onClick={(e) => img.copyToClipboard()}
             label='Clipboard'
          />
          <MenuItem //
-            icon='mdiContentCopy'
+            icon={IKONS.mdiContentCopy}
             onClick={img.copyToClipboardAsBase64}
             label='Copy Base64'
          />
          <MenuItem
-            icon='mdiOverscan'
+            icon={IKONS.mdiOverscan}
             disabled={!img?.absPath}
             onClick={() => cushy.layout.open('Image', { imageID: img.id })}
             localShortcut='mod+click'
             label='Dedicated Panel'
          />
          <MenuItem
-            icon='mdiFocusAuto'
+            icon={IKONS.mdiFocusAuto}
             disabled={!img?.absPath}
             localShortcut='shift+click'
             onClick={() => cushy.layout.open('Canvas', { startingImgID: img.id })}
             label='Unified Canvas'
          />
          <MenuItem
-            icon='mdiBrush'
+            icon={IKONS.mdiBrush}
             disabled={!img?.absPath}
             localShortcut='alt+click'
             onClick={() => cushy.layout.open('Paint', { imgID: img.id })}
@@ -65,7 +63,7 @@ export const ImageDropdownMenuUI = observer(function ImageDropdownMenuUI_(p: { i
 
          <div className='divider my-1'>FileSystem</div>
          <MenuItem
-            icon='mdiStarShooting'
+            icon={IKONS.mdiStarShooting}
             iconClassName='[color:gold]'
             disabled={
                !cushy.getConfigValue('favoriteLocalFolderPath') ||
@@ -78,7 +76,7 @@ export const ImageDropdownMenuUI = observer(function ImageDropdownMenuUI_(p: { i
             label={ImagePathUIString(cushy.getConfigValue('favoriteLocalFolderPath'))}
          />
          <MenuItem
-            icon='mdiFolder'
+            icon={IKONS.mdiFolder}
             disabled={!img?.absPath}
             onClick={() => {
                if (!img?.absPath) return
@@ -88,7 +86,7 @@ export const ImageDropdownMenuUI = observer(function ImageDropdownMenuUI_(p: { i
          />
          {/* 3. OPEN FILE ITSELF */}
          <MenuItem
-            icon='mdiFile'
+            icon={IKONS.mdiFile}
             disabled={!img?.absPath}
             onClick={() => {
                const imgPathWithFileProtocol = img ? `file://${img.absPath}` : null
@@ -99,13 +97,13 @@ export const ImageDropdownMenuUI = observer(function ImageDropdownMenuUI_(p: { i
          />
          <MenuItem.Divider children='Draft' />
          <MenuItem //
-            icon='mdiPin'
+            icon={IKONS.mdiPin}
             className='_MenuItem'
             onClick={() => img.useAsDraftIllustration()}
             label='Use as Draft Illustration'
          />
          <MenuItem
-            icon='mdiOpenInApp'
+            icon={IKONS.mdiOpenInApp}
             disabled={img.step == null}
             onClick={() => {
                if (img.step == null) return
@@ -128,7 +126,7 @@ const ImagePathUIString = (path: string | undefined): string => {
    }
 }
 
-export const ImageActionMenu = observer(function ImageActionMenu_(p: { img: MediaImageL }) {
+export const ImageActionMenu = obs(function ImageActionMenu_(p: { img: MediaImageL }) {
    const img = p.img
    return (
       <>
@@ -137,7 +135,7 @@ export const ImageActionMenu = observer(function ImageActionMenu_(p: { img: Medi
                <div key={app.id}>
                   {app.drafts.map((draft) => (
                      <MenuItem
-                        icon='mdiPlay'
+                        icon={IKONS.mdiPlay}
                         key={draft.id}
                         className='_MenuItem'
                         onClick={() => {
@@ -150,7 +148,7 @@ export const ImageActionMenu = observer(function ImageActionMenu_(p: { img: Medi
                            {draft.name}
                            <Button
                               square
-                              icon='mdiOpenInNew'
+                              icon={IKONS.mdiOpenInNew}
                               onClick={(ev) => {
                                  ev.stopPropagation()
                                  ev.preventDefault()

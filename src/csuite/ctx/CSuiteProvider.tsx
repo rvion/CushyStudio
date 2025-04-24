@@ -1,6 +1,5 @@
 import type { CSuiteConfig } from './CSuiteConfig'
 
-import { observer } from 'mobx-react-lite'
 import { type CSSProperties, type ReactNode } from 'react'
 
 import { Frame } from '../frame/Frame'
@@ -12,7 +11,7 @@ import { CSuiteCtx } from './CSuiteCtx'
  * that also inject CSS vars + set a few CSS properties to the root item
  * (color, ...)
  * */
-export const CSuiteProvider = observer(function CSuiteProvider_(p: {
+export const CSuiteProvider = obs(function CSuiteProvider_(p: {
    children: ReactNode
    config: CSuiteConfig
    className?: string

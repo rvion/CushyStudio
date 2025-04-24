@@ -1,4 +1,4 @@
-import type { IconName } from '../icons/icons'
+import type { IconName } from '../icons/IconName'
 import type { Trigger } from '../trigger/Trigger'
 import type { MenuProps } from './Menu'
 import type { MenuBuilder } from './MenuBuilder'
@@ -42,15 +42,15 @@ export class MenuTemplate<PROPS> {
       return this.def.title
    }
 
-   /** MenuUI JSX.Elemnt */
-   MenuEntriesUI = memo((p: PROPS): JSX.Element => {
+   /** MenuUI React.JSX.Elemnt */
+   MenuEntriesUI = memo((p: PROPS): React.JSX.Element => {
       const menu = useMemo(() => this.bind(p), [p])
       const menuInst = useMemo(() => new MenuInstance(menu, undefined, null), [menu])
       return createElement(MenuUI, { menu: menuInst })
    })
 
    /** Menu with a root anchro */
-   DropDownUI = memo((p: PROPS): JSX.Element => {
+   DropDownUI = memo((p: PROPS): React.JSX.Element => {
       const menu = useMemo(() => this.bind(p), [p])
       const menuInst = useMemo(() => new MenuInstance(menu, undefined, null), [menu])
       return createElement(MenuRootUI, { menu: menuInst })

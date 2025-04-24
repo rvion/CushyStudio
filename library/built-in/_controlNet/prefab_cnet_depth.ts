@@ -3,20 +3,20 @@ import type { OutputFor } from '../_prefabs/_prefabs'
 import { cnet_preprocessor_ui_common, cnet_ui_common } from './cnet_ui_common'
 
 // 🅿️ Depth FORM ===================================================
-export type UI_subform_Depth = X.XGroup<{
+export type UI_subform_Depth = Z.Group<{
    preprocessor: UI_subform_Depth_Preprocessor
-   cnet_model_name: X.XEnum<'ControlNetLoader.control_net_name'>
-   strength: X.XNumber
-   advanced: X.XGroup<{
-      startAtStepPercent: X.XNumber
-      endAtStepPercent: X.XNumber
-      crop: X.XEnum<'LatentUpscale.crop'>
-      upscale_method: X.XEnum<'ImageScale.upscale_method'>
+   cnet_model_name: Z.Enum<'ControlNetLoader.control_net_name'>
+   strength: Z.Number
+   advanced: Z.Group<{
+      startAtStepPercent: Z.Number
+      endAtStepPercent: Z.Number
+      crop: Z.Enum<'LatentUpscale.crop'>
+      upscale_method: Z.Enum<'ImageScale.upscale_method'>
    }>
 }>
 
 export function ui_subform_Depth(): UI_subform_Depth {
-   const ui: X.Builder = getCurrentForm()
+   const ui: Z.Builder = getBuilder()
    return ui
       .group({
          label: 'Depth',
@@ -43,14 +43,14 @@ export function ui_subform_Depth(): UI_subform_Depth {
 }
 
 // ================================================================================
-export type UI_subform_Depth_Preprocessor = X.XChoice<{
-   None: X.XEmpty
+export type UI_subform_Depth_Preprocessor = Z.Choice<{
+   None: Z.Empty
    Midas: UI_subform_Depth_Midas
    Leres: UI_subform_Depth_LeReS
    Zoe: UI_subform_Depth_Zoe
 }>
 export function ui_subform_Depth_Preprocessor(): UI_subform_Depth_Preprocessor {
-   const ui: X.Builder = getCurrentForm()
+   const ui: Z.Builder = getBuilder()
    return ui.choice(
       {
          None: ui.empty(),
@@ -65,18 +65,18 @@ export function ui_subform_Depth_Preprocessor(): UI_subform_Depth_Preprocessor {
 }
 
 // ================================================================================
-export type UI_subform_Depth_Midas = X.XGroup<{
-   a_value: X.XNumber
-   bg_threshold: X.XNumber
-   saveProcessedImage: X.XBool
+export type UI_subform_Depth_Midas = Z.Group<{
+   a_value: Z.Number
+   bg_threshold: Z.Number
+   saveProcessedImage: Z.Bool
 }>
 
 export function ui_subform_Depth_Midas(): UI_subform_Depth_Midas {
-   const form: X.Builder = getCurrentForm()
+   const form: Z.Builder = getBuilder()
    return form.group({
       label: 'Midas',
       // startCollapsed: true,
-      header: null,
+      uiui: { Header: null },
       collapsed: false,
       border: false,
       items: {
@@ -88,14 +88,14 @@ export function ui_subform_Depth_Midas(): UI_subform_Depth_Midas {
 }
 
 // ================================================================================
-export type UI_subform_Depth_LeReS = X.XGroup<{
-   rm_nearest: X.XNumber
-   rm_background: X.XNumber
-   boost: X.XBool
-   saveProcessedImage: X.XBool
+export type UI_subform_Depth_LeReS = Z.Group<{
+   rm_nearest: Z.Number
+   rm_background: Z.Number
+   boost: Z.Bool
+   saveProcessedImage: Z.Bool
 }>
 export function ui_subform_Depth_LeReS(): UI_subform_Depth_LeReS {
-   const form: X.Builder = getCurrentForm()
+   const form: Z.Builder = getBuilder()
    return form.group({
       label: 'LeReS',
       // startCollapsed: true,
@@ -109,11 +109,11 @@ export function ui_subform_Depth_LeReS(): UI_subform_Depth_LeReS {
 }
 
 // ================================================================================
-export type UI_subform_Depth_Zoe = X.XGroup<{
-   saveProcessedImage: X.XBool
+export type UI_subform_Depth_Zoe = Z.Group<{
+   saveProcessedImage: Z.Bool
 }>
 export function ui_subform_Depth_Zoe(): UI_subform_Depth_Zoe {
-   const form: X.Builder = getCurrentForm()
+   const form: Z.Builder = getBuilder()
    return form.group({
       label: 'Zoe',
       // startCollapsed: true,

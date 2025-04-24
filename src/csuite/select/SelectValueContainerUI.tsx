@@ -1,5 +1,4 @@
-import { observer } from 'mobx-react-lite'
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 
 import { Frame } from '../frame/Frame'
 
@@ -7,27 +6,20 @@ import { Frame } from '../frame/Frame'
  * this container is used to wrap the list of values in their dense inline form.
  * it is used inline
  */
-export const SelectValueContainerUI = observer(function SelectValueContainerUI_<OPTION>(p: {
+export const SelectValueContainerUI = obs(function SelectValueContainerUI_<OPTION>(p: {
    //
    wrap?: Maybe<boolean | 'no-wrap-no-overflow-hidden'>
    children?: React.ReactNode
    valuesCount: number
 }) {
-   const [ref, setRef] = useState<HTMLDivElement | null>(null)
    const [isOverflowing, setIsOverflowing] = useState(false)
-
-   function handleRef(ref: HTMLDivElement | null): void {
-      setRef(ref)
-      computeOverflow()
-   }
-
-   function computeOverflow(): void {
-      if (!ref) return
+   const handleRef = useCallback((ref: HTMLDivElement | null) => {
+      if (ref == null) return
       setIsOverflowing(ref.scrollHeight > ref.clientHeight || ref.scrollWidth > ref.clientWidth)
-   }
+   }, [])
 
    return (
-      <div tw='w-full shrink grow overflow-hidden px-1'>
+      <div tw='w-full shrink grow overflow-hidden'>
          <div
             ref={handleRef}
             tw={[
@@ -46,7 +38,7 @@ export const SelectValueContainerUI = observer(function SelectValueContainerUI_<
    )
 })
 
-export const SelectValueOverflowUI = observer(function SelectValueOverflowUI(p: { valuesCount: number }) {
+export const SelectValueOverflowUI = obs(function SelectValueOverflowUI(p: { valuesCount: number }) {
    if (p.valuesCount <= 1) return null
 
    return (

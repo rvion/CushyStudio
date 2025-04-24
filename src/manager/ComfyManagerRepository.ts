@@ -56,7 +56,7 @@ export class ComfyManagerRepository {
          install_type: '',
       })
 
-      console.log('\n' + chalk.bold(`2. Parsing/custom-node-list.json...`))
+      console.log('\n' + chalk.bold(`2. Parsing: src/manager/json/custom-node-list.json`))
       _getKnownPlugins(this)
 
       console.log('\n' + chalk.bold(`3. Parsing/Fixing extension-node-map.json...`))

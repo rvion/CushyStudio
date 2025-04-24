@@ -6,7 +6,7 @@ export function isElemAChildOf(
 ): boolean {
    let at: Maybe<Element> = elem
    // In tests, at.matches is not working in every case
-   while (at && at.matches) {
+   while (at != null && at.matches != null) {
       if (at.matches(domSelector)) return true
       at = at.parentElement
    }

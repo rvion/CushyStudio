@@ -1,8 +1,6 @@
 import type { Field } from '../../../csuite/model/Field'
 import type { ReactNode } from 'react'
 
-import { observer } from 'mobx-react-lite'
-
 import { Frame } from '../../../csuite/frame/Frame'
 import { makeLabelFromPrimitiveValue } from '../../../csuite/utils/makeLabelFromFieldName'
 
@@ -13,8 +11,8 @@ export type WidgetTitleProps = {
    children?: ReactNode
 }
 
-export const DefaultWidgetTitleUI = observer(function DefaultWidgetTitle(p: WidgetTitleProps) {
-   const labelText = p.children ?? p.field.config.label ?? makeLabelFromPrimitiveValue(p.field.mountKey)
+export const DefaultWidgetTitleUI = obs(function DefaultWidgetTitle(p: WidgetTitleProps) {
+   const labelText = p.children ?? p.field.zConfig.label ?? makeLabelFromPrimitiveValue(p.field.zMountKey)
    // const Elem: 'div' = (p.as ?? 'div') as 'div'
    return (
       // Using Frame for the tooltips
@@ -54,7 +52,7 @@ export const DefaultWidgetTitleUI = observer(function DefaultWidgetTitle(p: Widg
             p.className,
          ]}
       >
-         {p.field.isHidden && '🥷 '}
+         {p.field.zIsHidden && '🥷 '}
          {labelText}
       </Frame>
    )

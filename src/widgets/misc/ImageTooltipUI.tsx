@@ -1,10 +1,8 @@
 import type { MediaImageL } from '../../models/MediaImage'
 
-import { observer } from 'mobx-react-lite'
-
 import { JsonViewUI } from '../../csuite/json/JsonViewUI'
 
-export const ImageTooltipUI = observer(function ImageTooltipUI_(p: { selectedImage: MediaImageL }) {
+export const ImageTooltipUI = obs(function ImageTooltipUI_(p: { selectedImage: MediaImageL }) {
    return (
       <div>
          <JsonViewUI value={p.selectedImage.data} />
@@ -12,7 +10,7 @@ export const ImageTooltipUI = observer(function ImageTooltipUI_(p: { selectedIma
    )
 })
 
-// export const FlowGeneratedImagesUI = observer(function FlowGeneratedImagesUI_(p: { msg: MessageFromExtensionToWebview }) {
+// export const FlowGeneratedImagesUI = obs(function FlowGeneratedImagesUI_(p: { msg: MessageFromExtensionToWebview }) {
 //     const msg = p.msg
 
 //     // 🔴

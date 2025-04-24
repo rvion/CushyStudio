@@ -1,5 +1,3 @@
-import { observer } from 'mobx-react-lite'
-
 import { KEYS } from '../../app/shortcuts/shorcutKeys'
 import { ComboUI } from '../../csuite/accelerators/ComboUI'
 import { Button } from '../../csuite/button/Button'
@@ -10,7 +8,7 @@ import { parseFloatNoRoundingErr } from '../../csuite/utils/parseFloatNoRounding
 import { openInVSCode } from '../../utils/electron/openInVsCode'
 import { LegacyFieldUI } from './LegacyFieldUI'
 
-export const LegacyOptions = observer(function LegacyOptions_() {
+export const LegacyOptions = obs(function LegacyOptions_() {
    const config = cushy.configFile
 
    return (
@@ -18,7 +16,7 @@ export const LegacyOptions = observer(function LegacyOptions_() {
          <div className='divider'>Legacy config fields to migrate 👇:</div>
          <div tw='flex flex-col gap-1'>
             <LegacyFieldUI label='Config file path'>
-               <Button look='link' icon='mdiOpenInNew' expand onClick={() => openInVSCode(config.path)}>
+               <Button look='link' icon={IKONS.mdiOpenInNew} expand onClick={() => openInVSCode(config.path)}>
                   {config.path}
                </Button>
             </LegacyFieldUI>
@@ -79,21 +77,21 @@ export const LegacyOptions = observer(function LegacyOptions_() {
             </LegacyFieldUI>
             <LegacyFieldUI label='OpenRouter API KEY'>
                <InputStringUI
-                  icon='mdiKey'
+                  icon={IKONS.mdiKey}
                   type='password'
                   getValue={() => config.value.OPENROUTER_API_KEY ?? ''}
                   setValue={(next) => config.update({ OPENROUTER_API_KEY: next })}
                />
             </LegacyFieldUI>
             <LegacyFieldUI label='Configure hosts:'>
-               <Button icon={'mdiOpenInNew'} onClick={() => cushy.layout.open('Hosts', {})}>
+               <Button icon={IKONS.mdiOpenInNew} onClick={() => cushy.layout.open('Hosts', {})}>
                   Open Hosts page
                   <ComboUI combo={KEYS.openPage_Hosts} />
                </Button>
             </LegacyFieldUI>
             <LegacyFieldUI label='Local folder to save favorites:'>
                <InputStringUI
-                  icon='mdiFolderStar'
+                  icon={IKONS.mdiFolderStar}
                   getValue={() => config.value.favoriteLocalFolderPath ?? ''}
                   setValue={(next) => config.update({ favoriteLocalFolderPath: next })}
                />

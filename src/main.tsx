@@ -1,3 +1,4 @@
+import './setup'
 // ------------------------------------------------------------
 // GLOBAL MODULES THAT PATCH WINDOW
 // make sure presenter is properly injected
@@ -28,6 +29,7 @@ import ReactDOM from 'react-dom/client'
 import { MainUI } from './widgets/misc/MainUI'
 
 const root = document.getElementById('root') as HTMLElement
+
 ReactDOM.createRoot(root).render(
    <DndProvider backend={HTML5Backend}>
       <MainUI />

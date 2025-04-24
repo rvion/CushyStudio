@@ -4,17 +4,17 @@ import {
    schemaModelExtras,
 } from '../_prefabs/prefab_model_extras'
 
-export type $prefabModelFlux = X.XGroup<{
-   ckpt_name: X.XEnum<'UNETLoader.unet_name'>
-   weight_type: X.XEnum<'UNETLoader.weight_dtype'>
-   clip1: X.XEnum<'CLIPLoader.clip_name'>
-   clip2: X.XEnum<'CLIPLoader.clip_name'>
-   type: X.XEnum<'DualCLIPLoader.type'>
+export type $prefabModelFlux = Z.Group<{
+   ckpt_name: Z.Enum<'UNETLoader.unet_name'>
+   weight_type: Z.Enum<'UNETLoader.weight_dtype'>
+   clip1: Z.Enum<'CLIPLoader.clip_name'>
+   clip2: Z.Enum<'CLIPLoader.clip_name'>
+   type: Z.Enum<'DualCLIPLoader.type'>
    extra: $schemaModelExtras
 }>
 
 export const prefabModelFlux = (): $prefabModelFlux => {
-   const b = getCurrentForm()
+   const b = getBuilder()
    // const ckpts = cushy.managerRepository.getKnownCheckpoints()
    return b
       .fields({
@@ -35,7 +35,7 @@ export const prefabModelFlux = (): $prefabModelFlux => {
          clip2: b.enum['DualCLIPLoader.clip_name2']({
             // @ts-ignore
             default: 'clip_l.safetensors',
-         }).addRequirementOnComfyManagerModel('comfyanonymous/clip_l'),
+         }).addRequirementOnComfyManagerModel('Comfy-Org/clip_l'),
          type: b.enum['DualCLIPLoader.type']({ default: 'flux' }),
          extra: schemaModelExtras({
             // @ts-ignore
@@ -52,7 +52,7 @@ export const prefabModelFlux = (): $prefabModelFlux => {
          { type: 'modelInManager', modelName: 'Comfy Org/FLUX.1 [schnell] Checkpoint model (fp8)' },
       ])
    // .addPreset({
-   //     icon: 'mdiStar',
+   //     icon: IKONS.mdiStar,
    //     label: 'FLUX',
    //     apply: (w): void => {
    //         w.setValue({
@@ -70,7 +70,7 @@ export const prefabModelFlux = (): $prefabModelFlux => {
 }
 
 export const evalModelFlux = (
-   doc: $prefabModelFlux['$Value'],
+   doc: $prefabModelFlux['{value}'],
 ): {
    ckpt: Comfy.Signal['MODEL']
    vae: Comfy.Signal['VAE']

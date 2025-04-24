@@ -1,6 +1,5 @@
 import type { NO_PROPS } from '../../csuite/types/NO_PROPS'
 
-import { observer } from 'mobx-react-lite'
 import { useLayoutEffect } from 'react'
 
 import { cushyFactory } from '../../controls/CushyBuilder'
@@ -30,15 +29,15 @@ export const PanelPlayground = new Panel({
    widget: (): React.FC<PanelPlaygroundProps> => PanelPlaygroundUI,
    header: (p: PanelPlaygroundProps): PanelHeader => ({ title: 'Welcome' }),
    def: (): PanelPlaygroundProps => ({}),
-   icon: 'mdiLiquidSpot',
+   icon: IKONS.mdiLiquidSpot,
    category: 'developper',
 })
 
 export type PanelPlaygroundProps = NO_PROPS
 
-export const PanelPlaygroundUI = observer(function PanelPlaygroundUI_(p: PanelPlaygroundProps) {
+export const PanelPlaygroundUI = obs(function PanelPlaygroundUI_(p: PanelPlaygroundProps) {
    const relPathToThisPage = './src/panels/PanelPlayground/PanelPlayground.tsx' as RelativePath
-   const mode = Header_Playground.value
+   const mode = Header_Playground.zValue
 
    useLayoutEffect(() => {
       cushy.layout.syncTabTitle('Playground', {}, 'DevPlayground')
@@ -46,7 +45,9 @@ export const PanelPlaygroundUI = observer(function PanelPlaygroundUI_(p: PanelPl
 
    return (
       <UI.Panel tw='gap-1'>
-         <UI.Panel.Header extensibleHeight>{Header_Playground.root.header()}</UI.Panel.Header>
+         <UI.Panel.Header extensibleHeight>
+            <Header_Playground.zRoot.UI Shell={uy.shell.HeaderOnly} />
+         </UI.Panel.Header>
          <ErrorBoundaryUI /* 👇 playground sub-pages */>
             {mode.electron && <PlaygroundElectronUI />}
             {mode.forms && <PlaygroundForms />}
@@ -65,19 +66,6 @@ export const PanelPlaygroundUI = observer(function PanelPlaygroundUI_(p: PanelPl
             {mode.jsx && <PlaygroundJSX />}
             {/* {mode.value.comfyImport && <PlaygroundImportFromComfy />} */}
          </ErrorBoundaryUI>
-
-         <MessageInfoUI>
-            <div tw='inline overflow-clip text-sm'>
-               <span>Use this panel as a scratchpad by modifying </span>
-               <span tw='rounded px-1'>PlaygroundScratchPad</span>
-               <span> in </span>
-               <UI.Button //
-                  tw='underline'
-                  onClick={() => cushy.openInVSCode(relPathToThisPage)}
-                  children={relPathToThisPage}
-               />
-            </div>
-         </MessageInfoUI>
       </UI.Panel>
    )
 })
@@ -108,6 +96,6 @@ const Header_Playground = cushyFactory.document(
    {
       name: 'Playground Conf',
       serial: () => readJSON('settings/playground_config.json'),
-      onSerialChange: (form) => writeJSON('settings/playground_config.json', form.serial),
+      onSerialChange: (form) => writeJSON('settings/playground_config.json', form.zSerial),
    },
 )

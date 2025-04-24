@@ -1,7 +1,5 @@
 import type { NO_PROPS } from '../../csuite/types/NO_PROPS'
 
-import { observer } from 'mobx-react-lite'
-
 import { PanelHeaderUI } from '../../csuite/panel/PanelHeaderUI'
 import { TreeUI } from '../../csuite/tree/TreeUI'
 import { Panel, type PanelHeader } from '../../router/Panel'
@@ -12,11 +10,11 @@ export const PanelTreeExplorer = new Panel({
    widget: (): React.FC<NO_PROPS> => PanelTreeExplorerUI,
    header: (p: NO_PROPS): PanelHeader => ({ title: 'FileList' }),
    def: (): NO_PROPS => ({}),
-   icon: 'mdiFileTree',
+   icon: IKONS.mdiFileTree,
    category: 'app',
 })
 
-export const PanelTreeExplorerUI = observer(function PanelTreeExplorerUI_(p: NO_PROPS) {
+export const PanelTreeExplorerUI = obs(function PanelTreeExplorerUI_(p: NO_PROPS) {
    return (
       <>
          <PanelHeaderUI>

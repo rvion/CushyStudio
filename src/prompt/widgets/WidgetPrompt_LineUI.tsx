@@ -1,17 +1,15 @@
 import type { Field_prompt } from '../FieldPrompt'
 
-import { observer } from 'mobx-react-lite'
-
 import { WidgetSingleLineSummaryUI } from '../../csuite/form/WidgetSingleLineSummaryUI'
 
-export const WidgetPrompt_LineUI = observer(function WidgetPrompt_LineUI_(p: { field: Field_prompt }) {
+export const WidgetPrompt_LineUI = obs(function WidgetPrompt_LineUI_(p: { field: Field_prompt }) {
    const field = p.field
-   if (field.serial.collapsed)
-      return <WidgetSingleLineSummaryUI>{field.serial.val}</WidgetSingleLineSummaryUI>
+   if (field.zSerial.collapsed)
+      return <WidgetSingleLineSummaryUI>{field.zSerial.val}</WidgetSingleLineSummaryUI>
    return null
    //         {/* <Button
-   //             onClick={() => cushy.layout.addCustomV2(PromptEditorUI, { promptID: field.id })}
-   //             icon='mdiAbacus'
+   //             onClick={() => cushy.layout.addCustomV2(PromptEditorUI, { promptID: field._uid })}
+   //             icon={IKONS.mdiAbacus}
    //             subtle
    //             square
    //         /> */}

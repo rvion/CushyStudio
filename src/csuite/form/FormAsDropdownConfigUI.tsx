@@ -1,13 +1,11 @@
 import type { Field } from '../model/Field'
 
-import { observer } from 'mobx-react-lite'
-
 import { Button } from '../button/Button'
 import { Ikon } from '../icons/iconHelpers'
 import { RevealUI } from '../reveal/RevealUI'
 
-export const FormAsDropdownConfigUI = observer(function FormAsDropdownConfigUI_(p: {
-   form: Field<any>
+export const FormAsDropdownConfigUI = obs(function FormAsDropdownConfigUI_(p: {
+   form: Field
    children?: React.ReactNode
    title?: string
    className?: string

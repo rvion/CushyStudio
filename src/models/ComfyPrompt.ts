@@ -36,13 +36,9 @@ import { FPath } from './FPath'
 export class ComfyPromptRepo extends LiveTable<TABLES['comfy_prompt'], typeof ComfyPromptL> {
    constructor(liveDB: LiveDB) {
       super(liveDB, 'comfy_prompt', '❓', ComfyPromptL)
-      this.init()
    }
 }
 export class ComfyPromptL extends BaseInst<TABLES['comfy_prompt']> {
-   instObservabilityConfig: undefined
-   dataObservabilityConfig: undefined
-
    saveFormat: Maybe<ImageSaveFormat> = null
 
    private _resolve!: (value: this) => void
@@ -83,7 +79,7 @@ export class ComfyPromptL extends BaseInst<TABLES['comfy_prompt']> {
       return this.stepRef.item
    }
 
-   // link to grah
+   // link to graph
    graphRef = new LiveRef<this, ComfyWorkflowL>(this, 'graphID', 'comfy_workflow')
 
    get graph(): ComfyWorkflowL {
@@ -115,7 +111,7 @@ export class ComfyPromptL extends BaseInst<TABLES['comfy_prompt']> {
    }
 
    /** update pointer to the currently executing node */
-   private onExecuting = async (msg: WsMsgExecuting): Promise<void> => {
+   private onExecuting = (msg: WsMsgExecuting): void => {
       this.graph.onExecuting(msg)
 
       if (msg.data.node == null) {
@@ -173,7 +169,6 @@ export class ComfyPromptL extends BaseInst<TABLES['comfy_prompt']> {
    }
    private pendingPromises: Promise<void>[] = []
 
-   // 🦊
    retrieveImage = async (
       //
       comfyImageInfo: ComfyImageInfo,

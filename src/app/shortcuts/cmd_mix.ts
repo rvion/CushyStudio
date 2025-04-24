@@ -4,6 +4,7 @@ import { runInAction } from 'mobx'
 
 import { type Command } from '../../csuite/commands/Command'
 import { Trigger } from '../../csuite/trigger/Trigger'
+import * as FL from '../../flexlayout-react'
 import { _duplicateCurrentDraft } from './cmd_duplicateCurrentDraft'
 import { KEYS } from './shorcutKeys'
 import { globalValidInInput } from './simpleValidInInput'
@@ -22,7 +23,7 @@ function focusTree(tree: Tree): void {
             cushy.layout.open('TreeExplorer', {}, { where: 'right' }) // close the panel
          else focusTreeRootIfMounted()
       } else {
-         const node = cushy.layout.open('TreeExplorer', {}, { where: 'right' })
+         const node: Maybe<FL.TabNode> = cushy.layout.open('TreeExplorer', {}, { where: 'right' })
          setImmediate((): void => {
             const isVisible = node?.isVisible()
             if (!isVisible) return
@@ -42,7 +43,7 @@ export const allLegacyCommands: Command<any>[] = [
          else cushy.search.activate()
          return Trigger.Success
       },
-      'mdiSelectSearch',
+      IKONS.mdiSelectSearch,
    ),
 
    globalValidInInput(
@@ -52,7 +53,7 @@ export const allLegacyCommands: Command<any>[] = [
          cushy.resizeWindowForVideoCapture()
          return Trigger.Success
       },
-      'mdiMoveResize',
+      IKONS.mdiMoveResize,
    ),
    globalValidInInput(
       KEYS.resetLayout,
@@ -63,7 +64,7 @@ export const allLegacyCommands: Command<any>[] = [
          // if (lastDraft) cushy.layout.FOCUS_OR_CREATE('Draft', { draftID: lastDraft.id })
          return Trigger.Success
       },
-      'mdiNewBox',
+      IKONS.mdiNewBox,
    ),
 
    // placeholderTree('/', 'focus tree filter (not implemented for now)'),

@@ -1,7 +1,5 @@
 import type { PanelState } from '../../router/PanelState'
 
-import { observer } from 'mobx-react-lite'
-
 import { Button } from '../../csuite/button/Button'
 import { Frame } from '../../csuite/frame/Frame'
 import { RevealUI } from '../../csuite/reveal/RevealUI'
@@ -9,7 +7,7 @@ import { PanelStateByNode } from '../../router/PanelStateByNode'
 import { PanelStateDebugUI } from '../../router/PanelStateDebugUI'
 import { usePanel } from '../../router/usePanel'
 
-export const PlaygroundPanelStoreUI = observer(function PlaygroundPanelStoreUI_(p: {}) {
+export const PlaygroundPanelStoreUI = obs(function PlaygroundPanelStoreUI_(p: {}) {
    const panel = usePanel()
 
    const test1 = panel.usePersistentStore('abcd', () => ({
@@ -42,7 +40,7 @@ export const PlaygroundPanelStoreUI = observer(function PlaygroundPanelStoreUI_(
    )
 })
 
-export const ShowAllPanelConfigsUI = observer(function ShowAllPanelConfigsUI_(p: {}) {
+export const ShowAllPanelConfigsUI = obs(function ShowAllPanelConfigsUI_(p: {}) {
    const OUT: { id: string; ps: Maybe<PanelState> }[] = []
    cushy.layout.traverse({
       onTab(tab) {

@@ -11,14 +11,10 @@ import { LiveTable } from '../db/LiveTable'
 export class MediaCustomRepo extends LiveTable<TABLES['media_custom'], typeof MediaCustomL> {
    constructor(liveDB: LiveDB) {
       super(liveDB, 'media_custom', '🖼️', MediaCustomL)
-      this.init()
    }
 }
 
 export class MediaCustomL extends BaseInst<TABLES['media_custom']> {
-   instObservabilityConfig: undefined
-   dataObservabilityConfig: undefined
-
    step = new LiveRefOpt<this, StepL>(this, 'stepID', 'step')
 
    get relPath(): Maybe<RelativePath> {

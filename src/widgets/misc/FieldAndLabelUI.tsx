@@ -1,6 +1,4 @@
-import { observer } from 'mobx-react-lite'
-
-export const FieldAndLabelUI = observer(function SubtlePanelConfUI_(p: {
+export const FieldAndLabelUI = obs(function SubtlePanelConfUI_(p: {
    label: string
    children: React.ReactNode
 }) {
@@ -12,7 +10,7 @@ export const FieldAndLabelUI = observer(function SubtlePanelConfUI_(p: {
    )
 })
 
-export const FieldAndLabelInlineUI = observer(function FieldAndLabelInlineUI_(p: {
+export const FieldAndLabelInlineUI = obs(function FieldAndLabelInlineUI_(p: {
    label: string
    children: React.ReactNode
 }) {

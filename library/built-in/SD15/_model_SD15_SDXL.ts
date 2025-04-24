@@ -4,18 +4,18 @@ import {
    schemaModelExtras,
 } from '../_prefabs/prefab_model_extras'
 
-export type $prefabModelSD15andSDXL = X.XGroup<{
-   ckpt_name: X.XEnum<'CheckpointLoaderSimple.ckpt_name'>
+export type $prefabModelSD15andSDXL = Z.Group<{
+   ckpt_name: Z.Enum<'CheckpointLoaderSimple.ckpt_name'>
    extra: $schemaModelExtras
 }>
 
 export const prefabModelSD15andSDXL = (
    p: {
       ckpt_name?: Comfy.Slots['CheckpointLoaderSimple.ckpt_name']
-      extra?: $schemaModelExtras['$Value']
+      extra?: $schemaModelExtras['{value}']
    } = {},
 ): $prefabModelSD15andSDXL => {
-   const b = getCurrentForm()
+   const b = getBuilder()
    // console.log('A', cushy)
    // console.log('B', cushy?.comfyAddons)
    // console.log('C', cushy?.comfyAddons?.getKnownCheckpoints)
@@ -31,8 +31,8 @@ export const prefabModelSD15andSDXL = (
          extra: schemaModelExtras(),
       },
       {
-         icon: 'mdiTurbine',
-         toSummary: ({ value: ui }): string => {
+         icon: IKONS.mdiTurbine,
+         toString_: ({ zValue: ui }): string => {
             let out: string = ui.ckpt_name
             if (ui.extra.freeU) out += ' + FreeU'
             if (ui.extra.freeUv2) out += ' + FreeUv2'
@@ -51,7 +51,7 @@ export const prefabModelSD15andSDXL = (
    )
 }
 
-export function evalModelSD15andSDXL(doc: $prefabModelSD15andSDXL['$Value']): {
+export function evalModelSD15andSDXL(doc: $prefabModelSD15andSDXL['{value}']): {
    ckpt: Comfy.Signal['MODEL']
    vae: Comfy.Signal['VAE']
    clip: Comfy.Signal['CLIP']

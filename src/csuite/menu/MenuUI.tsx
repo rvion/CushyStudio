@@ -1,6 +1,5 @@
 import type { MenuInstance } from './MenuInstance'
 
-import { observer } from 'mobx-react-lite'
 import * as React from 'react'
 import { type MouseEvent } from 'react'
 
@@ -21,7 +20,7 @@ export type MenuUIProps = {
    menu: MenuInstance
 } & React.HTMLAttributes<HTMLDivElement>
 
-export const MenuUI = observer(function MenuUI_({
+export const MenuUI = obs(function MenuUI_({
    // own props
    menu,
 
@@ -133,15 +132,13 @@ export const MenuUI = observer(function MenuUI_({
                         disabled={entry.def.disabled}
                         localShortcut={char}
                         icon={entry.icon}
-                        afterShortcut={<IkonOf name='mdiMenuRight' />}
+                        afterShortcut={<IkonOf name={IKONS.mdiMenuRight} />}
                         label={label}
                         labelAcceleratorIx={charIx}
                      />
                   </RevealUI>
                )
-            }
-            //
-            else if (isWidget(entry)) {
+            } else if (isWidget(entry)) {
                return <div key={ix}>{entry.UI()}</div>
             }
 

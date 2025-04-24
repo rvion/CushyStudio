@@ -39,6 +39,7 @@ export class GithubUser {
       public username: GithubUserName,
       public isFake: boolean,
    ) {
+      this.githubUserAvatarRelPath = `.cushy/github/${this.username}/avatar.png`
       // this.fPath = asRelativePath(`.cushy/github/${username}/.${username}.json`)
       // const prevExists = existsSync(this.fPath)
       // // 1. cache info
@@ -60,7 +61,7 @@ export class GithubUser {
    }
 
    // --------------------------------------------------------------------------------
-   private githubUserAvatarRelPath: string = `.cushy/github/${this.username}/avatar.png`
+   private githubUserAvatarRelPath: string
    get localAvatarURL(): string {
       return `file://${this.st.resolveFromRoot(asRelativePath(this.githubUserAvatarRelPath))}`
    }

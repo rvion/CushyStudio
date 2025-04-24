@@ -7,5 +7,5 @@ export const PanelComfyHosts = new Panel({
    widget: (): React.FC<PanelComfyHostProps> => PanelComfyHostsUI,
    header: (): PanelHeader => ({ title: 'Hosts' }),
    def: (): PanelComfyHostProps => ({}),
-   icon: 'mdiDesktopTower',
+   icon: IKONS.mdiDesktopTower,
 })

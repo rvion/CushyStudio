@@ -1,5 +1,3 @@
-import { observer } from 'mobx-react-lite'
-
 import { KEYS } from '../app/shortcuts/shorcutKeys'
 import { activityManager } from '../csuite/activity/ActivityManager'
 import { Dropdown } from '../csuite/dropdown/Dropdown'
@@ -10,7 +8,7 @@ import { DBStatsUI } from '../db/gui/DBStats'
 import { quickBench } from '../db/quickBench'
 import { DEMO_ACTIVITY } from '../operators/useDebugActivity'
 
-export const MenuDebugUI = observer(function MenuDebugUI_(p: {}) {
+export const MenuDebugUI = obs(function MenuDebugUI_(p: {}) {
    return (
       <Dropdown
          title='Dev'
@@ -18,20 +16,20 @@ export const MenuDebugUI = observer(function MenuDebugUI_(p: {}) {
             <>
                <MenuItem //
                   onClick={() => cushy.layout.open('Playground', {})}
-                  icon='mdiPlayNetwork'
+                  icon={IKONS.mdiPlayNetwork}
                   label='Show Dev Playground Page'
                />
                <MenuDividerUI_ />
                <MenuItem
                   iconClassName='text-green-500'
-                  icon='mdiAutoFix'
+                  icon={IKONS.mdiAutoFix}
                   onClick={() => cushy.layout.resetCurrent()}
                   localShortcut={KEYS.resetLayout}
                   label='Reset Layout'
                />
                <MenuItem
                   iconClassName='text-green-500'
-                  icon='mdiAutoFix'
+                  icon={IKONS.mdiAutoFix}
                   onClick={() => cushy.layout.fixTabsWithNegativeArea()}
                   localShortcut={KEYS.resetLayout}
                   label='Fix Tabs with negative size'
@@ -39,33 +37,33 @@ export const MenuDebugUI = observer(function MenuDebugUI_(p: {}) {
                {/* 🔴 */}
                <MenuItem
                   iconClassName='text-green-500'
-                  icon='mdiVideo'
+                  icon={IKONS.mdiVideo}
                   onClick={() => cushy.resizeWindowForVideoCapture()}
                   localShortcut={KEYS.resizeWindowForVideoCapture}
                   label='set screen size to 1920 x 1080'
                />
                <MenuItem
                   iconClassName='text-green-500'
-                  icon='mdiLaptop'
+                  icon={IKONS.mdiLaptop}
                   onClick={() => cushy.resizeWindowForLaptop()}
                   localShortcut={KEYS.resizeWindowForLaptop}
                   label='set screen size to 1280 x 720'
                />
                <MenuItem //
                   iconClassName='text-green-500'
-                  icon='mdiBug'
+                  icon={IKONS.mdiBug}
                   onClick={() => cushy.electron.toggleDevTools()}
                   label='console'
                />
                <MenuItem //
                   iconClassName='text-green-500'
-                  icon='mdiBug'
+                  icon={IKONS.mdiBug}
                   onClick={() => activityManager.start(DEMO_ACTIVITY)}
                   label='Start debug activity'
                />
                <MenuItem
                   iconClassName='text-orange-500'
-                  icon='mdiSync'
+                  icon={IKONS.mdiSync}
                   onClick={() => cushy.reloadCushyMainWindow()}
                   localShortcut='mod+R'
                   label='Reload'
@@ -84,39 +82,39 @@ export const MenuDebugUI = observer(function MenuDebugUI_(p: {}) {
                         {},
                      )
                   }
-                  icon='mdiAccount'
+                  icon={IKONS.mdiAccount}
                   label='print DB stats'
                />
 
                <MenuItem //
                   iconClassName='text-yellow-500'
                   onClick={() => quickBench.printAllStats()}
-                  icon='mdiAccountOutline'
+                  icon={IKONS.mdiAccountOutline}
                   label='print QuickBench stats'
                />
                <MenuItem //
                   iconClassName='text-yellow-500'
                   onClick={cushy.auth.__testCB}
-                  icon='mdiAccount'
+                  icon={IKONS.mdiAccount}
                   label='Test Auth CB page'
                />
                <MenuDividerUI_ />
                <MenuItem //
                   onClick={() => cushy.wipeOuputTopLevelImages()}
                   iconClassName='text-red-500'
-                  icon='mdiImageBroken'
+                  icon={IKONS.mdiImageBroken}
                   label='remove all images'
                />
                <MenuItem //
                   onClick={() => cushy.wipeOuputTopLevelImages()}
                   iconClassName='text-red-500'
-                  icon='mdiImageBroken'
+                  icon={IKONS.mdiImageBroken}
                   label='remove top-level images'
                />
                <MenuDividerUI_ />
                <MenuItem
                   iconClassName='text-red-500'
-                  icon='mdiSync'
+                  icon={IKONS.mdiSync}
                   label='Reset DB'
                   onClick={() => {
                      cushy.db.reset()
@@ -126,20 +124,20 @@ export const MenuDebugUI = observer(function MenuDebugUI_(p: {}) {
 
                <MenuItem
                   iconClassName='text-red-500'
-                  icon='mdiSync'
+                  icon={IKONS.mdiSync}
                   onClick={() => cushy.fullReset_eraseConfigAndSchemaFilesAndDB()}
                   label='Full Reset'
                />
                <MenuDividerUI_ />
                <MenuItem //
                   iconClassName='text-purple-500'
-                  icon='mdiStorageTankOutline'
+                  icon={IKONS.mdiStorageTankOutline}
                   onClick={cushy.db.migrate}
                   label='Migrate'
                />
                <MenuItem //
                   iconClassName='text-purple-500'
-                  icon='mdiHomeGroup'
+                  icon={IKONS.mdiHomeGroup}
                   onClick={cushy.db.runCodegen}
                   label='CodeGen'
                />

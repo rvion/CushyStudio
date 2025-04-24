@@ -1,16 +1,15 @@
 import type { Field_enum } from './FieldEnum'
 
-import { observer } from 'mobx-react-lite'
 import { useMemo } from 'react'
 
 import { EnumSelectorUI } from './EnumSelectorUI'
 
-export const WidgetEnum_SelectUI = observer(function WidgetEnum_SelectUI_(p: { field: Field_enum<any> }) {
+export const WidgetEnum_SelectUI = obs(function WidgetEnum_SelectUI_(p: { field: Field_enum<any> }) {
    const field = p.field
-   const slotName = field.config.slotName
+   const slotName = field.zConfig.slotName
    const clearable = useMemo(
-      () => (field.canBeToggledWithinParent ? (): void => field.disableSelfWithinParent() : undefined),
-      [field.canBeToggledWithinParent],
+      () => (field.zCanBeToggledWithinParent ? (): void => field.zDisableSelfWithinParent() : undefined),
+      [field.zCanBeToggledWithinParent],
    )
    return (
       <EnumSelectorUI
@@ -19,12 +18,12 @@ export const WidgetEnum_SelectUI = observer(function WidgetEnum_SelectUI_(p: { f
          clearable={clearable}
          onChange={(e) => {
             if (e == null) return // ❓
-            field.value = e
+            field.zValue = e
          }}
       />
    )
    // <>
    //     {/* <InstallModelBtnUI widget={widget} modelFolderPrefix={} /> */}
-   //     <Button icon='mdiUndoVariant' disabled={!widget.hasChanges} onClick={() => widget.reset()}></Button>
+   //     <Button icon={IKONS.mdiUndoVariant} disabled={!widget.hasChanges} onClick={() => widget.reset()}></Button>
    // </>
 })

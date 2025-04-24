@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'bun:test'
+import { describe, expect, it } from 'vitest'
 
 import { PromptAST } from './grammar.practical'
 
@@ -40,7 +40,7 @@ describe('prompt grammar', () => {
 
    it('find all Lora', () => {
       const matches = expr.findAll('Lora')
-      expect(matches.length).toBe(2)
+      expect(matches).toHaveLength(2)
       expect(matches[0]!.name).toBe('a' as any)
       expect(matches[0]!.strength_clip).toBe(1)
       expect(matches[1]!.name).toBe('test' as any)
@@ -49,7 +49,7 @@ describe('prompt grammar', () => {
 
    it('properly understand simple weights', () => {
       const matches = expr.findAll('WeightedExpression')
-      expect(matches.length).toBe(3)
+      expect(matches).toHaveLength(3)
       const m1 = matches[0]!
       const m2 = matches[1]!
       const m3 = matches[2]!

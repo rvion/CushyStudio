@@ -1,22 +1,29 @@
 // 💬 2024-10-16 rvion:
 // | for some reason, vscode eslint plugin runs eslint on this file despite it not beeing
 // | part of our imports; so lets' disable its errors since they all come from a single rule.
-/* eslint-disable @typescript-eslint/no-require-imports */
-
 const typescriptEslint = require('@typescript-eslint/eslint-plugin')
 const reactRefresh = require('eslint-plugin-react-refresh')
 const globals = require('globals')
+const path = require('path')
+const fs = require('fs')
 const tsParser = require('@typescript-eslint/parser')
 const js = require('@eslint/js')
-const tailwindcss = require('eslint-plugin-tailwindcss')
 const { FlatCompat } = require('@eslint/eslintrc')
+const tailwindcss = require('eslint-plugin-tailwindcss')
+// const dotenv = require('dotenv')
+const eslintConfigPrettier = require('eslint-config-prettier')
+const comments = require('@eslint-community/eslint-plugin-eslint-comments/configs')
+const vitest = require('@vitest/eslint-plugin')
 
 // 💬 2024-10-16 rvion:
 // | this localRules stuff seems pretty cool; probably something to investigate soon
 // |> const localRules = require('eslint-plugin-local-rules')
 
-const USE_SLOW_TYPECHECKING_RULES = false
-const ERROR_LEVEL = 'error' // : 'warn' | 'error'
+// dotenv.config({ path: path.join(__dirname, '.env.back') })
+
+const ERROR_LEVEL = process.env.ESLINT_ERROR_LEVEL || 'error'
+const ERROR_LEVEL_NEW_RULES = process.env.ESLINT_ERROR_LEVEL_NEW_RULES || 'error'
+const SKIP_SLOW_TYPECHECKING_RULES = process.env.ESLINT_SKIP_SLOW_TYPECHECKING_RULES === 'true'
 
 const compat = new FlatCompat({
    baseDirectory: __dirname,
@@ -27,16 +34,16 @@ const compat = new FlatCompat({
 // 💬 2024-10-16 rvion:
 // | modern configs seems to use some kind of layered apporach like this
 // | https://github.com/prisma/prisma/blob/6819678dd575677ccd5c6a72ea51f8421f6a82ce/eslint.config.cjs#L4
+// |
+// | Q: why {files}  and {ignores} in separate objects ?
+// | A: because eslint is doing BATSHIT CRAZY impossible to know stuff
+// |    when config have a single keys... who thought it was a good idea to add such special cases!?)
+// |    e.g. https://eslint.org/docs/latest/use/configure/ignore
 module.exports = [
    // 1. add core includes
    {
       files: ['src/**/*.{ts,tsx}'],
    },
-
-   // 2. add core excludes
-   // why in a separate object? because eslint is doing BATSHIT CRAZY impossible to know stuff
-   // | when config have a single keys... who thought it was a good idea to add such special cases!?)
-   // | e.g. https://eslint.org/docs/latest/use/configure/ignore
    {
       ignores: [
          // top-level folders to ignore
@@ -50,11 +57,28 @@ module.exports = [
          '**/*.js',
          '**/*.cjs',
          '**/*.mjs',
-         // temporary
-         'src/tools/autotype.ts',
+         // misc
+         'src/loco/script-next.ts',
+         'src/loco/scripts.current/',
+         'src/loco/script-current.ts',
       ],
    },
-
+   // 💬 2024-10-18 rvion:
+   // this rule should not be activate unless we run with the full linter
+   // otherwise, `--fix` will possibly remove correct disable comments
+   ...(!SKIP_SLOW_TYPECHECKING_RULES
+      ? [
+           comments.recommended,
+           {
+              rules: {
+                 '@eslint-community/eslint-comments/disable-enable-pair': [
+                    ERROR_LEVEL,
+                    { allowWholeFile: true },
+                 ],
+              },
+           },
+        ]
+      : []),
    // 3. addd
    ...compat.extends(
       //
@@ -68,13 +92,58 @@ module.exports = [
       // 💬 2024-10-16 rvion:
       // |🐌 this is handy, but super slow. 100ms => 23 seconds => 230 times slower !!!!!!
       // |> 'plugin:@typescript-eslint/recommended-requiring-type-checking',
-
-      // 💬 2024-10-16 rvion:
-      // | we're not at the point where cosmetic shit matters. prettier already does it's job
-      // | at making sure we have files somewhat coherent. let's leave it as that.
-      // |> 'plugin:prettier/recommended',
    ),
+   {
+      files: ['src/**/*.test.{ts,tsx}'],
+      plugins: { vitest },
+      rules: {
+         ...vitest.configs.recommended.rules,
+         'vitest/expect-expect': [
+            'error',
+            {
+               assertFunctionNames: ['expect', 'expect__', '**.expect', 'expectJSON', 'expectToJS'],
+               additionalTestBlockFunctions: [],
+            },
+         ],
+         'vitest/no-focused-tests': ['error', { fixable: false }],
+         'vitest/prefer-comparison-matcher': 'error',
+         'vitest/prefer-equality-matcher': 'error',
+         'vitest/prefer-expect-resolves': 'error',
+         'vitest/prefer-hooks-on-top': 'error',
+         'vitest/prefer-hooks-in-order': 'error',
+         'vitest/prefer-mock-promise-shorthand': 'warn',
+         'vitest/prefer-spy-on': 'error',
+         'vitest/prefer-to-be': 'error',
+         'vitest/prefer-to-be-object': 'error',
+         'vitest/prefer-to-contain': 'error',
+         'vitest/prefer-to-have-length': 'error',
+         'vitest/prefer-vi-mocked': 'error',
+         'vitest/require-to-throw-message': 'error',
+         'vitest/require-top-level-describe': 'error',
+         'vitest/valid-expect-in-promise': 'error',
+      },
+      settings: {
+         vitest: {
+            typecheck: !SKIP_SLOW_TYPECHECKING_RULES,
+         },
+      },
+      languageOptions: {
+         globals: {
+            ...vitest.environments.env.globals,
+         },
+      },
+   },
+   // ...tailwind.configs['flat/recommended'],
 
+   // 💬 2024-10-17 rvion:
+   // | we never setup tailwind linting before, but since we're working on eslint
+   // | let's just install the official plugin https://unocss.dev/integrations/eslint
+   // | TODO: review if we want all the rules;
+   // |   - @unocss/order - Enforce a specific order for class selectors.
+   // |   - @unocss/order-attributify - Enforce a specific order for attributify selectors.
+   // |   - @unocss/blocklist - Disallow specific class selectors [Optional].
+   // |   - @unocss/enforce-class-compile - Enforce class compile [Optional].
+   // unocss,
    // 4. our actual main config.
    {
       // cache: true,
@@ -86,7 +155,9 @@ module.exports = [
 
          // 💬 2024-10-16 rvion:
          // | THIS MOTHERFUCKING LINE makes everything 100 times slower.
-         // | parserOptions: { project: path.resolve(__dirname, 'tsconfig.json') },
+         parserOptions: !SKIP_SLOW_TYPECHECKING_RULES //
+            ? { project: path.resolve(__dirname, 'tsconfig.json') }
+            : undefined,
       },
       plugins: {
          'react-refresh': reactRefresh,
@@ -94,10 +165,11 @@ module.exports = [
          tailwindcss: tailwindcss,
       },
       rules: {
-         // 👇 this one is sadly quite slow;
-         // but will be quite pleasant to cleanup our crappy tw code
-         // also, we need to suport className='...' and tw='...'
-         'tailwindcss/classnames-order': ['warn', { classRegex: '^(className|tw)$' }],
+         // 💬 2024-10-21 rvion:
+         // | 👇 this one is sadly quite slow;
+         // | but will be quite pleasant to cleanup our crappy tw code
+         // | also, we need to suport className='...' and tw='...'
+         // ⏸️ ‼️ 'tailwindcss/classnames-order': ['warn', { classRegex: '^(className|tw)$' }],
          'tailwindcss/enforces-negative-arbitrary-values': 'warn',
          'tailwindcss/enforces-shorthand': 'warn',
          'tailwindcss/migration-from-tailwind-2': 'warn',
@@ -108,6 +180,20 @@ module.exports = [
          'tailwindcss/no-arbitrary-value': 'off',
          'tailwindcss/no-custom-classname': 'off',
 
+         // 💬 2024-10-16 rvion:
+         // | this one is useless since we use typescript
+         // | not sure why it suddenly started to appear after bumping eslint various packages.
+         'no-unused-vars': 'off',
+
+         // 💬 2024-12-18 ghusse:
+         // | it is quite useful and sometimes used in the code so I deactivate errors when empty
+         'no-fallthrough': [
+            'error',
+            {
+               allowEmptyCase: true,
+            },
+         ],
+
          'no-restricted-properties': [
             'error',
             {
@@ -115,33 +201,30 @@ module.exports = [
                property: 'addEventListener',
                message: "Please use 'window_addEventListener' instead of 'window.addEventListener'.",
             },
+            {
+               object: 'window.document',
+               property: 'addEventListener',
+               message: "Please use 'window_document_addEventListener' instead of 'window.document.addEventListener'.", // prettier-ignore
+            },
+            {
+               object: 'document',
+               property: 'addEventListener',
+               message: "Please use 'document_addEventListener' instead of 'document.addEventListener'.",
+            },
          ],
-         // "no-restricted-imports": [
-         //     "error",
-         //     {
-         //         "paths": [
-         //             {
-         //                 "name": "mobx",
-         //                 "importNames": ["makeAutoObservable"],
-         //                 "message": "Please use 'makeAutoObservableV2' instead of 'makeAutoObservable' from 'mobx'."
-         //             }
-         //         ]
-         //     }
-         // ],
 
-         // 💬 2024-10-16 rvion:
-         // | this one is useless since we use typescript
-         // | not sure why it suddenly started to appear after bumping eslint various packages.
-         'no-unused-vars': 'off',
-
-         // 🦊🦄👋 this helps (a lot) with hot-reloading!!
-         // see: https://github.com/ArnaudBarre/eslint-plugin-react-refresh
-         // see: https://github.com/vitejs/vite-plugin-react-swc#consistent-components-exports
-         'react-refresh/only-export-components': [ERROR_LEVEL, { allowConstantExport: true }],
-         '@typescript-eslint/explicit-function-return-type': ERROR_LEVEL,
+         // 💬 2024-10-21 ???:
+         // | 🦊🦄👋 this helps (a lot) with hot-reloading!!
+         // | see: https://github.com/ArnaudBarre/eslint-plugin-react-refresh
+         // | see: https://github.com/vitejs/vite-plugin-react-swc#consistent-components-exports
+         'react-refresh/only-export-components': [
+            ERROR_LEVEL_NEW_RULES,
+            { allowConstantExport: true, customHOCs: ['observer'] },
+         ],
+         // ⏸️ ‼️'@typescript-eslint/explicit-function-return-type': ERROR_LEVEL_NEW_RULES,
 
          // // AVOID WRITING AND MAINTAINING WEIRD CONDITIONALS ==========================================
-         '@typescript-eslint/strict-boolean-expressions': USE_SLOW_TYPECHECKING_RULES
+         '@typescript-eslint/strict-boolean-expressions': !SKIP_SLOW_TYPECHECKING_RULES
             ? [
                  ERROR_LEVEL,
                  {
@@ -152,35 +235,35 @@ module.exports = [
               ]
             : 'off',
          // 💬 2024-10-17 rvion:
-         // 🔶 if the string-boolean-expressions lint rule above is disabled, then we need to
-         // at least manually remove the following rules that will otherwise make our code
-         // actively worse
+         // | 🔶 if the string-boolean-expressions lint rule above is disabled, then we need to
+         // | at least manually remove the following rules that will otherwise make our code
+         // | actively worse
          'no-extra-boolean-cast': 'off',
 
          //# PROMISES
          // https://typescript-eslint.io/rules/no-misused-promises
          // Disallows Promises in places not designed to handle them.
-         '@typescript-eslint/no-misused-promises': USE_SLOW_TYPECHECKING_RULES
+         '@typescript-eslint/no-misused-promises': !SKIP_SLOW_TYPECHECKING_RULES
             ? [ERROR_LEVEL, { checksVoidReturn: false }]
             : 'off',
 
          // https://typescript-eslint.io/rules/require-await
-         '@typescript-eslint/require-await': USE_SLOW_TYPECHECKING_RULES //
+         '@typescript-eslint/require-await': !SKIP_SLOW_TYPECHECKING_RULES //
             ? ERROR_LEVEL
             : 'off',
 
          // https://typescript-eslint.io/rules/no-floating-promises
-         '@typescript-eslint/no-floating-promises': USE_SLOW_TYPECHECKING_RULES //
+         '@typescript-eslint/no-floating-promises': !SKIP_SLOW_TYPECHECKING_RULES //
             ? ERROR_LEVEL
             : 'off',
 
          // https://typescript-eslint.io/rules/await-thenable
-         '@typescript-eslint/await-thenable': USE_SLOW_TYPECHECKING_RULES //
+         '@typescript-eslint/await-thenable': !SKIP_SLOW_TYPECHECKING_RULES //
             ? ERROR_LEVEL
             : 'off',
 
          // avoid errors due to empty strings and 0 values
-         '@typescript-eslint/return-await': USE_SLOW_TYPECHECKING_RULES //
+         '@typescript-eslint/return-await': !SKIP_SLOW_TYPECHECKING_RULES //
             ? [ERROR_LEVEL, 'in-try-catch']
             : 'off', // nice but 400+ errors to fix
 
@@ -199,15 +282,7 @@ module.exports = [
             },
          ],
 
-         // 💬 2024-10-18 rvion:
-         // this rule should not be activate unless we run with the full linter
-         // otherwise, `--fix` will possibly remove correct disable comments
-         'eslint-comments/no-unused-disable': USE_SLOW_TYPECHECKING_RULES //
-            ? ERROR_LEVEL
-            : 'off',
-
          '@typescript-eslint/no-non-null-assertion': 'off', // 🔶 prevent ! to check if null
-
          //# DISABLED  -------------------------------------------------------------------------------------------
          '@typescript-eslint/no-inferrable-types': 'off', // explicit types are sometimes useful.
          '@typescript-eslint/ban-types': 'off',
@@ -240,6 +315,60 @@ module.exports = [
 
          semi: 'off', //                                                USELESS STYLE / NAMING STUFF
          'no-extra-semi': 'off', //                                     CONFLICT WITH PRETTIER
+         'no-restricted-imports': [
+            'error',
+            {
+               paths: [
+                  // {
+                  //    name: 'src/cushy-forms/main',
+                  //    importNames: ['Button'],
+                  //    message: 'Use the LSuite button instead of the CushyForms button',
+                  // },
+                  {
+                     name: 'mobx',
+                     importNames: ['observer'],
+                     message: 'Use the globaly-available `obs` instead',
+                  },
+                  {
+                     name: 'mobx-react-lite',
+                     importNames: ['observer'],
+                     message: 'Use the globaly-available `obs` instead',
+                  },
+                  {
+                     name: 'lodash',
+                     message: 'Use lodash/[functionName] instead',
+                  },
+               ],
+            },
+         ],
       },
    },
+   {
+      files: ['src/loco/scripts.next/@shared/**/*.{ts,tsx}'],
+      rules: {
+         'no-restricted-imports': [
+            'error',
+            {
+               paths: [
+                  {
+                     name: 'src/cushy-forms/main',
+                     importNames: ['Button'],
+                     message: 'Use uy.Button instead',
+                  },
+                  {
+                     name: 'src/front/lsuite/Button',
+                     message: 'Use uy.Button instead',
+                  },
+                  {
+                     name: 'rsuite',
+                     importNames: ['Button', 'IconButton'],
+                     message: 'Use uy.Button instead',
+                  },
+               ],
+            },
+         ],
+      },
+   },
+   // Disables rules that will be handled by Prettier
+   eslintConfigPrettier,
 ]

@@ -1,20 +1,19 @@
 import type { PartialOmit } from '../../../types/Misc'
-import type { BaseSchema } from '../../model/BaseSchema'
-import type { FieldConfig } from '../../model/FieldConfig'
-import type { FieldSerial } from '../../model/FieldSerial'
+import type { CSchema } from '../../model/CSchema'
+import type { FieldConstructor } from '../../model/FieldConstructor'
+import type { Patch } from '../../model/Patch'
 import type { Repository } from '../../model/Repository'
-import type { SelectValueLooks } from '../../select/SelectProps'
 import type { SelectValueSlots } from '../../select/SelectState'
 import type { TabPositionConfig } from '../choices/TabPositionConfig'
 import type { CanThrow } from './CanCrash'
-import type { SelectKey } from './SelectOneKey'
+import type { AnySelectValue, SelectKey } from './SelectOneKey'
 import type { SelectOption } from './SelectOption'
+
+import { computed } from 'mobx'
 
 import { stableStringify } from '../../hashUtils/hash'
 import { Field } from '../../model/Field'
 import { isProbablySerialSelectOne, registerFieldClass } from '../WidgetUI.DI'
-import { WidgetSelectOne_CellUI } from './WidgetSelectOne_CellUI'
-import { WidgetSelectOneUI } from './WidgetSelectOneUI'
 
 export type SelectOneSkin = 'select' | 'tab' | 'roll'
 
@@ -25,7 +24,10 @@ export type SelectOneSkin = 'select' | 'tab' | 'roll'
 // 💬 2024-08-21 rvion:
 // | it shouldn't be complicated; I've done it a few times, it wasn't that hard.
 
-export type Field_selectOne_config_simplified<VALUE, KEY extends SelectKey> = PartialOmit<
+export type Field_selectOne_config_simplified<
+   VALUE extends AnySelectValue,
+   KEY extends SelectKey,
+> = PartialOmit<
    Field_selectOne_config<VALUE, KEY>,
    'choices' | 'getIdFromValue' | 'getOptionFromId' | 'getValueFromId'
 >
@@ -36,89 +38,79 @@ export type Field_selectOne_config_simplified_<KEY extends SelectKey> = PartialO
 >
 
 // #region CONFIG
-export type Field_selectOne_config_<KEY extends SelectKey> = Field_selectOne_config<KEY, KEY>
+export type Field_selectOne_config_<
+   //
+   KEY extends SelectKey,
+> = Field_selectOne_config<KEY, KEY>
+
 export type Field_selectOne_config<
    //
-   VALUE,
+   VALUE extends AnySelectValue,
    KEY extends SelectKey,
-> = FieldConfig<
-   {
-      /** 🔶 the *ID* of the option selected by default */
-      default?: KEY
+> = Field_selectOne<VALUE, KEY>['{config}']
 
-      /**
-       * list of all choices
-       * 👉 you can use a lambda if you want the option to to dynamic
-       *    the lambda will receive the widget instance as argument, from
-       *    which you can access variosu stuff like
-       *      - `self.serial.query`: the current filtering text
-       *      - `self.form`: the form instance
-       *      - `self.form.root`: the root of the widget
-       *      - `self.parent...`: natigate the widget tree
-       *      - `self.useKontext('...')`: any named dynamic chanel for cross-widget communication
-       * 👉 If the list of options is generated from the query directly,
-       *    you should also set `disableLocalFiltering: true`, to avoid
-       *    filtering the options twice.
-       */
-      choices?: KEY[] | ((self: Field_selectOne<VALUE, KEY>) => KEY[])
-      values?: VALUE[] | ((field: Field_selectOne<VALUE, KEY>) => VALUE[])
-      options?:
-         | SelectOption<VALUE, KEY>[]
-         | ((field: Field_selectOne<VALUE, KEY>) => SelectOption<VALUE, KEY>[])
-      createOption?: {
-         label?: string
-         isActive?: boolean
-         action: () => Promise<Maybe<SelectOption<VALUE, KEY>>>
-      }
+type Field_selectOne_ownConfig<
+   //
+   VALUE extends AnySelectValue,
+   KEY extends SelectKey,
+> = {
+   /** 🔶 the *ID* of the option selected by default */
+   default?: KEY
 
-      getIdFromValue: (t: VALUE) => KEY
-      getValueFromId: (id: KEY, self: Field_selectOne<NoInfer<VALUE>, KEY>) => VALUE | undefined
-      getOptionFromId: (t: KEY, self: Field_selectOne<NoInfer<VALUE>, KEY>) => Maybe<SelectOption<VALUE, KEY>>
-      /** set this to true if your choices are dynamically generated from the query directly, to disable local filtering */
-      disableLocalFiltering?: boolean
-      /**
-       * will be removed soon; in the meantime, you must know that:
-       * - it will be passed to `OptionLabelUI` in src/csuite/fields/selectOne/WidgetSelectOne_SelectUI.tsx
-       * - it will be used in `DisplayOptionUI` in src/csuite/select/SelectState.tsx
-       * - if unset, `DefaultDisplayOption` in src/csuite/select/SelectState.tsx
-       * - you may want to use `SelectDefaultOptionUI` if you want to build a similarly themed component
-       * - you can just change the text label if otherise...
-       *
-       * ... and yes, this is crappy.
-       *
-       * */
-      OptionLabelUI?: (
-         //
-         t: Maybe<SelectOption<VALUE, KEY>>,
-         where: SelectValueSlots,
-      ) => React.ReactNode | SelectValueLooks
-      SlotAnchorContentUI?: React.FC<{}>
-      appearance?: SelectOneSkin
+   /**
+    * list of all choices
+    * 👉 you can use a lambda if you want the option to to dynamic
+    *    the lambda will receive the widget instance as argument, from
+    *    which you can access various stuff like
+    *      - `self.serial.query`: the current filtering text
+    *      - `self.form`: the form instance
+    *      - `self.form.root`: the root of the widget
+    *      - `self.parent...`: navigate the widget tree
+    *      - `self.useKontext('...')`: any named dynamic channel for cross-widget communication
+    * 👉 If the list of options is generated from the query directly,
+    *    you should also set `disableLocalFiltering: true`, to avoid
+    *    filtering the options twice.
+    */
+   choices?: KEY[] | ((self: Field_selectOne<VALUE, KEY>) => KEY[])
+   values?: VALUE[] | ((field: Field_selectOne<VALUE, KEY>) => VALUE[])
+   options?: SelectOption<VALUE, KEY>[] | ((field: Field_selectOne<VALUE, KEY>) => SelectOption<VALUE, KEY>[])
+   createOption?: {
+      label?: () => string
+      isActive?: () => boolean
+      action: () => Promise<Maybe<SelectOption<VALUE, KEY>>>
+   }
 
-      /**
-       * @since 2024-06-24
-       * allow to wrap the list of values if they take more than 1 SLH (standard line height)
-       */
-      wrap?: boolean
+   getIdFromValue: (t: VALUE) => KEY
+   getValueFromId: (id: KEY, self: Field_selectOne<NoInfer<VALUE>, KEY>) => VALUE | undefined
+   getOptionFromId: (t: KEY, self: Field_selectOne<NoInfer<VALUE>, KEY>) => Maybe<SelectOption<VALUE, KEY>>
+   /** set this to true if your choices are dynamically generated from the query directly, to disable local filtering */
+   disableLocalFiltering?: boolean
+   OptionLabelUI?: (
+      t: Maybe<SelectOption<VALUE, KEY>>,
+      where: SelectValueSlots,
+      self: Field_selectOne<NoInfer<VALUE>, KEY>,
+   ) => React.ReactNode
+   SlotAnchorContentUI?: React.FC<{}>
+   appearance?: SelectOneSkin
 
-      /**
-       * @since 2024-06-24
-       * @deprecated use global csuite config instead
-       */
-      tabPosition?: TabPositionConfig
-      placeholder?: string
+   /** allow to wrap the list of values if they take more than 1 SLH (standard line height) */
+   wrap?: boolean
 
-      /**
-       * @deprecated: NOT IMPLEMENTED YET
-       * see notes in FieldSelectOne_NullabilityHelper.tsx
-       */
-      nullable?: boolean
-   },
-   Field_selectOne_types<VALUE, KEY>
->
+   /** @deprecated use global csuite config instead */
+   tabPosition?: TabPositionConfig
+   placeholder?: string
+
+   /**
+    * @deprecated: NOT IMPLEMENTED YET
+    * see notes in FieldSelectOne_NullabilityHelper.tsx
+    */
+   nullable?: boolean
+}
 
 // #region SERIAL
-export type Field_selectOne_serial<KEY extends SelectKey> = FieldSerial<{
+export type Field_selectOne_serial<KEY extends SelectKey> = Field_selectOne<AnySelectValue, KEY>['{serial}']
+
+type Field_selectOne_ownSerial<KEY extends SelectKey> = {
    $: 'selectOne'
    query?: string
    val?: KEY
@@ -148,50 +140,47 @@ export type Field_selectOne_serial<KEY extends SelectKey> = FieldSerial<{
     * => so probably not needed for now
     */
    extra?: any
-}>
-
-// #region VALUE
-export type Field_selectOne_value<VALUE extends any> = VALUE
-export type Field_selectOne_unchecked<VALUE extends any> = Field_selectOne_value<VALUE> | undefined
-
-// #region TYPES
-export type Field_selectOne_types<
-   //
-   VALUE extends any,
-   KEY extends SelectKey,
-> = {
-   $Type: 'selectOne'
-   $Config: Field_selectOne_config<VALUE, KEY>
-   $Serial: Field_selectOne_serial<KEY>
-   $Value: VALUE
-   $Unchecked: Field_selectOne_unchecked<VALUE>
-   $Field: Field_selectOne<VALUE, KEY>
-   $Child: never
-   $Reflect: Field_selectOne_types<VALUE, KEY>
 }
 
-// #region STATE
-export type Field_selectOne_<
-   //
-   VALUE extends SelectKey,
-> = Field_selectOne<VALUE, VALUE>
+// #region VALUE
+export type Field_selectOne_value<VALUE extends AnySelectValue> = VALUE
+export type Field_selectOne_unchecked<VALUE extends AnySelectValue> = Field_selectOne_value<VALUE> | undefined
 
+// #region TYPES
+export type Field_selectOne_<VALUE extends SelectKey> = Field_selectOne<VALUE, VALUE>
+export interface Field_selectOne<
+   //
+   VALUE extends unknown,
+   KEY extends SelectKey,
+> {
+   '{type}': 'selectOne'
+   '{ownConfig}': Field_selectOne_ownConfig<VALUE, KEY>
+   '{ownSerial}': Field_selectOne_ownSerial<KEY>
+   '{value}': VALUE
+   '{setValue}': VALUE | KEY | { $$KEY: KEY } | { $$VALUE: VALUE }
+   '{unchecked}': Field_selectOne_unchecked<VALUE>
+   '{child}': never
+   '{opts}': unknown
+   '{ownPatch}': Patch<'selectOne'>
+}
 export class Field_selectOne<
    //
-   VALUE extends any,
+   VALUE extends unknown,
    KEY extends SelectKey,
-> extends Field<Field_selectOne_types<VALUE, KEY>> {
+> extends Field {
    // #region TYPE
    static readonly type: 'selectOne' = 'selectOne'
-   static readonly emptySerial: Field_selectOne_serial<any> = { $: 'selectOne' }
-   static codegenValueType(config: Field_selectOne_config<any, any>): string {
-      return `any /* selectOne */`
+   static readonly codeForTypescriptValue = (config: Field_selectOne_config<any, any>): string => {
+      if (config.choices != null && Array.isArray(config.choices)) {
+         return `Z.SelectOne<${config.choices.map((i) => JSON.stringify(i)).join(' | ')}>`
+      }
+      return 'Z.SelectOne<❓>'
    }
-   static migrateSerial<KEY extends SelectKey>(serial: object): Maybe<Field_selectOne_serial<KEY>> {
+   static override migrateSerial<KEY extends SelectKey>(serial: object): Maybe<Field_selectOne_serial<KEY>> {
       if (isProbablySerialSelectOne(serial)) {
          const { $, val, ...rest } = serial
          // 2024-08-02: support previous serial format which stored SelectOption<VALUE>.
-         const legacyValue: object[] | undefined = val
+         const legacyValue = val as object[] | undefined
          if (
             typeof legacyValue === 'object' && //
             legacyValue != null &&
@@ -207,63 +196,103 @@ export class Field_selectOne<
       }
    }
 
+   private static readonly unsetSerial: Field_selectOne_serial<any> = { $: 'selectOne' }
+   static generateSerial<VALUE extends AnySelectValue = any, KEY extends SelectKey = any>(
+      setValue_: Maybe<Field_selectOne<VALUE, KEY>['{setValue}']>,
+      config: Field_selectOne<VALUE, KEY>['{config}'],
+   ): Field_selectOne<VALUE, KEY>['{serial}'] {
+      // always use `setValue_` if provided, or `config.default` otherwise
+      const setValue =
+         setValue_ === undefined //
+            ? config.default
+            : setValue_
+
+      // case undefined --------------------------------------------------------
+      if (setValue === undefined) {
+         return this.unsetSerial
+      }
+
+      // case null -------------------------------------------------------------
+      if (setValue === null) {
+         // attempt to use null as key
+         if (this.isProbablyValidKey(null)) return { $: 'selectOne', val: null as KEY }
+
+         // attempt to use null as value
+         const key = config.getIdFromValue(null as VALUE)
+         if (this.isProbablyValidKey(key)) return { $: 'selectOne', val: key }
+
+         throw new Error('❌ null is neither a valid `key` nor `value` for given schema')
+      }
+
+      // case { $$KEY: KEY } ---------------------------------------------------
+      if (
+         typeof setValue === 'object' &&
+         setValue != null &&
+         '$$KEY' in setValue &&
+         this.isProbablyValidKey<SelectKey>(setValue.$$KEY)
+      )
+         return { $: 'selectOne', val: setValue.$$KEY }
+
+      // case { $$KEY: VALUE } --------------------------------------------------
+      if (
+         typeof setValue === 'object' && //
+         setValue != null &&
+         '$$VALUE' in setValue
+      ) {
+         const key = config.getIdFromValue(setValue.$$VALUE as VALUE)
+         if (this.isProbablyValidKey(key)) return { $: 'selectOne', val: key }
+      }
+
+      // case KEY
+      if (this.isProbablyValidKey<SelectKey>(setValue)) {
+         return { $: 'selectOne', val: setValue as KEY }
+      }
+
+      // case VALUE
+      const key = config.getIdFromValue(setValue as VALUE)
+      if (this.isProbablyValidKey(key)) return { $: 'selectOne', val: key }
+
+      throw new Error('❌ given setValue is invalid for given FSelectOne schema')
+   }
+
    // #region CTOR
    constructor(
       repo: Repository,
       root: Field | null,
       parent: Field | null,
-      schema: BaseSchema<Field_selectOne<VALUE, KEY>>,
+      schema: CSchema<Field_selectOne<VALUE, KEY>>,
       initialMountKey: string,
       serial?: Field_selectOne_serial<KEY>,
    ) {
       super(repo, root, parent, schema, initialMountKey, serial)
-      this.init(serial, {
-         DefaultHeaderUI: false,
-         DefaultBodyUI: false,
-         DefaultCellUI: false,
-      })
-   }
-
-   // 📌 UI ---------------------------------------------------------------------|
-   DefaultHeaderUI = WidgetSelectOneUI
-   DefaultBodyUI: undefined = undefined
-   DefaultCellUI = WidgetSelectOne_CellUI
-
-   // @deprecated
-   renderAsCell(this: Field_selectOne<VALUE, KEY>, p?: { reveal?: boolean }): JSX.Element {
-      return (
-         <this.DefaultCellUI //
-            field={this}
-            opts={p}
-            {...p}
-         />
-      )
+      this.init(serial)
    }
 
    // #region PROBLEMS
-
-   get ownConfigSpecificProblems(): Maybe<string[]> {
-      if (Array.isArray(this.config.choices)) {
-         if (this.config.choices.length === 0) return ['no choices availble from the config']
+   get zOwnConfigSpecificProblems(): Maybe<string[]> {
+      if (Array.isArray(this.zConfig.choices)) {
+         if (this.zConfig.choices.length === 0) return ['no choices availble from the config']
       }
       // const invalidDefaults = this.defaultKeys?.filter((key) => !this.possibleKeys.includes(key))
       return null
    }
 
    get shouldValidateThatValueIsAmongstKeys(): boolean {
-      if (Array.isArray(this.config.choices)) return true
+      return true
+      if (Array.isArray(this.zConfig.choices)) return true
+      // return locoFront != null // 🔴 pick a better logic ? add config flag ?
       return false
    }
 
-   get ownTypeSpecificProblems(): Maybe<string[]> {
+   get zOwnTypeSpecificProblems(): Maybe<string[]> {
       // when field is not set, no specific error yet; FieldNotSet error will already
       // be thrown elsewhere
-      if (this.serial.val == null) return null
+      if (this.zSerial.val == null) return null
 
       const errors: string[] = []
       if (this.shouldValidateThatValueIsAmongstKeys) {
          const selected = this.possibleKeys.find((c) => c === this.selectedId)
-         if (selected === undefined && !this.config.disableLocalFiltering)
+         if (selected === undefined && !this.zConfig.disableLocalFiltering)
             errors.push(`selected value (id: ${this.selectedId}) not in choices`)
       }
 
@@ -272,24 +301,24 @@ export class Field_selectOne<
    }
 
    // 📌 CHANGES ----------------------------------------------------------------|
-   get isOwnSet(): boolean {
-      return this.serial.val !== undefined
+   get zIsOwnSet(): boolean {
+      return this.zSerial.val !== undefined
    }
 
-   get hasChanges(): boolean {
-      return this.serial.val !== this.defaultKey
+   get zHasChanges(): boolean {
+      return this.zSerial.val !== this.defaultKey
    }
 
-   reset(): void {
+   override zReset(): void {
       this.selectedId = this.defaultKey
    }
 
    get query(): string {
-      return this.serial.query ?? ''
+      return this.zSerial.query ?? ''
    }
 
    set query(next: string) {
-      this.patchInTransaction((draft) => void (draft.query = next))
+      this.zPatchInTransaction((draft) => void (draft.query = next))
    }
 
    /**
@@ -297,8 +326,8 @@ export class Field_selectOne<
     * 🔶 warning: if config.choices is a function, will execute the method
     */
    get possibleKeys(): KEY[] {
-      if (this.config.choices != null) {
-         const _choices = this.config.choices
+      if (this.zConfig.choices != null) {
+         const _choices = this.zConfig.choices
          if (typeof _choices === 'function') {
             // 🔴 if (!this.root.ready) return []
             return _choices(this)
@@ -306,18 +335,29 @@ export class Field_selectOne<
          return _choices
       }
 
-      if (this.config.options != null) {
+      if (this.zConfig.options != null) {
          const _options = this.options
          return _options.map((o) => o.id)
       }
 
-      if (this.config.values != null && this.config.getIdFromValue != null) {
+      if (this.zConfig.values != null && this.zConfig.getIdFromValue != null) {
          const _values = this.values
-         return _values.map(this.config.getIdFromValue)
+         return _values.map(this.zConfig.getIdFromValue)
       }
 
       // 🔶 maybe do all these config checks in the constructor?
       throw new Error('no way to get choices. Provide choices or options or values + getIdFromValue')
+   }
+
+   // todo: remove - do  not belong here
+   @computed get OptionLabelUI():
+      | ((t: Maybe<SelectOption<VALUE, KEY>>, where: SelectValueSlots) => React.ReactNode)
+      | undefined {
+      // no prop => do nothing
+      if (this.zConfig.OptionLabelUI == null) return
+      // prop => bind to self
+      return (t: Maybe<SelectOption<VALUE, KEY>>, where: SelectValueSlots): React.ReactNode =>
+         this.zConfig.OptionLabelUI!(t, where, this)
    }
 
    //  💬 2024-09-?? ???:
@@ -328,22 +368,22 @@ export class Field_selectOne<
    // 💬 2024-09-16 rvion:
    // | Do we always want to have some "unset" value injected here ?
    get options(): SelectOption<VALUE, KEY>[] {
-      if (this.config.options != null) {
-         const _options = this.config.options
+      if (this.zConfig.options != null) {
+         const _options = this.zConfig.options
          if (typeof _options === 'function') return _options(this)
          return _options
       }
 
-      if (this.config.choices != null && this.getOptionFromId != null) {
+      if (this.zConfig.choices != null && this.getOptionFromId != null) {
          return this.possibleKeys.map(this.getOptionFromId).filter((x) => x != null) as SelectOption<
             VALUE,
             KEY
          >[]
       }
 
-      if (this.config.values != null && this.getValueFromId != null && this.getOptionFromId != null) {
+      if (this.zConfig.values != null && this.getValueFromId != null && this.getOptionFromId != null) {
          return this.values
-            .map((v) => this.getOptionFromId(this.config.getIdFromValue(v)))
+            .map((v) => this.getOptionFromId(this.zConfig.getIdFromValue(v)))
             .filter((x) => x != null)
       }
 
@@ -351,21 +391,21 @@ export class Field_selectOne<
    }
 
    private get values(): VALUE[] {
-      if (this.config.values != null) {
-         const _values = this.config.values
+      if (this.zConfig.values != null) {
+         const _values = this.zConfig.values
          if (typeof _values === 'function') {
-            if (!this.root.ready) return []
+            if (!this.zRoot.zReady) return []
             return _values(this)
          }
          return _values
       }
 
-      if (this.config.options != null) {
+      if (this.zConfig.options != null) {
          const _options = this.options
          return _options.map((o) => o.value)
       }
 
-      if (this.config.choices != null && this.config.getValueFromId != null) {
+      if (this.zConfig.choices != null && this.zConfig.getValueFromId != null) {
          const _choices = this.possibleKeys
          return _choices.map(this.getValueFromId).filter((x) => x != null)
       }
@@ -375,7 +415,7 @@ export class Field_selectOne<
 
    // 📌 MOCK ------------------------------------------------------------|
    /** randomly pick one of the options */
-   randomize(): void {
+   override zRandomize(): void {
       const choices = this.possibleKeys
       if (choices.length === 0) return
       const idx = Math.floor(Math.random() * choices.length)
@@ -385,20 +425,20 @@ export class Field_selectOne<
    // #region CHILDREN
 
    // 📌 SERIAL -----------------------------------------------------------------|
-   protected setOwnSerial(next: Field_selectOne_serial<KEY>): void {
-      this.assignNewSerial(next)
+   protected zSetOwnSerial(next: Field_selectOne_serial<KEY>): void {
+      this.zAssignNewSerial(next)
 
       if (
-         this.serial.val === undefined && //
+         this.zSerial.val === undefined && //
          this.defaultKey !== undefined
       ) {
-         this.patchSerial((draft) => void (draft.val = this.defaultKey))
+         this.zPatchSerial((draft) => void (draft.val = this.defaultKey))
       }
    }
 
    /** return true if the value is equal to the given id */
    is(value: VALUE): boolean {
-      return this.config.getIdFromValue(value) === this.selectedId
+      return this.zConfig.getIdFromValue(value) === this.selectedId
    }
 
    // #region VALUE
@@ -417,55 +457,82 @@ export class Field_selectOne<
     * 🔴 TODO: add test
     */
    get hasDefaultKey(): boolean {
-      return 'default' in this.config
+      return 'default' in this.zConfig
    }
 
    /** proxy to this.config.default */
    get defaultKey(): KEY | undefined {
-      return this.config.default
+      return this.zConfig.default
    }
 
    // #region VALUE
-   get value(): CanThrow<VALUE> {
-      return this.value_or_fail
+
+   // KEY extends SelectKey
+   // see: src/cushy-forms/src/csuite/fields/selectOne/SelectOneKey.ts,
+   private static isProbablyValidKey<KEY>(val: unknown): val is KEY {
+      if (val === null) return true
+      if (typeof val === 'string') return true
+      if (typeof val === 'number') return true
+      if (typeof val === 'boolean') return true
+      // TODO: better checks;
+      // TODO: use statically known list of keys when present to quickly check if it's a valid key.
+      return false
    }
 
-   set value(next: Field_selectOne_value<VALUE>) {
-      this.selectedId = this.config.getIdFromValue(next)
+   override zSet(valOrKey: this['{setValue}']): this {
+      if (typeof valOrKey === 'object' && valOrKey != null && '$$KEY' in valOrKey) this.selectedId = valOrKey.$$KEY as KEY // prettier-ignore
+      if (typeof valOrKey === 'object' && valOrKey != null && '$$VALUE' in valOrKey) this.zValue = valOrKey.$$VALUE as VALUE // prettier-ignore
+      if (Field_selectOne.isProbablyValidKey<KEY>(valOrKey)) this.selectedId = valOrKey
+      else this.zValue = valOrKey as VALUE
+      return this
+   }
+
+   override zGetSetValue(): this['{setValue}'] | undefined {
+      // console.log(`[💀 getSetValue] `, this.path)
+      return this.selectedId
+   }
+
+   set zValue(next: Field_selectOne_value<VALUE>) {
+      this.selectedId = this.zConfig.getIdFromValue(next)
    }
 
    /** different from reset; doesn't take default into account */
    unset(): void {
-      this.patchInTransaction((draft) => void (draft.val = undefined))
+      this.zPatchInTransaction((draft) => void (draft.val = undefined))
    }
 
-   get value_or_fail(): CanThrow<VALUE> {
+   get zValue(): CanThrow<VALUE> {
       return this._getValueOrThrow(this.selectedId)
    }
 
    /** zero value may not exists */
-   get value_or_zero(): CanThrow<VALUE> {
+   get zValueOrZero(): CanThrow<VALUE> {
       return this._getValueOrThrow(this.selectedId ?? this.firstPossibleKey)
    }
 
-   get value_unchecked(): Field_selectOne_unchecked<VALUE> {
+   get zValueUnchecked(): Field_selectOne_unchecked<VALUE> {
       if (this.selectedId === undefined) return undefined
       const value = this.getValueFromId(this.selectedId)
       if (value === undefined) return undefined
       return value
    }
 
+   override zIsValueEqual(other: Field): boolean {
+      if (!(other instanceof Field_selectOne)) return false
+      return this.selectedId === other.selectedId
+   }
+
+   public static readonly patchedSerialPaths: readonly string[] = Object.freeze(['val'])
+
    private _getValueOrThrow(key: KEY | undefined): CanThrow<VALUE> {
-      if (key === undefined)
-         throw new Error(`Field_selectOne._getValueOrThrow (${this.pathExt}): no key available`)
+      if (key === undefined) throw new Error(`Field_selectOne._getValueOrThrow (${this.zPathExt}): no key available`) // prettier-ignore
       const value = this.getValueFromId(key)
-      if (value === undefined)
-         throw new Error(`Field_selectOne._getValueOrThrow (${this.pathExt}): value not found for first key`)
+      if (value === undefined) throw new Error(`Field_selectOne._getValueOrThrow (${this.zPathExt}): value not found for first key: ${key}`) // prettier-ignore
       return value as VALUE
    }
 
    // #region SELECTED OPTION
-   get selectedOption_unchecked(): SelectOption<VALUE, KEY> | undefined {
+   @computed get selectedOption_unchecked(): SelectOption<VALUE, KEY> | undefined {
       const key = this.selectedId
       if (key === undefined) return
 
@@ -475,7 +542,7 @@ export class Field_selectOne<
       return opt
    }
 
-   get selectedOption(): SelectOption<VALUE, KEY> {
+   @computed get selectedOption(): SelectOption<VALUE, KEY> {
       const key = this.selectedId
       if (key == null) throw new Error('Field_selectOne.selectedOption: no value selected')
 
@@ -486,49 +553,16 @@ export class Field_selectOne<
    }
 
    get selectedId(): KEY | undefined {
-      return this.serial.val // || this.default // 🔴 idk, probably bad to have default here
+      return this.zSerial.val
    }
 
    set selectedId(nextId: KEY | undefined) {
-      if (this.serial.val === nextId) return
+      if (this.zSerial.val === nextId) return
 
-      this.runInTransaction(() => {
-         this.patchSerial((draft) => void (draft.val = nextId))
-
-         // 💬 2024-07-08 rvion:
-         // | when setting a value with equal id, we may be actually changing the SelectOption
-         // | (cached name could be different, etc.)
-         // | since it's a bit complicated, let's not care today. if this cause a bug, let's improve
-         // | that later
-
-         // ⏸️ const nextHasSameID = this.value.id === next.id
-         // ⏸️ if (!nextHasSameID) this.applyValueUpdateEffects()
-         // ⏸️ else this.applySerialUpdateEffects()
+      this.zRunInTransaction(() => {
+         this.zPatchSerial((draft) => void (draft.val = nextId))
       })
    }
-
-   // 💬 2024-09-03 rvion:
-   // | defaultValue should NEVER be usefull anymore
-   // | when setOwnSerial is called with a defaultKey,
-   // | the serial should already have the key set, and the default getValue(key)
-   // | will properly retrieve the value
-   //
-   // ❌ get defaultValue(): VALUE | undefined {
-   // ❌     if (!this.hasDefaultKey) return undefined
-   // ❌     // 💬 2024-09-03 rvion:
-   // ❌     // | technically, some select could allow null as KEY,
-   // ❌     // | so testing against (== null) is just wrong.
-   // ❌     // | that's why we use this.hasDefaultKey instead, then assume
-   // ❌     // | that the defaultKey has type KEY, even if it's null in the
-   // ❌     // | live below         VVVVVVVVVVVVVVVVVVVVVV
-   // ❌     const defaultKey: KEY = this.defaultKey as KEY
-   // ❌     const value = this.getValueFromId(defaultKey)
-   // ❌     return value ?? undefined
-   // ❌ }
-
-   // set value(next: Field_selectOne_value<VALUE>) {
-   //     // 🔴 can we do without this?
-   // }
 
    /**
     * 💬 2024-09-03 domi:
@@ -540,18 +574,22 @@ export class Field_selectOne<
     * | see also "extra"
     */
    getValueFromId = (id: KEY): VALUE | undefined => {
-      return this.config.getValueFromId(id, this)
+      return this.zConfig.getValueFromId(id, this)
+   }
+
+   get pathToValueInRootSerial(): string {
+      return `${this.zGetOwnSerialPathFromRoot()}.val`
    }
 
    // 💬 2024-08-21 rvion: (for @domi)
    // | I dislike this `getOptionFromId`.
    // | it is redundant / slow / sometimes unnecessary
    // | I'd rather just add the missing mapper for icon, and we would have everything.
-   getOptionFromId = (id: KEY): Maybe<SelectOption<VALUE, KEY>> => this.config.getOptionFromId(id, this)
+   getOptionFromId = (id: KEY): Maybe<SelectOption<VALUE, KEY>> => this.zConfig.getOptionFromId(id, this)
 
    // 🔶 do not compare queries
-   get isDirtyFromSnapshot_UNSAFE(): boolean {
-      const { snapshot, ...currentSerial } = this.serial
+   override get zIsDirtyFromSnapshot_UNSAFE(): boolean {
+      const { snapshot, ...currentSerial } = this.zSerial
       if (snapshot == null) return false
       return stableStringify(snapshot.val) !== stableStringify(currentSerial.val)
    }
@@ -559,3 +597,4 @@ export class Field_selectOne<
 
 // DI
 registerFieldClass('selectOne', Field_selectOne)
+Field_selectOne satisfies FieldConstructor<Field_selectOne<any, any>>

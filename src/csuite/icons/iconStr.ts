@@ -1,8 +1,9 @@
-import { allIcons, type IconName } from './icons'
+import { type IconName } from './IconName'
+import { allIcons_, uncastIcon } from './icons'
 
 export const getIconAsDataSVG = (iconName: Maybe<IconName>): string | undefined => {
    if (!iconName) return undefined
-   const iconPath = allIcons[iconName]
+   const iconPath = allIcons_[uncastIcon(iconName)]
    return [
       `data:image/svg+xml,`,
       `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">`,

@@ -2,10 +2,10 @@ import type { RevealCloseEvent } from './RevealCloseEvent'
 import type { RevealPlacement } from './RevealPlacement'
 import type { RevealPresetName } from './RevealPresets'
 import type { RevealState } from './RevealState'
-import type { RevealStateLazy } from './RevealStateLazy'
+import type { RevealId, RevealStateLazy } from './RevealStateLazy'
 import type { RevealContentProps, RevealShellProps } from './shells/ShellProps'
 import type React from 'react'
-import type { FC } from 'react'
+import type { FC, SyntheticEvent } from 'react'
 
 // prettier-ignore
 export type KnownShells =
@@ -26,7 +26,11 @@ export type RevealShowTriggersExt = RevealShowTriggers | RevealShowTrigger
 export type RevealShowTriggers = {
    [key in RevealShowTrigger]?:
       | boolean
-      | ((reveal: RevealState, Reveal: typeof RevealState) => boolean | undefined)
+      | ((
+           reveal: RevealState,
+           Reveal: typeof RevealState,
+           event: Maybe<SyntheticEvent>,
+        ) => boolean | undefined)
 }
 export type RevealShowTrigger =
    | 'anchorFocus'
@@ -39,7 +43,16 @@ export type RevealShowTrigger =
 // ❓ |  () => ...
 // ❓ |  { chick: ..., hover: ..., focus: ... }
 
-export type RevealHideTriggers = { [key in RevealHideTrigger]?: boolean }
+export type RevealHideTriggers = {
+   [key in RevealHideTrigger]?:
+      | boolean
+      | ((
+           reveal: RevealState,
+           Reveal: typeof RevealState,
+           event: Maybe<SyntheticEvent>,
+        ) => boolean | undefined)
+}
+
 export type RevealHideTrigger =
    | 'mouseOutside' //
    | 'escapeKey'
@@ -84,13 +97,15 @@ export type RevealOpenReason =
    | 'default-visible'
 
 export type RevealProps = {
+   ref?: React.Ref<RevealStateLazy>
+   id?: RevealId
+
    /** used to identify reveal when src/csuite/reveal/DEBUG_REVEAL.tsx set to true */
    debugName?: string
 
    /** so you can check if the reveal is part of the same semantic group */
    revealGroup?: string
 
-   /** @since 2024-07-23 */
    relativeTo?: `#${string}` | 'mouse' | 'anchor'
 
    // placement
@@ -103,14 +118,14 @@ export type RevealProps = {
    enterable?: boolean
 
    // components / slots -------------------------------------------------------------
-   /** @since 2024-07-23 */
    shell?: FC<RevealShellProps> | KnownShells
    content: FC<RevealContentProps> // | null
+   contentDeps?: any[] // | null
    children?: React.ReactNode //, React.ReactNode]
    title?: React.ReactNode // only for popup
 
    // callbacks if we need to add side effects after reveal/hide
-   onAnchorKeyDown?: (ev: React.KeyboardEvent) => void
+   onAnchorKeyDown?: (ev: React.KeyboardEvent, reveal: RevealState) => void
    onRevealed?: (rst: RevealState) => void
    onBeforeHide?: (ev: RevealCloseEvent) => void
    onHidden?: (reason: RevealHideReason) => void
@@ -121,6 +136,8 @@ export type RevealProps = {
 
    hideTriggers?: RevealHideTriggers
    showTriggers?: RevealShowTriggers
+
+   focusOnOpen?: boolean | (() => boolean)
 
    // delays ------------------------------------------------------------------
    hideDelay?: number /** only for hover */
@@ -137,7 +154,7 @@ export type RevealProps = {
    // avoid extra div ------------------------------------------------------------------
    UNSAFE_cloned?: boolean
 
-   sharedAnchorRef?: React.RefObject<HTMLDivElement>
+   sharedAnchorRef?: React.RefObject<HTMLDivElement | null>
 
    // #region backdrop stuff
    backdropColor?: string

@@ -1,7 +1,7 @@
 import type { LiteGraphJSON } from '../../comfyui/litegraph/LiteGraphJSON'
 
 import { toJS } from 'mobx'
-import { observer } from 'mobx-react-lite'
+
 import { nanoid } from 'nanoid'
 import { useLayoutEffect } from 'react'
 
@@ -16,7 +16,7 @@ export const PanelComfy = new Panel({
    widget: (): React.FC<PanelComfyUIProps> => PanelComfyUI,
    header: (p): PanelHeader => ({ title: 'ComfyUI' }),
    def: (): PanelComfyUIProps => ({}),
-   icon: 'mdiCabinAFrame',
+   icon: IKONS.mdiCabinAFrame,
 })
 
 export type PanelComfyUIProps = {
@@ -26,7 +26,7 @@ export type PanelComfyUIProps = {
    hostID?: HostID
 }
 
-export const PanelComfyUI = observer(function PanelComfyUI_(p: PanelComfyUIProps) {
+export const PanelComfyUI = obs(function PanelComfyUI_(p: PanelComfyUIProps) {
    const host = cushy.db.host.get(p.hostID) ?? cushy.mainHost
    const url = host.getServerHostHTTP()
    const conf = usePanel().usePersistentModel('uist', (ui) =>
@@ -83,7 +83,7 @@ export const PanelComfyUI = observer(function PanelComfyUI_(p: PanelComfyUIProps
       void loadFn()
    }, [cushy.comfyUIIframeRef.current])
 
-   const finalURL = conf.value.hash ? `${url}?hash=${conf.value.hash}` : url
+   const finalURL = conf.zValue.hash ? `${url}?hash=${conf.zValue.hash}` : url
    return (
       <PanelUI>
          {/* <div className='absolute top-0 right-0'>
@@ -94,10 +94,10 @@ export const PanelComfyUI = observer(function PanelComfyUI_(p: PanelComfyUIProps
          <PanelUI.Header>
             <Button
                onClick={() => {
-                  conf.value.hash = nanoid()
+                  conf.zValue.hash = nanoid()
                }}
             >
-               force-refresh {conf.value.hash ? `${conf.value.hash})` : null}
+               force-refresh {conf.zValue.hash ? `${conf.zValue.hash})` : null}
             </Button>
             {url}
          </PanelUI.Header>

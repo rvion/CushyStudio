@@ -1,7 +1,7 @@
 import type { MediaImageL } from '../../models/MediaImage'
 
 import { runInAction } from 'mobx'
-import { observer } from 'mobx-react-lite'
+
 import { useLayoutEffect, useMemo } from 'react'
 
 import { Button } from '../../csuite/button/Button'
@@ -12,7 +12,7 @@ import { MinipaintState } from './MinipaintState'
 
 export type PanelMinipaintProps = { imgID?: MediaImageID }
 
-export const PanelMinipaintUI = observer(function PanelMinipaintUI_(p: PanelMinipaintProps) {
+export const PanelMinipaintUI = obs(function PanelMinipaintUI_(p: PanelMinipaintProps) {
    const uist = useMemo(() => new MinipaintState(cushy), [])
 
    // load image once the widget is ready
@@ -29,7 +29,7 @@ export const PanelMinipaintUI = observer(function PanelMinipaintUI_(p: PanelMini
                <Button
                   tw='join-item'
                   size='sm'
-                  icon='mdiContentSave'
+                  icon={IKONS.mdiContentSave}
                   look='primary'
                   base={{ hue: knownOKLCHHues.success }}
                   onClick={() => runInAction(() => uist.saveImage())}
@@ -39,7 +39,7 @@ export const PanelMinipaintUI = observer(function PanelMinipaintUI_(p: PanelMini
                <Button
                   // active={Boolean(uist.autoSave)}
                   // tw={['self-start', uist.autoSave ? 'btn-active' : null]}
-                  icon='mdiRepeat'
+                  icon={IKONS.mdiRepeat}
                   loading={Boolean(uist.autoSave)}
                   onClick={() => uist.toggleAutoSave()}
                >

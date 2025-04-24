@@ -1,26 +1,25 @@
 import type { IWidgetListLike } from './IWidgetListLike'
 
-import { observer } from 'mobx-react-lite'
-
 import { Button } from '../../button/Button'
 
-export const ListButtonAddUI = observer(function ListButtonAddUI_(p: { field: IWidgetListLike }) {
+export const ListButtonAddUI = obs(function ListButtonAddUI_(p: { field: IWidgetListLike }) {
    const field = p.field
-   const max: number | undefined = field.config.max
+   const max: number | undefined = field.zConfig.max
    const canAdd = max != null ? field.items.length < max : true
    return (
       <Button
          size='input'
          // borderless
+         subtle
          disabled={!canAdd}
          square
-         icon='mdiPlus'
+         icon={IKONS.mdiPlus}
          onClick={(ev) => {
-            field.touch()
+            field.zTouch()
             if (!canAdd) return
             ev.stopPropagation()
             field.addItem()
-            if (field.isCollapsed) field.setCollapsed(false)
+            if (field.zIsCollapsed) field.zSetCollapsed(false)
          }}
       />
    )

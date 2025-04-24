@@ -1,12 +1,12 @@
-import type { BaseSchema } from '../csuite'
+import type { CSchema } from '../csuite'
 import type { Field } from '../csuite/model/Field'
 import type { Json } from '../csuite/types/Json'
 import type { Builder } from '../CUSHY'
+import type * as FL from '../flexlayout-react'
 import type { CushyLayoutManager } from './Layout'
 import type { Panel } from './Panel'
 import type { PanelPersistedJSON } from './PanelPersistedJSON'
 import type { PanelName } from './PANELS'
-import type * as FL from 'flexlayout-react'
 
 import { makeObservable } from 'mobx'
 import { useMemo } from 'react'
@@ -161,12 +161,13 @@ export class PanelState<PROPS extends object = any> {
    }
 
    documents: Map<string, Field> = new Map<string, Field>()
-   usePersistentModel = <SCHEMA extends BaseSchema>(
+
+   usePersistentModel = <SCHEMA extends CSchema>(
       //
       uid: string,
       init: ((ui: Builder) => SCHEMA) | SCHEMA,
       opts?: { log?: boolean },
-   ): SCHEMA['$Field'] => {
+   ): SCHEMA['{field}'] => {
       return useMemoAction(() => {
          let schema: SCHEMA = typeof init === 'function' ? init(cushy.forms.builder) : init
          const log = opts?.log ? logForPersistentModel : logVoid
@@ -174,8 +175,8 @@ export class PanelState<PROPS extends object = any> {
 
          const prevEntity = this.documents.get(uid)
          if (prevEntity != null) {
-            const prevHash = prevEntity.schema.codegenValueType()
-            const nextHash = schema.codegenValueType()
+            const prevHash = prevEntity.zSchema.codeForTypescriptValue()
+            const nextHash = schema.codeForTypescriptValue()
             if (prevHash === nextHash) {
                log(`    | 🟢 prev entity found; schema is identical`)
                return prevEntity
@@ -191,7 +192,7 @@ export class PanelState<PROPS extends object = any> {
          // get or create panel store to hold/persist the entity
          const storeName = `entity-${uid}`
          let store: PanelPersistentStore<any> = this.stores.get(storeName) as PanelPersistentStore<
-            SCHEMA['$Serial'] | false
+            SCHEMA['{serial}'] | false
          >
          if (store == null) {
             log(`    | creating store (${storeName})`)
@@ -202,16 +203,16 @@ export class PanelState<PROPS extends object = any> {
          // clone the schema to inject a callback to persist the entity via the panel store
          schema = schema.withConfig({
             onSerialChange: (self) => {
-               store.saveData(self.serial)
+               store.saveData(self.zSerial)
             },
          })
 
          const prevSerial = store.data
          const entity = schema.create(prevSerial)
          this.documents.set(uid, entity)
-         log(`    | ENTITY for (${uid}) ID IS`, entity.id, `from store ${store.uid}`)
+         log(`    | ENTITY for (${uid}) ID IS`, entity.zUid, `from store ${store.uid}`)
          return entity
-      })
+      }, [uid])
    }
 }
 

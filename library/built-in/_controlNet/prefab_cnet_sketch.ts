@@ -4,18 +4,18 @@ import { cnet_ui_common } from './cnet_ui_common'
 
 // 🅿️ Sketch FORM ===================================================
 
-export type UI_subform_Sketch = X.XGroup<{
-   strength: X.XNumber
-   advanced: X.XGroup<{
-      startAtStepPercent: X.XNumber
-      endAtStepPercent: X.XNumber
-      crop: X.XEnum<'LatentUpscale.crop'>
-      upscale_method: X.XEnum<'ImageScale.upscale_method'>
+export type UI_subform_Sketch = Z.Group<{
+   strength: Z.Number
+   advanced: Z.Group<{
+      startAtStepPercent: Z.Number
+      endAtStepPercent: Z.Number
+      crop: Z.Enum<'LatentUpscale.crop'>
+      upscale_method: Z.Enum<'ImageScale.upscale_method'>
    }>
-   cnet_model_name: X.XEnum<'ControlNetLoader.control_net_name'>
+   cnet_model_name: Z.Enum<'ControlNetLoader.control_net_name'>
 }>
 export function ui_subform_Sketch(): UI_subform_Sketch {
-   const form = getCurrentForm()
+   const form = getBuilder()
    return form
       .group({
          label: 'Sketch',

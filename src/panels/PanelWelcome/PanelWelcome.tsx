@@ -8,6 +8,6 @@ export const PanelWelcome = new Panel({
    widget: (): React.FC<NO_PROPS> => PanelWelcomeUI,
    header: (p): PanelHeader => ({ title: 'Welcome' }),
    def: (): NO_PROPS => ({}),
-   icon: 'mdiHome',
+   icon: IKONS.mdiHome,
    category: 'help',
 })

@@ -9,22 +9,27 @@ export class TreeEntry_Field implements ITreeEntry {
       makeAutoObservable(this)
    }
 
-   get widget(): Field {
+   get widget() {
       return this.widgetWithKey.widget
    }
 
    /** config label, or parent key */
    get label(): string {
-      if (this.widget.config.label) return this.widget.config.label
+      if (
+         this.widget.zConfig.label != null &&
+         this.widget.zConfig.label !== '' &&
+         this.widget.zConfig.label !== false
+      )
+         return this.widget.zConfig.label
       return this.widgetWithKey.key
    }
 
    get name(): string {
-      return `${this.label} = ${this.widget.id /* 🔴 */}`
+      return `${this.label} = ${this.widget.zUid /* 🔴 */}`
    }
 
    get isFolder(): boolean {
-      return this.widget.childrenAll.length > 0
+      return this.widget.zChildrenAll.length > 0
    }
 
    /** packed with a bunch of sane default for now; we'll see if this is ever */
@@ -61,7 +66,7 @@ export class TreeEntry_Field implements ITreeEntry {
    //     // return <span className='material-symbols-outlined'>Draft</span>
    // }
 
-   onPrimaryAction = (n: TreeNode): void => {
+   onPrimaryAction = (n: TreeNode) => {
       // if (this.app == null) return
       // if (!n.isOpen) n.open()
       // if (this.app.drafts.length > 0) return
@@ -69,7 +74,7 @@ export class TreeEntry_Field implements ITreeEntry {
    }
 
    children = (): ITreeElement<any>[] => {
-      return this.widget.subFieldsWithKeys.map((w) => w.field.asTreeElement(w.key))
+      return this.widget.zSubFieldsWithKeys.map((w) => w.field.zAsTreeElement(w.key))
    }
 
    // extra = () => (

@@ -1,5 +1,3 @@
-import { observer } from 'mobx-react-lite'
-
 import { ShellInputOnly } from '../../../csuite-cushy/shells/ShellInputOnly'
 import { Button } from '../../../csuite/button/Button'
 import { mkPlacement } from '../../../csuite/fields/core-prefabs/ShapeSchema'
@@ -13,16 +11,16 @@ import { UCDraftImagePickerHorizontalUI } from './UCDraftImagePickerHorizontalUI
 import { UCMaskMenuUI } from './UCMaskMenuUI'
 import { UCMenuLayerEntryUI } from './UCMenuLayerEntryUI'
 
-export const UCMenuUI = observer(function UCMenuUI_(p: {}) {
+export const UCMenuUI = obs(function UCMenuUI_(p: {}) {
    const uc1 = useUnifiedCanvas()
    const ucv2 = useUCV2()
-   const layers = ucv2.Layers
-   const masks = ucv2.Masks.items
+   const layers = ucv2.zFields.layers
+   const masks = ucv2.zFields.masks.items
 
    const [dropStyle2, dropRef2] = useImageDrop(cushy, (img) => {
       // TODO: move as method once setup with custom classes finished
       // canvas.addMask(img)
-      ucv2.Masks.push({
+      ucv2.zFields.masks.push({
          image: img,
          visible: true,
          name: 'masky-mac-mask-face',
@@ -37,21 +35,21 @@ export const UCMenuUI = observer(function UCMenuUI_(p: {}) {
                <div tw='flex justify-between'>
                   <span>Layers</span>
                   <Button
-                     icon='mdiPlus'
+                     icon={IKONS.mdiPlus}
                      borderless
                      subtle
                      onClick={() => {
                         const lastActiveDraft = cushy.db.draft.last()
                         if (lastActiveDraft == null) return toastError('No active draft')
-                        ucv2.Layers.addItem({
-                           value: {
+                        ucv2.layers.addItem({
+                           valueExt: {
                               name: 'new layer',
                               placement: mkPlacement({ x: 0, y: 0 }),
                               visible: true,
                               content: {
                                  aiGeneration: {
                                     draftId: { id: lastActiveDraft?.id, label: lastActiveDraft?.name },
-                                    image: undefined,
+                                    image: null,
                                     masks: [],
                                  },
                               },
@@ -66,7 +64,7 @@ export const UCMenuUI = observer(function UCMenuUI_(p: {}) {
                >
                   <div /* SortableList */ className='list' tw='flex flex-col gap-2'>
                      {layers.items.map((layer, i) => {
-                        return layer.Content.match({
+                        return layer.content.matchExhaustive({
                            image: () => (
                               <UCMenuLayerEntryUI //
                                  active={layer === uc1.activeLayer}
@@ -82,26 +80,26 @@ export const UCMenuUI = observer(function UCMenuUI_(p: {}) {
                                  index={i}
                                  onClick={() => {
                                     uc1.activeLayer = layer
-                                    cushy.layout.open('Draft', { draftID: x.DraftId.value.id })
+                                    cushy.layout.open('Draft', { draftID: x.draftId.zValue.id })
                                  }}
                                  body={
-                                    x.DraftId.value_unchecked?.id && (
+                                    x.draftId.zValueUnchecked?.id && (
                                        <UCDraftImagePickerHorizontalUI
                                           size={32}
-                                          onCLick={(img) => (x.Image.value = img)}
-                                          draftID={x.DraftId.value_unchecked.id}
+                                          onCLick={(img) => (x.image.zValue = img)}
+                                          draftID={x.draftId.zValueUnchecked.id}
                                        />
                                     )
                                  }
                                  children={
                                     <>
                                        <div tw='flex gap-0.5'>
-                                          <x.DraftId.UI Shell={ShellInputOnly} className='flex-1' />
-                                          {/* <Button icon='mdiCursorMove' /> */}
+                                          <x.draftId.UI Shell={ShellInputOnly} className='flex-1' />
+                                          {/* <Button icon={IKONS.mdiCursorMove} /> */}
                                           <Button
-                                             icon='mdiPlay'
+                                             icon={IKONS.mdiPlay}
                                              onClick={() => {
-                                                const draft = cushy.db.draft.get(x.DraftId.value.id)
+                                                const draft = cushy.db.draft.get(x.draftId.zValue.id)
                                                 if (!draft) return toastError('Draft not found')
                                                 draft.start({
                                                    /* context */
@@ -109,13 +107,13 @@ export const UCMenuUI = observer(function UCMenuUI_(p: {}) {
                                              }}
                                           />
                                           <Button
-                                             icon='mdiContentCopy'
+                                             icon={IKONS.mdiContentCopy}
                                              onClick={() => {
                                                 const newLayer = layers.duplicateItemAtIndex(i)
                                                 if (newLayer == null)
                                                    return toastError('Failed to duplicate layer')
-                                                newLayer.Content.matchAll({
-                                                   aiGeneration: (x) => x.Image.setActive(false),
+                                                newLayer.content.matchAll({
+                                                   aiGeneration: (x) => x.image.setActive(false),
                                                 })
                                                 // should create a copy of that layer, below, without any image selected
                                              }}
@@ -134,14 +132,14 @@ export const UCMenuUI = observer(function UCMenuUI_(p: {}) {
                <div tw='flex justify-between'>
                   <span>Masks</span>
                   <Button
-                     icon='mdiPlus'
+                     icon={IKONS.mdiPlus}
                      borderless
                      subtle
                      onClick={() => {
                         const lastActiveDraft = cushy.db.draft.last()
                         if (lastActiveDraft == null) return toastError('No active draft')
-                        ucv2.Masks.addItem({
-                           value: {
+                        ucv2.masks.addItem({
+                           valueExt: {
                               name: 'new layer',
                               placement: mkPlacement({ x: 0, y: 0 }),
                               visible: true,

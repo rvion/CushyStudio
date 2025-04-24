@@ -1,100 +1,200 @@
-import type { BaseSchema } from '../../model/BaseSchema'
-import type { FieldConfig } from '../../model/FieldConfig'
-import type { FieldSerial } from '../../model/FieldSerial'
+import type { CSchema } from '../../model/CSchema'
+import type { CodegenOpts, FieldConstructor, SchemaDictWithPaths } from '../../model/FieldConstructor'
+import type { Patch } from '../../model/Patch'
 import type { Repository } from '../../model/Repository'
 import type { Problem, Problem_Ext } from '../../model/Validation'
 
+import { observable } from 'mobx'
+
 import { Field, type KeyedField } from '../../model/Field'
-import { registerFieldClass } from '../WidgetUI.DI'
+import { isProbablySomeFieldSerial, registerFieldClass } from '../WidgetUI.DI'
 
 // #region Config
-export type Field_optional_config<T extends BaseSchema = BaseSchema> = FieldConfig<
-   {
-      /** if true, child field will be instanciated by default */
-      startActive?: boolean
-      /** child schema; schema you want  to make optional */
-      schema: T
-   },
-   Field_optional_types<T>
->
+export type Field_optional_config<T extends CSchema = CSchema> = Field_optional<T>['{config}']
+type Field_optional_ownConfig<T extends CSchema = CSchema> = {
+   /**
+    * @recommended
+    * On most codebase, we except the schema builder methods to always pick a default.
+    * not having default will possibly yield unset fields.
+    *
+    * On field creation without serial:
+    * - when either `true` or `false`, field will always be initialized
+    * - when undefined
+    *    - reseting the field will set the child to null
+    *    - accessing the child will not crash
+    */
+   startActive?: boolean
+
+   /** child schema; schema you want  to make optional */
+   schema: T
+}
 
 // #region Serial
-export type Field_optional_serial<T extends BaseSchema = BaseSchema> = FieldSerial<{
+export type Field_optional_serial<T extends CSchema = CSchema> = Field_optional<T>['{serial}']
+type Field_optional_ownSerial<T extends CSchema = CSchema> = Field_optional_ownSerialV2<T>
+
+// ------------------------------------------------------------------------
+// before 2025-02-24, the optional serial was like that:
+// it was bad because people doing postgres queries on serial had to use
+// trickery like that:
+type Field_optional_ownSerialV1<T extends CSchema = CSchema> = {
    $: 'optional'
-   child?: Maybe<T['$Serial']>
+   child?: Maybe<T['{serial}']>
    active?: boolean
-}>
+}
+// ------------------------------------------------------------------------
+// adter 2025-02-24, the optional serial is like that:
+type Field_optional_ownSerialV2<T extends CSchema = CSchema> = {
+   $: 'optional'
+   y?: T['{serial}'] | undefined // when active
+   n?: T['{serial}'] | undefined // when not active
+}
+// ------------------------------------------------------------------------
 
 // #region Value
-export type Field_optional_value<T extends BaseSchema = BaseSchema> = T['$Value'] | undefined
+export type Field_optional_value<T extends CSchema = CSchema> =
+   // Value from the child field
+   | T['{value}']
+   // Set value (inactive)
+   | null
+export type Field_optional_SetValue<T extends CSchema = CSchema> = T['{setValue}'] | undefined | null
 
 // #region Types
-export type Field_optional_types<T extends BaseSchema = BaseSchema> = {
-   $Type: 'optional'
-   $Config: Field_optional_config<T>
-   $Serial: Field_optional_serial<T>
-   $Value: Field_optional_value<T>
-   $Unchecked: Field_optional_value<T>
-   $Field: Field_optional<T>
-   $Child: T
-   $Reflect: Field_optional_types<T>
+export interface Field_optional<T extends CSchema = CSchema> {
+   '{type}': 'optional'
+   '{ownConfig}': Field_optional_ownConfig<T>
+   '{ownSerial}': Field_optional_ownSerial<T>
+   '{value}': Field_optional_value<T>
+   '{setValue}': Field_optional_SetValue<T>
+   '{unchecked}': Field_optional_value<T>
+   '{child}': T['{field}']
+   '{opts}': unknown
+   '{ownPatch}': Patch<'optional'>
+}
+
+export function isOptionalSerialV1(serial: object): serial is Field_optional_ownSerialV1 {
+   if (!isProbablySomeFieldSerial(serial)) return false
+   if (serial.$ !== 'optional') return false
+   if (!('active' in serial)) return false
+   if (!('child' in serial)) return false
+   return true
+}
+
+export function isOptionalSerialV2(serial: object): serial is Field_optional_ownSerialV2 {
+   if (!isProbablySomeFieldSerial(serial)) return false
+   if (serial.$ !== 'optional') return false
+   if (!('y' in serial) && !('n' in serial)) return false
+   return true
 }
 
 // #region State
-export class Field_optional<out T extends BaseSchema = BaseSchema> extends Field<Field_optional_types<T>> {
+export class Field_optional<out T extends CSchema = CSchema> extends Field {
    // #region Type
    static readonly type: 'optional' = 'optional'
-   static readonly emptySerial: Field_optional_serial = { $: 'optional' }
-   static codegenValueType(config: Field_optional_config): string {
-      return `Maybe<${config.schema.codegenValueType()}>`
+   static override migrateSerial(prev: object): Maybe<Field_optional['{serial}']> {
+      // for now, code here is not executed
+      if (isOptionalSerialV1(prev)) {
+         const { $, active, child, ...rest } = prev
+
+         const serial: Field_optional['{serial}'] = { $: 'optional', ...rest }
+         const child_ = child ?? undefined
+         if (active) serial.y = child_
+         else serial.n = child_
+         return serial
+         // return {
+         //    $: 'optional',
+         //    y: active ? (child ?? undefined) : undefined,
+         //    n: active ? undefined : (child ?? undefined),
+         //    ...rest,
+         // }
+      }
    }
-   static migrateSerial(): undefined {}
+
+   static codeForTypescriptValue = (config: Field_optional_config, opts: CodegenOpts): string => {
+      const childSchema = config.schema
+      const childCodeRepr = childSchema.codeForTypescriptValue(opts)
+      return `Maybe<${childCodeRepr}>`
+   }
+   static override getChildren(config: any): SchemaDictWithPaths {
+      return { child: { schema: config.schema, serialPath: 'y' } }
+   }
+   static override getTravels(config: any): SchemaDictWithPaths {
+      const childSchema = config.schema
+      const childRes = childSchema.fieldConstructor.getTravels(childSchema.config)
+      const childEntries = Object.entries(childRes) as [
+         string,
+         { schema: CSchema; serialPath: string | null },
+      ][]
+      const OUT: SchemaDictWithPaths = {}
+      for (const [k, v] of childEntries) {
+         OUT[k] = { schema: v.schema, serialPath: `y.${v.serialPath}` }
+      }
+      return OUT
+   }
+   static unsetSerial: Field_optional['{serial}'] = { $: 'optional' }
+   static generateSerial(
+      setValue: Maybe<Field_optional<CSchema>['{setValue}']>,
+      config: Field_optional<CSchema>['{config}'],
+   ): Field_optional<CSchema>['{serial}'] {
+      // use default
+      if (setValue === undefined) {
+         const startActive = config.startActive
+         if (startActive == null) return this.unsetSerial
+
+         const childSerial = config.schema.generateSerial(undefined)
+         if (startActive) return { $: 'optional', y: childSerial }
+         else return { $: 'optional', n: childSerial }
+      }
+
+      // user want to explicity generate a serial fo
+      // r a null value
+      if (setValue == null) {
+         return { $: 'optional', n: config.schema.generateSerial(undefined) }
+      }
+
+      // user want to generate a serial for a non-null value
+      return { $: 'optional', y: config.schema.generateSerial(setValue) }
+   }
 
    // #region Ctor
    constructor(
       repo: Repository,
       root: Field | null,
       parent: Field | null,
-      schema: BaseSchema<Field_optional<T>>,
+      schema: CSchema<Field_optional<T>>,
       initialMountKey: string,
       serial?: Field_optional_serial<T>,
    ) {
       super(repo, root, parent, schema, initialMountKey, serial)
-      this.init(serial, {
-         DefaultHeaderUI: false,
-         DefaultBodyUI: false,
-      })
+      this.init(serial)
    }
 
    // #region UI
-   DefaultHeaderUI: undefined = undefined
-   DefaultBodyUI: undefined = undefined
-
-   get actualWidgetToDisplay(): Field {
-      return this.child.actualWidgetToDisplay
+   override get zActualWidgetToDisplay(): Field {
+      return this.child.zActualWidgetToDisplay
    }
 
    /** so optional fields do not increase nesting twice */
-   get indentChildren(): number {
+   override get zIndentChildren(): number {
       return 0
    }
 
    // #region Serial
-   protected setOwnSerial(next: Field_optional_serial<T>): void {
+   protected zSetOwnSerial(next: Field_optional_serial<T>): void {
       // new guideline for setOwnSerial:
       // > 1. normalize (via produce)
 
       // 💬 2024-09-11 rvion:
       // | WE CAN'T DO THIS
-      // | since optioanl always instanciate its child,
-      // | it's alwaysgoint to fill serial.child, even when no
+      // | since optional always instanciate its child,
+      // | it's always going to fill serial.child, even when no
       // | default.
       // |
       // | ```
       // | // Only setting child serial is supported since 2024-09-11
       // | // it implies active true
       // | if (next.child != null && next.active == null) {
-      // |     next = produce(next, (draft: this['$Serial']) => {
+      // |     next = produce(next, (draft: this['{serial}']) => {
       // |         draft.active = true
       // |     })
       // | }
@@ -104,120 +204,174 @@ export class Field_optional<out T extends BaseSchema = BaseSchema> extends Field
       // > 3.1 EITHER (when unset): apply default (with reconcile if need be)
       // > 2.3.    OR (when set)  : just reconcile
 
-      this.assignNewSerial(next)
+      this.zAssignNewSerial(next)
 
       // when is not set
-      if (next.active == null && this.config.startActive != null) {
-         this.patchSerial((draft) => void (draft.active = this.config.startActive))
+      const startActive = this.zConfig.startActive
+      if (startActive != null && next.y == null && next.n == null) {
+         this.zPatchSerial((draft) => {
+            if (startActive) draft.y = this.zConfig.schema.defaultSerial
+            else draft.n = this.zConfig.schema.defaultSerial
+         })
       }
 
-      this.RECONCILE({
+      if ('y' in next || 'n' in next) {
+         this.__initializeChild(next?.y ?? next?.n)
+      }
+   }
+
+   /** must always be run within a runInTransaction */
+   private __initializeChild(targetChildSerial: Maybe<T['{serial}']>): void {
+      this.zRECONCILE({
          mountKey: 'child',
          existingChild: this.child,
-         correctChildSchema: this.config.schema,
-         targetChildSerial: next?.child,
+         correctChildSchema: this.zConfig.schema,
+         targetChildSerial,
          attach: (child) => {
             this.child = child
          },
       })
    }
 
-   get isOwnSet(): boolean {
+   get zIsOwnSet(): boolean {
       // 💬 2024-09-02 rvion:
       // | e.g. choice().optional()
-      // | when activating the choice, we can't necessarilly pick an option
+      // | when activating the choice, we can't necessarily pick an option
       // | so the optional node is transitively not-set.
-      if (this.serial.active) return this.child.isSet
-      return true
+      if ('y' in this.zSerial || 'n' in this.zSerial) return true
+      return false
    }
 
    // #region Changes
-   get hasChanges(): boolean {
+   get zHasChanges(): boolean {
       // active by default
-      if (this.config.startActive) {
-         if (!this.serial.active) return true
-         return this.child.hasChanges
+      if (this.zConfig.startActive) {
+         if (!this.isActive) return true
+         return this.child.zHasChanges
       }
       // unactive by default
       else {
-         if (!this.serial.active) return false
+         if (!this.isActive) return false
          return true
       }
    }
 
    // #region Problems
-   get ownConfigSpecificProblems(): Problem_Ext {
+   get zOwnConfigSpecificProblems(): Problem_Ext {
       return null
    }
 
-   get ownTypeSpecificProblems(): Problem_Ext {
+   get zOwnTypeSpecificProblems(): Problem_Ext {
       return null
    }
 
    // 🦀 I think we might need to override this here since we probably don't want
    // to return the child's problems if the optional is not active
    // Or maybe we do ? But then we should not be relying on that to determine validity
-   get allErrorsIncludingChildrenErrors(): Problem[] {
-      if (!this.serial.active) return []
-      return super.allErrorsIncludingChildrenErrors
+   override get zAllErrorsIncludingChildrenErrors(): Problem[] {
+      if (!this.isActive) return []
+      return super.zAllErrorsIncludingChildrenErrors
    }
 
    // #region Children
-   child!: T['$Field']
+   @observable.ref accessor child!: T['{field}']
 
-   _acknowledgeNewChildSerial(mountKey: string, serial: any): boolean {
+   getChildIfActive(): Maybe<T['{field}']> {
+      return this.isActive ? this.child : null
+   }
+
+   override zAcknowledgeNewChildSerial(mountKey: string, childSerial: any): boolean {
       if (mountKey !== 'child') throw new Error(`❌ invalid mountKey (${mountKey} for serial)`)
-      const didChange = this.patchSerial((draft) => void (draft.child = serial))
+      if (this.isActive && this.zSerial.y === childSerial) return false
+      if (!this.isActive && this.zSerial.n === childSerial) return false
+
+      const didChange = this.zPatchSerial((draft) => {
+         if (this.isActive) draft.y = childSerial
+         else draft.n = childSerial
+      })
       return didChange
    }
 
-   get childOrThrow(): T['$Field'] {
+   get childOrThrow(): T['{field}'] {
       if (this.child == null) throw new Error('❌ optional active but child is null')
       return this.child
    }
 
-   get childrenAll(): Field[] {
+   override zGetChildrenSerialPath(branchName: 'child'): string {
+      return `y`
+   }
+
+   override get zChildrenAll(): Field[] {
       return [this.child]
    }
 
-   get childrenActive(): Field[] {
-      if (!this.serial.active) return []
+   override get zChildrenActive(): Field[] {
+      if (!this.isActive) return []
       return [this.child]
    }
 
-   get subFieldsWithKeys(): KeyedField[] {
-      return this.serial.active ? [{ key: 'child', field: this.child }] : []
+   override get zSubFieldsWithKeys(): KeyedField[] {
+      return this.isActive ? [{ key: 'child', field: this.child }] : []
    }
 
    // #region Value
-   get value(): Field_optional_value<T> {
-      return this.value_or_fail
+   override zSet(next: Field_optional_value<T>): this {
+      if (next == null) {
+         this.setActive(false)
+      } else {
+         this.setActive(true)
+         this.child.zSet(next)
+      }
+      return this
+   }
+   override zGetSetValue(): this['{setValue}'] | undefined {
+      // console.log(`[💀 getSetValue] `, this.path)
+      return this.child.zGetSetValue()
    }
 
-   set value(next: Field_optional_value<T>) {
+   set zValue(next: Field_optional_SetValue<T>) {
       if (next == null) {
          this.setActive(false)
          return
       } else {
          this.setActive(true)
-         this.child.value = next
+         this.child.zValue = next
       }
    }
 
-   get value_or_fail(): Field_optional_value<T> {
-      if (!this.serial.active) return null
-      return this.childOrThrow.value_or_fail
+   get zValue(): Field_optional_value<T> {
+      if (this.zSerial.y === undefined && this.zSerial.n === undefined)
+         throw new Error('Field_optional.zValue: not set')
+      if (this.isActive === false) return null
+      return this.childOrThrow.zValue
    }
 
-   get value_or_zero(): Field_optional_value<T> {
-      if (!this.serial.active) return null
-      return this.childOrThrow.value_or_zero
+   get zValueOrZero(): Field_optional_value<T> {
+      if (this.zSerial.y === undefined && this.zSerial.n === undefined) return undefined
+      if (this.isActive === false) return null
+      return this.childOrThrow.zValueOrZero
    }
 
-   get value_unchecked(): Field_optional_value<T> {
-      if (!this.serial.active) return null
-      return this.childOrThrow.value_unchecked
+   get zValueUnchecked(): Field_optional_value<T> {
+      if (this.zSerial.y === undefined && this.zSerial.n === undefined) return undefined
+      if (this.isActive === false) return null
+      return this.childOrThrow.zValueUnchecked
    }
+
+   override zIsValueEqual(other: Field): boolean {
+      if (!(other instanceof Field_optional)) return false
+
+      const thisActive = this.isActive
+      const otherActive = other.isActive
+      // both are inactive => consider them equal
+      if (!thisActive && !otherActive) return true
+      // Only one of them is inactive -> they are not equal
+      if (thisActive !== otherActive) return false
+      // both are active -> compare their child
+      return this.child.zIsValueEqual(other.child)
+   }
+
+   public static readonly patchedSerialPaths: readonly string[] = Object.freeze(['y', 'n'])
 
    // #region Nullability
    get canBeSetOnOrOff(): true {
@@ -236,51 +390,60 @@ export class Field_optional<out T extends BaseSchema = BaseSchema> extends Field
 
    // #region Setters
    setActive(value: boolean): void {
-      if (this.serial.active === value) return
-      this.runInTransaction(() => {
-         this.patchSerial((draft) => void (draft.active = value))
+      if (this.isActive === value) return
+      this.zRunInTransaction(() => {
+         this.zPatchSerial((draft) => {
+            if (value) {
+               draft.y = this.child.zSerial
+               delete draft.n
+            } else {
+               draft.n = this.child.zSerial
+               delete draft.y
+            }
+         })
 
          // update child collapsed state if need be
-         // if (value) this.child.setCollapsed(false)
-         // else this.child.setCollapsed(true)
+         if (value) {
+            if (this.child.zIsCollapsed) this.child.zSetCollapsed(false)
+         } else this.child.zSetCollapsed(true)
       })
    }
 
-   /** defaults to false when field is unset */
-   get active(): boolean {
-      return this.serial.active === true
+   get isActive(): boolean {
+      return this.zSerial.y != null
    }
 
-   set active(value: boolean) {
+   set isActive(value: boolean) {
       this.setActive(value)
    }
 
    /**
     * similar to reset,
-    * except when unactive by default => only reset the active property
+    * except when inactive by default => only reset the active property
     * 👉 the base reset() will always reset the child
     * 👉 this resetFast will only reset the child is active.
     */
    resetFast(): void {
       // active by default
-      if (this.config.startActive) {
-         if (!this.serial.active) this.setActive(true)
-         if (this.child.hasChanges) this.child.reset()
+      if (this.zConfig.startActive) {
+         if (!this.isActive) this.setActive(true)
+         if (this.child.zHasChanges) this.child.zReset()
          return
       }
-      // unactive by default
+      // inactive by default
       else {
-         if (this.serial.active) this.setActive(false)
+         if (this.isActive) this.setActive(false)
          return
       }
    }
 
-   randomize(): void {
+   override zRandomize(): void {
       const active = Math.random() < 0.5
       this.setActive(active)
-      if (active) this.child.randomize()
+      if (active) this.child.zRandomize()
    }
 }
 
 // DI
 registerFieldClass('optional', Field_optional)
+Field_optional satisfies FieldConstructor<Field_optional<any>>

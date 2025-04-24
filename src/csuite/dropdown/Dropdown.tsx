@@ -1,13 +1,13 @@
-import type { IconName } from '../icons/icons'
+import type { IconName } from '../icons/IconName'
 import type { Tint } from '../kolor/Tint'
 import type { ReactNode } from 'react'
 
 import { Button } from '../button/Button'
 import { Frame } from '../frame/Frame'
+import { observerWC } from '../mobx/observerWC'
 import { RevealUI } from '../reveal/RevealUI'
 import { MenuDivider } from './MenuDivider'
 import { MenuItem } from './MenuItem'
-import { observerWC } from './observerWC'
 
 export type DropdownProps = {
    title: ReactNode
@@ -26,7 +26,7 @@ export type DropdownProps = {
  * see modules like `src/appbar/MenuDebugUI.tsx`
  */
 export const Dropdown = observerWC(
-   function Dropdown_(p: DropdownProps): JSX.Element {
+   function Dropdown_(p: DropdownProps): React.JSX.Element {
       return (
          <RevealUI
             tw={[p.className]}

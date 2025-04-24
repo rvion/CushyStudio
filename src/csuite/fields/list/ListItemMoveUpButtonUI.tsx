@@ -1,19 +1,17 @@
 import type { Field_list } from './FieldList'
 
-import { observer } from 'mobx-react-lite'
-
 import { Button } from '../../button/Button'
 
-// const ListDragHandleUI = forwardRef<HTMLDivElement, { ix: number; field: Field }>((p, ref) => {
+// const ListDragHandleUI = ((p: { ix: number; field: Field, ref?: ObservableRef<HTMLDivElement>}, ref) => {
 //    return (
 //       //TODO (bird_d): FIX UI - Needs to be Button when ref is implemented.
 //       <div ref={ref} onClick={(ev) => p.field.toggleCollapsed()}>
-//          <Button size='input' subtle borderless square icon='mdiDragHorizontalVariant' />
+//          <Button size='input' subtle borderless square icon={IKONS.mdiDragHorizontalVariant} />
 //       </div>
 //    )
 // })
 
-export const ListItemMoveUpButtonUI = observer(function ListItemMoveUpButtonUI_({
+export const ListItemMoveUpButtonUI = obs(function ListItemMoveUpButtonUI_({
    listField,
    ix,
 }: {
@@ -25,7 +23,7 @@ export const ListItemMoveUpButtonUI = observer(function ListItemMoveUpButtonUI_(
          disabled={ix === 0}
          onClick={(ev) => {
             listField.moveItem(ix, ix - 1)
-            listField.touch()
+            listField.zTouch()
             ev.preventDefault()
             ev.stopPropagation()
          }}
@@ -33,7 +31,7 @@ export const ListItemMoveUpButtonUI = observer(function ListItemMoveUpButtonUI_(
          borderless
          subtle
          size='xs'
-         icon='mdiArrowUp'
+         icon={IKONS.mdiArrowUp}
       />
    )
 })

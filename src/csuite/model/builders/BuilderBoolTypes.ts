@@ -1,36 +1,38 @@
-import type { FieldTypes } from '../$FieldTypes'
+import { Field_bool } from '../../fields/bool/FieldBool'
+import { CSchema } from '../CSchema'
+import { defineSchemaBuilderMixin } from './defineSchemaBuilderMixin'
 
-import { Field_bool, type Field_bool_config } from '../../fields/bool/FieldBool'
-import { BaseBuilder } from './BaseBuilder'
-
-interface SchemaAndAliasesᐸ_ᐳ extends HKT<FieldTypes> {
-   Bool: Apply<this, Field_bool>
+export type BuilderBoolMixin = {
+   bool_(config?: Field_bool['{config}']): Z.Bool
+   boolean(config?: Field_bool['{config}'] | boolean): Z.Bool
+   bool(config?: Field_bool['{config}'] | boolean): Z.Bool
 }
 
-export class BuilderBool<Schemaᐸ_ᐳ extends SchemaAndAliasesᐸ_ᐳ> extends BaseBuilder<Schemaᐸ_ᐳ> {
-   static fromSchemaClass = BaseBuilder.buildfromSchemaClass(BuilderBool)
+const BuilderBoolImpl = (): BuilderBoolMixin =>
+   defineSchemaBuilderMixin<BuilderBoolMixin>({
+      /**
+       * boolean without default
+       */
+      bool_(config: Field_bool['{config}'] = {}): Z.Bool {
+         return CSchema.new(Field_bool, config)
+      },
 
-   /**
-    * boolean without default
-    * @since 2024-09-04
-    */
-   bool_(config: Field_bool_config = {}): Schemaᐸ_ᐳ['Bool'] {
-      return this.buildSchema(Field_bool, config)
-   }
+      /**
+       * @deprecated; use `bool`
+       */
+      boolean(config: Field_bool['{config}'] | boolean = {}): Z.Bool {
+         if (typeof config === 'boolean') config = { default: config }
+         return this.bool(config)
+      },
 
-   /**
-    * @deprecated; use `bool`
-    */
-   boolean(config: Field_bool_config = {}): Schemaᐸ_ᐳ['Bool'] {
-      return this.bool(config)
-   }
+      /**
+       * boolean with default to false, unless default specified otherwise
+       */
+      bool(config: Field_bool['{config}'] | boolean = {}): Z.Bool {
+         if (typeof config === 'boolean') config = { default: config }
+         const def = config.default ?? false
+         return this.bool_({ default: def, ...config } as Field_bool['{config}']) // 2024-12-20 domi: not sure why I have a type error without explicit cast
+      },
+   })
 
-   /**
-    * boolean with default to false, unless default specified otherwise
-    */
-   bool(config: Field_bool_config | boolean = {}): Schemaᐸ_ᐳ['Bool'] {
-      if (typeof config === 'boolean') config = { default: config }
-      const def = config.default ?? false
-      return this.bool_({ default: def, ...config })
-   }
-}
+export const BuilderBoolDescriptors = Object.getOwnPropertyDescriptors(BuilderBoolImpl())

@@ -2,16 +2,15 @@ import type { ComfyPromptL } from '../models/ComfyPrompt'
 import type { ProgressReport } from '../models/ComfyWorkflow'
 import type { StepL } from '../models/Step'
 
-import { observer } from 'mobx-react-lite'
-
 import { Button } from '../csuite/button/Button'
 import { Frame } from '../csuite/frame/Frame'
 import { parseFloatNoRoundingErr } from '../csuite/utils/parseFloatNoRoundingErr'
+import { DrawWorkflowUI } from '../widgets/graph/DrawWorkflowUI'
 import { GraphSummaryUI } from '../widgets/workspace/GraphSummaryUI'
 
 // TODO: Make the color of the "done" bar success or warn if failed!!
 
-export const OutputPromptPreviewUI = observer(function OutputPromptPreviewUI_(p: {
+export const OutputPromptPreviewUI = obs(function OutputPromptPreviewUI_(p: {
    //
    step?: Maybe<StepL>
    output: ComfyPromptL
@@ -73,7 +72,7 @@ export const OutputPromptPreviewUI = observer(function OutputPromptPreviewUI_(p:
    )
 })
 
-export const OutputPromptUI = observer(function OutputPromptUI_(p: {
+export const OutputPromptUI = obs(function OutputPromptUI_(p: {
    //
    step?: Maybe<StepL>
    output: ComfyPromptL
@@ -82,9 +81,12 @@ export const OutputPromptUI = observer(function OutputPromptUI_(p: {
    const graph = prompt.graph
    if (graph == null) return <>no graph</>
    return (
-      <div className='flex flex-col gap-1'>
+      <div className='flex grow flex-col gap-1 overflow-auto'>
          <Button onClick={() => cushy.stopCurrentPrompt()}>STOP GENERATING</Button>
-         <GraphSummaryUI graph={graph} />
+         <DrawWorkflowUI //
+            workflow={graph}
+         />
+         {/* <GraphSummaryUI graph={graph} /> */}
       </div>
    )
 })

@@ -1,3 +1,5 @@
+import type { RevealComputedPosition } from './RevealPlacement'
+
 export function computePlacement_autoVerticalStartFixedSize(p: {
    anchor: Pick<DOMRect, 'top' | 'height' | 'left'> | null
    shell: Pick<DOMRect, 'width' | 'height'> | null
@@ -6,13 +8,14 @@ export function computePlacement_autoVerticalStartFixedSize(p: {
    left: number
    bottom?: number
    top?: number
+   finalPlacementLogic: RevealComputedPosition['finalPlacementLogic']
 } {
    const anchorLeft = p.anchor?.left ?? 0
    const shellWidth = p.shell?.width ?? 0
 
    const left = Math.max(0, anchorLeft - Math.max(0, anchorLeft + shellWidth - p.window.innerWidth))
 
-   const vPos = computeVerticalPosition({ anchor: p.anchor, shell: p.shell, window: p.window })
+   const vPos = computeVerticalPosition({ anchor: p.anchor, shell: p.shell, window: p.window, hPos: 'Start' })
 
    return { left, ...vPos }
 }
@@ -25,13 +28,14 @@ export function computePlacement_autoVerticalEndFixedSize(p: {
    right: number
    bottom?: number
    top?: number
+   finalPlacementLogic: RevealComputedPosition['finalPlacementLogic']
 } {
    const anchorRight = p.anchor?.right ?? 0
    const shellWidth = p.shell?.width ?? 0
 
    const right = Math.max(0, anchorRight - Math.max(0, anchorRight + shellWidth - p.window.innerWidth))
 
-   const vPos = computeVerticalPosition({ anchor: p.anchor, shell: p.shell, window: p.window })
+   const vPos = computeVerticalPosition({ anchor: p.anchor, shell: p.shell, window: p.window, hPos: 'End' })
 
    return { right, ...vPos }
 }
@@ -40,9 +44,11 @@ function computeVerticalPosition(p: {
    anchor: Pick<DOMRect, 'top' | 'height'> | null
    shell: Pick<DOMRect, 'height'> | null
    window: Pick<Window, 'innerHeight'>
+   hPos: 'Start' | 'End'
 }): {
    top?: number
    bottom?: number
+   finalPlacementLogic: RevealComputedPosition['finalPlacementLogic']
 } {
    const anchorTop = p.anchor?.top ?? 0
    const anchorHeight = p.anchor?.height ?? 0
@@ -59,10 +65,12 @@ function computeVerticalPosition(p: {
               0,
               possibleTopPosition - Math.max(0, possibleTopPosition + shellHeight - p.window.innerHeight),
            ),
+           finalPlacementLogic: `top${p.hPos}`,
         }
       : {
            bottom:
               possibleBottomPosition -
               Math.max(0, possibleBottomPosition + shellHeight - p.window.innerHeight),
+           finalPlacementLogic: `bottom${p.hPos}`,
         }
 }

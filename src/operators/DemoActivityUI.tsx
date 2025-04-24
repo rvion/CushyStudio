@@ -1,5 +1,3 @@
-import { observer } from 'mobx-react-lite'
-
 import { Button } from '../csuite/button/Button'
 import { Frame } from '../csuite/frame/Frame'
 import {
@@ -9,7 +7,7 @@ import {
 import { RevealUI } from '../csuite/reveal/RevealUI'
 import { menu_imageActions } from './commands/cmd_copyImage'
 
-export const DemoActivityUI = observer(() => {
+export const DemoActivityUI = obs(() => {
    const img = cushy.db.media_image.lastOrCrash()
    return (
       <Frame tw='flex h-full items-center justify-center' onClick={(ev) => ev.stopPropagation()}>

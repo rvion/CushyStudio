@@ -1,7 +1,6 @@
-import { observer } from 'mobx-react-lite'
 import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch'
 
-export const Panel_ViewLatent = observer(function Panel_ViewLatent_(p: {}) {
+export const Panel_ViewLatent = obs(function Panel_ViewLatent_(p: {}) {
    const url = cushy.latentPreview?.url
    // 🛝 const background = st.galleryConf.value.galleryBgColor ?? undefined
    return (

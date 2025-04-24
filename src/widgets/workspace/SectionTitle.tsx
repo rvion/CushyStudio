@@ -1,6 +1,4 @@
-import { observer } from 'mobx-react-lite'
-
-export const SectionTitleUI = observer(function SectionTitleUI_(p: {
+export const SectionTitleUI = obs(function SectionTitleUI_(p: {
    children?: React.ReactNode
    className?: string
    label: React.ReactNode

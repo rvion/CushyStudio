@@ -1,44 +1,103 @@
-import type { FieldTypes } from '../$FieldTypes'
-import type { PartialOmit } from '../../../types/Misc'
-import type { BaseSchema } from '../BaseSchema'
 import type { Field } from '../Field'
+import type { Channel, ChannelId } from '../pubsub/Channel'
 
-import { Field_dynamic, type Field_dynamic_config } from '../../fields/dynamic/FieldDynamic'
-import { Field_link, type Field_link_config } from '../../fields/link/FieldLink'
-import { Field_shared, type Field_shared_config } from '../../fields/shared/FieldShared'
-import { BaseBuilder } from './BaseBuilder'
+import { Field_shared } from '../../fields/shared/FieldShared'
+import { CSchema } from '../CSchema'
+import { defineSchemaBuilderMixin } from './defineSchemaBuilderMixin'
 
-interface SchemaAndAliasesᐸ_ᐳ extends HKT<FieldTypes> {
-   Link: HKT<BaseSchema, BaseSchema>
-   Dynamic: HKT<BaseSchema>
-   Shared: HKT<Field>
+export type BuilderSharedMixin = {
+   linkedFromExternalField<T extends Field>(field: T): Z.Shared<T>
+   linkedFromChannel<T extends Field>(channel: Channel<T>, schema: Z.Schema<T>): Z.Shared<T>
+   linkedFromChannelId<T extends Field>(channelId: ChannelId, schema: Z.Schema<T>): Z.Shared<T>
+   linkedFromCustom<T extends Field>(field: (self: Field_shared<T>) => T, schema: Z.Schema<T>): Z.Shared<T>
+   linkedFromSharedUID<T extends Field>(uid: string, schema: Z.Schema<T>): Z.Shared<T>
 }
 
-export class BuilderShared<Schemaᐸ_ᐳ extends SchemaAndAliasesᐸ_ᐳ> extends BaseBuilder<Schemaᐸ_ᐳ> {
-   static fromSchemaClass = BaseBuilder.buildfromSchemaClass(BuilderShared)
+const BuilderSharedImpl = (): BuilderSharedMixin =>
+   defineSchemaBuilderMixin<BuilderSharedMixin>({
+      /**
+       * sometimes you have a field from an other document already instanciated
+       * or you using a link within a dynamic, and already have access to the field
+       */
+      linkedFromExternalField<T extends Field>(field: T): Z.Shared<T> {
+         return CSchema.new(Field_shared<T>, { field: () => field, schema: field.zSchema })
+      },
+      /** sometimes, you just want to get the filed from a chanel */
+      linkedFromChannel<T extends Field>(channel: Channel<T>, schema: Z.Schema<T>): Z.Shared<T> {
+         return CSchema.new(Field_shared<T>, { field: (f) => f.zReadChannel(channel), schema })
+      },
+      /** ...and sometimes you're so lazy you don't even bother to type it properly */
+      linkedFromChannelId<T extends Field>(channelId: ChannelId, schema: Z.Schema<T>): Z.Shared<T> {
+         return CSchema.new(Field_shared<T>, { field: (f) => f.zReadChannel(channelId), schema })
+      },
+      /** sometimes, you just want to specify how to retrieve it manually */
+      linkedFromCustom<T extends Field>(
+         field: (self: Field_shared<T>) => T,
+         schema: Z.Schema<T>,
+      ): Z.Shared<T> {
+         return CSchema.new(Field_shared<T>, { field, schema })
+      },
 
-   /**
-    * Allow to instanciate a field early, so you can re-use it in multiple places
-    * or access it's instance to dynamically change some other field schema.
-    *
-    * @since 2024-06-27
-    * @stability unstable
-    */
-   with<const SA extends BaseSchema, SB extends BaseSchema>(
-      /** the schema of the field you'll want to re-use the in second part */
-      injected: SA,
-      children: (shared: SA['$Field']) => SB,
-      config: PartialOmit<Field_link_config<SA, SB>, 'share' | 'children'> = {},
-   ): Apply<Schemaᐸ_ᐳ['Link'], SA, SB> {
-      return this.buildSchema(Field_link<SA, SB>, { share: injected, children, ...config })
-   }
+      /**
+       * E. `linkedFromSharedUID`
+       * and sometimes you want to see the world burn
+       * this one is very VERY VEEEERY experimental (not to say broken)
+       * not quite sure where to store the serial yet.
+       *
+       * option1:
+       *    💡 the serial is stored in the first `linkedFromSharedUID` that will be instanciated.
+       *    🔶 only work if the first is stable => does not work if all linked fields are within choices
+       *
+       * option2:
+       *    💡 serial is stored in the root ? somewhere in some undocumented `serial.shared` ?
+       *    🔶 will work badly with `.clone()`
+       *    🔶 very non-standard
+       *
+       *
+       * option3:
+       *    💡 serial is discarded ?
+       *    🔶 lol, loosing people data never that great; or rename it to `linkThatLooseData`
+       *    🔶   actually, could be fun to add anyway.
+       *
+       * option4:
+       *    💡 this just injects a onChange callback that sync it's serial with the other 3 fields.
+       *    🔶 need to avoid loops
+       *    🔶 duplicated data
+       *        => allow to later fork those 🤔
+       *    if we do that, it should be on `Field` class directly, using `isValueEqual`
+       *
+       * --------------------
+       * I picked option 2 🤔
+       */
+      linkedFromSharedUID<T extends Field>(uid: string, schema: Z.Schema<T>): Z.Shared<T> {
+         return CSchema.new(Field_shared<T>, {
+            field: (f) => {
+               // 1. get root
+               const root = f.zRoot
 
-   linked<T extends Field>(field: T): Apply<Schemaᐸ_ᐳ['Shared'], T> {
-      const finalConfig: Field_shared_config<T> = { field }
-      return this.buildSchema(Field_shared<T>, finalConfig)
-   }
+               // 2. get unique key
+               const key = Symbol.for(uid)
 
-   dynamic<T extends BaseSchema>(conf: Field_dynamic_config<T>): Apply<Schemaᐸ_ᐳ['Dynamic'], T> {
-      return this.buildSchema(Field_dynamic<T>, conf)
-   }
-}
+               // 3 if field already exists, return it
+               if (key in root) return root[key] as T
+
+               // 4.1 create it,
+               const prevSerial = root.zSerial._shared?.[uid]
+               const field: T = schema.create(prevSerial)
+               // 4.2. store it on root
+               ;(root as any)[key] = field
+               // 4.2. add a new change callback to keep its serial synced
+               field.zOnSerialChanges((x: Field) => {
+                  root.zPatchInTransaction((rootNext) => {
+                     rootNext._shared ??= {}
+                     rootNext._shared[uid] = x.zSerial
+                  })
+               })
+               return field
+            },
+            schema,
+         })
+      },
+   })
+
+export const BuilderSharedDescriptors = Object.getOwnPropertyDescriptors(BuilderSharedImpl())

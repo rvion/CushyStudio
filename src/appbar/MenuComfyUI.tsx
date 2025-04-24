@@ -14,11 +14,11 @@ export const menuComfyUI2: Menu = defineMenu({
       b.SimpleMenuAction({
          label: 'Hosts',
          onClick: () => cushy.layout.open('Hosts', {}),
-         icon: 'mdiServerNetwork',
+         icon: IKONS.mdiServerNetwork,
       }),
       ...cushy.hosts.map((host) => {
          return b.SimpleMenuAction({
-            icon: 'mdiServerNetwork',
+            icon: IKONS.mdiServerNetwork,
             label: host.data.name,
             onClick: () => host.electAsPrimary(),
          })
@@ -32,7 +32,7 @@ const menuDivider = (
          tw='flex' // TODO(bird_d: JOINER)
       >
          <Button
-            icon='mdiClipboard'
+            icon={IKONS.mdiClipboard}
             onClick={() => {
                void navigator.clipboard.writeText(cushy.configFile.value.mainComfyHostID ?? '')
             }}
@@ -40,7 +40,7 @@ const menuDivider = (
             Primary Host
          </Button>
          <Button
-            icon='mdiFolderOpen'
+            icon={IKONS.mdiFolderOpen}
             onClick={(ev) => {
                ev.stopPropagation()
                ev.preventDefault()
@@ -53,7 +53,7 @@ const menuDivider = (
    </MenuDivider>
 )
 
-// export const MenuComfyUI = observer(function MenuComfyUI_(p: {}) {
+// export const MenuComfyUI = obs(function MenuComfyUI_(p: {}) {
 //     const isConnected = st.ws?.isOpen ?? false
 //     return (
 //         <Dropdown
@@ -62,9 +62,9 @@ const menuDivider = (
 //             title='ComfyUI'
 //             content={() => (
 //                 <>
-//                     <MenuItem onClick={() => st.layout.open('ComfyUI', {})} label='ComfyUI' icon={'cdiNodes'} />
+//                     <MenuItem onClick={() => st.layout.open('ComfyUI', {})} label='ComfyUI' icon={IKONS.cdiNodes} />
 //                     <MenuItem //
-//                         icon='mdiMagnify'
+//                         icon={IKONS.mdiMagnify}
 //                         onClick={() => st.layout.open('ComfyUINodeExplorer', {})}
 //                         label='Nodes Explorer'
 //                     />
@@ -75,7 +75,7 @@ const menuDivider = (
 //                             subtle
 //                             borderless
 //                             onClick={() => cushy.layout.open('Hosts', {})}
-//                             icon='mdiOpenInApp'
+//                             icon={IKONS.mdiOpenInApp}
 //                             children='Hosts'
 //                         />
 //                     </MenuDivider>
@@ -88,18 +88,18 @@ const menuDivider = (
 //     )
 // })
 
-// const HostMenuItemUI = observer(function HostMenuItemUI_(p: { host: HostL }) {
+// const HostMenuItemUI = obs(function HostMenuItemUI_(p: { host: HostL }) {
 //     const host = p.host
 //     const isMain = host.id === cushy.configFile.value.mainComfyHostID
 //     return (
 //         <MenuItem //
-//             icon='mdiServerNetwork'
-//             // icon={isMain ? 'mdiServerNetwork' : null}
+//             icon={IKONS.mdiServerNetwork}
+//             // icon={isMain ? IKONS.mdiServerNetwork : null}
 //             onClick={() => host.electAsPrimary()}
 //             afterShortcut={
 //                 <Button
 //                     subtle
-//                     icon='cdiNodes'
+//                     icon={IKONS.cdiNodes}
 //                     onClick={(ev) => {
 //                         ev.preventDefault()
 //                         ev.stopPropagation()

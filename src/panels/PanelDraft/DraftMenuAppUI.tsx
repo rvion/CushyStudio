@@ -1,14 +1,12 @@
 import type { DraftL } from '../../models/Draft'
 
-import { observer } from 'mobx-react-lite'
-
 import { showItemInFolder } from '../../app/layout/openExternal'
 import { Dropdown } from '../../csuite/dropdown/Dropdown'
 import { MenuDivider } from '../../csuite/dropdown/MenuDivider'
 import { MenuItem } from '../../csuite/dropdown/MenuItem'
 import { openInVSCode } from '../../utils/electron/openInVsCode'
 
-export const DraftMenuAppUI = observer(function DraftMenuAppUI_(p: { draft: DraftL; className?: string }) {
+export const DraftMenuAppUI = obs(function DraftMenuAppUI_(p: { draft: DraftL; className?: string }) {
    const draft = p.draft
    const file = draft.file
    const app = draft.app
@@ -21,19 +19,19 @@ export const DraftMenuAppUI = observer(function DraftMenuAppUI_(p: { draft: Draf
             <>
                <MenuItem
                   label={app.isFavorite ? 'Un-Favorite' : 'Favorite'}
-                  icon={app.isFavorite ? 'mdiStarMinus' : 'mdiStar'}
+                  icon={app.isFavorite ? IKONS.mdiStarMinus : IKONS.mdiStar}
                   onClick={() => app.setFavorite(!app.isFavorite)}
                />
 
                <MenuDivider />
                <MenuItem //
-                  icon='mdiBookEdit'
+                  icon={IKONS.mdiBookEdit}
                   onClick={() => openInVSCode(file?.absPath ?? '')}
                   label='Edit Externally'
                   tooltip='Opens the app definition with the editor chosen in system preferences'
                />
                <MenuItem //
-                  // icon='mdiOpenInApp'
+                  // icon={IKONS.mdiOpenInApp}
                   onClick={() => showItemInFolder(file.absPath)}
                   label='Show in Folder'
                   tooltip='Opens the app location in your file manager'
@@ -43,7 +41,7 @@ export const DraftMenuAppUI = observer(function DraftMenuAppUI_(p: { draft: Draf
                <MenuItem
                   disabled={!app.canBePublishedByUser}
                   loading={app.isPublishing}
-                  icon='mdiPublish'
+                  icon={IKONS.mdiPublish}
                   onClick={() => app.publish()}
                   label='Publish to App Repository'
                />

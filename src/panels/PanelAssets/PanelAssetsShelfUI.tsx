@@ -1,14 +1,12 @@
 import type { PanelAssetsState } from './PanelAssets'
 
-import { observer } from 'mobx-react-lite'
-
 import { useCSuite } from '../../csuite/ctx/useCSuite'
 import { Frame } from '../../csuite/frame/Frame'
 import { BasicShelfUI } from '../../csuite/shelf/ShelfUI'
 
-export const PanelAssetsShelfUI = observer(function PanelAssetsShelfUI_(p: { st: PanelAssetsState }) {
+export const PanelAssetsShelfUI = obs(function PanelAssetsShelfUI_(p: { st: PanelAssetsState }) {
    const activeLora = p.st.props.active > -1 && cushy.schema.getLoras()[p.st.props.active]
-   const theme = cushy.preferences.theme.value
+   const theme = cushy.preferences.theme.zValue
 
    return (
       <BasicShelfUI //
@@ -21,7 +19,7 @@ export const PanelAssetsShelfUI = observer(function PanelAssetsShelfUI_(p: { st:
             {activeLora ? (
                <Frame // Kind of useless since the path isn't a full one, but need something here to display for now
                   tw='line-clamp-1 flex w-full select-none truncate whitespace-nowrap p-1'
-                  icon='mdiFileDocument'
+                  icon={IKONS.mdiFileDocument}
                   line
                   tooltip={`Filepath\n${activeLora}`}
                   roundness={theme.global.roundness}
@@ -29,7 +27,7 @@ export const PanelAssetsShelfUI = observer(function PanelAssetsShelfUI_(p: { st:
                   {activeLora}
                </Frame>
             ) : (
-               <Frame line icon='mdiInformationBox'>
+               <Frame line icon={IKONS.mdiInformationBox}>
                   No active item
                </Frame>
             )}

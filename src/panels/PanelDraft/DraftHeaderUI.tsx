@@ -1,7 +1,5 @@
 import type { DraftL } from '../../models/Draft'
 
-import { observer } from 'mobx-react-lite'
-
 import { DraftIllustrationUI } from '../../cards/fancycard/DraftIllustration'
 import { InputBoolCheckboxUI } from '../../csuite/checkbox/InputBoolCheckboxUI'
 import { SpacerUI } from '../../csuite/components/SpacerUI'
@@ -16,7 +14,7 @@ import { DraftMenuDataBlockUI } from './DraftMenuJump'
 import { DraftMenuLooks } from './DraftMenuLooksUI'
 import { RunOrAutorunUI } from './RunOrAutorunUI'
 
-export const DraftHeaderUI = observer(function DraftHeader({
+export const DraftHeaderUI = obs(function DraftHeader({
    // own props
    draft,
 
@@ -28,12 +26,12 @@ export const DraftHeaderUI = observer(function DraftHeader({
    ...rest
 }: { draft: DraftL } & FrameProps) {
    const app = draft.appRef.item
-   const theme = cushy.preferences.theme.value
+   const theme = cushy.preferences.theme.zValue
 
    return (
       <Frame
          style={mergeStylesTsEfficient({ zIndex: 99 }, style)}
-         tw='🔴test sticky top-0 z-50 flex shrink-0 flex-col overflow-clip'
+         tw='sticky top-0 z-50 flex shrink-0 flex-col overflow-clip'
          {...rest}
       >
          <PanelHeaderUI>
@@ -50,7 +48,7 @@ export const DraftHeaderUI = observer(function DraftHeader({
 
          {/* <OverflowingRowUI // quick access to past versions
             row
-            icon='mdiHistory'
+            icon={IKONS.mdiHistory}
             iconSize='1.25rem'
             tw='items-center gap-1'
          >
@@ -74,7 +72,7 @@ export const DraftHeaderUI = observer(function DraftHeader({
             <DraftIllustrationUI
                revealAppIllustrationOnHover
                draft={draft}
-               size={`${cushy.preferences.interface.value.inputHeight * 2.25}rem`}
+               size={`${cushy.preferences.interface.zValue.inputHeight * 2.25}rem`}
                // size='3.69rem'
             />
             <div tw='flex flex-1 flex-col gap-2'>
@@ -87,18 +85,18 @@ export const DraftHeaderUI = observer(function DraftHeader({
                      value={app.data.showInfo === SQLITE_true}
                      onValueChange={(v) => app.update({ showInfo: v ? SQLITE_true : SQLITE_false })}
                      toggleGroup='showInfo'
-                     icon='mdiInformation'
+                     icon={IKONS.mdiInformation}
                   >
                      Info
                   </InputBoolCheckboxUI>
                   <InputStringUI
-                     icon='mdiHammerScrewdriver'
+                     icon={IKONS.mdiHammerScrewdriver}
                      autoResize
                      getValue={() => draft.data.canvasToolCategory ?? ''}
                      setValue={(val) => draft.update({ canvasToolCategory: val ? val : null })}
                      placeholder='Unified Canvas Category'
                   />
-                  {/* {cushy.preferences.theme.fields.labelLayout.renderSimple({ label: 'Label' })} */}
+                  {/* {cushy.preferences.theme.labelLayout.renderSimple({ label: 'Label' })} */}
                </div>
             </div>
          </Frame>
@@ -122,7 +120,7 @@ export const DraftHeaderUI = observer(function DraftHeader({
 //             button={
 //                 <Button //
 //                     tw={'w-full'}
-//                     icon={'mdiApplication'}
+//                     icon={IKONS.mdiApplication}
 //                     tooltip='Not Implemented'
 //                 >
 //                     {app.name}

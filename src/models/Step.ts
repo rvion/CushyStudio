@@ -11,6 +11,8 @@ import type { DraftL } from './Draft'
 import type { Executable } from './Executable'
 import type { MediaSplatL } from './MediaSplat'
 
+import { computed } from 'mobx'
+
 import { Status } from '../back/Status'
 import { SQLITE_false, SQLITE_true } from '../csuite/types/SQLITE_boolean'
 import { ManualPromise } from '../csuite/utils/ManualPromise'
@@ -32,17 +34,13 @@ export type FormPath = (string | number)[]
 export class StepRepo extends LiveTable<TABLES['step'], typeof StepL> {
    constructor(liveDB: LiveDB) {
       super(liveDB, 'step', '🚶‍♂️', StepL)
-      this.init()
    }
 }
 
 /** a thin wrapper around an app execution */
 export class StepL extends BaseInst<TABLES['step']> {
-   instObservabilityConfig: undefined
-   dataObservabilityConfig: undefined
-
    draftL = new LiveRefOpt<StepL, DraftL>(this, 'draftID', 'draft')
-   get draft(): Maybe<DraftL> {
+   @computed get draft(): Maybe<DraftL> {
       return this.draftL.item
    }
 
@@ -94,7 +92,7 @@ export class StepL extends BaseInst<TABLES['step']> {
       this.finished.resolve(scriptExecutionStatus)
    }
 
-   get finalStatus(): Status {
+   @computed get finalStatus(): Status {
       if (this.status !== Status.Success) return this.status
       return this.comfy_prompts.every((p: ComfyPromptL) => p.data.executed) //
          ? Status.Success
@@ -103,85 +101,76 @@ export class StepL extends BaseInst<TABLES['step']> {
 
    appL = new LiveRef<this, CushyAppL>(this, 'appID', 'cushy_app')
 
-   get app(): CushyAppL {
+   @computed get app(): CushyAppL {
       return this.appL.item
    }
 
-   get status(): Status {
+   @computed get status(): Status {
       return this.data.status as Status
    }
 
-   get executable(): Maybe<Executable> {
+   @computed get executable(): Maybe<Executable> {
       return this.app.executable_orExtract
    }
 
-   get name(): string {
+   @computed get name(): string {
       return this.data.name ?? this.app.name
    }
 
-   get lastImageOutput(): Maybe<MediaImageL> {
+   @computed get lastImageOutput(): Maybe<MediaImageL> {
       return this.images[this.images.length - 1]
    }
 
-   get generatedImages(): MediaImageL[] {
+   @computed get generatedImages(): MediaImageL[] {
       return this.images
    }
 
    outputWorkflow = new LiveRef<this, ComfyWorkflowL>(this, 'outputGraphID', 'comfy_workflow')
 
-   get texts(): MediaTextL[] {
+   @computed get texts(): MediaTextL[] {
       return this.db.media_text.select((q) => q.where('stepID', '=', this.id), ['media_text.stepID'])
    }
 
-   get images(): MediaImageL[] {
+   @computed get images(): MediaImageL[] {
       return this.db.media_image.select((q) => q.where('stepID', '=', this.id), ['media_image.stepID'])
    }
 
-   get videos(): MediaVideoL[] {
+   @computed get videos(): MediaVideoL[] {
       return this.db.media_video.select((q) => q.where('stepID', '=', this.id), ['media_video.stepID'])
    }
 
-   get displacements(): Media3dDisplacementL[] {
+   @computed get displacements(): Media3dDisplacementL[] {
       return this.db.media_3d_displacement.select(
          (q) => q.where('stepID', '=', this.id),
          ['media_3d_displacement.stepID'],
       )
    }
 
-   get customOutputs(): MediaCustomL[] {
+   @computed get customOutputs(): MediaCustomL[] {
       return this.db.media_custom.select((q) => q.where('stepID', '=', this.id), ['media_custom.stepID'])
    }
 
-   get splats(): MediaSplatL[] {
+   @computed get splats(): MediaSplatL[] {
       return this.db.media_splat.select((q) => q.where('stepID', '=', this.id), ['media_splat.stepID'])
    }
 
-   get comfy_workflows(): ComfyWorkflowL[] {
+   @computed get comfy_workflows(): ComfyWorkflowL[] {
       return this.db.comfy_workflow.select((q) => q.where('stepID', '=', this.id), ['comfy_workflow.stepID'])
    }
 
-   get comfy_prompts(): ComfyPromptL[] {
+   @computed get comfy_prompts(): ComfyPromptL[] {
       return this.db.comfy_prompt.select((q) => q.where('stepID', '=', this.id), ['comfy_prompt.stepID'])
    }
 
-   get runtimeErrors(): RuntimeErrorL[] {
+   @computed get runtimeErrors(): RuntimeErrorL[] {
       return this.db.runtime_error.select((q) => q.where('stepID', '=', this.id), ['runtime_error.stepID'])
    }
 
-   // private _CACHE_INVARIANT = null // () => this.data.status !== Status.Running
-   // = new LiveCollection<TABLES['media_text']>           ({table: () => this.db.media_text,           where: () => ({stepID:this.id}), cache: this._CACHE_INVARIANT}) // prettier-ignore
-   // = new LiveCollection<TABLES['media_image']>          ({table: () => this.db.media_image,          where: () => ({stepID:this.id}), cache: this._CACHE_INVARIANT}) // prettier-ignore
-   // = new LiveCollection<TABLES['media_video']>          ({table: () => this.db.media_video,          where: () => ({stepID:this.id}), cache: this._CACHE_INVARIANT}) // prettier-ignore
-   // = new LiveCollection<TABLES['media_3d_displacement']>({table: () => this.db.media_3d_displacement, where: () => ({stepID:this.id}), cache: this._CACHE_INVARIANT}) // prettier-ignore
-   // = new LiveCollection<TABLES['media_splat']>          ({table: () => this.db.media_splat,          where: () => ({stepID:this.id}), cache: this._CACHE_INVARIANT}) // prettier-ignore
-   // = new LiveCollection<TABLES['comfy_workflow']>       ({table: () => this.db.comfy_workflow,        where: () => ({stepID:this.id}), cache: this._CACHE_INVARIANT}) // prettier-ignore
-   // = new LiveCollection<TABLES['comfy_prompt']>         ({table: () => this.db.comfy_prompt,         where: () => ({stepID:this.id}), cache: this._CACHE_INVARIANT}) // prettier-ignore
-   // = new LiveCollection<TABLES['runtime_error']>        ({table: () => this.db.runtime_error,         where: () => ({stepID:this.id}), cache: this._CACHE_INVARIANT}) // prettier-ignore
-
-   get currentlyExecutingOutput(): Maybe<StepOutput> {
+   @computed get currentlyExecutingOutput(): Maybe<StepOutput> {
       return this.comfy_prompts.find((p: ComfyPromptL) => !p.data.executed)
    }
-   get lastMediaOutput(): Maybe<StepOutput> {
+
+   @computed get lastMediaOutput(): Maybe<StepOutput> {
       const outputs = this.outputs
 
       const last = outputs[outputs.length - 1]
@@ -199,11 +188,11 @@ export class StepL extends BaseInst<TABLES['step']> {
 
       return null
    }
-   get lastOutput(): Maybe<StepOutput> {
+   @computed get lastOutput(): Maybe<StepOutput> {
       const outputs = this.outputs
       return outputs[outputs.length - 1]
    }
-   get outputs(): StepOutput[] {
+   @computed get outputs(): StepOutput[] {
       return [
          //
          ...this.texts,
@@ -237,13 +226,13 @@ export class StepL extends BaseInst<TABLES['step']> {
    }
 
    // UI expand/collapse state
-   get defaultExpanded(): boolean {
+   @computed get defaultExpanded(): boolean {
       return this.data.isExpanded === SQLITE_true ? true : false
    }
 
    userDefinedExpanded: Maybe<boolean> = null
 
-   get expanded(): boolean {
+   @computed get expanded(): boolean {
       return this.userDefinedExpanded ?? this.defaultExpanded
    }
 

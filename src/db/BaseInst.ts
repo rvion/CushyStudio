@@ -8,17 +8,14 @@ import type { TableInfo } from './TYPES_json'
 import { type AnnotationMapEntry, observable, runInAction, toJS } from 'mobx'
 import { nanoid } from 'nanoid'
 
-import { makeAutoObservableInheritance } from '../csuite/mobx/mobx-store-inheritance'
 import { quickBench } from './quickBench'
 
+export interface BaseInst<TABLE extends TableInfo<keyof KyselyTables>> {
+   dataObservabilityConfig?: { [key in keyof TABLE['$T']]?: AnnotationMapEntry } | undefined
+}
+
 export abstract class BaseInst<TABLE extends TableInfo<keyof KyselyTables>> {
-   // abstract deleteStrategy
-   abstract instObservabilityConfig: { [key: string]: AnnotationMapEntry } | undefined
-   abstract dataObservabilityConfig:
-      | {
-           [key in keyof TABLE['$T']]?: AnnotationMapEntry
-        }
-      | undefined
+   @observable.ref accessor data: TABLE['$T']
 
    constructor(
       /** pointer to the liveDB */
@@ -31,13 +28,15 @@ export abstract class BaseInst<TABLE extends TableInfo<keyof KyselyTables>> {
       public table: LiveTable<TABLE, any>,
 
       /** data */
-      public data: TABLE['$T'],
+      data: TABLE['$T'],
       // & {
       //     id: TABLE['$ID']
       //     createdAt: number
       //     updatedAt: number
       // },
-   ) {}
+   ) {
+      this.data = data
+   }
 
    /** instance data */
    // data!: TABLE['$T'] & {
@@ -177,7 +176,7 @@ export abstract class BaseInst<TABLE extends TableInfo<keyof KyselyTables>> {
          {}, // receiving object
          toJS(this.data), // original object
          {
-            // 2023-11-30 rvion:: no need to set the createdAt and updatedAt
+            // 2023-11-30 rvion: no need to set the createdAt and updatedAt
             // they'll be taken care of by the create functio below
             id: nanoid(), // overrides
             ...t,
@@ -187,7 +186,9 @@ export abstract class BaseInst<TABLE extends TableInfo<keyof KyselyTables>> {
    }
 
    delete(p: TABLE['$DeleteInstructions']): void {
-      this.table.delete(this.data.id, p)
+      runInAction(() => {
+         this.table.delete(this.data.id, p)
+      })
    }
 
    toJSON(): TABLE['$T'] {
@@ -195,31 +196,32 @@ export abstract class BaseInst<TABLE extends TableInfo<keyof KyselyTables>> {
    }
 
    init(data_: TABLE['$T']): void {
-      // console.log(`🔴 INIT`, data)
-      /* 🚝 */ const startTime = process.hrtime()
+      runInAction(() => {
+         // console.log(`🔴 INIT`, data)
+         /* 🚝 */ const startTime = process.hrtime()
 
-      const data = this.dataObservabilityConfig //
-         ? observable(data_, this.dataObservabilityConfig)
-         : data_
+         const data = this.dataObservabilityConfig //
+            ? observable(data_, this.dataObservabilityConfig)
+            : observable(data_)
 
-      this.data = data
+         this.data = data
 
-      // // prettier-ignore
-      // /* 🔶 PERF HACK */ if (this.tableName === 'comfy_schema') {
-      //     /* 🔶 PERF HACK */; (data as any as { spec: { a: 1; }; }).spec = observable.ref(
-      //     /* 🔶 PERF HACK */(data as any as { spec: { a: 1; }; }).spec,
-      //         /* 🔶 PERF HACK */ {},
-      //         /* 🔶 PERF HACK */ { deep: false }
-      //     );
-      //     /* 🔶 PERF HACK */
-      // }
+         // // prettier-ignore
+         // /* 🔶 PERF HACK */ if (this.tableName === 'comfy_schema') {
+         //     /* 🔶 PERF HACK */; (data as any as { spec: { a: 1; }; }).spec = observable.ref(
+         //     /* 🔶 PERF HACK */(data as any as { spec: { a: 1; }; }).spec,
+         //         /* 🔶 PERF HACK */ {},
+         //         /* 🔶 PERF HACK */ { deep: false }
+         //     );
+         //     /* 🔶 PERF HACK */
+         // }
 
-      this.onHydrate?.(/* data */)
-      this.onUpdate?.(undefined, data)
-      makeAutoObservableInheritance(this, this.instObservabilityConfig as any)
-      /* 🚝 */ const endTime = process.hrtime(startTime)
-      /* 🚝 */ const ms = endTime[1] / 1000000
-      /* 🚝 */ quickBench.addStats(`init:${this.table.name}`, ms)
+         this.onHydrate?.(/* data */)
+         this.onUpdate?.(undefined, data)
+         /* 🚝 */ const endTime = process.hrtime(startTime)
+         /* 🚝 */ const ms = endTime[1] / 1000000
+         /* 🚝 */ quickBench.addStats(`init:${this.table.name}`, ms)
+      })
    }
 
    log(...args: any[]): void {

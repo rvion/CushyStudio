@@ -16,7 +16,7 @@ const frFormatterInt = new Intl.NumberFormat('fr-FR', {
 export function parseNumberFR(val: string, format: NumberFormat): number {
    if (format === 'amount' || format === 'float') return parseFloat(val.replace(/\s/g, '').replace(/,/g, '.'))
 
-   if (format === 'int') return parseInt(val.replace(/\s/g, ''), 10)
+   if (format === 'int' || format === 'rawInt') return parseInt(val.replace(/\s/g, ''), 10)
 
    exhaust(format)
 }
@@ -25,6 +25,7 @@ export function formatNumberFR(val: number, format: NumberFormat): string {
    if (format === 'amount') return frFormatterAmount.format(val)
    if (format === 'float') return frFormatter.format(val)
    if (format === 'int') return frFormatterInt.format(val)
+   if (format === 'rawInt') return `${val}`
    exhaust(format)
 }
 
@@ -41,7 +42,7 @@ const enFormatterInt = new Intl.NumberFormat('en-US', {
 
 export function parseNumberEN(val: string, format: NumberFormat): number {
    if (format === 'amount' || format === 'float') return parseFloat(val.replace(/[\s,]/g, ''))
-   if (format === 'int') return parseInt(val.replace(/[\s,]/g, ''), 10)
+   if (format === 'int' || format === 'rawInt') return parseInt(val.replace(/[\s,]/g, ''), 10)
    exhaust(format)
 }
 
@@ -49,5 +50,6 @@ export function formatNumberEN(val: number, format: NumberFormat): string {
    if (format === 'amount') return enFormatterAmount.format(val)
    if (format === 'float') return enFormatter.format(val)
    if (format === 'int') return enFormatterInt.format(val)
+   if (format === 'rawInt') return `${val}`
    exhaust(format)
 }

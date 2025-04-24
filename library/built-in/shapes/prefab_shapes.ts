@@ -8,6 +8,7 @@
  */
 
 import type { Field_number } from '../../../src/csuite/fields/number/FieldNumber'
+import type { Field_size } from '../../../src/csuite/fields/size/FieldSize'
 import type Konva from 'konva'
 
 // --------------------------------------------------------------------------------
@@ -29,27 +30,27 @@ export interface Shape {
 // even when typescript does a great job at inferring them :)
 // will make your vscode go brrrrr.
 
-export type UI_LatentShapeGenerator = X.XGroup<{
-   batchSize: X.XShared<X.Number> | X.XNumber
-   size: X.XShared<X.Size> | X.XSize
-   amountCircle: X.XNumber
-   amountRect: X.XNumber
-   amountStar: X.XNumber
-   amountPolygon: X.XNumber
-   amountRing: X.XNumber
-   amountRainbow: X.XNumber
-   color1: X.XString
-   color2: X.XString
-   colorVariationFactor: X.XNumber
+export type UI_LatentShapeGenerator = Z.Group<{
+   batchSize: Z.Shared<Field_number> | Z.Number
+   size: Z.Shared<Field_size> | Z.Size
+   amountCircle: Z.Number
+   amountRect: Z.Number
+   amountStar: Z.Number
+   amountPolygon: Z.Number
+   amountRing: Z.Number
+   amountRainbow: Z.Number
+   color1: Z.String
+   color2: Z.String
+   colorVariationFactor: Z.Number
 }>
 
 // 1. ------------------------------------------------------------------------------------
 export function ui_LatentShapeGenerator(
    //
-   batchSize?: X.XShared<X.Number>,
-   size?: X.XShared<X.Size>,
+   batchSize?: Z.Shared<Field_number>,
+   size?: Z.Shared<Field_size>,
 ): UI_LatentShapeGenerator {
-   const ui = getCurrentForm()
+   const ui = getBuilder()
    return ui.fields(
       {
          batchSize: batchSize ?? ui.int({ step: 1, default: 1, min: 1, max: 15 }),
@@ -63,7 +64,7 @@ export function ui_LatentShapeGenerator(
 
          color1: ui.stringColor({ default: '#FFFFFF' }),
          color2: ui.stringColor({ default: '#000000' }),
-         colorVariationFactor: ui.float({ min: 0, max: 1, default: 0.5, tooltip: 'A higher color variation factor value will result in more color variation, while a lower color variation factor value will result in less color variation. If factor is 0, there will be no color variation at all.' }), // prettier-ignore
+         colorVariationFactor: ui.float({ min: 0, max: 1, default: 0.5, description: 'A higher color variation factor value will result in more color variation, while a lower color variation factor value will result in less color variation. If factor is 0, there will be no color variation at all.' }), // prettier-ignore
       },
       {
          collapsed: false,
@@ -71,7 +72,7 @@ export function ui_LatentShapeGenerator(
             {
                label: 'default',
                apply: (widget): void => {
-                  widget.setPartialValue({
+                  widget.zSet({
                      amountCircle: 0,
                      amountRect: 0,
                      amountStar: 0,
@@ -87,7 +88,7 @@ export function ui_LatentShapeGenerator(
             {
                label: 'pinkPower',
                apply: (widget): void => {
-                  widget.setPartialValue({
+                  widget.zSet({
                      amountCircle: 1,
                      amountRect: 1,
                      amountStar: 1,
@@ -103,7 +104,7 @@ export function ui_LatentShapeGenerator(
             {
                label: 'itHurtsMyEyes',
                apply: (widget): void => {
-                  widget.setPartialValue({
+                  widget.zSet({
                      amountCircle: 10,
                      amountRect: 10,
                      amountStar: 10,
@@ -125,7 +126,7 @@ export function ui_LatentShapeGenerator(
 /** this function returns a fancy latent */
 export const run_LatentShapeGenerator = async (
    /** the shape generation config */
-   shapeConfig: UI_LatentShapeGenerator['$Value'],
+   shapeConfig: UI_LatentShapeGenerator['{value}'],
    /** required to convert generated image to latent */
    vae: Comfy.Signal['VAE'],
 ): Promise<{

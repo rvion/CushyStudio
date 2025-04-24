@@ -1,32 +1,30 @@
-import type { BaseSchema } from '../../model/BaseSchema'
+import type { CSchema } from '../../model/CSchema'
 import type { Field_board } from './Field_board'
-
-import { observer } from 'mobx-react-lite'
 
 import { Button } from '../../button/Button'
 
-export const WidgetListExt_ValuesUI = observer(function WidgetListExtValuesUI_<T extends BaseSchema>(p: {
+export const WidgetListExt_ValuesUI = obs(function WidgetListExtValuesUI_<T extends CSchema>(p: {
    //
    field: Field_board<T>
 }) {
    const listExt = p.field
-   const { items } = listExt.fields
-   const values = listExt.fields.items.childrenAll
+   const { items } = listExt.zFields
+   const values = listExt.zFields.items.zChildrenAll
    const len = values.length
    const indexWidth = len < 10 ? 1 : len < 100 ? 2 : 3
-   const min = items.config.min
+   const min = items.zConfig.min
    return (
       <div tw='flex flex-col gap-1'>
          {values.map((sub2, ix) => {
-            const sub = sub2.fields
+            const sub = sub2.zFields
             const subWidget = sub.value
             const shape = sub.shape
             return (
-               <div key={subWidget.id} tw='flex items-start'>
+               <div key={subWidget.zUid} tw='flex items-start'>
                   <div style={{ width: `${indexWidth}rem` }}>{ix}</div>
                   <input
-                     value={shape.value.fill}
-                     onChange={(ev) => (shape.value.fill = ev.target.value)}
+                     value={shape.zValue.fill}
+                     onChange={(ev) => (shape.zValue.fill = ev.target.value)}
                      type='color'
                      tw='w-7'
                   ></input>
@@ -34,9 +32,9 @@ export const WidgetListExt_ValuesUI = observer(function WidgetListExtValuesUI_<T
                      style={{ width: `${indexWidth}rem` }}
                      look='subtle'
                      size='sm'
-                     onClick={() => subWidget.setCollapsed(!Boolean(subWidget.serial.collapsed))}
+                     onClick={() => subWidget.zSetCollapsed(!Boolean(subWidget.zSerial.collapsed))}
                   >
-                     {subWidget.serial.collapsed ? '▸' : '▿'}
+                     {subWidget.zSerial.collapsed ? '▸' : '▿'}
                   </Button>
                   <subWidget.UI />
                   <shape.UI />

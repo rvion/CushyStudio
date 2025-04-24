@@ -11,8 +11,8 @@ export type AnomalySuggestionID = string
  * it should be OK since all of those are just lambdas
  */
 export type AnomalySolutionSuggestion = {
-    id: AnomalySuggestionID
-    description: string
-    candidates: { name: string; solutionID: string }[]
-    count: number
+   id: AnomalySuggestionID
+   description: string
+   candidates: { name: string; solutionID: string }[]
+   count: number
 }

@@ -8,7 +8,7 @@ import { FrameSubtle } from '../../csuite/wrappers/FrameSubtle'
 import { FrameTitle } from '../../csuite/wrappers/FrameTitle'
 
 /** Freely modify this as you like, then pick the "Scratch Pad" option in the top left. Do not commit changes made to this. */
-export const PlaygroundScratchPad = observer(function PlaygroundScratchPad_(p: {}) {
+export const PlaygroundScratchPad = obs(function PlaygroundScratchPad_(p: {}) {
    return (
       <ErrorBoundaryUI>
          <ThemeConfigUI />
@@ -16,7 +16,7 @@ export const PlaygroundScratchPad = observer(function PlaygroundScratchPad_(p: {
    )
 })
 
-export const ThemeConfigUI = observer(function ThemeConfigUI_(p: {}) {
+export const ThemeConfigUI = obs(function ThemeConfigUI_(p: {}) {
    const uist = useLocalObservable(() => ({ base: 'oklch(.3 0.05 0)' }))
    return (
       <div tw='h-full w-full p-1'>
@@ -34,7 +34,7 @@ export const ThemeConfigUI = observer(function ThemeConfigUI_(p: {}) {
                }}
                field={cushy.forms.use((ui) =>
                   ui.fields({
-                     col: ui.colorV2({ onValueChange: (v) => (uist.base = v.value) }),
+                     col: ui.stringColor({ onValueChange: (v) => (uist.base = v.zValue) }),
                      foo: ui.string(),
                      bar: ui.int().list({ min: 3 }),
                      baz: ui.fields({

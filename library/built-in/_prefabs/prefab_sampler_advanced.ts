@@ -3,65 +3,65 @@ import type { OutputFor } from './_prefabs'
 
 import { run_prompt } from './prefab_prompt'
 
-export type UI_Sampler_Advanced = X.XGroup<{
-   sampler_name: X.XEnum<'KSampler.sampler_name'>
-   guidanceType: X.XChoice<{
-      CFG: X.XNumber
-      DualCFG: X.XGroup<{
-         cfg: X.XNumber
-         cfg_conds2_negative: X.XNumber
-         dualCFGPositive2: X.XPrompt
+export type UI_Sampler_Advanced = Z.Group<{
+   sampler_name: Z.Enum<'KSampler.sampler_name'>
+   guidanceType: Z.Choice<{
+      CFG: Z.Number
+      DualCFG: Z.Group<{
+         cfg: Z.Number
+         cfg_conds2_negative: Z.Number
+         dualCFGPositive2: Z.Prompt
       }>
-      PerpNeg: X.XGroup<{
-         cfg: X.XNumber
-         negCfg: X.XNumber
-      }>
-   }>
-   sigmasType: X.XChoice<{
-      basic: X.XGroup<{
-         denoise: X.XNumber
-         steps: X.XNumber
-         scheduler: X.XEnum<'KSampler.scheduler'>
-      }>
-      AlignYourStep: X.XGroup<{
-         denoise: X.XNumber
-         steps: X.XNumber
-         modelType: X.XEnum<'AlignYourStepsScheduler.model_type'>
-      }>
-      karrasCustom: X.XGroup<{
-         steps: X.XNumber
-         sigma_max: X.XNumber
-         sigma_min: X.XNumber
-         rho: X.XNumber
-      }>
-      ExponentialCustom: X.XGroup<{
-         steps: X.XNumber
-         sigma_max: X.XNumber
-         sigma_min: X.XNumber
-      }>
-      polyexponentialCustom: X.XGroup<{
-         steps: X.XNumber
-         sigma_max: X.XNumber
-         sigma_min: X.XNumber
-         rho: X.XNumber
-      }>
-      SDTurbo: X.XGroup<{
-         steps: X.XNumber
-         denoise: X.XNumber
-      }>
-      VPScheduler: X.XGroup<{
-         steps: X.XNumber
-         beta_d: X.XNumber
-         beta_min: X.XNumber
-         eps_s: X.XNumber
+      PerpNeg: Z.Group<{
+         cfg: Z.Number
+         negCfg: Z.Number
       }>
    }>
-   seed: X.XSeed
-   textEncoderType: X.XChoice<{
-      CLIP: X.XGroup<{}>
-      SDXL: X.XGroup<{}>
-      SD3: X.XGroup<{}>
-      FLUX: X.XGroup<{}>
+   sigmasType: Z.Choice<{
+      basic: Z.Group<{
+         denoise: Z.Number
+         steps: Z.Number
+         scheduler: Z.Enum<'KSampler.scheduler'>
+      }>
+      AlignYourStep: Z.Group<{
+         denoise: Z.Number
+         steps: Z.Number
+         modelType: Z.Enum<'AlignYourStepsScheduler.model_type'>
+      }>
+      karrasCustom: Z.Group<{
+         steps: Z.Number
+         sigma_max: Z.Number
+         sigma_min: Z.Number
+         rho: Z.Number
+      }>
+      ExponentialCustom: Z.Group<{
+         steps: Z.Number
+         sigma_max: Z.Number
+         sigma_min: Z.Number
+      }>
+      polyexponentialCustom: Z.Group<{
+         steps: Z.Number
+         sigma_max: Z.Number
+         sigma_min: Z.Number
+         rho: Z.Number
+      }>
+      SDTurbo: Z.Group<{
+         steps: Z.Number
+         denoise: Z.Number
+      }>
+      VPScheduler: Z.Group<{
+         steps: Z.Number
+         beta_d: Z.Number
+         beta_min: Z.Number
+         eps_s: Z.Number
+      }>
+   }>
+   seed: Z.Seed
+   textEncoderType: Z.Choice<{
+      CLIP: Z.Group<{}>
+      SDXL: Z.Group<{}>
+      SD3: Z.Group<{}>
+      FLUX: Z.Group<{}>
    }>
 }>
 
@@ -75,7 +75,7 @@ export function ui_sampler_advanced(p?: {
    startCollapsed?: boolean
    sharedSampler?: boolean
 }): UI_Sampler_Advanced {
-   const form: X.Builder = getCurrentForm()
+   const form: Z.Builder = getBuilder()
    return form.fields(
       {
          sampler_name: p?.sharedSampler
@@ -91,6 +91,7 @@ export function ui_sampler_advanced(p?: {
          guidanceType: form.choice(
             {
                CFG: form.float({
+                  description: 'WHAT THE FUCK',
                   step: 1,
                   label: 'CFG',
                   min: 0,
@@ -117,7 +118,7 @@ export function ui_sampler_advanced(p?: {
                   }),
                   dualCFGPositive2: form.prompt({
                      default: ['highly detailed, masterpiece, best quality,'].join('\n'),
-                     icon: 'mdiAlphabeticalVariant',
+                     icon: IKONS.mdiAlphabeticalVariant,
                      box: { base: { hue: 150, chroma: 0.05 } },
                   }),
                }),
@@ -198,7 +199,7 @@ export function ui_sampler_advanced(p?: {
          // steps: form.int({ step: 10, default: p?.steps ?? 20, label: 'Steps', min: 0, softMax: 100 }),
       },
       {
-         toSummary: ({ value: ui }): string => {
+         toString_: ({ zValue: ui }): string => {
             let sigmas: string = ''
             if (ui.sigmasType.basic) {
                sigmas = 'basic'
@@ -233,16 +234,16 @@ export function ui_sampler_advanced(p?: {
 
             return `sigmas:${sigmas} guide:${guidance} cfg:${cfg} `
          },
-         icon: 'mdiTimerSandComplete',
+         icon: IKONS.mdiTimerSandComplete,
          // box: { base: { hue: 300, chroma: 0.1 } },
          label: 'Sampler',
          startCollapsed: p?.startCollapsed ?? false,
          presets: [
             {
                label: 'SD3',
-               icon: 'mdiStar',
+               icon: IKONS.mdiStar,
                apply: (w): void => {
-                  w.value = {
+                  w.zValue = {
                      guidanceType: { CFG: 4.5 },
                      sigmasType: { basic: { denoise: 1, steps: 28, scheduler: 'sgm_uniform' } },
                      sampler_name: 'dpmpp_2m',
@@ -253,9 +254,9 @@ export function ui_sampler_advanced(p?: {
             },
             {
                label: 'FLUX',
-               icon: 'mdiStar',
+               icon: IKONS.mdiStar,
                apply: (w): void => {
-                  w.value = {
+                  w.zValue = {
                      guidanceType: { CFG: 3.5 },
                      sigmasType: { basic: { denoise: 1, steps: 28, scheduler: 'simple' } },
                      sampler_name: 'euler',

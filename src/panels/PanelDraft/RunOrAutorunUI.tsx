@@ -1,15 +1,13 @@
-import type { IconName } from '../../csuite/icons/icons'
+import type { IconName } from '../../csuite/icons/IconName'
 import type { DraftL } from '../../models/Draft'
-
-import { observer } from 'mobx-react-lite'
 
 import { Button } from '../../csuite/button/Button'
 import { InputNumberUI } from '../../csuite/input-number/InputNumberUI'
 import { RevealUI } from '../../csuite/reveal/RevealUI'
 
-export const RunOrAutorunUI = observer(function RunOrAutorunUI_(p: { className?: string; draft: DraftL }) {
+export const RunOrAutorunUI = obs(function RunOrAutorunUI_(p: { className?: string; draft: DraftL }) {
    const draft = p.draft
-   const icon: IconName = draft.shouldAutoStart ? 'mdiPause' : 'mdiPlay'
+   const icon: IconName = draft.shouldAutoStart ? IKONS.mdiPause : IKONS.mdiPlay
    return (
       <div tw='flex h-full' className={p.className}>
          <RevealUI
@@ -17,7 +15,6 @@ export const RunOrAutorunUI = observer(function RunOrAutorunUI_(p: { className?:
                <div tw='p-2'>
                   <div>ms to wait after a change</div>
                   <InputNumberUI
-                     //
                      mode='int'
                      value={draft.st.project.data.autostartDelay}
                      onValueChange={(value) => draft.st.project.update({ autostartDelay: value })}
@@ -30,7 +27,6 @@ export const RunOrAutorunUI = observer(function RunOrAutorunUI_(p: { className?:
                   />
                   <div>max ms to wait before running anyway</div>
                   <InputNumberUI
-                     //
                      mode='int'
                      value={draft.st.project.data.autostartMaxDelay}
                      onValueChange={(val) => {
@@ -46,13 +42,11 @@ export const RunOrAutorunUI = observer(function RunOrAutorunUI_(p: { className?:
                </div>
             )}
          >
-            <Button tw='!gap-0 !px-0.5' icon='mdiTimer' suffixIcon={'mdiChevronDown'} />
+            <Button tw='!gap-0 !px-0.5' icon={IKONS.mdiTimer} suffixIcon={IKONS.mdiChevronDown} />
          </RevealUI>
          <Button
-            // tw='h-input'
             look='success'
             tooltip='Run the current draft. (create a step)'
-            // size='xs'
             expand
             className='self-start'
             icon={icon}
@@ -65,11 +59,9 @@ export const RunOrAutorunUI = observer(function RunOrAutorunUI_(p: { className?:
             Run
          </Button>
          <Button // TODO(bird_d): Need a button that can be tied to an command, and will pull the relevant info from it. Like a label for the- label, and a description for the tooltip.
-            icon='mdiAnimationPlay'
+            icon={IKONS.mdiAnimationPlay}
             tooltip='Auto-start (restart when idle if change happened)'
             look='success'
-            // size='xs'
-            // tw='h-input'
             square
             loading={draft.shouldAutoStart}
             active={draft.shouldAutoStart}

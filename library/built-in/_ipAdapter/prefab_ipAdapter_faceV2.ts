@@ -5,33 +5,33 @@ import { ui_ipadapter_advancedSettings, type UI_ipadapter_advancedSettings } fro
 
 // ======================================================================================================
 // 🅿️ IPAdapter Basic
-export type UI_IPAdapterFaceIDV2 = X.XGroup<{
+export type UI_IPAdapterFaceIDV2 = Z.Group<{
    baseImage: UI_FaceIDImageInput
-   settings: X.XGroup<{
-      weight: X.XNumber
-      weight_faceidv2: X.XNumber
-      models: X.XGroup<{
-         type: X.XEnum<'IPAdapter_plus.IPAdapterUnifiedLoaderFaceID.preset'>
+   settings: Z.Group<{
+      weight: Z.Number
+      weight_faceidv2: Z.Number
+      models: Z.Group<{
+         type: Z.Enum<'IPAdapter_plus.IPAdapterUnifiedLoaderFaceID.preset'>
       }>
-      extra: X.XList<UI_FaceIDImageInput>
-      advancedSettings: X.XGroup<{
-         extraIPAdapter: X.XOptional<UI_extraIpAdapter>
-         startAtStepPercent: X.XNumber
-         endAtStepPercent: X.XNumber
-         lora_strength: X.XNumber
-         embedding_combination: X.XEnum<'Impact-Pack.ImpactIPAdapterApplySEGS.combine_embeds'>
-         weight_type: X.XEnum<'IPAdapter_plus.IPAdapterAdvanced.weight_type'>
-         embedding_scaling: X.XEnum<'IPAdapter_plus.IPAdapterAdvanced.embeds_scaling'>
-         noise: X.XNumber
-         unfold_batch: X.XBool
-         adapterAttentionMask: X.XOptional<X.XImage>
+      extra: Z.List<UI_FaceIDImageInput>
+      advancedSettings: Z.Group<{
+         extraIPAdapter: Z.Maybe<UI_extraIpAdapter>
+         startAtStepPercent: Z.Number
+         endAtStepPercent: Z.Number
+         lora_strength: Z.Number
+         embedding_combination: Z.Enum<'Impact-Pack.ImpactIPAdapterApplySEGS.combine_embeds'>
+         weight_type: Z.Enum<'IPAdapter_plus.IPAdapterAdvanced.weight_type'>
+         embedding_scaling: Z.Enum<'IPAdapter_plus.IPAdapterAdvanced.embeds_scaling'>
+         noise: Z.Number
+         unfold_batch: Z.Bool
+         adapterAttentionMask: Z.Maybe<Z.Image>
       }>
    }>
-   help: X.XMarkdown
+   help: Z.Markdown
 }>
 
 export function ui_IPAdapterFaceIDV2(): UI_IPAdapterFaceIDV2 {
-   const form = getCurrentForm()
+   const form = getBuilder()
    return (
       form
          .fields(
@@ -47,7 +47,7 @@ export function ui_IPAdapterFaceIDV2(): UI_IPAdapterFaceIDV2 {
                               default: 'FACEID PLUS V2',
                            }),
                         },
-                        { startCollapsed: true, toSummary: ({ value: ui }): string => `model:${ui.type}` },
+                        { startCollapsed: true, toString_: ({ zValue: ui }): string => `model:${ui.type}` },
                      ),
                      extra: form.list({
                         label: 'Extra Images',
@@ -76,13 +76,13 @@ export function ui_IPAdapterFaceIDV2(): UI_IPAdapterFaceIDV2 {
                            adapterAttentionMask: form
                               .image({
                                  label: 'Attention Mask',
-                                 tooltip:
+                                 description:
                                     'This defines the region of the generated image the IPAdapter will apply to',
                               })
                               .optional(),
                         },
                         {
-                           toSummary: ({ value: ui }): string => {
+                           toString_: ({ zValue: ui }): string => {
                               return `${ui.weight_type} | combo:${ui.embedding_combination} | from:${
                                  ui.startAtStepPercent
                               }=>${ui.endAtStepPercent} | reinforced:${ui.extraIPAdapter ? 'yes' : 'no'}`
@@ -93,7 +93,7 @@ export function ui_IPAdapterFaceIDV2(): UI_IPAdapterFaceIDV2 {
                   {
                      label: 'IP Adapter Settings',
                      startCollapsed: true,
-                     toSummary: ({ value: ui }): string => {
+                     toString_: ({ zValue: ui }): string => {
                         return `extra images:${ui.extra.length} | weight:${ui.weight} | weightV2:${ui.weight_faceidv2} | model:${ui.models.type}|`
                      },
                   },
@@ -102,9 +102,9 @@ export function ui_IPAdapterFaceIDV2(): UI_IPAdapterFaceIDV2 {
             },
             {
                label: 'FaceID',
-               icon: 'mdiStarFace',
+               icon: IKONS.mdiStarFace,
                box: { base: { hue: 50, chroma: 0.1 } },
-               toSummary: ({ value: ui }): string => {
+               toString_: ({ zValue: ui }): string => {
                   return `images:${1 + ui.settings.extra.length} | weight:${ui.settings.weight} | weightV2:${
                      ui.settings.weight_faceidv2
                   } | model:${ui.settings.models.type}`
@@ -146,14 +146,14 @@ export function ui_IPAdapterFaceIDV2(): UI_IPAdapterFaceIDV2 {
 }
 
 // ======================================================================================================
-export type UI_FaceIDImageInput = X.XGroup<{
-   image: X.XImage
-   advanced: X.XGroup<{
-      sharpening: X.XNumber
-      crop_position: X.XEnum<'IPAdapter_plus.PrepImageForClipVision.crop_position'>
+export type UI_FaceIDImageInput = Z.Group<{
+   image: Z.Image
+   advanced: Z.Group<{
+      sharpening: Z.Number
+      crop_position: Z.Enum<'IPAdapter_plus.PrepImageForClipVision.crop_position'>
    }>
 }>
-export function ui_FaceIDImageInput(form: X.Builder): UI_FaceIDImageInput {
+export function ui_FaceIDImageInput(form: Z.Builder): UI_FaceIDImageInput {
    return form.fields(
       {
          image: form.image({ label: 'Image' }),
@@ -167,7 +167,7 @@ export function ui_FaceIDImageInput(form: X.Builder): UI_FaceIDImageInput {
             {
                startCollapsed: true,
                label: 'Image Settings',
-               toSummary: ({ value: ui }): string => {
+               toString_: ({ zValue: ui }): string => {
                   return `sharpening:${ui.sharpening} | crop_position:${ui.crop_position}`
                },
             },
@@ -175,7 +175,7 @@ export function ui_FaceIDImageInput(form: X.Builder): UI_FaceIDImageInput {
          // crop: form.bool({ default: true }),
       },
       {
-         toSummary: ({ value: ui }): string => {
+         toString_: ({ zValue: ui }): string => {
             return `sharpening:${ui.advanced.sharpening} | crop_position:${ui.advanced.crop_position}`
          },
       },
@@ -183,12 +183,12 @@ export function ui_FaceIDImageInput(form: X.Builder): UI_FaceIDImageInput {
 }
 
 // ======================================================================================================
-export type UI_extraIpAdapter = X.XGroup<{
-   weight: X.XNumber
-   embedding_combination: X.XEnum<'IPAdapter_plus.IPAdapterAdvanced.combine_embeds'>
+export type UI_extraIpAdapter = Z.Group<{
+   weight: Z.Number
+   embedding_combination: Z.Enum<'IPAdapter_plus.IPAdapterAdvanced.combine_embeds'>
    ipAdapterSettings: UI_ipadapter_advancedSettings
 }>
-function ui_extraIpAdapter(form: X.Builder): UI_extraIpAdapter {
+function ui_extraIpAdapter(form: Z.Builder): UI_extraIpAdapter {
    return form.fields(
       {
          weight: form.float({ default: 0.4, min: -1, max: 3, step: 0.1 }),
@@ -196,7 +196,7 @@ function ui_extraIpAdapter(form: X.Builder): UI_extraIpAdapter {
          ipAdapterSettings: ui_ipadapter_advancedSettings(form, 0.25, 1, 'ease in'),
       },
       {
-         toSummary: ({ value: ui }): string => {
+         toString_: ({ zValue: ui }): string => {
             return `weight:${ui.weight} | ${ui.ipAdapterSettings.weight_type} | combo:${ui.embedding_combination} | from:${ui.ipAdapterSettings.startAtStepPercent}=>${ui.ipAdapterSettings.endAtStepPercent}`
          },
       },

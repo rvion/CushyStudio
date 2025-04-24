@@ -1,10 +1,11 @@
-import type { IconName } from './icons'
+import type { IconName } from './IconName'
 
 import * as icons from '@mdi/js'
 
-let _icons
+let _icons: string[] | undefined
+
 export function getAllIcons(): IconName[] {
-   return (_icons ??= Object.keys(icons)) as (keyof typeof icons)[]
+   return (_icons ??= Object.keys(icons)) as any as IconName[]
 }
 
 export function getNthIconName(ix: number): IconName {

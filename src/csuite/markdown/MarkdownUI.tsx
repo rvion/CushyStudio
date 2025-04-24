@@ -1,10 +1,10 @@
-import { marked } from 'marked'
-import { observer } from 'mobx-react-lite'
+import { marked, type MarkedOptions } from 'marked'
 
-export const MarkdownUI = observer(function MarkdownUI_(p: {
+export const MarkdownUI = obs(function MarkdownUI_(p: {
    //
    className?: string
    markdown?: string
+   opts?: MarkedOptions
 }) {
    if (p.markdown == null) return null
 
@@ -12,7 +12,7 @@ export const MarkdownUI = observer(function MarkdownUI_(p: {
       <div //
          tw='_MD'
          className={p.className}
-         dangerouslySetInnerHTML={{ __html: marked(p.markdown) }}
+         dangerouslySetInnerHTML={{ __html: marked(p.markdown, { ...p.opts, async: false }) }}
       />
    )
 })

@@ -1,7 +1,6 @@
-import { observer } from 'mobx-react-lite'
 import { useState } from 'react'
 
-export const TabUI = observer(function TabUI_(p: {
+export const TabUI = obs(function TabUI_(p: {
    className?: string
    style?: React.CSSProperties
    children: React.ReactNode[]

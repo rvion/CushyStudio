@@ -1,10 +1,8 @@
 import type { IWidgetListLike } from './IWidgetListLike'
 
-import { observer } from 'mobx-react-lite'
-
 import { Button } from '../../button/Button'
 
-export const ListButtonUnfoldUI = observer(function ListButtonUnfoldUI_(p: { field: IWidgetListLike }) {
+export const ListButtonUnfoldUI = obs(function ListButtonUnfoldUI_(p: { field: IWidgetListLike }) {
    const field = p.field
    return (
       <Button
@@ -12,10 +10,11 @@ export const ListButtonUnfoldUI = observer(function ListButtonUnfoldUI_(p: { fie
          borderless
          subtle
          square
-         icon='mdiUnfoldLessHorizontal'
+         icon={IKONS.mdiUnfoldLessHorizontal}
          onClick={(ev) => {
+            field.zTouch()
             ev.stopPropagation()
-            field.collapseAllChildren()
+            field.zCollapseAllChildren()
          }}
       />
    )

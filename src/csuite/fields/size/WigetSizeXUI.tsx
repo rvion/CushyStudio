@@ -1,29 +1,27 @@
 import type { Field_size } from './FieldSize'
 import type { AspectRatio, ModelType } from './WidgetSizeTypes'
 
-import { observer } from 'mobx-react-lite'
-
 import { ToggleButtonUI } from '../../checkbox/InputBoolToggleButtonUI'
 import { InputBoolUI } from '../../checkbox/InputBoolUI'
 import { Frame } from '../../frame/Frame'
 
-const modelBtn = (uist: Field_size, model: ModelType): JSX.Element => (
+const modelBtn = (uist: Field_size, model: ModelType): React.JSX.Element => (
    <ToggleButtonUI //
       toggleGroup='size'
       tw='w-input'
       value={uist.desiredModelType == model}
       onValueChange={() => {
          uist.setModelType(model)
-         uist.touch()
+         uist.zTouch()
       }}
       text={model}
-      onBlur={() => uist.touch()}
+      onBlur={() => uist.zTouch()}
    />
 )
 
-export const WigetSizeXUI = observer(function WigetSizeXUI_(p: { size: Field_size }) {
+export const WigetSizeXUI = obs(function WigetSizeXUI_(p: { size: Field_size }) {
    const uist: Field_size = p.size
-   const resoBtn = (ar: AspectRatio): JSX.Element => (
+   const resoBtn = (ar: AspectRatio): React.JSX.Element => (
       <InputBoolUI //
          toggleGroup='size'
          display='button'

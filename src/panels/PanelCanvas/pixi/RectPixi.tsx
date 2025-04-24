@@ -1,8 +1,6 @@
 import type { SimpleRect } from '../../../csuite/fields/core-prefabs/RectSchema'
 
-import { observer } from 'mobx-react-lite'
-
-export const RectPixi = observer(function RectPixi(p: SimpleRect) {
+export const RectPixi = obs(function RectPixi(p: SimpleRect) {
    return (
       <pixiGraphics
          draw={(g) => {

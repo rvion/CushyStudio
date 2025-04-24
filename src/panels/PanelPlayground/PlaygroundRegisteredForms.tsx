@@ -1,9 +1,7 @@
-import { observer } from 'mobx-react-lite'
-
 import { FormUI } from '../../csuite/form/FormUI'
 
 /** This will allow devs to view re-usable forms once the form registering system is implemented */
-export const PlaygroundRegisteredForms = observer(function PlaygroundRequirements_(p: {}) {
+export const PlaygroundRegisteredForms = obs(function PlaygroundRequirements_(p: {}) {
    return (
       <div tw='h-full p-1'>
          <div tw='border-primary/30 rounded  border p-1'>

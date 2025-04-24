@@ -1,29 +1,37 @@
-import type { BaseSchema } from '../../model/BaseSchema'
+import type { CSchema } from '../../model/CSchema'
 import type { Field_list } from './FieldList'
-
-import { observer } from 'mobx-react-lite'
 
 import { Button } from '../../button/Button'
 import { ListItemMoveDownButtonUI } from './ListItemMoveDownButtonUI'
 import { ListItemMoveUpButtonUI } from './ListItemMoveUpButtonUI'
 
-export const WidgetList_BodyUI = observer(function WidgetList_BodyUI_<T extends BaseSchema>(p: {
+export const WidgetList_BodyUI = obs(function WidgetList_BodyUI_<T extends CSchema>(p: {
    field: Field_list<T>
+   /** defaults to `index` */
+   forLabelUse?: 'key' | 'index'
+   className?: string
 }) {
    const listField = p.field
    const subFields = listField.items
-   const min = listField.config.min
+   const min = listField.zConfig.min
    return (
       <div /* SortableList */
          // onSortEnd={(s, e) => p.field.moveItem(s, e)}
          // draggedItemClassName='dragged'
+         tw={p.className}
          className='list'
       >
          {subFields.map((subField, ix) => {
+            const title =
+               p.forLabelUse === undefined
+                  ? ix.toString()
+                  : p.forLabelUse === 'key'
+                    ? subField.zMountKey
+                    : ix.toString()
             return (
-               <div /* SortableItem */ key={subField.id}>
+               <div /* SortableItem */ key={subField.zUid}>
                   <subField.UI
-                     Title={ix.toString()}
+                     Title={title}
                      // slotDragKnob={
                      //     <div tw='flex'>
                      //         <SortableKnob>
@@ -38,22 +46,24 @@ export const WidgetList_BodyUI = observer(function WidgetList_BodyUI_<T extends 
                               square
                               size='input'
                               subtle
-                              icon='mdiDeleteOutline'
+                              icon={IKONS.mdiDeleteOutline}
                               onClick={(ev) => {
                                  listField.removeItem(subField)
-                                 listField.touch()
+                                 listField.zTouch()
                                  ev.preventDefault()
                                  ev.stopPropagation()
                               }}
-                              onBlur={() => listField.touch()}
+                              onBlur={() => listField.zTouch()}
                            />
                         )
                      }
                      UpDownBtn={
-                        <div tw='flex'>
-                           <ListItemMoveUpButtonUI listField={listField} ix={ix} />
-                           <ListItemMoveDownButtonUI listField={listField} ix={ix} />
-                        </div>
+                        listField.isAuto ? null : (
+                           <div tw='flex'>
+                              <ListItemMoveUpButtonUI listField={listField} ix={ix} />
+                              <ListItemMoveDownButtonUI listField={listField} ix={ix} />
+                           </div>
+                        )
                      }
                   />
                </div>

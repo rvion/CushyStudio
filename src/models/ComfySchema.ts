@@ -2,7 +2,6 @@ import type {
    ComfyNodeSlotName,
    ComfyPythonModule,
    ComfyUnionInfo,
-   ComfyUnionValue,
    EmbeddingName,
    NodeNameInComfy,
    NodeNameInCushy,
@@ -22,15 +21,11 @@ import { LiveTable } from '../db/LiveTable'
 export class ComfySchemaRepo extends LiveTable<TABLES['comfy_schema'], typeof ComfySchemaL> {
    constructor(liveDB: LiveDB) {
       super(liveDB, 'comfy_schema', '📑', ComfySchemaL)
-      this.init()
    }
 }
 
 export class ComfySchemaL extends BaseInst<TABLES['comfy_schema']> {
-   instObservabilityConfig: undefined
-   dataObservabilityConfig = {
-      spec: observable.ref,
-   }
+   dataObservabilityConfig = { spec: observable.ref }
 
    /**
     * return the number of nodes in your current schema

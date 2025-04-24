@@ -1,6 +1,5 @@
 import type { MediaImageL } from '../../models/MediaImage'
 
-import { observer } from 'mobx-react-lite'
 import { FixedSizeGrid } from 'react-window'
 
 import { useSizeOf } from '../../csuite/smooth-size/useSizeOf'
@@ -8,7 +7,7 @@ import { useGalleryConf } from './galleryConf'
 import { GalleryImageCardUI } from './GalleryImageCardUI'
 import { StepGroupUI } from './StepGroups'
 
-export const GalleryImageGridUI = observer(function GalleryImageGridUI_(p: {
+export const GalleryImageGridUI = obs(function GalleryImageGridUI_(p: {
    /** when not specified, it will just open the default image menu */
    onClick?: (img: MediaImageL) => void
 }) {
@@ -18,8 +17,8 @@ export const GalleryImageGridUI = observer(function GalleryImageGridUI_(p: {
    const ALLIMAGES = conf.imageToDisplay
    const total = ALLIMAGES.length
 
-   const itemWidth = conf.value.gallerySize
-   const itemHeight = conf.value.gallerySize
+   const itemWidth = conf.zValue.gallerySize
+   const itemHeight = conf.zValue.gallerySize
    const containerWidth = size.width ?? 100
    const containerHeight = size.height ?? 100
    const nbCols = Math.floor(containerWidth / itemWidth) || 1
@@ -30,7 +29,7 @@ export const GalleryImageGridUI = observer(function GalleryImageGridUI_(p: {
          ref={refFn}
          tw='flex-1 select-none overflow-auto'
          // applying filter on the whole gallery is way faster than doing it on every individual images
-         style={conf.value.onlyShowBlurryThumbnails ? { filter: 'blur(10px)' } : undefined}
+         style={conf.zValue.onlyShowBlurryThumbnails ? { filter: 'blur(10px)' } : undefined}
       >
          <GalleryGridUI
             containerHeight={containerHeight}
@@ -39,14 +38,14 @@ export const GalleryImageGridUI = observer(function GalleryImageGridUI_(p: {
             nbRows={nbRows}
             itemWidth={itemWidth}
             itemHeight={itemHeight}
-            enableStepGrouping={conf.value.enableStepGrouping}
+            enableStepGrouping={conf.zValue.enableStepGrouping}
             images={ALLIMAGES}
          />
       </div>
    )
 })
 
-const GalleryGridUI = observer(function GalleryGridUI_(p: {
+const GalleryGridUI = obs(function GalleryGridUI_(p: {
    containerHeight: number
    containerWidth: number
    nbCols: number

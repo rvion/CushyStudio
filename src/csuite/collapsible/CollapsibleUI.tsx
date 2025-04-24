@@ -1,13 +1,12 @@
 import type { CollapsibleProps } from './CollapsibleProps'
 
-import { observer } from 'mobx-react-lite'
 import { useMemo } from 'react'
 
 import { Frame } from '../frame/Frame'
 // import { AnimatedSizeUI } from '../smooth-size/AnimatedSizeUI'
 import { CollapsibleState } from './CollapsibleState'
 
-export const CollapsibleUI = observer(function CollapsibleUI_(p: CollapsibleProps) {
+export const CollapsibleUI = obs(function CollapsibleUI_(p: CollapsibleProps) {
    const SELF = useMemo(() => new CollapsibleState(p), [])
 
    // 🔶 AnimatedSizeUI doesn't work with padding
@@ -17,7 +16,11 @@ export const CollapsibleUI = observer(function CollapsibleUI_(p: CollapsibleProp
          {SELF.p.hideAnchorWhenExpanded && SELF.isExpanded ? null : (
             <div tw='flex select-none' onClick={(ev) => SELF.toggle()}>
                {p.children ?? (
-                  <Frame tw='flex' look='link' icon={SELF.isCollapsed ? 'mdiChevronRight' : 'mdiChevronDown'}>
+                  <Frame
+                     tw='flex'
+                     look='link'
+                     icon={SELF.isCollapsed ? IKONS.mdiChevronRight : IKONS.mdiChevronDown}
+                  >
                      {SELF.isCollapsed
                         ? (p.titleCollapsed ?? 'Voir plus')
                         : (p.titleExpanded ?? 'Voir moins')}

@@ -1,0 +1,24 @@
+diff --git a/node_modules/@uiw/react-json-view/cjs/store.d.ts b/node_modules/@uiw/react-json-view/cjs/store.d.ts
+index 4072585..022449e 100644
+--- a/node_modules/@uiw/react-json-view/cjs/store.d.ts
++++ b/node_modules/@uiw/react-json-view/cjs/store.d.ts
+@@ -1,7 +1,7 @@
+ import React, { PropsWithChildren } from 'react';
+ import { JsonViewProps } from './';
+ import { type InitialTypesState, type TagType } from './store/Types';
+-export type BlockTagType = keyof JSX.IntrinsicElements;
++export type BlockTagType = keyof React.JSX.IntrinsicElements;
+ export interface InitialState<T extends object> {
+     value?: object;
+     onExpand?: JsonViewProps<object>['onExpand'];
+diff --git a/node_modules/@uiw/react-json-view/cjs/store/Types.d.ts b/node_modules/@uiw/react-json-view/cjs/store/Types.d.ts
+index 8c5f9ee..95e1116 100644
+--- a/node_modules/@uiw/react-json-view/cjs/store/Types.d.ts
++++ b/node_modules/@uiw/react-json-view/cjs/store/Types.d.ts
+@@ -1,5 +1,5 @@
+ import { PropsWithChildren, ComponentPropsWithoutRef } from 'react';
+-export type TagType = React.ElementType | keyof JSX.IntrinsicElements;
++export type TagType = React.ElementType | keyof React.JSX.IntrinsicElements;
+ type TypesElementProps<T extends TagType = 'span'> = {
+     as?: T;
+     render?: (props: TypesElement<T>, result: {

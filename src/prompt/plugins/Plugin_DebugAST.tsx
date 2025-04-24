@@ -1,8 +1,6 @@
 import type { WidgetPromptUISt } from '../WidgetPromptUISt'
 
-import { observer } from 'mobx-react-lite'
-
-export const Plugin_DebugAST = observer(function Plugin_DebugAST_(p: {
+export const Plugin_DebugAST = obs(function Plugin_DebugAST_(p: {
    //
    uist: WidgetPromptUISt
 }) {

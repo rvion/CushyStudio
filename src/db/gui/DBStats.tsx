@@ -1,5 +1,3 @@
-import { observer } from 'mobx-react-lite'
-
 import { Frame } from '../../csuite/frame/Frame'
 import { formatNum } from '../../csuite/utils/formatNum'
 import { formatSize } from '../../csuite/utils/formatSize'
@@ -7,7 +5,7 @@ import { isOdd } from '../../csuite/utils/isOdd'
 import { sum } from '../../csuite/utils/sum'
 import { getDBStats } from '../getDBStats'
 
-export const DBStatsUI = observer(function DBStats(p: {}) {
+export const DBStatsUI = obs(function DBStats(p: {}) {
    const stats = getDBStats(cushy.db)
 
    const byCount = Object.entries(stats)

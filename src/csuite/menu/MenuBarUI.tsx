@@ -1,6 +1,5 @@
 import type { MenuInstance } from './MenuInstance'
 
-import { observer } from 'mobx-react-lite'
 import { useId } from 'react'
 
 import { Frame } from '../frame/Frame'
@@ -15,7 +14,7 @@ import { MenuUI, type MenuUIProps } from './MenuUI'
 import { SimpleMenuAction } from './SimpleMenuAction'
 import { SimpleMenuModal } from './SimpleMenuModal'
 
-export const MenuBarUI = observer(function MenuBar({
+export const MenuBarUI = obs(function MenuBar({
    // own props
    menu,
 
@@ -124,7 +123,7 @@ export const MenuBarUI = observer(function MenuBar({
                   line
                   icon={entry.icon}
                   hover
-                  roundness={cushy.preferences.theme.value.global.roundness}
+                  roundness={cushy.preferences.theme.zValue.global.roundness}
                >
                   {formatMenuLabel(charIx, label)}
                </Frame>
@@ -132,7 +131,7 @@ export const MenuBarUI = observer(function MenuBar({
                     key={ix}
                     localShortcut={char}
                     icon={entry.icon}
-                    afterShortcut={<IkonOf name='mdiMenuRight' />}
+                    afterShortcut={<IkonOf name=IKONS.mdiMenuRight />}
                     label={formatLabel(charIx, label)}
                 /> */}
             </RevealUI>

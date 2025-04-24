@@ -1,14 +1,12 @@
 import type { RevealContentProps } from '../shells/ShellProps'
 
-import { observer } from 'mobx-react-lite'
-
 import { Button } from '../../button/Button'
 import { Frame, type FrameProps } from '../../frame/Frame'
 import { simpleFactory } from '../../SimpleFactory'
 import { RevealUI } from '../RevealUI'
 
-export const RevealTestUI = observer(function RevealTestUI_(p: {}) {
-   const anchor = (where: string, props?: FrameProps): JSX.Element => (
+export const RevealTestUI = obs(function RevealTestUI_(p: {}) {
+   const anchor = (where: string, props?: FrameProps): React.JSX.Element => (
       <Button expand {...props}>
          {where}
       </Button>
@@ -23,12 +21,12 @@ export const RevealTestUI = observer(function RevealTestUI_(p: {}) {
       }),
    )
 
-   const Content2 = observer(
-      (p: { content: () => string }): JSX.Element => (
+   const Content2 = obs(
+      (p: { content: () => string }): React.JSX.Element => (
          <pre //
             style={{
-               width: `${conf.value.width}px`,
-               height: `${conf.value.height}px`,
+               width: `${conf.zValue.width}px`,
+               height: `${conf.zValue.height}px`,
             }}
             tw='bg-blue-500 text-black'
          >
@@ -36,7 +34,7 @@ export const RevealTestUI = observer(function RevealTestUI_(p: {}) {
          </pre>
       ),
    )
-   const Content = (p: RevealContentProps): JSX.Element => (
+   const Content = (p: RevealContentProps): React.JSX.Element => (
       <Content2 content={() => /* JSON.stringify(p.reveal.pos, null, 3) */ '🟢'} />
    )
 
@@ -47,12 +45,12 @@ export const RevealTestUI = observer(function RevealTestUI_(p: {}) {
          <Frame border base>
             {conf.UI()}
          </Frame>
-         {conf.value.defaultVisible && (
+         {conf.zValue.defaultVisible && (
             <RevealUI
                trigger='click'
                placement='bottomStart'
                content={Content}
-               defaultVisible={conf.value.defaultVisible}
+               defaultVisible={conf.zValue.defaultVisible}
             >
                {anchor('defaultVisible')}
             </RevealUI>
@@ -70,34 +68,34 @@ export const RevealTestUI = observer(function RevealTestUI_(p: {}) {
          <div tw='m-8 grid grid-cols-5 gap-1'>
             {/* top ---------------------------------------------- */}
             <div></div>
-            <RevealUI trigger={conf.value.trigger} placement='topStart' content={Content}>
+            <RevealUI trigger={conf.zValue.trigger} placement='topStart' content={Content}>
                {anchor('topStart')}
             </RevealUI>
-            <RevealUI trigger={conf.value.trigger} placement='top' content={Content}>
+            <RevealUI trigger={conf.zValue.trigger} placement='top' content={Content}>
                {anchor('top')}
             </RevealUI>
-            <RevealUI trigger={conf.value.trigger} placement='topEnd' content={Content}>
+            <RevealUI trigger={conf.zValue.trigger} placement='topEnd' content={Content}>
                {anchor('topEnd')}
             </RevealUI>
             <div></div>
 
             {/* ---------------------------------------------- */}
-            <RevealUI trigger={conf.value.trigger} placement='leftStart' content={Content}>
+            <RevealUI trigger={conf.zValue.trigger} placement='leftStart' content={Content}>
                {anchor('leftStart')}
             </RevealUI>
             <div></div>
             <div></div>
             <div></div>
-            <RevealUI trigger={conf.value.trigger} placement='rightStart' content={Content}>
+            <RevealUI trigger={conf.zValue.trigger} placement='rightStart' content={Content}>
                {anchor('rightStart')}
             </RevealUI>
             {/* ---------------------------------------------- */}
-            <RevealUI trigger={conf.value.trigger} placement='left' content={Content}>
+            <RevealUI trigger={conf.zValue.trigger} placement='left' content={Content}>
                {anchor('left')}
             </RevealUI>
             <RevealUI
                //
-               trigger={conf.value.trigger}
+               trigger={conf.zValue.trigger}
                relativeTo='#bar'
                placement='above'
                shell='popup-lg'
@@ -105,52 +103,52 @@ export const RevealTestUI = observer(function RevealTestUI_(p: {}) {
             >
                {anchor('#bar in popup', { base: { hueShift: 100, contrast: 0.1 } })}
             </RevealUI>
-            <RevealUI trigger={conf.value.trigger} relativeTo='#foo' placement='above' content={Content}>
+            <RevealUI trigger={conf.zValue.trigger} relativeTo='#foo' placement='above' content={Content}>
                {anchor('#foo', { base: { hueShift: 130, contrast: 0.1 } })}
             </RevealUI>
-            <RevealUI trigger={conf.value.trigger} relativeTo='#bar' placement='above' content={Content}>
+            <RevealUI trigger={conf.zValue.trigger} relativeTo='#bar' placement='above' content={Content}>
                {anchor('#bar', { base: { hueShift: 160, contrast: 0.1 } })}
             </RevealUI>
 
-            <RevealUI trigger={conf.value.trigger} placement='right' content={Content}>
+            <RevealUI trigger={conf.zValue.trigger} placement='right' content={Content}>
                {anchor('right')}
             </RevealUI>
             {/* ---------------------------------------------- */}
-            <RevealUI trigger={conf.value.trigger} placement='leftEnd' content={Content}>
+            <RevealUI trigger={conf.zValue.trigger} placement='leftEnd' content={Content}>
                {anchor('leftEnd')}
             </RevealUI>
-            <RevealUI trigger={conf.value.trigger} shell='popup-sm' placement='screen-top' content={Content}>
+            <RevealUI trigger={conf.zValue.trigger} shell='popup-sm' placement='screen-top' content={Content}>
                {anchor('popup-sm')}
             </RevealUI>
-            <RevealUI trigger={conf.value.trigger} shell='popup-lg' placement='screen-top' content={Content}>
+            <RevealUI trigger={conf.zValue.trigger} shell='popup-lg' placement='screen-top' content={Content}>
                {anchor('popup-lg')}
             </RevealUI>
             <div></div>
-            <RevealUI trigger={conf.value.trigger} placement='rightEnd' content={Content}>
+            <RevealUI trigger={conf.zValue.trigger} placement='rightEnd' content={Content}>
                {anchor('rightEnd')}
             </RevealUI>
             {/* ---------------------------------------------- */}
             {/* bottom */}
             <div></div>
-            <RevealUI trigger={conf.value.trigger} placement='bottomStart' content={Content}>
+            <RevealUI trigger={conf.zValue.trigger} placement='bottomStart' content={Content}>
                {anchor('bottomStart')}
             </RevealUI>
-            <RevealUI trigger={conf.value.trigger} placement='bottom' content={Content}>
+            <RevealUI trigger={conf.zValue.trigger} placement='bottom' content={Content}>
                {anchor('bottom')}
             </RevealUI>
-            <RevealUI trigger={conf.value.trigger} placement='bottomEnd' content={Content}>
+            <RevealUI trigger={conf.zValue.trigger} placement='bottomEnd' content={Content}>
                {anchor('bottomEnd')}
             </RevealUI>
             <div></div>
          </div>
-         <RevealUI trigger={conf.value.trigger} placement='topStart' content={Content}>
+         <RevealUI trigger={conf.zValue.trigger} placement='topStart' content={Content}>
             <NotForwardingProps />
          </RevealUI>
          <Frame row>
-            <RevealUI trigger={conf.value.trigger} placement='top' content={Content}>
+            <RevealUI trigger={conf.zValue.trigger} placement='top' content={Content}>
                {anchor('focusable 1', { tabIndex: 0 })}
             </RevealUI>
-            <RevealUI trigger={conf.value.trigger} placement='top' content={Content}>
+            <RevealUI trigger={conf.zValue.trigger} placement='top' content={Content}>
                {anchor('focusable 2', { tabIndex: 0 })}
             </RevealUI>
          </Frame>
@@ -191,7 +189,7 @@ export const RevealTestUI = observer(function RevealTestUI_(p: {}) {
          <Frame id='bar' base={{ hueShift: 200, contrast: 0.1 }} style={{ height: '150px' }}>
             #bar
          </Frame>
-         <RevealUI trigger={conf.value.trigger} placement='topStart' content={Content}>
+         <RevealUI trigger={conf.zValue.trigger} placement='topStart' content={Content}>
             Text only
          </RevealUI>
          <RevealUI //

@@ -1,37 +1,36 @@
 import type { Box } from '../box/Box'
-import type { IconName } from '../icons/icons'
+import type { IconName } from '../icons/IconName'
 import type { TintExt } from '../kolor/Tint'
-import type { CovariantFn, CovariantFn1 } from '../variance/BivariantHack'
+import type { CovariantFn } from '../variance/BivariantHack'
 import type { CovariantFC } from '../variance/CovariantFC'
-import type { FieldTypes } from './$FieldTypes'
-import type { BaseSchema } from './BaseSchema'
-import type { Field, FieldCtorProps } from './Field'
-import type { FieldOptions } from './FieldOptions'
-import type { KlassToUse } from './KlassToUse'
+import type { Field } from './Field'
+import type { SchemaDictWithPaths } from './FieldConstructor'
+import type { FieldTag } from './FieldTag'
+import type { Klass } from './KlassToUse'
+import type { FieldPublication } from './pubsub/FieldPublication'
 import type { FieldReaction } from './pubsub/FieldReaction'
-import type { Producer } from './pubsub/Producer'
+import type { FieldSubscription } from './pubsub/FieldSubscriptions'
 import type { Problem_Ext } from './Validation'
 
-export type FieldConfig<X, T extends FieldTypes> = X & FieldConfig_CommonProperties<T>
+export type FieldConfigFor<FIELD extends Field> = FieldConfig_CommonProperties<FIELD> & FIELD['{ownConfig}']
 
-export interface FieldConfig_CommonProperties<out T extends FieldTypes> {
-   // TODO: rename to `ui`
-   uiui?: RENDERER.UIConf<T['$Field']>
+export interface FieldConfig_CommonProperties<out FIELD extends Field> {
+   getCustomTravels?: () => SchemaDictWithPaths
+
+   readonly uiui?: RENDERER.UIConf<FIELD>
    /**
-    * @since 2024-05-20
     * @stability beta
     * Icon name from the icon library.
     *   - "mdi..." for Material design icons - 7000+ icons https://pictogrammers.com/library/mdi/)
     *   - "cdi..." for Cushy design icons - 1+ custom icon by the cushy team
     *   - "ldi..." for Locomotive design icons
     */
-   icon?: IconName
+   icon?: IconName | CovariantFn<[field?: FIELD], Maybe<IconName>>
    // ❌ warning: 2024-06-14 rvion: using this expression with an union here will
    // ❌ CHOKE typescript typechecking performances.
-   // ❌ | icon?: IconName | CovariantFn<T['$Field'], IconName> // IconName
+   // ❌ | icon?: IconName | CovariantFn<FIELD, IconName> // IconName
 
    /**
-    * @since 2024-05-19
     * @stability beta
     * Appearance box props
     */
@@ -42,19 +41,26 @@ export interface FieldConfig_CommonProperties<out T extends FieldTypes> {
     * override the default header renderer
     * (passing `null` to restore the default renderer)
     */
-   header?: null | CovariantFC<{ field: T['$Field']; readonly?: boolean }>
+   header?: null | CovariantFC<{ field: FIELD; readonly?: boolean }>
 
    /**
     * override the default body renderer
     * (passing `null` to restore the default renderer)
     */
-   body?: null | CovariantFC<{ field: T['$Field'] }>
+   body?: null | CovariantFC<{ field: FIELD }>
+
+   /**
+    * override the default cell renderer
+    * (passing `null` to restore the default renderer)
+    */
+   cell?: null | CovariantFC<{ field: FIELD }>
 
    /**
     * override the default string renderer
     * (passing `null` to restore the default renderer)
+    * 🔴 2024-11-15 domi: was named `toString`, but it was conflicting with unrelated object's `toString` method
     */
-   toSummary?: null | CovariantFn<[field: T['$Field']], string>
+   toString_?: null | CovariantFn<[field: FIELD], string>
 
    // --------------------------------
 
@@ -62,35 +68,34 @@ export interface FieldConfig_CommonProperties<out T extends FieldTypes> {
     * This function will be executed before every widget instanciation.
     * if the version is not the samed as store in the serial
     *
-    * @since 2024-05-14
+    * Note: serial param is unknown on purpose: it hasn't been sanitized yet, we need to be extra careful
     * @stability beta
     */
-   beforeInit?: CovariantFn<[serial: unknown /* T['$Serial'] */], T['$Serial']>
+   beforeInit?(serial: unknown /* FIELD['{serial}'] */): FIELD['{serial}']
    version?: string
 
    /**
-    * @since 2024-05-14
     * @stability beta
     * This function will be executed either on every widget instanciation.
     */
-   onInit?: CovariantFn1<T['$Field'], void>
+   onInit?(field: FIELD): void
+   tags?: FieldTag[]
 
    /** will be called when value changed */
-   onValueChange?: CovariantFn<[field: T['$Field']], void>
+   onValueChange?(field: FIELD): void
 
    /** will be called when serial changed */
-   onSerialChange?: CovariantFn<[self: T['$Field']], void>
+   onSerialChange?(self: FIELD): void
 
    /**
     * will be called before disposing the tree
-    * @since 2024-07-11
     * @status NOT IMPLEMENTED
     * @experimental
     */
-   onDispose?: CovariantFn1<T['$Field'], void>
+   onDispose?(field: FIELD): void
 
    /** allow to set custom actions on your widgets */
-   presets?: WidgetMenuAction<T>[]
+   presets?: WidgetMenuAction<FIELD>[]
 
    /** custom type checking;
     * valid:
@@ -101,7 +106,7 @@ export interface FieldConfig_CommonProperties<out T extends FieldTypes> {
     *  - ["errMsg", ...]
     *  - "errMsg"
     * */
-   check?: CovariantFn<[val: T['$Field']], Problem_Ext>
+   check?(val: FIELD): Problem_Ext
 
    /**
     * The label to display.
@@ -114,8 +119,8 @@ export interface FieldConfig_CommonProperties<out T extends FieldTypes> {
    /** The layout direction, H for 'horizontal' or V for 'vertical' */
    layout?: 'H' | 'V'
 
-   /** if provided, will dispaly a tooltip when hovering over the label */
-   tooltip?: string
+   /** Description of what the field is or does. (An ending period will be added automatically) */
+   description?: string
 
    /**
     * Will be injected around the widget;
@@ -136,14 +141,13 @@ export interface FieldConfig_CommonProperties<out T extends FieldTypes> {
     */
    startCollapsed?: boolean
 
-   /** if false, the widget will always be expanded */
+   /**
+    * @deprecated
+    * if false, the widget will always be expanded */
    collapsed?: false
 
    /** if provided, override the default logic to decide if the widget need to be bordered */
    border?: TintExt
-
-   /** frame background used in the widget with label */
-   background?: TintExt
 
    /** if provided, override the default logic to decide if the widget need to be bordered */
    justifyLabel?: boolean
@@ -153,65 +157,33 @@ export interface FieldConfig_CommonProperties<out T extends FieldTypes> {
 
    /** unused internally, here so you can add whatever you want inside */
    custom?: unknown
+   opts?: FIELD['{opts}']
 
    // EXTENSION SYSMEM ------------------------------------------------------
    // csuite models have 3 main ways to be extends:
    //    1. custom sub-class via `classToUse`
    //    2. custom sub-class or something else via `builderToUse`
-   //    3. manually adding properties via `customFieldProperties`
 
    /**
     * @internal
     * you probably DON'T want to specify this manually.
     * you can use the <schema>.useClass(...) method instead
     *
-    * @since 2024-08-14
     * @stability beta
     */
-   classToUse?: KlassToUse<T['$Field'], any>
-   // classToUse?: CovariantFn1<new (...args: any[]) => T['$Field'], new (...args: any[]) => any>
-
-   /**
-    * @internal
-    * you probably DON'T want to specify this manually.
-    * you can use the <schema>.useBuilder(...) method instead
-    *
-    * @since 2024-08-14
-    * @stability beta
-    */
-   builderToUse?: CovariantFn<FieldCtorProps<any>, any>
-
-   /**
-    * @internal
-    * you probably DON'T want to specify this manually.
-    * you can use the <schema>.extend(...) method instead
-    *
-    * Mixin system for the field.
-    */
-   customFieldProperties?: FieldExtension<any>[]
-
-   /**
-    * @internal
-    * you probably DON'T want to specify this manually.
-    * you can use the <schema>.extendSchema (...) method instead
-    * (mixin system for the schema)
-    *
-    * 💬 2024-08-30 rvion: was probably a bad idea
-    * @depreacted
-    */
-   customSchemaProperties?: SchemaExtension<any>[]
+   classToUse?: Klass<FIELD>
 
    // PUB-SUB SYSMEM ------------------------------------------------------
 
    /**
     * @internal
     * you probably DON'T want to specify this manually.
-    * you can use the <schema>.publish(...) method instead
-    *                          ^^^^^^^^^^^^
-    * @since 2024-05-01
+    * you can use the <schema>.publishToChannel(...) method instead
+    *                          ^^^^^^^^^^^^^^^^
     * @stability beta
     */
-   producers?: Producer<any, T['$Field']>[]
+   publications?: FieldPublication<any, FIELD>[]
+   subscriptions?: FieldSubscription<any, FIELD>[]
 
    /**
     * @internal
@@ -219,7 +191,7 @@ export interface FieldConfig_CommonProperties<out T extends FieldTypes> {
     * you can use the <schema>.addReaction(...) method instead
     *                          ^^^^^^^^^^^^^^^^
     */
-   reactions?: FieldReaction<T>[]
+   reactions?: FieldReaction<FIELD>[]
 
    /**
     * 2024-08-08 domi: not really used / thought through
@@ -227,22 +199,11 @@ export interface FieldConfig_CommonProperties<out T extends FieldTypes> {
     */
    required?: boolean
    readonly?: boolean
-
-   // TODO 🔴 remove that
-   saveChanges?: (field: Field) => Promise<void>
-
-   // TODO 🔴 remove that
-   cancelChanges?: (field: Field) => Promise<void>
-
-   instanciationOption?: FieldOptions
 }
 
-export interface WidgetMenuAction<out T extends FieldTypes> {
+export interface WidgetMenuAction<FIELD extends Field> {
    /** https://pictogrammers.com/library/mdi/ */
    label: string
    icon?: IconName
-   apply(field: T['$Field']): void
+   apply(field: FIELD): void
 }
-
-export type SchemaExtension<T extends BaseSchema<any>> = (schema: T) => object
-export type FieldExtension<T extends Field> = (field: T) => object

@@ -2,7 +2,6 @@ import type { Json } from '../types/Json'
 
 /**
  * Convert any value to a JSON-serializable value.
- * @since 2024-06-26
  * @stability unstable / broken
  */
 export const convertToJSON_UNFINISHED = (val: unknown): Json => {

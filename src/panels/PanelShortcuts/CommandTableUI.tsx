@@ -1,5 +1,3 @@
-import { observer } from 'mobx-react-lite'
-
 import { ComboUI } from '../../csuite/accelerators/ComboUI'
 import { BadgeUI } from '../../csuite/badge/BadgeUI'
 import { commandManager } from '../../csuite/commands/CommandManager'
@@ -7,7 +5,7 @@ import { Frame } from '../../csuite/frame/Frame'
 import { CommandContextDebugUI } from './CommandContextDebugUI'
 import { CommandHistoryTableUI } from './CommandHistoryTableUI'
 
-export const CommandTableUI = observer(function CommandTableUI_(p: {}) {
+export const CommandTableUI = obs(function CommandTableUI_(p: {}) {
    return (
       <div tw='x_MD flex flex-col gap-2'>
          {/* <Frame row wrap tw='gap-2'> */}
@@ -34,7 +32,7 @@ export const CommandTableUI = observer(function CommandTableUI_(p: {}) {
                         <td tw='flex-1'>{c.label}</td>
                         <td>
                            {c.combos == null ? (
-                              <Frame line disabled icon='mdiCancel'>
+                              <Frame line disabled icon={IKONS.mdiCancel}>
                                  none
                               </Frame>
                            ) : Array.isArray(c.combos) ? (

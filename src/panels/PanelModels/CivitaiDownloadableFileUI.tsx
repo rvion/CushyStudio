@@ -40,12 +40,12 @@ type CivitaiDownloadableFileProps = {
    file: CivitaiDownloadableFile
 }
 
-export const CivitaiDownloadableFileUI = observer(function CivitaiDownloadableFileUI_(
+export const CivitaiDownloadableFileUI = obs(function CivitaiDownloadableFileUI_(
    p: CivitaiDownloadableFileProps,
 ) {
    const file: CivitaiDownloadableFile = p.file
    const version: CivitaiModelVersion = p.version
-   const apiKey = cushy.civitaiConf.fields.apiKey.value
+   const apiKey = cushy.civitaiConf.zFields.apiKey.zValue
    const detectedBase = detectBase(p)
    const detectedType = detectType(p)
 

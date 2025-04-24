@@ -4,19 +4,19 @@ import { cnet_preprocessor_ui_common, cnet_ui_common } from './cnet_ui_common'
 
 // 🅿️ Scribble FORM ===================================================
 
-export type UI_subform_Scribble = X.XGroup<{
+export type UI_subform_Scribble = Z.Group<{
    preprocessor: UI_subform_Scribble_Preprocessor
-   cnet_model_name: X.XEnum<'ControlNetLoader.control_net_name'>
-   strength: X.XNumber
-   advanced: X.XGroup<{
-      startAtStepPercent: X.XNumber
-      endAtStepPercent: X.XNumber
-      crop: X.XEnum<'LatentUpscale.crop'>
-      upscale_method: X.XEnum<'ImageScale.upscale_method'>
+   cnet_model_name: Z.Enum<'ControlNetLoader.control_net_name'>
+   strength: Z.Number
+   advanced: Z.Group<{
+      startAtStepPercent: Z.Number
+      endAtStepPercent: Z.Number
+      crop: Z.Enum<'LatentUpscale.crop'>
+      upscale_method: Z.Enum<'ImageScale.upscale_method'>
    }>
 }>
 export function ui_subform_Scribble(): UI_subform_Scribble {
-   const form: X.Builder = getCurrentForm()
+   const form: Z.Builder = getBuilder()
    return form
       .group({
          label: 'Scribble',
@@ -39,14 +39,14 @@ export function ui_subform_Scribble(): UI_subform_Scribble {
 }
 
 // ========================================================================================
-export type UI_subform_Scribble_Preprocessor = X.XChoice<{
-   None: X.XEmpty
+export type UI_subform_Scribble_Preprocessor = Z.Choice<{
+   None: Z.Empty
    ScribbleLines: UI_subform_Scribble_Lines
    FakeScribble: UI_subform_Fake_Scribble_Lines
    XDOG: UI_subform_Scribble_XDoG_Lines
 }>
 export function ui_subform_Scribble_Preprocessor(): UI_subform_Scribble_Preprocessor {
-   const form = getCurrentForm()
+   const form = getBuilder()
    return form.choice(
       {
          None: form.empty(),
@@ -64,11 +64,11 @@ export function ui_subform_Scribble_Preprocessor(): UI_subform_Scribble_Preproce
 }
 
 // ========================================================================================
-export type UI_subform_Scribble_Lines = X.XGroup<{
-   saveProcessedImage: X.XBool
+export type UI_subform_Scribble_Lines = Z.Group<{
+   saveProcessedImage: Z.Bool
 }>
 export const ui_subform_Scribble_Lines = (): UI_subform_Scribble_Lines => {
-   const form = getCurrentForm()
+   const form = getBuilder()
    return form.group({
       label: 'Scribble Lines',
       // startCollapsed: true,
@@ -77,12 +77,12 @@ export const ui_subform_Scribble_Lines = (): UI_subform_Scribble_Lines => {
 }
 
 // ========================================================================================
-export type UI_subform_Fake_Scribble_Lines = X.XGroup<{
-   safe: X.XBool
-   saveProcessedImage: X.XBool
+export type UI_subform_Fake_Scribble_Lines = Z.Group<{
+   safe: Z.Bool
+   saveProcessedImage: Z.Bool
 }>
 export function ui_subform_Fake_Scribble_Lines(): UI_subform_Fake_Scribble_Lines {
-   const form = getCurrentForm()
+   const form = getBuilder()
    return form.group({
       label: 'Fake Scribble',
       items: {
@@ -93,12 +93,12 @@ export function ui_subform_Fake_Scribble_Lines(): UI_subform_Fake_Scribble_Lines
 }
 
 // ========================================================================================
-export type UI_subform_Scribble_XDoG_Lines = X.XGroup<{
-   threshold: X.XNumber
-   saveProcessedImage: X.XBool
+export type UI_subform_Scribble_XDoG_Lines = Z.Group<{
+   threshold: Z.Number
+   saveProcessedImage: Z.Bool
 }>
 export function ui_subform_Scribble_XDoG_Lines(): UI_subform_Scribble_XDoG_Lines {
-   const form = getCurrentForm()
+   const form = getBuilder()
    return form.group({
       label: 'Scribble_XDoG_Lines',
       // startCollapsed: true,

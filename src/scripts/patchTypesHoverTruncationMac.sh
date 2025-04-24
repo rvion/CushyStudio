@@ -10,7 +10,8 @@ MAX_LEN=${1:-$DEFAULT_MAX_LEN}
 echo "MAX_LEN: $MAX_LEN"
 
 #!/bin/zsh
-fileVSCode="/Applications/Visual Studio Code.app/Contents/Resources/app/extensions/node_modules/typescript/lib/typescript.js"
+fileVSCode='/Users/loco/.vscode/extensions/ms-vscode.vscode-typescript-next-5.9.20250325/node_modules/typescript/lib/typescript.js'
+# fileVSCode="/Applications/Visual Studio Code.app/Contents/Resources/app/extensions/node_modules/typescript/lib/typescript.js"
 echo "patching \"$fileVSCode\""
 sed -i '' "s/defaultMaximumTruncationLength = [0-9]\{1,\};/defaultMaximumTruncationLength = $MAX_LEN;/g" "$fileVSCode"
 

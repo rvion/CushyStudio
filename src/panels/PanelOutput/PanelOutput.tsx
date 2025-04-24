@@ -7,5 +7,5 @@ export const PanelStep = new Panel({
    header: (p): PanelHeader => ({ title: 'Output' }),
    def: (): PanelOutputProps => ({}),
    category: 'outputs',
-   icon: 'mdiFolderPlay',
+   icon: IKONS.mdiFolderPlay,
 })

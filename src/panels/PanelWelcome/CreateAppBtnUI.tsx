@@ -11,7 +11,7 @@ import { toastError } from '../../csuite/utils/toasts'
 import { TypescriptHighlightedCodeUI } from '../../widgets/misc/TypescriptHighlightedCodeUI'
 import { convertToValidCrossPlatformFileName } from './convertToValidCrossPlatformFileName'
 
-export const CreateAppBtnUI = observer(function CreateAppBtnUI_(p: {}) {
+export const CreateAppBtnUI = obs(function CreateAppBtnUI_(p: {}) {
    return (
       <RevealUI
          //
@@ -20,14 +20,14 @@ export const CreateAppBtnUI = observer(function CreateAppBtnUI_(p: {}) {
          title='Create an app'
          content={(p) => <CreateAppPopupUI closeFn={() => p.reveal.close()} />}
       >
-         <Button look='primary' icon='mdiOpenInNew'>
+         <Button look='primary' icon={IKONS.mdiOpenInNew}>
             Create My App
          </Button>
       </RevealUI>
    )
 })
 
-export const CreateAppPopupUI = observer(function CreateAppPopupUI_(p: { closeFn: () => void }) {
+export const CreateAppPopupUI = obs(function CreateAppPopupUI_(p: { closeFn: () => void }) {
    const uist = useLocalObservable(() => ({
       appName: `my-app-${Date.now()}`,
       description: 'my app description',
@@ -158,7 +158,7 @@ app({
 `
 }
 
-const IntroTxt = (): JSX.Element => {
+const IntroTxt = (): React.JSX.Element => {
    return (
       <MessageInfoUI title='Memo'>
          <div>

@@ -1,18 +1,16 @@
 import type { Field_string } from './FieldString'
 
-import { observer } from 'mobx-react-lite'
-
 import { useCSuite } from '../../ctx/useCSuite'
 import { Frame } from '../../frame/Frame'
 
-export const WidgetString_TextareaInput = observer(function WidgetString_TextareaBodyUI_(p: {
+export const WidgetString_TextareaInput = obs(function WidgetString_TextareaBodyUI_(p: {
    field: Field_string
    readonly?: boolean
 }) {
    const field = p.field
-   if (p.readonly) return <pre>{field.value_or_zero}</pre>
+   if (p.readonly) return <pre>{field.zValueOrZero}</pre>
 
-   const theme = cushy.preferences.theme.value
+   const theme = cushy.preferences.theme.zValue
    return (
       <Frame base={theme.global.contrast} expand>
          {/* <pre>{JSON.stringify(Object.keys(p))}</pre> */}
@@ -20,16 +18,16 @@ export const WidgetString_TextareaInput = observer(function WidgetString_Textare
             style={{
                /* ...p.widget.config.style, */
                lineHeight: '1.3rem',
-               resize: p.field.config.resize ?? 'both',
+               resize: p.field.zConfig.resize ?? 'both',
             }}
             tw='csuite-input w-full !bg-transparent p-2'
-            placeholder={field.config.placeHolder}
+            placeholder={field.zConfig.placeHolder}
             rows={3}
-            value={field.value_or_zero}
+            value={field.zValueOrZero}
             onChange={(ev) => {
-               field.value = ev.target.value
+               field.zValue = ev.target.value
             }}
-            onBlur={() => field.touch()}
+            onBlur={() => field.zTouch()}
          />
       </Frame>
    )

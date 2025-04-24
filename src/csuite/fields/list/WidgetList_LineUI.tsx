@@ -1,15 +1,13 @@
-import type { Field } from '../../model/Field'
 import type { Field_list } from './FieldList'
 
-import { observer } from 'mobx-react-lite'
-import { type FC, forwardRef } from 'react'
+import { type FC } from 'react'
 
 import { ListControlsUI } from './ListControlsUI'
 
 // TODO (bird_d): Make collapse button on left, probably just re-use a "Group" component in this widget.
-export const WidgetList_LineUI: FC<{ field: Field_list<any> }> = observer(function WidgetList_LineUI_(p: {
+export const WidgetList_LineUI: FC<{ field: Field_list<any> }> = obs(function WidgetList_LineUI_(p: {
    field: Field_list<any>
-}): JSX.Element {
+}): React.JSX.Element {
    return (
       <div tw='COLLAPSE-PASSTHROUGH flex flex-1 items-center'>
          {p.field.isAuto ? null : (

@@ -3,11 +3,11 @@ import type { KnownModel_Name } from '../../../src/CUSHY'
 //🅿️ IPAdapter Model Selection ===================================================
 
 export type UI_ipadapter_modelSelection = {
-   cnet_model_name: X.XEnum<'IPAdapter_plus.IPAdapterModelLoader.ipadapter_file'>
+   cnet_model_name: Z.Enum<'IPAdapter_plus.IPAdapterModelLoader.ipadapter_file'>
 }
 
 export const ui_ipadapter_modelSelection = (
-   form: X.Builder,
+   form: Z.Builder,
    defaultModel: Comfy.Slots['IPAdapter_plus.IPAdapterModelLoader.ipadapter_file'] = 'ip-adapter_sd15.safetensors' as any,
    knownModels:
       | KnownModel_Name //

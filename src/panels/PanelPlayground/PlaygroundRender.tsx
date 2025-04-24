@@ -1,61 +1,97 @@
-import type { DisplayRuleCtx } from '../../csuite-cushy/presenters/RenderTypes'
+import type { Field } from '../../csuite/model/Field'
 import type { NO_PROPS } from '../../csuite/types/NO_PROPS'
 
-import { observer } from 'mobx-react-lite'
-
-import { ui_regionalPrompting_v1 } from '../../../library/built-in/_prefabs/prefab_regionalPrompting_v1'
-import { WidgetListExt_LineUI } from '../../csuite/fields/board/WidgetListExt_LineUI'
-import { WidgetListExtUI__Regional } from '../../csuite/fields/board/WidgetListExtUI'
-// import { WidgetListExtUI__Regional } from '../../csuite/fields/board/WidgetListExtUI'
-// import { ui_regionalPrompting_v1 } from '../../../library/built-in/_prefabs/prefab_regionalPrompting_v1'
-import { isFieldChoice, isFieldGroup, isFieldNumber } from '../../csuite/fields/WidgetUI.DI'
+import {
+   convertShortRule,
+   type RenderRule,
+   type RenderRule_asList,
+} from '../../csuite-cushy/presenters/RenderRule'
 import { usePanel } from '../../router/usePanel'
 
-export const PlaygroundRenderUI = observer(function PlaygroundRender(p: NO_PROPS) {
+export const PlaygroundRenderUI = obs(function PlaygroundRender(p: NO_PROPS) {
+   const external = usePanel().usePersistentModel('test', (b) =>
+      b.fields({
+         title: b.string(),
+         b: b.int(),
+      }),
+   )
    const x = usePanel().usePersistentModel('foobar', (b) =>
       b.fields({
-         // xxxx: b.prompt({ default: 'hello world' }),
-         ax: ui_regionalPrompting_v1(b),
-         aaa: b.choice({
+         aaa: b.choices({
             foo: b.fields({ x: b.string(), y: b.string() }),
             bar: b.fields({ x: b.string(), y: b.string() }),
+            baz: b.string(),
          }),
-         a0: b.prompt(),
-         x: b.string(),
-         y: b.int(),
-         z: b.percent(),
+         external: b.linkedFromExternalField(external),
+         bbb: b.fields({
+            title: b.string(),
+            x: b.string(),
+            y: b.int(),
+            z: b.percent(),
+         }),
          sub1: b.fields({ x: b.string(), y: b.int(), z: b.percent() }),
          sub2: b.fields({ x: b.string(), y: b.int(), z: b.percent() }),
       }),
    )
+   function rule<T extends Field>(...rule: RenderRule_asList<T>): RenderRule<T> {
+      return convertShortRule(rule)
+    } // prettier-ignore
+   // function r<T extends Field>(...rule: RenderRule_asList<T>): RenderRule<T> { return rule } // prettier-ignore
    return (
       <div>
-         <x.Ax.UI //
-            Header={WidgetListExt_LineUI}
-            Body={WidgetListExtUI__Regional}
-         />
          <x.UI
-            // Shell=''
-            // layout={({ fields: f }) => [f.x, f.x, f.x, f.x, '*']}
-            rule={(ui) => {
-               // ui.for(ui.field.Aaa, { Shell: UY.Shell.Card })
-               ui.set(ui.field.Z, { Header: 'hello guys' })
-               ui.set(ui.field.Y, { Title: null })
-               ui.set(ui.field.Sub1.Z, { Header: 'hope you guys good' })
-               ui.set(ui.field.Sub1, { layout: (f) => [f.X, f.Y, f.Y, '*'], Header: 'hope you guys good' })
-               ui.set('', (ui: DisplayRuleCtx) => {
-                  if (isFieldGroup(ui.field) && isFieldChoice(ui.field.parent)) return { Head: false }
-               })
-               ui.set('', ({ field }) => {
-                  // apply(field, {
-                  //     Shell: catalog.ShellMobile,
-                  //     Indent: (f) => f.depth + '>>',
-                  // })
-                  if (isFieldNumber(field)) return { Header: <>🟢{<UY.number.def field={field} />}</> }
-               })
-               // return { Body: 'hello' }
+            rules={(p, set) => {
+               set('@number', { OnLeft: '👉', OnRight: '👈' })
+               set('{title|name}@str', { Decoration: uy.wrappers.ColoredPadding.with({ bgcolor: 'red' }) })
+               set('@list:has(.@group.{title|name}@str)', {})
+               set('{sub1|sub2}', { Shell: false })
             }}
          />
+         <div className='flex flex-wrap gap-1 mt-1'>
+            <x.sub1.UI //
+               rules={[rule(x.sub1.y, { config: { max: 30, min: 0 } })]}
+               classNameForShell='grow'
+            />
+            <x.sub2.UI
+               classNameForShell='grow'
+               Decoration={uy.wrappers.ColoredPadding.with({ bgcolor: '#126e2d4d' })}
+            />
+         </div>
       </div>
    )
 })
+
+// [x.Aaa!, { Header: uy.choices.TabBar }],
+// [x.Aaa.foo!, { Decoration: uy.wrappers.ColoredPadding.with({ bgcolor: '#ba2c2c4d' }) }],
+// [
+//    x.Aaa.bar!,
+//    { Decoration: (f) => <uy.wrappers.ColoredPadding {...f} bgcolor='#2c4dba4d' /> },
+// ],
+// rule<Z.FList<Z.Record<{ name: Z.String }> | Z.Record<{ title: Z.String }>>>([
+//    '@list:has(.@group.{{name|title}@string})',
+//    { Header: (f) => <>{f.field}</> },
+// ]),
+// rule<Z.FMaybe<Z.String>>(['@optional.=(this.size > 3)@str^^^^<', {}]),
+// [x.Aaa.foo!, { Decoration: (f) => <uy.wrappers.ColoredPadding {...f} bgcolor='red' /> }],
+// [x.Aaa.foo!, { Decoration: { ColoredPadding: { bgcolor: 'red' } } }],
+// [x.Aaa.foo!, { Decoration: uy.wrappers.ColoredPadding.with({ bgcolor: 'red' }) }],
+// rule([x.Aaa.baz!, { OnRight: uy.group.DefaultBody }]),
+// rule<Z.FString>(['@str', { OnTop: uy.number.input }]),
+// [x.Aaa.foo!, { Decoration: <uy.wrappers.ColoredPadding /> }],
+// ['.@group', { Body: uy.group.inline }],
+// ['{description|title}@str', { Header: uy.string.textarea }],
+// rule<Z.FString>(['{description|title}@str', { Header: uy.string.textarea }]),
+// rule<Z.FString>(['@str', { Header: 'markdown' }]),
+// rule<Z.FString>(['@str', { OnTop: uy.string.markdown }]),
+// [x.Sub1, { Shell: null }],
+// [[x.Sub1, x.Sub2], { Shell: null }],
+// ['{sub1|sub2}', { Shell: null }],
+// [
+//    '@number',
+//    { OnTop: <div tw='text-center'>👇</div>, OnBottom: <div tw='text-center'>👆</div> },
+// ],
+// ['$', { Head: false }],
+// [x.Aaa, { Header: uy.choices.Buttons }],
+// rule([x.Sub1.Y, { config: { max: 30 } }]),
+// [x.Sub2.X, { Header: uy.string.textarea }],
+// ['@choices.@group', { Head: false }],

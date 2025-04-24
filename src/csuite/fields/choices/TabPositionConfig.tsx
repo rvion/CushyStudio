@@ -1,6 +1,8 @@
 export type TabPositionConfig = 'start' | 'center' | 'end'
 
-export const getJustifyContent = (tabPosition: Maybe<TabPositionConfig>) => {
+export const getJustifyContent = (
+   tabPosition: Maybe<TabPositionConfig>,
+): 'flex-start' | 'center' | 'flex-end' => {
    if (tabPosition === 'start') return 'flex-start'
    if (tabPosition === 'center') return 'center'
    if (tabPosition === 'end') return 'flex-end'

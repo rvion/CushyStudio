@@ -1,1 +1,1 @@
-export type NO_PROPS = Record<string, never>
+export type NO_PROPS = Record<never, never>

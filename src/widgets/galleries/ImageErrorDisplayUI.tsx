@@ -1,16 +1,14 @@
-import type { IconName } from '../../csuite/icons/icons'
-
-import { observer } from 'mobx-react-lite'
+import type { IconName } from '../../csuite/icons/IconName'
 
 import { Frame } from '../../csuite/frame/Frame'
 import { IkonOf } from '../../csuite/icons/iconHelpers'
 
-export const ImageErrorDisplayUI = observer(function ImageErrorDisplayUI_(p: {
+export const ImageErrorDisplayUI = obs(function ImageErrorDisplayUI_(p: {
    className?: string
    icon: IconName
    size?: string
 }) {
-   const theme = cushy.preferences.theme.value
+   const theme = cushy.preferences.theme.zValue
 
    return (
       <Frame
@@ -21,7 +19,7 @@ export const ImageErrorDisplayUI = observer(function ImageErrorDisplayUI_(p: {
          base={{ chroma: 0.1, hue: 0 }}
          square
       >
-         <Frame square icon='mdiFileAlert' iconSize='80%' />
+         <Frame square icon={IKONS.mdiFileAlert} iconSize='80%' />
          <Frame tw='absolute right-0 top-0 -translate-x-0.5 translate-y-0.5 opacity-80'>
             {p.icon && <IkonOf name={p.icon} />}
          </Frame>

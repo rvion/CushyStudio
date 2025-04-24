@@ -1,9 +1,8 @@
 import type { Box } from '../box/Box'
 import type { SharedClickAndSlideKey } from '../button/usePressLogic'
 import type { FrameProps } from '../frame/Frame'
-import type { IconName } from '../icons/icons'
+import type { IconName } from '../icons/IconName'
 
-import { observer } from 'mobx-react-lite'
 import { createElement } from 'react'
 
 import { InputBoolCheckboxUI } from './InputBoolCheckboxUI'
@@ -40,7 +39,7 @@ export type BoolButtonProps = {
    disabled?: boolean
 } & FrameProps
 
-export const InputBoolUI = observer(function InputBool(p: BoolButtonProps) {
+export const InputBoolUI = obs(function InputBool(p: BoolButtonProps) {
    const display = p.display ?? 'check'
    if (display === 'check') return createElement(InputBoolCheckboxUI, p)
    return createElement(ToggleButtonUI, p)

@@ -1,9 +1,7 @@
 import type { MediaVideoL } from '../models/MediaVideo'
 import type { StepL } from '../models/Step'
 
-import { observer } from 'mobx-react-lite'
-
-export const OutputVideoPreviewUI = observer(function OutputImagePreviewUI_(p: {
+export const OutputVideoPreviewUI = obs(function OutputImagePreviewUI_(p: {
    //
    step?: Maybe<StepL>
    output: MediaVideoL
@@ -27,10 +25,7 @@ export const OutputVideoPreviewUI = observer(function OutputImagePreviewUI_(p: {
    )
 })
 
-export const OutputVideoUI = observer(function OutputVideoUI_(p: {
-   step?: Maybe<StepL>
-   output: MediaVideoL
-}) {
+export const OutputVideoUI = obs(function OutputVideoUI_(p: { step?: Maybe<StepL>; output: MediaVideoL }) {
    return (
       <video
          style={{

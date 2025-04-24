@@ -4,7 +4,7 @@
 
 // import type { Edge, Node, Options } from 'vis-network/declarations/network/Network'
 
-// import { observer } from 'mobx-react-lite'
+//
 // import { useLayoutEffect } from 'react'
 
 // import * as visData from 'vis-data'
@@ -18,7 +18,7 @@ export type VisNodes = Node // { id: string; label: string; color?: string; font
 export type VisEdges = Edge // { id: string; from: string; to: string }
 export type VisOptions = Options
 
-// export const VisUI = observer(function VisUI_(p: {}) {
+// export const VisUI = obs(function VisUI_(p: {}) {
 //     const st = cushy
 //     const visJSON = st.project.currentRun?.graph?.JSON_forVisDataVisualisation
 //     useLayoutEffect(() => {

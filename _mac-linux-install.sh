@@ -67,7 +67,7 @@ Exec=/usr/bin/bash -c 'cd \"$SCRIPTPATH\" && \"$SCRIPTPATH/_mac-linux-start-dev.
 esac
 echo "Node.js architecture: $NODE_ARCH"
 
-NODE_VERSION="v20.14.0"
+NODE_VERSION="v22.14.0"
 echo "Node.js version: $NODE_VERSION"
 
 # Define the download URL ------------------------------------------------------------
@@ -147,7 +147,7 @@ echo "Node binary path: $NODE_BIN_PATH"
 
 # Install dependencies with npm
 echo "Installing dependencies..."
-$NPM_BIN_PATH install --legacy-peer-deps=false
+$NPM_BIN_PATH install --legacy-peer-deps=false --force
 
 # ensuring binary dependencies are correctly linked across installed
 ./node_modules/.bin/electron-builder install-app-deps

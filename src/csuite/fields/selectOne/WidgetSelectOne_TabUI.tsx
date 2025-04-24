@@ -1,21 +1,19 @@
 import type { Field_selectOne } from './FieldSelectOne'
 
-import { observer } from 'mobx-react-lite'
-
 import { InputBoolUI } from '../../checkbox/InputBoolUI'
 import { makeLabelFromPrimitiveValue } from '../../utils/makeLabelFromFieldName'
 import { getJustifyContent } from '../choices/TabPositionConfig'
 import { convertSelectKeyToReactKey, type SelectKey } from './SelectOneKey'
 
-export const WidgetSelectOne_TabUI = observer(function WidgetSelectOne_TabUI_<
-   VALUE,
-   KEY extends SelectKey,
->(p: { field: Field_selectOne<VALUE, KEY>; className?: string }) {
+export const WidgetSelectOne_TabUI = obs(function WidgetSelectOne_TabUI_<VALUE, KEY extends SelectKey>(p: {
+   field: Field_selectOne<VALUE, KEY>
+   className?: string
+}) {
    const field = p.field
-   const selected = field.serial.val
+   const selected = field.zSerial.val
    return (
       <div
-         style={{ justifyContent: getJustifyContent(field.config.tabPosition) }}
+         style={{ justifyContent: getJustifyContent(field.zConfig.tabPosition) }}
          className={p.className}
          tw={[
             //
@@ -24,7 +22,7 @@ export const WidgetSelectOne_TabUI = observer(function WidgetSelectOne_TabUI_<
             'select-none',
             //
 
-            (field.config.wrap ?? true) && 'flex-wrap',
+            (field.zConfig.wrap ?? true) && 'flex-wrap',
             'gap-x-1 gap-y-0',
          ]}
       >
@@ -32,7 +30,6 @@ export const WidgetSelectOne_TabUI = observer(function WidgetSelectOne_TabUI_<
             const isSelected = selected === c.id
             return (
                <InputBoolUI
-                  toggleGroup={field.id}
                   key={convertSelectKeyToReactKey(c.id)}
                   icon={c.icon}
                   value={isSelected}
@@ -41,9 +38,10 @@ export const WidgetSelectOne_TabUI = observer(function WidgetSelectOne_TabUI_<
                   onValueChange={(value: boolean) => {
                      if (value === isSelected) return
                      field.selectedId = c.id
-                     field.touch()
+                     field.zTouch()
                   }}
-                  onBlur={() => field.touch()}
+                  onBlur={() => field.zTouch()}
+                  toggleGroup={p.field.zUid}
                />
             )
          })}

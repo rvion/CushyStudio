@@ -1,6 +1,5 @@
-import type { BaseSchema } from '../model/BaseSchema'
+import type { CSchema } from '../model/CSchema'
 import type { Field } from '../model/Field'
-import type { SimpleBuilder } from '../simple/SimpleBuilder'
 import type { FieldAnomaly } from './Anomaly'
 
 export type AnomalysolutionID = string
@@ -18,17 +17,17 @@ export type AnomalysolutionID = string
  */
 export type AnomalySolution<
    /** result of the fix config */
-   CONFIG extends BaseSchema,
+   CONFIG extends CSchema,
    /** result of the isApplicable function */
    DATA extends any,
 > = {
    solutionID: AnomalysolutionID
    description?: string
    isApplicable: (p: { document: Field; anomaly: FieldAnomaly }) => DATA | void
-   config: (b: SimpleBuilder) => CONFIG
+   config: (b: Z.Builder) => CONFIG
    action: (p: {
       document: Field
-      config: CONFIG['$Field']
+      config: CONFIG['{field}']
       anomaly: FieldAnomaly
       data: NonNullable<DATA>
    }) => 'SUCCESS' | 'FAILURE'

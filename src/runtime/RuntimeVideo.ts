@@ -9,9 +9,9 @@ import { asAbsolutePath } from '../utils/fs/pathUtils'
 
 /** namespace for all video-related utils */
 export class RuntimeVideos {
-   private st = this.rt.Cushy
-   private step = this.rt.step
-   private folder = this.rt.folder
+   private get st() { return this.rt.Cushy } // prettier-ignore
+   private get step() { return this.rt.step } // prettier-ignore
+   private get folder() { return this.rt.folder } // prettier-ignore
 
    constructor(private rt: Runtime) {
       makeAutoObservable(this)

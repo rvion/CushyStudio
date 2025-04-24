@@ -1,6 +1,5 @@
 import type { CSuiteConfig } from './CSuiteConfig'
 
-import { observer } from 'mobx-react-lite'
 import { useMemo } from 'react'
 
 import { Frame, type FrameProps } from '../frame/Frame'
@@ -14,7 +13,7 @@ type _Override = {
 
 // 💬 2024-07-28 rvion - TODO: rename to something like `FrameWithCSuiteOverride`
 // to better convery what this component does.
-export const FrameWithCSuiteOverride = observer(function CSuiteOverride_(
+export const FrameWithCSuiteOverride = obs(function CSuiteOverride_(
    p: { config: Partial<CSuiteConfig> } & FrameProps,
 ) {
    // 1. retrieve the current CSuiteConfig

@@ -9,5 +9,5 @@ export const PanelComfyNodeExplorer = new Panel({
    widget: (): React.FC<NO_PROPS> => PanelComfyNodeExplorerUI,
    header: (p): PanelHeader => ({ title: 'ComfyUI Node Explorer' }),
    def: (): NO_PROPS => ({}),
-   icon: 'mdiAccessPoint',
+   icon: IKONS.mdiAccessPoint,
 })

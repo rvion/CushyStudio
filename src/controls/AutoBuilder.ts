@@ -1,7 +1,7 @@
 import type { ComfyUnionValue } from '../comfyui/comfyui-types'
-import type { Field_enum_config } from '../csuite/fields/enum/FieldEnum'
+import type { Field_enum } from '../csuite/fields/enum/FieldEnum'
 import type { Field_string_config } from '../csuite/fields/string/FieldString'
-import type { FieldConfig } from '../csuite/model/FieldConfig'
+import type { FieldConfig_CommonProperties } from '../csuite/model/FieldConfig'
 import type { CushySchemaBuilder } from './CushyBuilder'
 
 type KK = IAutoBuilder['KSampler']
@@ -10,24 +10,24 @@ type FOO = Comfy.FormHelper['KSampler']['sampler_name']
 
 type AutoWidget<T> = T extends { kind: any; type: infer TPE }
    ? T['kind'] extends 'number'
-      ? X.XNumber
+      ? Z.Number
       : T['kind'] extends 'string'
-        ? X.XString
+        ? Z.String
         : T['kind'] extends 'boolean'
-          ? X.XBool
+          ? Z.Bool
           : T['kind'] extends 'prompt'
-            ? X.XPrompt
+            ? Z.Prompt
             : T['kind'] extends 'enum'
               ? // check perf implications here
                 //         VVV
                 T['type'] extends ComfyUnionValue
-                 ? X.XEnumOf<T['type']>
+                 ? Z.EnumOf<T['type']>
                  : never
               : any
    : any
 
 export type IAutoBuilder = {
-   [K in keyof Comfy.FormHelper]: () => X.XGroup<{
+   [K in keyof Comfy.FormHelper]: () => Z.Group<{
       [N in keyof Comfy.FormHelper[K]]: AutoWidget<Comfy.FormHelper[K][N]>
    }>
 }
@@ -78,7 +78,7 @@ export class AutoBuilder {
       const schema = cushy.schema
       for (const node of schema.nodes) {
          Object.defineProperty(this, node.nameInCushy, {
-            value: (ext?: Partial<FieldConfig<{}, any>>) => {
+            value: (ext?: Partial<FieldConfig_CommonProperties<any>>) => {
                const items: any = {}
                for (const field of node.inputs) {
                   // console.log(`[👗] DEBUG:`, field, field.isPrimitive)
@@ -192,9 +192,9 @@ export class AutoBuilder {
                   // #region enums
                   else if (field.isEnum) {
                      // console.log(`[👗] 🌈 Enum: ${field.type}`, { field })
-                     const enumFn: Maybe<(p: Field_enum_config<any>) => void> = (formBuilder.enum as any)[
-                        field.slotName
-                     ]
+                     const enumFn: Maybe<(p: Field_enum<any>['{config}']) => void> = (
+                        formBuilder.enum as any
+                     )[field.slotName]
                      if (enumFn == null) {
                         console.log(`[👗] ❌ Unknown enum: ${field.typeName}`)
                         continue

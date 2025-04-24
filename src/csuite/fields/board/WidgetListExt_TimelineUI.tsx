@@ -1,17 +1,17 @@
-import type { BaseSchema } from '../../model/BaseSchema'
+import type { CSchema } from '../../model/CSchema'
 import type { Field_board } from './Field_board'
 
 import { observer, useLocalObservable } from 'mobx-react-lite'
 
-export const WidgetListExt_TimelineUI = observer(function WidgetTimelineUI_<T extends BaseSchema>(p: {
+export const WidgetListExt_TimelineUI = obs(function WidgetTimelineUI_<T extends CSchema>(p: {
    //
    field: Field_board<any>
 }) {
    //
    const scale = 20
    const TL = p.field
-   const value = TL.value
-   const entries = TL.fields.items.childrenActive.map((i) => i.fields)
+   const value = TL.zValue
+   const entries = TL.zFields.items.map((i) => i.zFields)
    const uiSt = useLocalObservable(() => ({
       ix: 0,
    }))
@@ -23,7 +23,7 @@ export const WidgetListExt_TimelineUI = observer(function WidgetTimelineUI_<T ex
                tw='timeline-item relative w-full'
             ></div>
             {entries.map(({ shape, value: widget }, ix) => {
-               const { width, x } = shape.value
+               const { width, x } = shape.zValue
                return (
                   <div
                      key={widget.id}

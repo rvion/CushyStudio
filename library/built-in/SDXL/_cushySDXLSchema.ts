@@ -1,4 +1,6 @@
-// import { DanbooruTagCategory } from '../../../src/widgets/prompter/nodes/booru/BooruLoader'
+import type { CushySchemaBuilder } from '../../../src/controls/CushyBuilder'
+
+import { type MAGICFIELDS } from '../../../src/csuite/fields/group/FieldGroup'
 import { ui_cnet, type UI_cnet } from '../_controlNet/prefab_cnet'
 import { type $extra1, extra1 } from '../_extra/extra1'
 import { type $extra2, extra2 } from '../_extra/extra2'
@@ -7,11 +9,11 @@ import { ui_IPAdapterFaceIDV2, type UI_IPAdapterFaceIDV2 } from '../_ipAdapter/p
 import { ui_latent_v3, type UI_LatentV3 } from '../_prefabs/prefab_latent_v3'
 import { ui_sampler_advanced, type UI_Sampler_Advanced } from '../_prefabs/prefab_sampler_advanced'
 import { ui_customSave, type UI_customSave } from '../_prefabs/saveSmall'
-import { sampleNegative, samplePrompts } from '../samplePrompts'
+import { samplePrompts } from '../samplePrompts'
 import { type $prefabModelSD15andSDXL, prefabModelSD15andSDXL } from '../SD15/_model_SD15_SDXL'
 import { type $PromptList, promptList } from './_prefabs/prefab_PromptList'
 
-export type $CushySDXLUI = X.XGroup<{
+type CushySDXL_inner = {
    positive: $PromptList
    negative: $PromptList
    model: $prefabModelSD15andSDXL
@@ -19,42 +21,43 @@ export type $CushySDXLUI = X.XGroup<{
    sampler: UI_Sampler_Advanced
    customSave: UI_customSave
    controlnets: UI_cnet
-   ipAdapter: X.XOptional<UI_IPAdapterV2>
-   faceID: X.XOptional<UI_IPAdapterFaceIDV2>
+   ipAdapter: Z.Maybe<UI_IPAdapterV2>
+   faceID: Z.Maybe<UI_IPAdapterFaceIDV2>
    extra: $extra1
    extra2: $extra2
-}>
+}
 
-// type K = $CushySDXLUI['$Field']
+export interface CushySDXLSchema extends MAGICFIELDS<CushySDXL_inner> {}
+export class CushySDXLSchema extends cushy.field.group<CushySDXL_inner> {
+   static schema(b: CushySchemaBuilder): Z.Schema<CushySDXLSchema> {
+      return b
+         .fields({
+            positive: promptList(b, { default: samplePrompts.tree }),
+            negative: promptList(b, { default: 'bad quality, blurry, low resolution, pixelated, noisy' }),
 
-export function _cushySDXLSchema(b: X.Builder): $CushySDXLUI {
-   // console.log(`[🤠] tags`, tags)
-   // console.log(`[🤠] artists`, artists)
-   return b.fields({
-      positive: promptList(b, { default: samplePrompts.tree }),
-      negative: promptList(b, { default: 'bad quality, blurry, low resolution, pixelated, noisy' }),
-
-      controlnets: ui_cnet(),
-      model: prefabModelSD15andSDXL({
-         // @ts-ignore
-         ckpt_name: 'albedobaseXL_v21.safetensors',
-      }).addRequirements({
-         // just for Lorn
-         type: 'modelInCivitai',
-         civitaiModelId: '889818',
-         // civitaiModelId: 'https://civitai.com/api/download/models/889818',
-         // civitaiURL: 'https://civitai.com/models/795765/illustrious-xl',
-         base: 'SDXL',
-         optional: true,
-      }),
-      latent: ui_latent_v3({
-         size: { default: { modelType: 'SDXL 1024' } },
-      }),
-      sampler: ui_sampler_advanced(),
-      customSave: ui_customSave(),
-      ipAdapter: ui_IPAdapterV2().optional(),
-      faceID: ui_IPAdapterFaceIDV2().optional(),
-      extra: extra1(),
-      extra2: extra2(),
-   })
+            controlnets: ui_cnet(),
+            model: prefabModelSD15andSDXL({
+               // @ts-ignore
+               ckpt_name: 'albedobaseXL_v21.safetensors',
+            }).addRequirements({
+               // just for Lorn
+               type: 'modelInCivitai',
+               civitaiModelId: '889818',
+               // civitaiModelId: 'https://civitai.com/api/download/models/889818',
+               // civitaiURL: 'https://civitai.com/models/795765/illustrious-xl',
+               base: 'SDXL',
+               optional: true,
+            }),
+            latent: ui_latent_v3({
+               size: { default: { modelType: 'SDXL 1024', width: 1024, height: 1024, aspectRatio: '1:1' } },
+            }),
+            sampler: ui_sampler_advanced(),
+            customSave: ui_customSave(),
+            ipAdapter: ui_IPAdapterV2().optional(),
+            faceID: ui_IPAdapterFaceIDV2().optional(),
+            extra: extra1(),
+            extra2: extra2(),
+         })
+         .useClass(CushySDXLSchema)
+   }
 }

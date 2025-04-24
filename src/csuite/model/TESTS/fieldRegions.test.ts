@@ -1,16 +1,16 @@
-import { describe, expect, it } from 'bun:test'
 import { readdirSync, readFileSync, statSync } from 'fs'
 import { join } from 'path'
+import { describe, expect, it } from 'vitest'
 
 // Define the directory where the `Field<...>.ts` or `.tsx` files are located
-const directoryPath: "src/csuite" = 'src/csuite' // Change this to your directory path
+const directoryPath: 'src/csuite' = 'src/csuite' // Change this to your directory path
 
 // Define the list of required regions in order
 const requiredRegions: string[] = [
-   '$Config', // config type
-   '$Serial', // serial type
-   '$Value',
-   '$Types',
+   '{config}', // config type
+   '{serial}', // serial type
+   '{value}',
+   '{types}',
    'State',
    'Static',
    'Ctor',

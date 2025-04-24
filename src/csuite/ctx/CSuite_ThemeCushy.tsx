@@ -17,28 +17,28 @@ export class CSuite_ThemeCushy implements CSuiteConfig {
    showSelectIcons: boolean = false
 
    get tooltipDelay(): Maybe<number> {
-      return cushy.preferences.interface.TooltipDelay.value
+      return cushy.preferences.interface.zFields.tooltipDelay.zValue
    }
 
    get showFoldButtons(): boolean {
-      return this.st.preferences.interface.Widget.ShowFoldButtons.value ?? true
+      return this.st.preferences.interface.zFields.widget.zFields.showFoldButtons.zValue ?? true
    }
 
    // sizes ------------------------------------------------------
    get widgetHeight(): number {
-      return this.st.preferences.interface.WidgetHeight.value ?? 1.8
+      return this.st.preferences.interface.zFields.widgetHeight.zValue ?? 1.8
    }
 
    get inputHeight(): number {
-      return this.st.preferences.interface.InputHeight.value ?? 1.6
+      return this.st.preferences.interface.zFields.inputHeight.zValue ?? 1.6
    }
 
    get insideHeight(): number {
-      return this.st.preferences.interface.InsideHeight.value ?? 1.2
+      return this.st.preferences.interface.zFields.insideHeight.zValue ?? 1.2
    }
 
    get inputRoundness(): number {
-      return this.st.preferences.theme.value.global.roundness ?? 5
+      return this.st.preferences.theme.zValue.global.roundness ?? 5
    }
 
    // misc ------------------------------------------------------
@@ -47,23 +47,23 @@ export class CSuite_ThemeCushy implements CSuiteConfig {
    }
 
    get showWidgetUndo(): boolean {
-      return this.st.preferences.interface.Widget.ShowUndo.value ?? true
+      return this.st.preferences.interface.zFields.widget.zFields.showUndo.zValue ?? true
    }
 
    get showWidgetMenu(): boolean {
-      return this.st.preferences.interface.Widget.ShowMenu.value ?? true
+      return this.st.preferences.interface.zFields.widget.zFields.showMenu.zValue ?? true
    }
 
    get showWidgetDiff(): boolean {
-      return this.st.preferences.interface.Widget.ShowDiff.value ?? true
+      return this.st.preferences.interface.zFields.widget.zFields.showDiff.zValue ?? true
    }
 
    get showToggleButtonBox(): boolean {
-      return this.st.preferences.interface.Widget.ShowToggleButtonBox.value ?? false
+      return this.st.preferences.interface.zFields.widget.zFields.showToggleButtonBox.zValue ?? false
    }
 
    get labellayout(): FormGlobalLayoutMode {
-      const x = this.st.preferences.theme.LabelLayout.value
+      const x = this.st.preferences.theme.zFields.labelLayout.zValue
       if (x === 'fluid') return 'fluid'
       if (x === 'fixed-left') return 'fixed-left'
       if (x === 'fixed-right') return 'fixed-right'
@@ -77,7 +77,7 @@ export class CSuite_ThemeCushy implements CSuiteConfig {
    // theme
 
    get baseStr(): string {
-      return this.st.preferences.theme.Base.value
+      return this.st.preferences.theme.base.zValue
    }
 
    get base(): Kolor {
@@ -91,19 +91,19 @@ export class CSuite_ThemeCushy implements CSuiteConfig {
    labelBackground: TintExt = 0 // 3 // {}
 
    get text(): Tint {
-      return run_tint(this.st.preferences.theme.value.global.text.base)
+      return run_tint(this.st.preferences.theme.zValue.global.text.base)
    }
 
    get inputContrast(): TintExt {
-      return this.st.preferences.theme.value.global.contrast
+      return this.st.preferences.theme.zValue.global.contrast
    }
 
    get inputBorder(): TintExt {
-      return this.st.preferences.theme.value.global.border ?? 10
+      return this.st.preferences.theme.zValue.global.border ?? 10
    }
 
    get labelText(): Tint | undefined {
-      const raw = this.st.preferences.theme.value.global.textLabel.base
+      const raw = this.st.preferences.theme.zValue.global.labelText.base
       if (raw == null) return undefined
       return run_tint(raw)
    }
@@ -113,8 +113,8 @@ export class CSuite_ThemeCushy implements CSuiteConfig {
       contrast: Maybe<number>
    } {
       return {
-         border: this.st.preferences.theme.FieldGroups.value?.border,
-         contrast: this.st.preferences.theme.FieldGroups.value?.contrast,
+         border: this.st.preferences.theme.fieldGroups.zValue?.border,
+         contrast: this.st.preferences.theme.fieldGroups.zValue?.contrast,
       }
    }
 }

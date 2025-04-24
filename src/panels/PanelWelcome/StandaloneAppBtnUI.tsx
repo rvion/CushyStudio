@@ -1,9 +1,8 @@
-import { observer } from 'mobx-react-lite'
 import { useEffect } from 'react'
 
 import { AppCardUI } from '../../cards/fancycard/AppCardUI'
 
-export const StandaloneAppBtnUI = observer(function StandaloneAppBtnUI_(p: { path: RelativePath }) {
+export const StandaloneAppBtnUI = obs(function StandaloneAppBtnUI_(p: { path: RelativePath }) {
    const path = p.path
    const file = cushy.library.getFile(path)
 

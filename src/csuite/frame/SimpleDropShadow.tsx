@@ -9,12 +9,12 @@ export type SimpleDropShadow = {
    opacity?: number
 }
 
-export type $schemaSimpleDropShadow = X.XGroup<{
-   x: X.XNumber
-   y: X.XNumber
-   blur: X.XNumber
-   color: X.XColor
-   opacity: X.XNumber
+export type $schemaSimpleDropShadow = Z.Group<{
+   x: Z.Number
+   y: Z.Number
+   blur: Z.Number
+   color: Z.Color
+   opacity: Z.Number
 }>
 
 export function run_theme_dropShadow(shadow: SimpleDropShadow): string {
@@ -29,7 +29,7 @@ export const schemaSimpleDropShadow = (ui: CushySchemaBuilder): $schemaSimpleDro
    ui.fields({
       x: ui.int({ default: 0, min: -20, max: 20 }),
       y: ui.int({ default: 1, min: -20, max: 20 }),
-      color: ui.colorV2({ default: '#000', tooltip: 'Drop shadow color for inputs' }),
+      color: ui.color({ default: '#000', description: 'Drop shadow color for inputs' }),
       blur: ui.int({ default: 0, min: 0, max: 20 }),
       opacity: ui.float({ default: 0.5, min: 0, max: 1, step: 0.1 }),
    })

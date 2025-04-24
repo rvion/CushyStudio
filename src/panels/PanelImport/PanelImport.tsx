@@ -1,7 +1,5 @@
 import type { NO_PROPS } from '../../csuite/types/NO_PROPS'
 
-import { observer } from 'mobx-react-lite'
-
 import { Button } from '../../csuite/button/Button'
 import { SpacerUI } from '../../csuite/components/SpacerUI'
 import { Frame } from '../../csuite/frame/Frame'
@@ -13,12 +11,12 @@ export const PanelImport = new Panel({
    name: 'Import',
    category: 'tools',
    widget: (): React.FC<NO_PROPS> => PanelImportUI,
-   header: (p): PanelHeader => ({ title: 'Import', icon: 'mdiImport' }),
+   header: (p): PanelHeader => ({ title: 'Import', icon: IKONS.mdiImport }),
    def: (): NO_PROPS => ({}),
-   icon: 'mdiImport',
+   icon: IKONS.mdiImport,
 })
 
-export const PanelImportUI = observer(function PanelImportUI_(p: {}) {
+export const PanelImportUI = obs(function PanelImportUI_(p: {}) {
    return (
       <div tw='h-full w-full'>
          <PanelHeaderUI>
@@ -27,14 +25,14 @@ export const PanelImportUI = observer(function PanelImportUI_(p: {}) {
             <Button //
                look='warning'
                onClick={() => cushy.droppedFiles.splice(0)}
-               icon='mdiBackspace'
+               icon={IKONS.mdiBackspace}
                children='Clear Items'
             />
          </PanelHeaderUI>
          <div tw='m-3 flex flex-col gap-3'>
             {cushy.droppedFiles.map((file, ix) => (
                <Frame border base key={`${file.name}+${ix}`} tw='p-1'>
-                  <Frame line icon='mdiFileImport'>
+                  <Frame line icon={IKONS.mdiFileImport}>
                      "{file.name}"
                   </Frame>
 

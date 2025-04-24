@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'bun:test'
+import { describe, expect, it } from 'vitest'
 
 import { type NumberFormat } from './i18n'
 import { formatNumberEN, formatNumberFR, parseNumberEN, parseNumberFR } from './number-utils'

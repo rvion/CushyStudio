@@ -67,7 +67,6 @@ export type Activity = {
    onKeyDown?: (event: KeyboardEvent, routine: Routine) => void
 
    /**
-    * @since 2024-05-21
     * @default null
     * how shells are wrapped
     */
@@ -80,15 +79,11 @@ export type Activity = {
    UI?: FC<ActivityUIProps>
 
    /**
-    * @since 2024-05-21
     * mouse event this activity was started from
     * if specified, allow the activity to position itself relative to the mouse if need be
     */
    event?: MouseEvent
 
-   /**
-    * @since 2024-05-21
-    * use placement position the activity container origin
-    */
+   /** use placement position the activity container origin */
    placement?: RevealPlacement
 }

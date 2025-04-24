@@ -1,7 +1,6 @@
 import type { CushyShortcut } from '../commands/CommandManager'
-import type { IconName } from '../icons/icons'
+import type { IconName } from '../icons/IconName'
 
-import { observer } from 'mobx-react-lite'
 import { type ReactNode, useState } from 'react'
 
 import { ComboUI } from '../accelerators/ComboUI'
@@ -43,7 +42,7 @@ export type MenuItemProps = {
    style?: React.CSSProperties
 }
 
-export const _PieMenuItem = observer(function _PieMenuItem_(p: MenuItemProps) {
+export const _PieMenuItem = obs(function _PieMenuItem_(p: MenuItemProps) {
    // prettier-ignore
    const {
         // behaviour
@@ -64,7 +63,7 @@ export const _PieMenuItem = observer(function _PieMenuItem_(p: MenuItemProps) {
          ? disabled()
          : disabled
 
-   const theme = cushy.preferences.theme.value
+   const theme = cushy.preferences.theme.zValue
 
    return (
       <Frame

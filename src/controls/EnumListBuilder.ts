@@ -10,7 +10,7 @@ import { asComfyNodeSlotName } from '../comfyui/comfyui-types'
 
 export type IEnumListBuilderFn<T extends string> = (
    config?: Omit<Field_selectMany_config_simplified_<T>, 'choices'>,
-) => X.XSelectMany_<T>
+) => Z.XSelectMany_<T>
 
 export type IEnumListBuilder = {
    // 💬 2024-08-26 rvion:
@@ -21,7 +21,7 @@ export type IEnumListBuilder = {
    // | without Extract<...>
    // |    ❌: X.Many_<"4x-AnimeSharp.pth" | "4x-UltraSharp.pth" | "4x_NMKD-Siax_200k.pth" | ...>
    [K in keyof Comfy.Slots]: IEnumListBuilderFn<Extract<Comfy.Slots[K], string>>
-   // [K in keyof Requirable]: IEnumListBuilderFn<Requirable[K]['$Value'] & string>
+   // [K in keyof Requirable]: IEnumListBuilderFn<Requirable[K]['{value}'] & string>
 }
 
 export interface EnumListBuilder extends IEnumListBuilder {}

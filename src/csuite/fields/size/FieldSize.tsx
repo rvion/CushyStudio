@@ -1,10 +1,11 @@
-import type { BaseSchema } from '../../model/BaseSchema'
-import type { FieldConfig } from '../../model/FieldConfig'
-import type { FieldSerial } from '../../model/FieldSerial'
+import type { CSchema } from '../../model/CSchema'
+import type { FieldConstructor } from '../../model/FieldConstructor'
+import type { Patch } from '../../model/Patch'
 import type { Repository } from '../../model/Repository'
 import type { Problem_Ext } from '../../model/Validation'
 
 import { produce } from 'immer'
+import { computed } from 'mobx'
 
 import { Field } from '../../model/Field'
 import { bang } from '../../utils/bang'
@@ -18,8 +19,6 @@ import {
    type ModelType,
    type SDModelType,
 } from './WidgetSizeTypes'
-import { WigetSize_BlockUI } from './WigetSize_BlockUI'
-import { WigetSize_LineUI } from './WigetSize_LineUI'
 
 type SizeAble = {
    width: number
@@ -27,105 +26,113 @@ type SizeAble = {
 }
 
 // CONFIG
-export type Field_size_config = FieldConfig<
-   {
-      default?: CushySizeByRatio
-      min?: number
-      max?: number
-      step?: number
-   },
-   Field_size_types
->
+export type Field_size_config = Field_size['{config}']
+type Field_size_ownConfig = {
+   default?: CushySizeByRatio
+   min?: number
+   max?: number
+   step?: number
+}
 
 // SERIAL
-export type Field_size_serial = FieldSerial<{
+export type Field_size_serial = Field_size['{serial}']
+type Field_size_ownSerial = {
    width?: number
    height?: number
    modelType?: SDModelType
    aspectRatio?: AspectRatio
-}>
+}
+
+// SERIAL FROM VALUE
+export const Field_size_fromValue = (val: Field_size_value): Field_size_serial => ({
+   ...val,
+})
 
 // VALUE
 export type Field_size_value = CushySize // prettier-ignore
 export type Field_size_unchecked = Field_size_serial
 
 // TYPES
-export type Field_size_types = {
-   $Type: 'size'
-   $Config: Field_size_config
-   $Serial: Field_size_serial
-   $Value: Field_size_value
-   $Unchecked: Field_size_unchecked
-   $Field: Field_size
-   $Child: never
-   $Reflect: Field_size_types
+export interface Field_size {
+   '{type}': 'size'
+   '{ownConfig}': Field_size_ownConfig
+   '{ownSerial}': Field_size_ownSerial
+   '{value}': Field_size_value
+   '{setValue}': Field_size_value
+   '{unchecked}': Field_size_unchecked
+   '{child}': never
+   '{opts}': unknown
+   '{ownPatch}': Patch<'size'>
 }
 
 // STATE
-export class Field_size extends Field<Field_size_types> {
+export class Field_size extends Field {
    static readonly type: 'size' = 'size'
-   static migrateSerial(serial: object): void {}
-   static readonly emptySerial: Field_size_serial = { $: 'size' }
-   static codegenValueType(config: Field_size_config): string {
-      return 'CushySize'
-   }
-   DefaultHeaderUI = WigetSize_LineUI
-   DefaultBodyUI = WigetSize_BlockUI
-
-   get isOwnSet(): boolean {
-      const ser = this.serial
-      if (
-         ser.width == null && //
-         ser.height == null &&
-         ser.aspectRatio == null &&
-         ser.modelType == null
+   static override migrateSerial(serial: object): void {}
+   static readonly codeForTypescriptValue = (config: Field_size_config): string => 'Z.CushySize'
+   get zIsOwnSet(): boolean {
+      const ser = this.zSerial
+      return (
+         ser.width != null && //
+         ser.height != null &&
+         ser.aspectRatio != null &&
+         ser.modelType != null
       )
-         return false
-      return true
+   }
+
+   private static readonly unsetSerial: Field_size_serial = { $: 'size' }
+   static generateSerial(
+      setValue: Maybe<Field_size['{setValue}']>,
+      config: Field_size['{config}'],
+   ): Field_size['{serial}'] {
+      if (setValue == null && config.default == null) return this.unsetSerial
+      const selectedVal = setValue ?? config.default
+      return {
+         $: 'size',
+         width: selectedVal?.width,
+         height: selectedVal?.height,
+         aspectRatio: selectedVal?.aspectRatio,
+         modelType: selectedVal?.modelType,
+      }
    }
 
    constructor(
       repo: Repository,
       root: Field | null,
       parent: Field | null,
-      schema: BaseSchema<Field_size>,
+      schema: CSchema<Field_size>,
       initialMountKey: string,
       serial?: Field_size_serial,
    ) {
       super(repo, root, parent, schema, initialMountKey, serial)
-      this.init(serial, {
-         sizeHelper: false,
-         DefaultHeaderUI: false,
-         DefaultBodyUI: false,
-      })
+      this.init(serial)
    }
 
    get aspectRatio_or_zero(): AspectRatio {
-      return this.serial.aspectRatio ?? '1:1'
+      return this.zSerial.aspectRatio ?? '1:1'
    }
 
    get modelType_or_zero(): SDModelType {
-      return this.serial.modelType ?? 'SD1.5 512'
+      return this.zSerial.modelType ?? 'SD1.5 512'
    }
 
    get width_or_zero(): number {
-      return this.serial.width ?? parseInt(this.modelType_or_zero.split(' ')[1]!)
+      return this.zSerial.width ?? parseInt(this.modelType_or_zero.split(' ')[1]!)
    }
 
    get height_or_zero(): number {
-      return this.serial.height ?? parseInt(this.modelType_or_zero.split(' ')[1]!)
+      return this.zSerial.height ?? parseInt(this.modelType_or_zero.split(' ')[1]!)
    }
 
-   protected setOwnSerial(next: Field_size_serial): void {
-      // 1. make serial canonical
-      // 1.1. apply default if unset + default
+   protected zSetOwnSerial(next: Field_size_serial): void {
+      // 1. MAKE SERIAL CANONICAL
       if (
          next.width == null || //
          next.height == null ||
          next.aspectRatio == null ||
          next.modelType == null
       ) {
-         const def = this.config.default
+         const def = this.zConfig.default
          if (def != null) {
             next = produce(next, (draft) => {
                draft.aspectRatio = next.aspectRatio ?? def.aspectRatio
@@ -135,36 +142,24 @@ export class Field_size extends Field<Field_size_types> {
             })
          }
       }
-      // 1.2. fill missing fields if some are specified and other can be recovered
-      const modelType = next.modelType
-      if (
-         modelType != null && //
-         (next.width == null || //
-            next.height == null ||
-            next.aspectRatio == null)
-      ) {
-         const size = parseInt(modelType.split(' ')[1]!)
-         next = produce(next, (draft) => {
-            if (draft.width == null) draft.width = size
-            if (draft.height == null) draft.height = size
-            if (draft.aspectRatio == null) draft.aspectRatio = this.toAspectRatio(draft.width / draft.height)
-         })
-      }
 
       // 2. ASSIGN SERIAL
-      this.assignNewSerial(next)
+      this.zAssignNewSerial(next)
+
+      // 3. RECONCILE CHILDREN
+      // (primitive field; no children)
    }
 
-   get ownConfigSpecificProblems(): Problem_Ext {
+   get zOwnConfigSpecificProblems(): Problem_Ext {
       return null
    }
 
-   get ownTypeSpecificProblems(): Problem_Ext {
+   get zOwnTypeSpecificProblems(): Problem_Ext {
       return null
    }
 
-   get defaultValue(): Field_size_value {
-      const config = this.schema.config
+   @computed get defaultValue(): Field_size_value {
+      const config = this.zSchema.config
       const aspectRatio: AspectRatio = config.default?.aspectRatio ?? '1:1'
       const modelType: SDModelType = config.default?.modelType ?? 'SD1.5 512'
       const width = config.default?.width ?? parseInt(modelType.split(' ')[1]!)
@@ -172,36 +167,36 @@ export class Field_size extends Field<Field_size_types> {
       return { $: 'size', aspectRatio, modelType, height, width }
    }
 
-   get hasChanges(): boolean {
+   get zHasChanges(): boolean {
       const def = this.defaultValue
-      if (this.serial.width !== def.width) return true
-      if (this.serial.height !== def.height) return true
-      if (this.serial.aspectRatio !== def.aspectRatio) return true
+      if (this.zSerial.width !== def.width) return true
+      if (this.zSerial.height !== def.height) return true
+      if (this.zSerial.aspectRatio !== def.aspectRatio) return true
       return false
    }
 
-   reset(): void {
-      this.value = this.defaultValue
+   override zReset(): void {
+      this.zValue = this.defaultValue
    }
 
    /** crash if unset */
    get width(): number {
-      return bang(this.serial.width)
+      return bang(this.zSerial.width)
    }
 
    /** crash if unset */
    get height(): number {
-      return bang(this.serial.height)
+      return bang(this.zSerial.height)
    }
 
    set width(next: number) {
-      if (next === this.serial.width) return
-      this.runInTransaction(() => void this.patchSerial((draft) => void (draft.width = next)))
+      if (next === this.zSerial.width) return
+      this.zRunInTransaction(() => void this.zPatchSerial((draft) => void (draft.width = next)))
    }
 
    set height(next: number) {
-      if (next === this.serial.height) return
-      this.runInTransaction(() => void this.patchSerial((draft) => void (draft.height = next)))
+      if (next === this.zSerial.height) return
+      this.zRunInTransaction(() => void this.zPatchSerial((draft) => void (draft.height = next)))
    }
 
    setWidth(width: number): void {
@@ -220,29 +215,25 @@ export class Field_size extends Field<Field_size_types> {
       }
    }
 
-   get value(): Field_size_value {
-      return this.value_or_fail
-   }
-
-   set value(val: Field_size_value) {
+   set zValue(val: Field_size_value) {
       // ugly code;
       if (
-         val.width === this.serial.width && //
-         val.height === this.serial.height &&
-         val.aspectRatio === this.serial.aspectRatio
+         val.width === this.zSerial.width && //
+         val.height === this.zSerial.height &&
+         val.aspectRatio === this.zSerial.aspectRatio
       ) {
          return
       }
-      this.runInTransaction(() => {
-         this.patchSerial((draft) => {
+      this.zRunInTransaction(() => {
+         this.zPatchSerial((draft) => {
             Object.assign(draft, val)
          })
       })
    }
 
-   get value_or_fail(): Field_size_value {
-      const serial = this.value_unchecked
-      if (!this.isOwnSet) throw new Error(`Field_size.value_or_fail: field(${this.pathExt}) not set`)
+   get zValue(): Field_size_value {
+      const serial = this.zValueUnchecked
+      if (!this.zIsOwnSet) throw new Error('Field_size.zValue: field not set')
       return {
          $: 'size',
          aspectRatio: bang(serial.aspectRatio),
@@ -252,7 +243,7 @@ export class Field_size extends Field<Field_size_types> {
       }
    }
 
-   get value_or_zero(): Field_size_value {
+   get zValueOrZero(): Field_size_value {
       return {
          $: 'size',
          aspectRatio: this.aspectRatio_or_zero,
@@ -262,9 +253,22 @@ export class Field_size extends Field<Field_size_types> {
       }
    }
 
-   get value_unchecked(): Field_size_unchecked {
-      return this.serial
+   get zValueUnchecked(): Field_size_unchecked {
+      return this.zSerial
    }
+
+   override zIsValueEqual(other: Field): boolean {
+      if (!(other instanceof Field_size)) return false
+
+      return this.zSerial.height === other.zSerial.height && this.zSerial.width === other.zSerial.width
+   }
+
+   public static readonly patchedSerialPaths: readonly string[] = Object.freeze([
+      'width',
+      'height',
+      'aspectRatio',
+      'modelType',
+   ])
 
    private idealSizeforModelType(model: ModelType | string): SizeAble {
       if (model === 'xl') return { width: 1024, height: 1024 }
@@ -278,7 +282,7 @@ export class Field_size extends Field<Field_size_types> {
    /** flip width and height */
    flip(): void {
       if (this.width === this.height) return
-      this.runInTransaction(() => {
+      this.zRunInTransaction(() => {
          const prevWidth = this.width
          this.width = this.height
          this.height = prevWidth
@@ -356,3 +360,4 @@ export class Field_size extends Field<Field_size_types> {
 
 // DI
 registerFieldClass('size', Field_size)
+Field_size satisfies FieldConstructor<Field_size>

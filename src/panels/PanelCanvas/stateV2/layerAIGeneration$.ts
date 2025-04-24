@@ -3,10 +3,10 @@ import type { FieldId } from '../../../csuite/model/FieldId'
 
 import { masksChannel } from './ucV2'
 
-export type LayerAIGeneration$ = X.XGroup<{
-   masks: X.XSelectMany_<FieldId>
-   draftId: X.XSelectOne<{ id: DraftID; label: string }, DraftID>
-   image: X.XOptional<X.XImage>
+export type LayerAIGeneration$ = Z.Group<{
+   masks: Z.XSelectMany_<FieldId>
+   draftId: Z.XSelectOne<{ id: DraftID; label: string }, DraftID>
+   image: Z.Maybe<Z.Image>
 }>
 export function layerAIGeneration$(b: CushySchemaBuilder): LayerAIGeneration$ {
    return b.fields({
@@ -22,7 +22,7 @@ export function layerAIGeneration$(b: CushySchemaBuilder): LayerAIGeneration$ {
       // ⏸️     //
       // ⏸️ }),
       masks: b.selectManyDynamicStrings<FieldId>((self) => {
-         return self.consume(masksChannel)?.items.map((t) => t.id) ?? []
+         return self.zReadChannel(masksChannel)?.items.map((t) => t.zUid) ?? []
       }),
 
       //  => Bridge is just too specifc, let's leave each app include

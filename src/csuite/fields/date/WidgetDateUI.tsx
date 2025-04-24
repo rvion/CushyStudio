@@ -1,7 +1,5 @@
 import type { Field_date } from './FieldDate'
 
-import { observer } from 'mobx-react-lite'
-
 import { Button } from '../../button/Button'
 import { InputStringUI } from '../../input-string/InputStringUI'
 
@@ -11,11 +9,11 @@ import { InputStringUI } from '../../input-string/InputStringUI'
  * This needs to be fixed, and the warning will disappear. (2024-08-23)
  * Please remove this explanation when the warning is fixed.
  */
-export const WidgetDate_ClearButtonUI = observer(function WidgetDate_ClearButtonUI_<VALUE>(p: {
+export const WidgetDate_ClearButtonUI = obs(function WidgetDate_ClearButtonUI_<VALUE>(p: {
    field: Field_date<VALUE>
    readonly?: boolean
 }) {
-   if (!p.field.canBeToggledWithinParent || p.readonly) return null
+   if (!p.field.zCanBeToggledWithinParent || p.readonly) return null
 
    return (
       <Button
@@ -24,25 +22,25 @@ export const WidgetDate_ClearButtonUI = observer(function WidgetDate_ClearButton
          borderless
          subtle
          square
-         icon='mdiClose'
-         disabled={p.field.selectedValue == null || !p.field.isEnabledWithinParent}
+         icon={IKONS.mdiClose}
+         disabled={p.field.selectedValue == null || !p.field.zIsEnabledWithinParent}
          onClick={() => {
-            if (p.field.canBeToggledWithinParent) {
-               p.field.disableSelfWithinParent()
+            if (p.field.zCanBeToggledWithinParent) {
+               p.field.zDisableSelfWithinParent()
             }
-            p.field.touch()
+            p.field.zTouch()
          }}
       />
    )
 })
 
 // date HEADER
-export const WidgetDate_HeaderUI = observer(function WidgetDateUI_<VALUE>(p: {
+export const WidgetDate_HeaderUI = obs(function WidgetDateUI_<VALUE>(p: {
    field: Field_date<VALUE>
    readonly?: boolean
 }) {
    const field = p.field
-   const config = field.config
+   const config = field.zConfig
    return (
       <div tw='sticky top-0 flex w-full items-center gap-0.5'>
          <InputStringUI
@@ -51,32 +49,32 @@ export const WidgetDate_HeaderUI = observer(function WidgetDateUI_<VALUE>(p: {
                'w-full',
                'minh-input',
                'UI-InputDate',
-               field.hasOwnErrors && field.touched && 'border-red-700 border',
+               field.zHasOwnErrors && field.zTouched && 'border-red-700 border',
             ].join(' ')}
             // inputClassName={field.hasOwnErrors && field.touched ? 'border-red-700 border' : undefined}
-            icon={p.field.config.innerIcon}
+            icon={p.field.zConfig.innerIcon}
             type='datetime-local'
             className={config.className}
             getValue={() =>
-               !field.isEnabledWithinParent || field.value_unchecked == null
+               !field.zIsEnabledWithinParent || field.zValueUnchecked == null
                   ? ''
-                  : field.format(field.value_unchecked)
+                  : field.format(field.zValueUnchecked)
             }
             setValue={(value) => {
-               if (p.field.canBeToggledWithinParent) {
+               if (p.field.zCanBeToggledWithinParent) {
                   if (value == '') {
-                     p.field.disableSelfWithinParent()
+                     p.field.zDisableSelfWithinParent()
                   } else {
-                     p.field.enableSelfWithinParent()
+                     p.field.zEnableSelfWithinParent()
                   }
                }
 
                field.setValueFromString(value)
-               p.field.touch()
+               p.field.zTouch()
             }}
-            placeholder={field.config.placeHolder}
+            placeholder={field.zConfig.placeHolder}
             disabled={p.readonly}
-            onBlur={() => p.field.touch()}
+            onBlur={() => p.field.zTouch()}
          />
          <WidgetDate_ClearButtonUI field={field} readonly={p.readonly} />
       </div>

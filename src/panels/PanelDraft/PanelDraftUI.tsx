@@ -2,7 +2,6 @@ import type { DraftL } from '../../models/Draft'
 import type { PanelState } from '../../router/PanelState'
 
 import { toJS } from 'mobx'
-import { observer } from 'mobx-react-lite'
 import { useLayoutEffect } from 'react'
 
 import { openFolderInOS } from '../../app/layout/openExternal'
@@ -18,7 +17,7 @@ import { QuickTableUI } from '../../csuite/utils/quicktable'
 import { FramePhoneUI } from '../../csuite/wrappers/FramePhoneUI'
 import { InstallRequirementsBtnUI } from '../../manager/REQUIREMENTS/InstallRequirementsBtnUI'
 import { usePanel } from '../../router/usePanel'
-import { useImageSlotDrop } from '../../widgets/galleries/dnd'
+import { POPUP } from '../../widgets/misc/SimplePopUp'
 import { draftContext } from '../../widgets/misc/useDraft'
 import { AppCompilationErrorUI } from './AppCompilationErrorUI'
 import { DraftHeaderUI } from './DraftHeaderUI'
@@ -32,36 +31,47 @@ export type PanelDraftProps = {
    draftID: DraftID
 }
 
-export const PanelDraftUI = observer(function PanelDraftUI_(p: PanelDraftProps) {
+export const PanelDraftUI = obs(function PanelDraftUI_(p: PanelDraftProps) {
    // 1. get draft
    const draft = typeof p.draftID === 'string' ? cushy.db.draft.get(p.draftID) : p.draftID
    return <DraftUI draft={draft} />
 })
 
-export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> }) {
+export const DraftUI = obs(function Panel_Draft_(p: { draft: Maybe<DraftL> }) {
    const draft = p.draft
    const justify = cushy.forms.use(ui_justify)
-   const [isDnDHovered, dropRef] = useImageSlotDrop((img) => {
-      if (draft == null) return
-      cushy.activityManager.start({
-         stopOnBackdropClick: true,
-         backdrop: true,
-         shell: 'popup-lg',
-         UI: (p) => (
-            <DraftImageSlotPickerUI //
-               image={img}
-               draft={draft}
-               stop={p.stop}
-            />
-         ),
-      })
-      // Make pop-up open with a list of Image fields to pick from, the picked field is set to the dropped image
-      // The list of options should display their path from their top-level group to the field
-      // For example, CushySXDL's Latent Image field would be "Latent->Image"
-      return null
-   })
-   const theme = cushy.preferences.theme.value
+   const [isDnDHovered, dropRef] = uy.dnd.useDropZone({
+      config: { shallow: true },
+      Image: {
+         onDrop: (item, monitor) => {
+            if (draft == null) return
 
+            cushy.activityManager.start({
+               stopOnBackdropClick: true,
+               // backdrop: true,
+               // shell: 'popup-sm',
+
+               UI: (p) => (
+                  <POPUP title='Insert Image in to Slot'>
+                     <DraftImageSlotPickerUI //
+                        image={item}
+                        draft={draft}
+                        stop={p.stop}
+                     />
+                  </POPUP>
+               ),
+            })
+         },
+         onHover: (item, monitor) => {
+            cushy.dndHandler.setContent({
+               icon: IKONS.mdiImage,
+               label: 'Drop Image in to Slot',
+               suffixIcon: IKONS.mdiMenuOpen,
+            })
+         },
+      },
+   })
+   const theme = cushy.preferences.theme.zValue
    // useEffect(() => draft?.AWAKE(), [draft?.id])
    const panel: PanelState<any> = usePanel()
    // ensure
@@ -116,6 +126,7 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
    const fpath = draft.file.fPath
    let OUT = (
       <draftContext.Provider value={draft} key={draft.id}>
+         {/* [[{Object.keys(draft.UIProps).join(', ')}]] */}
          {/* <DraftHeaderUI
                 draft={draft}
                 children={justify.root.UI({
@@ -157,7 +168,7 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
                tw={[
                   //
                   'flex flex-1 flex-col gap-1 p-2',
-                  run_justify(justify.value),
+                  run_justify(justify.zValue),
                   containerClassName,
                ]}
                onKeyUp={(ev) => {
@@ -186,12 +197,7 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
                      requirements={metadata.requirements}
                   />
                )}
-               {draft.form && (
-                  <draft.form.UI //
-                     rule={draft.app.layout ?? undefined}
-                     // global={{ Shell: ShellMobileUI }}
-                  />
-               )}
+               {draft.form && <draft.form.UI rules={draft.UIProps} /* {...draft.UIProps} */ />}
             </Frame>
             <Frame tw='[height:80vh]'></Frame>
          </Frame>

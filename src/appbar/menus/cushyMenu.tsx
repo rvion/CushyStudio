@@ -7,20 +7,20 @@ import { DEMO_ACTIVITY } from '../../operators/useDebugActivity'
 
 export const cushyMenu = defineMenu({
    title: '',
-   icon: 'cdiCushyStudio',
+   icon: IKONS.cdiCushyStudio,
    entries: (b) => [
       b.SimpleMenuAction({
          label: 'Open Dev Playground',
-         icon: 'mdiPlayNetwork',
+         icon: IKONS.mdiPlayNetwork,
          onClick: () => cushy.layout.open('Playground', {}),
       }),
       b.SimpleMenuAction({
-         icon: 'mdiBug',
+         icon: IKONS.mdiBug,
          onClick: () => cushy.electron.toggleDevTools(),
          label: 'Toggle Electron Dev Tools',
       }),
       b.SimpleMenuAction({
-         icon: 'mdiSync',
+         icon: IKONS.mdiSync,
          onClick: () => cushy.reloadCushyMainWindow(),
          label: 'Reload',
       }),
@@ -28,29 +28,29 @@ export const cushyMenu = defineMenu({
       b.Divider,
       b.SimpleMenuAction({
          label: 'Reset Layout',
-         icon: 'mdiAutoFix',
+         icon: IKONS.mdiAutoFix,
          onClick: () => cushy.layout.resetCurrent(),
       }),
       b.SimpleMenuAction({
-         icon: 'mdiAutoFix',
+         icon: IKONS.mdiAutoFix,
          onClick: () => cushy.layout.fixTabsWithNegativeArea(),
          label: 'Fix Tabs with negative size',
       }),
 
       b.SimpleMenuAction({
-         icon: 'mdiVideo',
+         icon: IKONS.mdiVideo,
          onClick: () => cushy.resizeWindowForVideoCapture(),
          label: 'set screen size to 1920 x 1080',
       }),
 
       b.SimpleMenuAction({
-         icon: 'mdiLaptop',
+         icon: IKONS.mdiLaptop,
          onClick: () => cushy.resizeWindowForLaptop(),
          label: 'set screen size to 1280 x 720',
       }),
 
       b.SimpleMenuAction({
-         icon: 'mdiBug',
+         icon: IKONS.mdiBug,
          onClick: () => activityManager.start(DEMO_ACTIVITY),
          label: 'Start debug activity',
       }),
@@ -67,38 +67,38 @@ export const cushyMenu = defineMenu({
                ),
                {},
             ),
-         icon: 'mdiAccount',
+         icon: IKONS.mdiAccount,
          label: 'print DB stats',
       }),
 
       b.SimpleMenuAction({
          onClick: () => quickBench.printAllStats(),
-         icon: 'mdiAccountOutline',
+         icon: IKONS.mdiAccountOutline,
          label: 'print QuickBench stats',
       }),
 
       b.SimpleMenuAction({
          onClick: cushy.auth.__testCB,
-         icon: 'mdiAccount',
+         icon: IKONS.mdiAccount,
          label: 'Test Auth CB page',
       }),
 
       b.Divider,
       b.SimpleMenuAction({
          onClick: () => cushy.wipeOuputTopLevelImages(),
-         icon: 'mdiImageBroken',
+         icon: IKONS.mdiImageBroken,
          label: 'remove all images',
       }),
 
       b.SimpleMenuAction({
          onClick: () => cushy.wipeOuputTopLevelImages(),
-         icon: 'mdiImageBroken',
+         icon: IKONS.mdiImageBroken,
          label: 'remove top-level images',
       }),
 
       b.Divider,
       b.SimpleMenuAction({
-         icon: 'mdiSync',
+         icon: IKONS.mdiSync,
          label: 'Reset DB',
          onClick: () => {
             cushy.db.reset()
@@ -107,20 +107,20 @@ export const cushyMenu = defineMenu({
       }),
 
       b.SimpleMenuAction({
-         icon: 'mdiSync',
+         icon: IKONS.mdiSync,
          onClick: () => cushy.fullReset_eraseConfigAndSchemaFilesAndDB(),
          label: 'Full Reset',
       }),
 
       b.Divider,
       b.SimpleMenuAction({
-         icon: 'mdiStorageTankOutline',
+         icon: IKONS.mdiStorageTankOutline,
          onClick: cushy.db.migrate,
          label: 'Migrate',
       }),
 
       b.SimpleMenuAction({
-         icon: 'mdiHomeGroup',
+         icon: IKONS.mdiHomeGroup,
          onClick: cushy.db.runCodegen,
          label: 'CodeGen',
       }),

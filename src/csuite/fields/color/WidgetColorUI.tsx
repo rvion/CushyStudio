@@ -1,17 +1,15 @@
 import type { Field_color } from './FieldColor'
 
-import { observer } from 'mobx-react-lite'
-
-export const WidgetColorUI = observer(function WidgetColorUI_(p: { field: Field_color }) {
+export const WidgetColorUI = obs(function WidgetColorUI_(p: { field: Field_color }) {
    const field = p.field
    return (
       <input //
-         value={field.serial.value}
+         value={field.zSerial.value}
          type='color'
-         onBlur={() => field.touch()}
+         onBlur={() => field.zTouch()}
          onChange={(ev) => {
-            field.value = ev.target.value
-            p.field.touch()
+            field.zValue = ev.target.value
+            p.field.zTouch()
          }}
       />
    )

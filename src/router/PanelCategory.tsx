@@ -1,4 +1,4 @@
-import type { IconName } from '../csuite/icons/icons'
+import type { IconName } from '../csuite/icons/IconName'
 
 import { exhaust } from '../csuite/utils/exhaust'
 
@@ -15,15 +15,15 @@ export type PanelCategory =
     | 'developper'
 
 export function getPanelCategoryIcon(x: PanelCategory): IconName {
-   if (x === 'app') return 'mdiApps'
-   if (x === 'outputs') return 'mdiFileDocument'
-   if (x === 'settings') return 'mdiCog'
-   if (x === 'ComfyUI') return 'cdiNodes'
-   if (x === 'models') return 'mdiDatabase'
-   if (x === 'tools') return 'mdiWrench'
-   if (x === 'help') return 'mdiHelpCircle'
-   if (x === 'misc') return 'mdiDotsHorizontal'
-   if (x === 'developper') return 'mdiCodeBraces'
+   if (x === 'app') return IKONS.mdiApps
+   if (x === 'outputs') return IKONS.mdiFileDocument
+   if (x === 'settings') return IKONS.mdiCog
+   if (x === 'ComfyUI') return IKONS.cdiNodes
+   if (x === 'models') return IKONS.mdiDatabase
+   if (x === 'tools') return IKONS.mdiWrench
+   if (x === 'help') return IKONS.mdiHelpCircle
+   if (x === 'misc') return IKONS.mdiDotsHorizontal
+   if (x === 'developper') return IKONS.mdiCodeBraces
    exhaust(x)
-   return 'mdiBatteryUnknown'
+   return IKONS.mdiBatteryUnknown
 }

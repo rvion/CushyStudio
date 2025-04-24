@@ -1,10 +1,9 @@
 // prettier-ignore
 export type KnownModel_SavePath =
     | "vae_approx"                                       // x   8
-    | "default"                                          // x  11
+    | "default"                                          // x  14
     | "upscale_models/ldsr"                              // x   1
     | "checkpoints/upscale"                              // x   1
-    | "insightface"                                      // x   2
     | "deepbump"                                         // x   1
     | "face_restore"                                     // x   3
     | "checkpoints/SVD"                                  // x   2
@@ -13,7 +12,7 @@ export type KnownModel_SavePath =
     | "checkpoints/Stable-Cascade"                       // x   2
     | "vae/Stable-Cascade"                               // x   2
     | "diffusion_models/Stable-Cascade"                  // x   8
-    | "clip/Stable-Cascade"                              // x   1
+    | "text_encoders/Stable-Cascade"                     // x   1
     | "checkpoints/SDXL-TURBO"                           // x   2
     | "checkpoints/SDXL"                                 // x   4
     | "diffusion_models/xl-inpaint-0.1"                  // x   2
@@ -24,9 +23,9 @@ export type KnownModel_SavePath =
     | "loras/HyperSD/SD15"                               // x   6
     | "loras/HyperSD/SDXL"                               // x   6
     | "loras/HyperSD/SD3"                                // x   3
-    | "text_encoders/t5"                                 // x   3
-    | "clip/t5-base"                                     // x   1
-    | "clip/t5"                                          // x  13
+    | "text_encoders/t5"                                 // x  16
+    | "diffusion_models/cosmos-1.0"                      // x   4
+    | "text_encoders/t5-base"                            // x   1
     | "checkpoints/SD1.5"                                // x   4
     | "checkpoints/SD2.1"                                // x   5
     | "vae/SDXL"                                         // x   1
@@ -44,7 +43,6 @@ export type KnownModel_SavePath =
     | "controlnet/SDXL"                                  // x  35
     | "controlnet/SDXL/TemporalNet1XL"                   // x   1
     | "clip_vision"                                      // x   6
-    | "custom_nodes/ControlNet-LLLite-ComfyUI/models"    // x   1
     | "controlnet/1.5"                                   // x  17
     | "gligen/SD1.5"                                     // x   1
     | "sams"                                             // x   4
@@ -52,22 +50,19 @@ export type KnownModel_SavePath =
     | "ultralytics/bbox"                                 // x   6
     | "ultralytics/segm"                                 // x  10
     | "AnimateDiff"                                      // x   2
-    | "animatediff_models"                               // x  11
+    | "animatediff_models"                               // x  12
     | "animatediff_motion_lora"                          // x   8
     | "controlnet/SD1.5/animatediff"                     // x   2
     | "loras/SD1.5/animatediff"                          // x   1
     | "checkpoints/motionctrl"                           // x   1
     | "ipadapter"                                        // x  24
     | "loras/ipadapter"                                  // x   5
-    | "custom_nodes/pfg-ComfyUI/models"                  // x   3
     | "facerestore_models"                               // x   4
     | "facedetection"                                    // x   2
     | "photomaker"                                       // x   2
     | "insightface/models/antelopev2"                    // x   5
     | "instantid"                                        // x   1
     | "controlnet/instantid"                             // x   1
-    | "custom_nodes/ComfyUI-YoloWorld-EfficientSAM"      // x   2
-    | "custom_nodes/ComfyUI_FaceAnalysis/dlib"           // x   2
     | "instance_models/fuser_models"                     // x   1
     | "instance_models/positionnet_models"               // x   1
     | "instance_models/scaleu_models"                    // x   1
@@ -82,13 +77,8 @@ export type KnownModel_SavePath =
     | "controlnet/SDXL/instantid"                        // x   1
     | "insightface/models"                               // x   1
     | "diffusion_models/IC-Light"                        // x   3
-    | "custom_nodes/ComfyUI_ID_Animator/models"          // x   1
-    | "custom_nodes/ComfyUI_ID_Animator/models/animatediff_models" // x   1
-    | "custom_nodes/ComfyUI_ID_Animator/models/image_encoder" // x   1
-    | "custom_nodes/ComfyUI_CustomNet/pretrain"          // x   1
     | "RGT/RGT"                                          // x   3
     | "RGT/RGT_S"                                        // x   3
-    | "custom_nodes/ComfyUI-ToonCrafter/ToonCrafter/checkpoints/tooncrafter_512_interp_v1" // x   1
     | "controlnet/FLUX.1/InstantX-FLUX1-Dev-Union"       // x   1
     | "ipadapter-flux"                                   // x   1
     | "controlnet/FLUX.1/Shakker-Labs-ControlNet-Union-Pro" // x   1
@@ -110,27 +100,36 @@ export type KnownModel_SavePath =
     | "checkpoints/ToonCrafter"                          // x   1
     | "depthanything"                                    // x   6
     | "checkpoints/PixArt-Sigma"                         // x   1
+    | "diffusion_models/PixArt-Sigma"                    // x   2
+    | "diffusion_models/PixArt-Alpha"                    // x   1
     | "checkpoints/hunyuan_dit_comfyui"                  // x   3
+    | "diffusion_models/hunyuan_video"                   // x   2
+    | "text_encoders"                                    // x   3
     | "diffusion_models/FLUX1"                           // x  26
     | "vae/FLUX1"                                        // x   1
     | "checkpoints/FLUX1"                                // x   2
-    | "custom_nodes/comfyui-SegGPT"                      // x   1
-    | "clip/long_clip"                                   // x   2
+    | "text_encoders/long_clip"                          // x   2
     | "depth/ml-depth-pro"                               // x   1
     | "diffusion_models"                                 // x   7
     | "diffusion_models/kolors"                          // x   2
     | "LLM"                                              // x   3
     | "pulid"                                            // x   2
     | "MoGe"                                             // x   2
-    | "checkpoints/LTXV"                                 // x   1
+    | "checkpoints/LTXV"                                 // x   3
+    | "xlabs/controlnets"                                // x   3
+    | "xlabs/loras"                                      // x   3
+    | "xlabs/ipadapters"                                 // x   1
+    | "yolo_world"                                       // x   2
+    | "checkpoints/customnet"                            // x   2
+    | "Janus-Pro"                                        // x   2
+    | "vae/kolors"                                       // x   2
     | "custom_nodes/ComfyUI-BRIA_AI-RMBG/RMBG-1.4"       // x   1
 
 export const knownModel_SavePath: KnownModel_SavePath[] = [
     "vae_approx"                                      ,  // x   8
-    "default"                                         ,  // x  11
+    "default"                                         ,  // x  14
     "upscale_models/ldsr"                             ,  // x   1
     "checkpoints/upscale"                             ,  // x   1
-    "insightface"                                     ,  // x   2
     "deepbump"                                        ,  // x   1
     "face_restore"                                    ,  // x   3
     "checkpoints/SVD"                                 ,  // x   2
@@ -139,7 +138,7 @@ export const knownModel_SavePath: KnownModel_SavePath[] = [
     "checkpoints/Stable-Cascade"                      ,  // x   2
     "vae/Stable-Cascade"                              ,  // x   2
     "diffusion_models/Stable-Cascade"                 ,  // x   8
-    "clip/Stable-Cascade"                             ,  // x   1
+    "text_encoders/Stable-Cascade"                    ,  // x   1
     "checkpoints/SDXL-TURBO"                          ,  // x   2
     "checkpoints/SDXL"                                ,  // x   4
     "diffusion_models/xl-inpaint-0.1"                 ,  // x   2
@@ -150,9 +149,9 @@ export const knownModel_SavePath: KnownModel_SavePath[] = [
     "loras/HyperSD/SD15"                              ,  // x   6
     "loras/HyperSD/SDXL"                              ,  // x   6
     "loras/HyperSD/SD3"                               ,  // x   3
-    "text_encoders/t5"                                ,  // x   3
-    "clip/t5-base"                                    ,  // x   1
-    "clip/t5"                                         ,  // x  13
+    "text_encoders/t5"                                ,  // x  16
+    "diffusion_models/cosmos-1.0"                     ,  // x   4
+    "text_encoders/t5-base"                           ,  // x   1
     "checkpoints/SD1.5"                               ,  // x   4
     "checkpoints/SD2.1"                               ,  // x   5
     "vae/SDXL"                                        ,  // x   1
@@ -170,7 +169,6 @@ export const knownModel_SavePath: KnownModel_SavePath[] = [
     "controlnet/SDXL"                                 ,  // x  35
     "controlnet/SDXL/TemporalNet1XL"                  ,  // x   1
     "clip_vision"                                     ,  // x   6
-    "custom_nodes/ControlNet-LLLite-ComfyUI/models"   ,  // x   1
     "controlnet/1.5"                                  ,  // x  17
     "gligen/SD1.5"                                    ,  // x   1
     "sams"                                            ,  // x   4
@@ -178,22 +176,19 @@ export const knownModel_SavePath: KnownModel_SavePath[] = [
     "ultralytics/bbox"                                ,  // x   6
     "ultralytics/segm"                                ,  // x  10
     "AnimateDiff"                                     ,  // x   2
-    "animatediff_models"                              ,  // x  11
+    "animatediff_models"                              ,  // x  12
     "animatediff_motion_lora"                         ,  // x   8
     "controlnet/SD1.5/animatediff"                    ,  // x   2
     "loras/SD1.5/animatediff"                         ,  // x   1
     "checkpoints/motionctrl"                          ,  // x   1
     "ipadapter"                                       ,  // x  24
     "loras/ipadapter"                                 ,  // x   5
-    "custom_nodes/pfg-ComfyUI/models"                 ,  // x   3
     "facerestore_models"                              ,  // x   4
     "facedetection"                                   ,  // x   2
     "photomaker"                                      ,  // x   2
     "insightface/models/antelopev2"                   ,  // x   5
     "instantid"                                       ,  // x   1
     "controlnet/instantid"                            ,  // x   1
-    "custom_nodes/ComfyUI-YoloWorld-EfficientSAM"     ,  // x   2
-    "custom_nodes/ComfyUI_FaceAnalysis/dlib"          ,  // x   2
     "instance_models/fuser_models"                    ,  // x   1
     "instance_models/positionnet_models"              ,  // x   1
     "instance_models/scaleu_models"                   ,  // x   1
@@ -208,13 +203,8 @@ export const knownModel_SavePath: KnownModel_SavePath[] = [
     "controlnet/SDXL/instantid"                       ,  // x   1
     "insightface/models"                              ,  // x   1
     "diffusion_models/IC-Light"                       ,  // x   3
-    "custom_nodes/ComfyUI_ID_Animator/models"         ,  // x   1
-    "custom_nodes/ComfyUI_ID_Animator/models/animatediff_models",  // x   1
-    "custom_nodes/ComfyUI_ID_Animator/models/image_encoder",  // x   1
-    "custom_nodes/ComfyUI_CustomNet/pretrain"         ,  // x   1
     "RGT/RGT"                                         ,  // x   3
     "RGT/RGT_S"                                       ,  // x   3
-    "custom_nodes/ComfyUI-ToonCrafter/ToonCrafter/checkpoints/tooncrafter_512_interp_v1",  // x   1
     "controlnet/FLUX.1/InstantX-FLUX1-Dev-Union"      ,  // x   1
     "ipadapter-flux"                                  ,  // x   1
     "controlnet/FLUX.1/Shakker-Labs-ControlNet-Union-Pro",  // x   1
@@ -236,19 +226,29 @@ export const knownModel_SavePath: KnownModel_SavePath[] = [
     "checkpoints/ToonCrafter"                         ,  // x   1
     "depthanything"                                   ,  // x   6
     "checkpoints/PixArt-Sigma"                        ,  // x   1
+    "diffusion_models/PixArt-Sigma"                   ,  // x   2
+    "diffusion_models/PixArt-Alpha"                   ,  // x   1
     "checkpoints/hunyuan_dit_comfyui"                 ,  // x   3
+    "diffusion_models/hunyuan_video"                  ,  // x   2
+    "text_encoders"                                   ,  // x   3
     "diffusion_models/FLUX1"                          ,  // x  26
     "vae/FLUX1"                                       ,  // x   1
     "checkpoints/FLUX1"                               ,  // x   2
-    "custom_nodes/comfyui-SegGPT"                     ,  // x   1
-    "clip/long_clip"                                  ,  // x   2
+    "text_encoders/long_clip"                         ,  // x   2
     "depth/ml-depth-pro"                              ,  // x   1
     "diffusion_models"                                ,  // x   7
     "diffusion_models/kolors"                         ,  // x   2
     "LLM"                                             ,  // x   3
     "pulid"                                           ,  // x   2
     "MoGe"                                            ,  // x   2
-    "checkpoints/LTXV"                                ,  // x   1
+    "checkpoints/LTXV"                                ,  // x   3
+    "xlabs/controlnets"                               ,  // x   3
+    "xlabs/loras"                                     ,  // x   3
+    "xlabs/ipadapters"                                ,  // x   1
+    "yolo_world"                                      ,  // x   2
+    "checkpoints/customnet"                           ,  // x   2
+    "Janus-Pro"                                       ,  // x   2
+    "vae/kolors"                                      ,  // x   2
     "custom_nodes/ComfyUI-BRIA_AI-RMBG/RMBG-1.4"      ,  // x   1
 ]
 

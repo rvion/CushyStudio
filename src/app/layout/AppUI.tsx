@@ -1,7 +1,6 @@
 import '../../ALL_CMDS'
 
 import { action } from 'mobx'
-import { observer } from 'mobx-react-lite'
 import { useEffect, useRef } from 'react'
 
 import { AppBarUI } from '../../appbar/AppBarUI'
@@ -22,7 +21,7 @@ import { FavBarUI } from './FavBarUI'
 import { FooterBarUI } from './FooterBarUI'
 import { ProjectUI } from './ProjectUI'
 
-export const CushyUI = observer(function CushyUI_() {
+export const CushyUI = obs(function CushyUI_() {
    const appRef = useRef<HTMLDivElement>(null)
    useRegionMonitor()
    useEffect(() => {
@@ -59,7 +58,7 @@ export const CushyUI = observer(function CushyUI_() {
       return (): void => window.removeEventListener('keydown', handleKeyDown)
    }, [appRef.current, cushy])
 
-   const appBarColor = cushy.preferences.theme.value.appbar ?? cushy.preferences.theme.value.base
+   const appBarColor = cushy.preferences.theme.zValue.appbar ?? cushy.preferences.theme.zValue.base
    const appBarBase = Kolor.fromString(appBarColor)
    const inactiveTabColors = computeColors(
       {
@@ -79,7 +78,7 @@ export const CushyUI = observer(function CushyUI_() {
       { base: { contrast: -0.077 } },
    )
 
-   const theme = cushy.preferences.theme.value
+   const theme = cushy.preferences.theme.zValue
    const textShadow = theme.global.text.shadow
    return (
       <CSuiteProvider config={cushy.csuite}>
@@ -94,9 +93,9 @@ export const CushyUI = observer(function CushyUI_() {
                '--theme-roundness': `${theme.global.roundness}px`,
                '--theme-roundness-padding': `${theme.global.roundness}px`,
                // TODO(bird_d/ui/theme): Make able to be relative instead of just manual
-               'text-shadow': run_theme_dropShadow(textShadow),
-               // '--theme-roundness-padding': `${cushy.preferences.theme.value.global.roundness > 10 ? cushy.preferences.theme.value.global.roundness - 10 : 0}px`,
-               // TODO(bird_d): This feels hacky, probably okay for now? A lot of the csuite stuff I'm assuming needs to not use cushy.preferences.theme.value
+               textShadow: run_theme_dropShadow(textShadow),
+               // '--theme-roundness-padding': `${cushy.preferences.theme.zValue.global.roundness > 10 ? cushy.preferences.theme.zValue.global.roundness - 10 : 0}px`,
+               // TODO(bird_d): This feels hacky, probably okay for now? A lot of the csuite stuff I'm assuming needs to not use cushy.preferences.theme.zValue
                fontSize: `${theme.global.text.size}pt`,
             }}
             tabIndex={-1}
@@ -112,7 +111,7 @@ export const CushyUI = observer(function CushyUI_() {
             tw={[
                'col h-full grow overflow-clip',
                // topic=WZ2sEOGiLy
-               cushy.preferences.interface.value.useDefaultCursorEverywhere && 'useDefaultCursorEverywhere',
+               cushy.preferences.interface.zValue.useDefaultCursorEverywhere && 'useDefaultCursorEverywhere',
             ]}
          >
             <div // Global Popup/Reveal/Tooltip container always be on screen with overflow-clip added.

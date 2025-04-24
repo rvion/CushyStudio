@@ -1,7 +1,6 @@
 import type { NodePort } from '../../comfyui/livegraph/ComfyNode'
 import type { ComfyWorkflowL } from '../../models/ComfyWorkflow'
 
-import { observer } from 'mobx-react-lite'
 import { Fragment, useEffect, useRef } from 'react'
 
 import { Frame } from '../../csuite/frame/Frame'
@@ -11,7 +10,7 @@ import { bang } from '../../csuite/utils/bang'
 import { randomColorHSLNice } from '../../panels/PanelCanvas/utils/randomColor'
 import { NodeSlotSize } from './NodeSlotSize'
 
-export const DrawWorkflowUI = observer(function DrawWorkflowUI_(p: {
+export const DrawWorkflowUI = obs(function DrawWorkflowUI_(p: {
    //
    spline?: number
    workflow: ComfyWorkflowL
@@ -28,6 +27,7 @@ export const DrawWorkflowUI = observer(function DrawWorkflowUI_(p: {
    const colorFn = randomColorHSLNice // randomNiceColor
    const update = (): void => void wflow.RUNLAYOUT(cushy.autolayoutOpts)
    useEffect(update, [JSON.stringify(cushy.autolayoutOpts), wflow.id])
+   const theme = cushy.preferences.theme.zValue
 
    useEffect(() => {
       if (ref.current == null) return
@@ -91,7 +91,7 @@ export const DrawWorkflowUI = observer(function DrawWorkflowUI_(p: {
                            style={{
                               // borderRadius: '50%',
                               zIndex: 995,
-                              border: '1px solid gray',
+                              border: '2px solid black',
                               borderRadius: '50%',
                               top: p.y - NodeSlotSize / 2,
                               left: p.x - NodeSlotSize / 2,
@@ -111,7 +111,7 @@ export const DrawWorkflowUI = observer(function DrawWorkflowUI_(p: {
                            tw='absolute transition-all'
                            key={p.id}
                            style={{
-                              border: '1px solid gray',
+                              border: '2px solid black',
                               borderRadius: '50%',
                               zIndex: 995,
                               top: p.y - NodeSlotSize / 2,
@@ -125,11 +125,12 @@ export const DrawWorkflowUI = observer(function DrawWorkflowUI_(p: {
                   })}
                   {/* ACTUAL NODE */}
                   <Frame
-                     base={{ contrast: 0.03, hue: getChroma(node.$schema.nameInComfy), chroma: 0.07 }}
-                     className='node rounded-sm transition-all'
+                     base={{ contrast: 0.03 }}
+                     tw='node overflow-clip transition-all'
                      hover
-                     border={20}
+                     border={{ contrast: -0.2 }}
                      key={node.uid}
+                     roundness={theme.global.roundness}
                      style={{
                         zIndex: 991,
                         fontWeight: '20px',
@@ -148,9 +149,10 @@ export const DrawWorkflowUI = observer(function DrawWorkflowUI_(p: {
                      />
 
                      <Frame
-                        base={6}
+                        // base={6}
                         style={{ height: '20px' }}
-                        tw='overflow-hidden overflow-ellipsis whitespace-nowrap font-bold'
+                        tw='overflow-hidden overflow-ellipsis whitespace-nowrap'
+                        base={{ contrast: -0.1, hue: 0, chromaBlend: 10 }}
                      >
                         {node.$schema.nameInComfy} [{node.uid}]
                      </Frame>
@@ -181,7 +183,7 @@ export const DrawWorkflowUI = observer(function DrawWorkflowUI_(p: {
                            <Frame //
                               // base={ix % 2 === 0 ? 3 : 6}
                               // base={3}
-                              hover
+                              // hover
                               key={ie.inputName}
                               style={{ height: '20px' }}
                               tw='overflow-hidden overflow-ellipsis whitespace-nowrap px-2'

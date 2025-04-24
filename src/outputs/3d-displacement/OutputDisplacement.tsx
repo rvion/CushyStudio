@@ -5,7 +5,7 @@ import type { StepL } from '../../models/Step'
 import type { STATE } from '../../state/state'
 
 import { mkdirSync } from 'fs'
-import { observer } from 'mobx-react-lite'
+
 import { nanoid } from 'nanoid'
 import path, { dirname } from 'pathe'
 import { useMemo } from 'react'
@@ -24,7 +24,7 @@ import { asRelativePath } from '../../utils/fs/pathUtils'
 import { DisplacementState } from './DisplacementState'
 import { DisplacementUI } from './DisplacementUI'
 
-export const OutputDisplacementPreviewUI = observer(function OutputImagePreviewUI_(p: {
+export const OutputDisplacementPreviewUI = obs(function OutputImagePreviewUI_(p: {
    step?: Maybe<StepL>
    output: Media3dDisplacementL
 }) {
@@ -49,7 +49,7 @@ export type Panel_DisplacementProps = {
    height: number
 }
 
-export const OutputDisplacementUI = observer(function OutputDisplacementUI_(p: {
+export const OutputDisplacementUI = obs(function OutputDisplacementUI_(p: {
    step?: Maybe<StepL>
    output: Media3dDisplacementL
 }) {
@@ -66,9 +66,13 @@ export const OutputDisplacementUI = observer(function OutputDisplacementUI_(p: {
    )
 
    const saveImgBtn = (
-      <Button icon='mdiDownload' size='sm' onClick={(ev) => saveCanvasAsImage(uist.canvasRef.current)} />
+      <Button
+         icon={IKONS.mdiDownload}
+         size='sm'
+         onClick={(ev) => saveCanvasAsImage(uist.canvasRef.current)}
+      />
    )
-   const menuConf = cushy.displacementConf.value.menu
+   const menuConf = cushy.displacementConf.zValue.menu
    return (
       <div tw='relative flex flex-1 flex-col'>
          {menuConf.right ? (
@@ -82,7 +86,7 @@ export const OutputDisplacementUI = observer(function OutputDisplacementUI_(p: {
                <FormUI field={cushy.displacementConf} />
             </div>
          ) : (
-            <PanelHeaderUI>{cushy.displacementConf.renderAsConfigBtn()}</PanelHeaderUI>
+            <PanelHeaderUI>{cushy.displacementConf.zRenderAsConfigBtn()}</PanelHeaderUI>
          )}
 
          <DisplacementUI uist={uist} />

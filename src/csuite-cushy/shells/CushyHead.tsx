@@ -1,19 +1,17 @@
-import type { CompiledRenderProps } from '../presenters/RenderTypes'
+import type { RenderPropsCompiled } from '../presenters/RenderPropsCompiled'
 import type { ReactNode } from 'react'
 
-import { observer } from 'mobx-react-lite'
-
 import { WidgetHeaderContainerUI } from '../../csuite/form/WidgetHeaderContainerUI'
+import { renderFCOrNode } from '../../csuite/utils/renderFCOrNode'
 
-export type CushyHeadProps = CompiledRenderProps & {
+export type CushyHeadProps = RenderPropsCompiled & {
    children?: ReactNode
    // asRevealAnchor?: // TODO
 }
 
-export const CushyHeadUI = observer(function CushyHead(p: CushyHeadProps) {
+export const CushyHeadUI = obs(function CushyHead(p: CushyHeadProps) {
    const field = p.field
-   const utils = p.presenter.utils
-   const interfacePreferences = cushy.preferences.interface.value
+   const interfacePreferences = cushy.preferences.interface.zValue
 
    return (
       <WidgetHeaderContainerUI field={field} /* border={'red'} */>
@@ -21,18 +19,23 @@ export const CushyHeadUI = observer(function CushyHead(p: CushyHeadProps) {
          {p.children}
 
          {/* HEADER CONTROLS */}
-         {utils.renderFCOrNodeWithWrapper(p.Header, p, p.ContainerForHeader, {
-            className: p.classNameAroundBodyAndHeader ?? undefined,
-            field,
-         })}
-
-         {utils.renderFCOrNode(p.UpDownBtn, { field })}
-         {utils.renderFCOrNode(p.DeleteBtn, { field })}
+         {renderFCOrNode(
+            p.ContainerForHeader,
+            {
+               className: p.classNameAroundBodyAndHeader ?? undefined,
+               field,
+            },
+            renderFCOrNode(p.OnLeft, p),
+            renderFCOrNode(p.Header, p),
+            renderFCOrNode(p.OnRight, p),
+         )}
+         {renderFCOrNode(p.UpDownBtn, p)}
+         {renderFCOrNode(p.DeleteBtn, p)}
 
          {/* HEADER EXTRA prettier-ignore */}
-         {utils.renderFCOrNode(p.Extra, p)}
-         {interfacePreferences.widget.showUndo && utils.renderFCOrNode(p.UndoBtn, p)}
-         {interfacePreferences.widget.showMenu && utils.renderFCOrNode(p.MenuBtn, p)}
+         {renderFCOrNode(p.Extra, p)}
+         {interfacePreferences.widget.showUndo && renderFCOrNode(p.UndoBtn, p)}
+         {interfacePreferences.widget.showMenu && renderFCOrNode(p.MenuBtn, p)}
       </WidgetHeaderContainerUI>
    )
 })

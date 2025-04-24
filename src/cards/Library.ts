@@ -10,25 +10,9 @@ import { LibraryFile } from './LibraryFile'
 import { shouldSkip_duringWatch } from './shouldSkip'
 
 export class Library {
-   // ------------------------------------------------------------------------------------
-   filesKnownToExists = new Map<AbsolutePath, { at: Timestamp; existed: boolean }>()
-
-   // /**
-   //  * returns true if the file exists; cache result 5 minutes
-   //  * all places in the app creating files are expected to call this method ?
-   //  */
-   // doesFileExist = (path: AbsolutePath): boolean => {
-   //     const entry = this.filesKnownToExists.get(path)
-   //     const now = Date.now()
-   //     const fiveMins = 1000 * 60 * 5
-   //     if (entry && now - entry.at < fiveMins) return entry.existed
-   //     const exists = existsSync(path)
-   //     this.filesKnownToExists.set(path, { at: now, existed: true })
-   //     return exists
-   // }
-
-   // ------------------------------------------------------------------------------------
    query: string = ''
+
+   // todo: move those to  config
    showDescription: boolean = true
    showDrafts: boolean = true
    showFavorites: boolean = true
@@ -188,61 +172,5 @@ export class Library {
       })
 
       makeAutoObservable(this, { getFile: action })
-      // this.filesMap = new Map()
    }
-
-   // expand mechanism -------------------------------------------------
-   // ⏸️ private expanded: Set<string>
-   // ⏸️ get expandedPaths(): string[] { return [...this.expanded] } // prettier-ignore
-   // ⏸️ isExpanded = (path: string): boolean => this.expanded.has(path)
-   // ⏸️ expand = (path: string): void => this.expanded.add(path)
 }
-
-// FAVORITE MANAGEMENT ------------------------------------------------
-// removeFavoriteByPath = (path: RelativePath) => {
-//     this.st.configFile.update((x) => {
-//         const fav = x.favoriteApps
-//         if (fav == null) return
-//         const index = fav.findIndex((x) => x === path)
-//         if (index === -1) return
-//         fav.splice(index, 1)
-//     })
-// }
-
-// moveFavorite = (oldIndex: number, newIndex: number) => {
-//     this.st.configFile.update((x) => {
-//         const favs = x.favoriteApps
-//         if (favs == null) return
-//         favs.splice(newIndex, 0, favs.splice(oldIndex, 1)[0])
-//     })
-// }
-
-// get allFavorites(): { appPath: RelativePath; app: Maybe<LibraryFile> }[] {
-//     return this.st.favoriteApps.map((ap) => ({
-//         appPath: ap,
-//         app: this.getFile(ap),
-//     }))
-// }
-// isTypeChecked = (path: string): boolean => {
-//     const deckP = path.split('/')[0]
-//     console.log(deckP)
-//     if (this.st.githubUsername === 'rvion' && deckP === 'CushyStudio') return true
-//     if (this.st.githubUsername === deckP) return true
-//     return false
-// }
-
-// // 👉 use cardsFilteredSorted
-// private get files(): LibraryFile[] {
-//     return [...this.fileIndex.values()]
-// }
-
-// // 👉 use cardsFilteredSorted
-// private get filesFiltered() {
-//     return this.files.filter((c) => c.matchesSearch(this.query))
-// }
-
-// get cardsFilteredSorted(): LibraryFile[] {
-//     return this.filesFiltered.slice().sort((a, b) => {
-//         return b.score - a.score
-//     })
-// }

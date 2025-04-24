@@ -1,15 +1,13 @@
 import type { ComfyUIAPIRequest } from '../../comfyui/comfyui-prompt-api'
 import type { ComfyWorkflowJSON } from '../../comfyui/litegraph/LiteGraphJSON'
 
-import { observer } from 'mobx-react-lite'
-
 import { convertWorkflowToPrompt } from '../../comfyui/litegraphToApiRequestPayload'
 import { ErrorBoundaryUI } from '../../csuite/errors/ErrorBoundaryUI'
 import { JsonViewUI } from '../../csuite/json/JsonViewUI'
 import { TypescriptHighlightedCodeUI } from '../../widgets/misc/TypescriptHighlightedCodeUI'
 
 /** Freely modify this as you like, then pick the "Scratch Pad" option in the top left. Do not commit changes made to this. */
-export const PlaygroundImportFromComfy = observer(function PlaygroundImportFromComfy_(p: {}) {
+export const PlaygroundImportFromComfy = obs(function PlaygroundImportFromComfy_(p: {}) {
    const absPath = cushy.resolveFromRoot('library/built-in/3d/3d-app-1/3d1.workflow.json' as RelativePath)
    const wflowJSON = cushy.readJSON_<ComfyWorkflowJSON>(absPath)
    const promptJSON: ComfyUIAPIRequest = convertWorkflowToPrompt(cushy.schema, wflowJSON)

@@ -1,8 +1,6 @@
-import { observer } from 'mobx-react-lite'
-
 import { useUnifiedCanvas } from '../states/UnifiedCanvasCtx'
 
-export const PixiCursorDebugUI = observer(function PixiCursorDebugUI_(p: {}) {
+export const PixiCursorDebugUI = obs(function PixiCursorDebugUI_(p: {}) {
    const uc1 = useUnifiedCanvas()
    return (
       <pixiText //

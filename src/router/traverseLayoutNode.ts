@@ -1,4 +1,4 @@
-import type * as FL from 'flexlayout-react'
+import type * as FL from '../flexlayout-react'
 
 import { exhaust } from '../csuite/utils/exhaust'
 
@@ -19,9 +19,6 @@ export type TraverseFn = {
    /** if unspecified, traversal will 'continue' to children */
    onBorder?: (border: FL.BorderNode) => TraversalNextStep
 
-   /** if unspecified, traversal will 'continue' to children */
-   onSplitter?: (border: FL.SplitterNode) => TraversalNextStep
-
    // Generic traversals -------------------------------------------
    /**
     * if provided, will be called for all row/tabset/tab
@@ -40,10 +37,9 @@ export type FlexlayoutNodeWithType =
    | { type: 'tabset'; node: FL.TabSetNode }
    | { type: 'tab'; node: FL.TabNode }
    | { type: 'border'; node: FL.BorderNode }
-   | { type: 'splitter'; node: FL.SplitterNode }
 
-export type KnownLayoutNodeType = 'row' | 'tabset' | 'tab' | 'border' | 'splitter'
-export const knownLayoutNodeType: string[] = ['row', 'tabset', 'tab', 'border', 'splitter']
+export type KnownLayoutNodeType = 'row' | 'tabset' | 'tab' | 'border'
+export const knownLayoutNodeType: string[] = ['row', 'tabset', 'tab', 'border']
 
 export function traverseLayoutNode(node: FL.Node, fns: TraverseFn): void {
    const x = _getNodeType(node)
@@ -64,10 +60,6 @@ export function traverseLayoutNode(node: FL.Node, fns: TraverseFn): void {
       next ??= fns.onBorder?.(x.node)
       next ??= fns.onNode1?.(x.node)
       next ??= fns.onNode2?.(x)
-   } else if (x.type === 'splitter') {
-      next ??= fns.onSplitter?.(x.node)
-      next ??= fns.onNode1?.(x.node)
-      next ??= fns.onNode2?.(x)
    } else {
       exhaust(x)
       throw new Error(`[❌] unknown layout node type: ${(x as any).type}`)
@@ -86,6 +78,5 @@ function _getNodeType(node: FL.Node): FlexlayoutNodeWithType {
    if (type === 'tabset') return { type: 'tabset', node: node as FL.TabSetNode }
    if (type === 'tab') return { type: 'tab', node: node as FL.TabNode }
    if (type === 'border') return { type: 'border', node: node as FL.BorderNode }
-   if (type === 'splitter') return { type: 'splitter', node: node as FL.SplitterNode }
    throw new Error(`[❌] unknown layout node type: ${type}`)
 }

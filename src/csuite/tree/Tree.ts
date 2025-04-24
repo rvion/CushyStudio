@@ -19,7 +19,6 @@ export type INodeStore = {
 
 export type TreeStorageConfig = {
    /**
-    * @since 2024-05-21
     * called once at construction time to get a
     * hold on some persistent storage object, in case you want to persist the tree state
     * easilly

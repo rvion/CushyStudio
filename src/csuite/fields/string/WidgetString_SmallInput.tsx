@@ -1,15 +1,15 @@
 import type { Field_string } from './FieldString'
 
-import { observer } from 'mobx-react-lite'
-
 import { InputStringUI } from '../../input-string/InputStringUI'
 
-export const WidgetString_SmallInput = observer(function WidgetStringUI_(p: {
+export const WidgetString_SmallInput = obs(function WidgetStringUI_({
+   field,
+   readonly,
+}: {
    field: Field_string
    readonly?: boolean
 }) {
-   const field = p.field
-   const config = field.config
+   const config = field.zConfig
 
    // prettier-ignore
    const placeholder =
@@ -18,33 +18,32 @@ export const WidgetString_SmallInput = observer(function WidgetStringUI_(p: {
         // 2. if label is specified, and is string, use it
         (typeof config.label == 'string' ? config.label : undefined) ??
         // 3. if none of the above, use mountKye
-        field.mountKey
+        field.zMountKey
 
-   // return '🟢'
    return (
       <InputStringUI
-         tw={['w-full', field.mustDisplayErrors && 'rsx-field-error']}
-         icon={p.field.config.innerIcon}
+         tw={['w-full', field.zMustDisplayErrors && 'rsx-field-error']}
+         icon={config.innerIcon}
          type={config.inputType}
          placeholder={placeholder}
          pattern={config.pattern}
          className={config.className}
-         getValue={() => field.value_or_zero}
+         getValue={() => field.zValueOrZero}
          setValue={(value) => {
-            field.value = value
+            field.zValue = value
          }}
-         disabled={p.readonly ?? p.field.config.readonly}
-         clearable={config.clearable}
+         disabled={readonly ?? config.readonly}
+         // clearable={config.clearable}
          autoResize={config.autoResize}
          buffered={
-            field.config.buffered
+            field.zConfig.buffered
                ? {
                     getTemporaryValue: (): string | null => field.temporaryValue,
                     setTemporaryValue: (value): void => void (field.temporaryValue = value),
                  }
                : undefined
          }
-         onBlur={() => field.touch()}
+         onBlur={() => field.zTouch()}
       />
    )
 })

@@ -38,21 +38,21 @@ export const PanelStepsConf = cushyFactory.document(
    {
       name: 'panel-steps',
       serial: () => readJSON('settings/panel-steps-config.json'),
-      onSerialChange: (form) => writeJSON('settings/panel-steps-config.json', form.serial),
+      onSerialChange: (form) => writeJSON('settings/panel-steps-config.json', form.zSerial),
    },
 )
 
-type UI_outputFilter = X.XChoices<{
-   MediaTextL: X.XEmpty
-   MediaImageL: X.XEmpty
-   MediaVideoL: X.XEmpty
-   MediaSplatL: X.XEmpty
-   Media3dDisplacementL: X.XEmpty
-   ComfyPromptL: X.XEmpty
-   ComfyWorkflowL: X.XEmpty
-   StepL: X.XEmpty
-   MediaCustomL: X.XEmpty
-   RuntimeErrorL: X.XEmpty
+type UI_outputFilter = Z.Choices<{
+   MediaTextL: Z.Empty
+   MediaImageL: Z.Empty
+   MediaVideoL: Z.Empty
+   MediaSplatL: Z.Empty
+   Media3dDisplacementL: Z.Empty
+   ComfyPromptL: Z.Empty
+   ComfyWorkflowL: Z.Empty
+   StepL: Z.Empty
+   MediaCustomL: Z.Empty
+   RuntimeErrorL: Z.Empty
 }>
 
 function ui_outputFilter(ui: CushySchemaBuilder): UI_outputFilter {

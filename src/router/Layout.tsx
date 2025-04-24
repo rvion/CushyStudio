@@ -1,14 +1,12 @@
 import type { PropsOf } from '../csuite/types/PropsOf'
 import type { ProplessFC } from '../csuite/types/ReactUtils'
+import type { Layout } from '../flexlayout-react'
 import type { PerspectiveL } from '../models/Perspective'
 import type { STATE } from '../state/state'
 import type { PanelPersistedJSON } from './PanelPersistedJSON'
 import type { PanelName, Panels } from './PANELS'
-import type { Layout } from 'flexlayout-react'
 import type { FC } from 'react'
 
-import * as FL from 'flexlayout-react'
-import { Actions, Model as FlexLayoutModel } from 'flexlayout-react'
 import { action, isObservable, makeAutoObservable, runInAction } from 'mobx'
 import { createElement, createRef, type RefObject } from 'react'
 
@@ -20,6 +18,8 @@ import { Stack } from '../csuite/structures/Stack'
 import { Trigger } from '../csuite/trigger/Trigger'
 import { bang } from '../csuite/utils/bang'
 import { toastError } from '../csuite/utils/toasts'
+import * as FL from '../flexlayout-react'
+import { Actions, Model as FlexLayoutModel } from '../flexlayout-react'
 import { type CustomPanelRef, registerCustomPanel } from '../panels/PanelCustom/CustomPanels'
 import { LayoutUI } from './LayoutUI'
 import { PanelContainerUI } from './PanelContainerUI'
@@ -436,7 +436,7 @@ export class CushyLayoutManager {
       }
    }
 
-   layoutRef: RefObject<FL.Layout> = createRef<Layout>()
+   layoutRef: RefObject<FL.Layout | null> = createRef<Layout>()
    updateCurrentTab(p: Partial<FL.TabNode>): void {
       const tab = this.currentTab
       if (tab == null) return
@@ -544,7 +544,7 @@ export class CushyLayoutManager {
       // return parent as FL.TabSetNode
    }
 
-   UI: ProplessFC = (): JSX.Element => <LayoutUI layout={this} />
+   UI: ProplessFC = (): React.JSX.Element => <LayoutUI layout={this} />
 
    /** rename tab by ID */
    renameTab(tabID: string, newName: string): void {
@@ -768,22 +768,20 @@ export class CushyLayoutManager {
           * @default 'active'
           */
          relativeTo?: 'active' | 'hovered'
-
          /**
-          * allow to pre-fill the panel $store data
+          * initial value for the panel $store persistent data
           * notably usefull when cloning a tab
           * 🔶 YOU NEED TO DEEP-CLONE the object if needed BEFORE
           */
          $store?: any
-
          /**
-          * allow to pre-fill the panel $store data
+          * initial value for the panel $temp temporary data
           * notably usefull when cloning a tab
           * 🔶 YOU NEED TO DEEP-CLONE the object if needed BEFORE
           */
          $temp?: any
       } = {},
-   ): Maybe<FL.Node> => {
+   ): Maybe<FL.TabNode> => {
       // 1. retrieve the layout model
       const currentLayout = this.layoutRef.current
       if (currentLayout == null) return void console.log('❌ no currentLayout')

@@ -1,4 +1,3 @@
-import { observer } from 'mobx-react-lite'
 import { useRef } from 'react'
 
 import { computePlacement } from '../../csuite/reveal/RevealPlacement'
@@ -6,11 +5,11 @@ import { Frame } from '../frame/Frame'
 import { tooltipStuff } from '../frame/tooltip'
 import { useDelay } from './useDelay'
 
-export const TooltipUI = observer(function TooltipUI_(p: {}) {
+export const TooltipUI = obs(function TooltipUI_(p: {}) {
    const shellRef = useRef<HTMLDivElement>(null)
    const preferences = cushy.preferences
-   const conf = preferences.interface.value.tooltipDelay
-   const theme = preferences.theme.value
+   const conf = preferences.interface.zValue.tooltipDelay
+   const theme = preferences.theme.zValue
 
    const tooltip = tooltipStuff.deepest
    const isDelayed = useDelay(conf, [tooltip, conf])

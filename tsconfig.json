@@ -1,11 +1,13 @@
 {
     "$schema": "http://json.schemastore.org/tsconfig",
     "compilerOptions": {
-        "target": "ESNext",
-        "useDefineForClassFields": false,
+        "target": "ES2023",
+        "useDefineForClassFields": true,
         "lib": ["DOM", "DOM.Iterable", "ESNext"],
         "allowJs": false,
-        "skipLibCheck": false,
+        "experimentalDecorators": false,
+        // "skipLibCheck": true,
+        "skipDefaultLibCheck": true,
         // https://stackoverflow.com/questions/53113031/how-to-see-a-fully-expanded-typescript-type-without-n-more-and
         // "noErrorTruncation": true,
         "incremental": true,
@@ -42,6 +44,11 @@
         /* specific to base */ "noEmit": true
     },
 
-    "include": ["src", "schema/global.d.ts", "library"],
+    "include": [
+        //
+        "src",
+        "schema/global.d.ts",
+        "library"
+    ],
     "exclude": []
 }

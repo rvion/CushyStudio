@@ -14,6 +14,6 @@ export const PanelOutputConf = cushyFactory.document(
    {
       name: 'panel-output',
       serial: () => readJSON('settings/panel-output-config.json'),
-      onSerialChange: (form) => writeJSON('settings/panel-output-config.json', form.serial),
+      onSerialChange: (form) => writeJSON('settings/panel-output-config.json', form.zSerial),
    },
 )

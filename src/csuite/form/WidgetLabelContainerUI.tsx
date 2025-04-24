@@ -1,8 +1,6 @@
 import type { RevealPlacement } from '../reveal/RevealPlacement'
 import type { CSSProperties } from 'react'
 
-import { observer } from 'mobx-react-lite'
-
 import { Frame } from '../../csuite/frame/Frame'
 
 export type WidgetLabelContainerProps = {
@@ -14,10 +12,8 @@ export type WidgetLabelContainerProps = {
    tooltipPlacement?: RevealPlacement
 }
 
-export const WidgetLabelContainerUI = observer(function WidgetLabelContainerUI_(
-   p: WidgetLabelContainerProps,
-) {
-   // const theme = cushy.preferences.theme.value
+export const WidgetLabelContainerUI = obs(function WidgetLabelContainerUI_(p: WidgetLabelContainerProps) {
+   // const theme = cushy.preferences.theme.zValue
    return (
       <Frame
          // NOTE(bird_d): tooltips should be on the interact-able component, not the label
@@ -25,7 +21,7 @@ export const WidgetLabelContainerUI = observer(function WidgetLabelContainerUI_(
          // tooltipPlacement={p.tooltipPlacement ?? 'topStart'}
          className={p.className}
          // hover={1}
-         expand
+         // expand
          tw={[
             'UI-WidgetLabelContainer', //
             'COLLAPSE-PASSTHROUGH',

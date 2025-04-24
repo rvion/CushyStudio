@@ -1,8 +1,7 @@
-import { observer } from 'mobx-react-lite'
 import { useEffect, useMemo } from 'react'
 
-import { observerWC } from '../dropdown/observerWC'
 import { Frame, type FrameProps } from '../frame/Frame'
+import { observerWC } from '../mobx/observerWC'
 import { BasicShelf_ColumnUI } from './BasicShelf_ColumnUI'
 import { BasicShelf_GroupUI } from './BasicShelf_GroupUI'
 import { BasicShelfContentUI } from './BasicShelfContentUI'

@@ -1,8 +1,6 @@
-import { observer } from 'mobx-react-lite'
-
 import { Ikon } from '../csuite/icons/iconHelpers'
 
-export const FoldIconUI = observer(function FoldIconUI_(p: {
+export const FoldIconUI = obs(function FoldIconUI_(p: {
    //
    val?: boolean
    set?: (next: boolean) => void

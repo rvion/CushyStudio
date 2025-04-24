@@ -1,5 +1,5 @@
 import type { Command } from '../csuite/commands/Command'
-import type { IconName } from '../csuite/icons/icons'
+import type { IconName } from '../csuite/icons/IconName'
 import type { PanelCategory } from './PanelCategory'
 
 import { ctx_global } from '../csuite/command-topic/ctx_global'

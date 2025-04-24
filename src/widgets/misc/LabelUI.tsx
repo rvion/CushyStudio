@@ -1,8 +1,6 @@
 import type { ReactNode } from 'react'
 
-import { observer } from 'mobx-react-lite'
-
-export const TreeValue = observer(function TreeValue_(p: {
+export const TreeValue = obs(function TreeValue_(p: {
    //
    onClick?: () => void
    title: ReactNode

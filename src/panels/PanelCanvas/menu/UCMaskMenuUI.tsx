@@ -1,24 +1,18 @@
-import type { Layer$ } from '../stateV2/Layer$'
-import type { Mask$, Masks$ } from '../stateV2/Masks$'
-
-import { observer } from 'mobx-react-lite'
+import type { Mask$ } from '../stateV2/Masks$'
 
 import { ShellInputOnly } from '../../../csuite-cushy/shells/ShellInputOnly'
-import { ShellSimpleUI } from '../../../csuite-cushy/shells/ShellSimple'
 import { Button } from '../../../csuite/button/Button'
 import { Frame } from '../../../csuite/frame/Frame'
-import { CachedResizedImage } from '../../../csuite/image/CachedResizedImageUI'
-import { InputStringUI } from '../../../csuite/input-string/InputStringUI'
 
-export const UCMaskMenuUI = observer(function UCMaskMenuUI_(p: {
+export const UCMaskMenuUI = obs(function UCMaskMenuUI_(p: {
    //
-   mask: Mask$['$Field']
+   mask: Mask$['{field}']
    index: number
 }) {
-   const inputHeight = cushy.preferences.interface.value.inputHeight
-   const isVisible: boolean = p.mask.Visible.value
-   const imgField = p.mask.Image
-   const image = imgField?.value_or_zero
+   const inputHeight = cushy.preferences.interface.zValue.inputHeight
+   const isVisible: boolean = p.mask.visible.zValue
+   const imgField = p.mask.image
+   const image = imgField?.zValueOrZero
 
    // TEMP
    // Do not use interface.value.inputHeight in the future. Have a separate option for layer size?
@@ -54,26 +48,26 @@ export const UCMaskMenuUI = observer(function UCMaskMenuUI_(p: {
          {/*  */}
          <div tw='flex w-full flex-col'>
             <div tw={['flex flex-grow gap-2']} style={{ height: `${inputHeight}rem` }}>
-               <p.mask.Name.UI Shell={ShellInputOnly} />
+               <p.mask.name.UI Shell={ShellInputOnly} />
             </div>
             {/* <div tw={['flex flex-grow gap-2']} style={{ height: `${inputHeight}rem` }}></div> */}
             <div tw={['flex flex-grow']} style={{ height: `${inputHeight}rem` }}>
                <Button //
                   // base={{ hue: 250, chroma: 0.1, contrast: 0.5 }}
-                  onClick={() => p.mask.Visible.toggle()}
-                  icon='mdiBrush'
+                  onClick={() => p.mask.visible.toggle()}
+                  icon={IKONS.mdiBrush}
                />
 
                {/* <SpacerUI /> */}
                <Button
-                  onClick={() => p.mask.disableSelfWithinParent()}
-                  icon={'mdiDelete'}
+                  onClick={() => p.mask.zDisableSelfWithinParent()}
+                  icon={IKONS.mdiDelete}
                   borderless
                   subtle
                />
                <Button
-                  onClick={() => p.mask.Visible.toggle()}
-                  icon={isVisible ? 'mdiEye' : 'mdiEyeClosed'}
+                  onClick={() => p.mask.visible.toggle()}
+                  icon={isVisible ? IKONS.mdiEye : IKONS.mdiEyeClosed}
                   borderless
                   subtle
                />

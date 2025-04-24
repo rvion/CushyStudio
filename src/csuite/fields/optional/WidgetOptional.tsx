@@ -1,14 +1,12 @@
-import type { CompiledRenderProps } from '../../../csuite-cushy/presenters/RenderTypes'
+import type { RenderPropsCompiled } from '../../../csuite-cushy/presenters/RenderPropsCompiled'
 import type { Field_optional } from './FieldOptional'
-
-import { observer } from 'mobx-react-lite'
 
 import { WidgetToggleUI } from '../../form/WidgetToggleUI'
 import { renderFCOrNode } from '../../utils/renderFCOrNode'
 
-export const ShellOptionalUI = observer(function ShellOptionalUI_(p: CompiledRenderProps<Field_optional>) {
+export const ShellOptionalUI = obs(function ShellOptionalUI_(p: RenderPropsCompiled<Field_optional>) {
    const field = p.field
-   const extraClass = field.isDisabled ? 'pointer-events-none opacity-30 bg-[#00000005]' : undefined
+   const extraClass = field.zIsDisabled ? 'pointer-events-none opacity-30 bg-[#00000005]' : undefined
    const child = field.child
    return (
       <child.UI //
@@ -21,8 +19,8 @@ export const ShellOptionalUI = observer(function ShellOptionalUI_(p: CompiledRen
    )
 })
 
-export const ShellOptionalEnabledUI = observer(function ShellOptionalEnabledUI_(
-   p: CompiledRenderProps<Field_optional>,
+export const ShellOptionalEnabledUI = obs(function ShellOptionalEnabledUI_(
+   p: RenderPropsCompiled<Field_optional>,
 ) {
    const field = p.field
    // const extraClass = field.isDisabled ? 'pointer-events-none opacity-30 bg-[#00000005]' : undefined

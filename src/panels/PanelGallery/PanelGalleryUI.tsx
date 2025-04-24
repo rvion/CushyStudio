@@ -1,7 +1,5 @@
 import type { MediaImageL } from '../../models/MediaImage'
 
-import { observer } from 'mobx-react-lite'
-
 import { SpacerUI } from '../../csuite/components/SpacerUI'
 import { UI } from '../../csuite/components/UI'
 import { usePanel } from '../../router/usePanel'
@@ -17,13 +15,13 @@ export type PanelGalleryProps = {
    onClick?: (img: MediaImageL) => void
 }
 
-export const PanelGalleryUI = observer(function PanelGalleryUI_(p: PanelGalleryProps) {
+export const PanelGalleryUI = obs(function PanelGalleryUI_(p: PanelGalleryProps) {
    const conf: GalleryConf = useGalleryConf()
    const panel = usePanel<PanelGalleryProps>()
    return (
       <UI.Panel //
          className={p.className}
-         style={{ background: conf.value.galleryBgColor ?? undefined }}
+         style={{ background: conf.zValue.galleryBgColor ?? undefined }}
       >
          <UI.Panel.Header>
             <SpacerUI />

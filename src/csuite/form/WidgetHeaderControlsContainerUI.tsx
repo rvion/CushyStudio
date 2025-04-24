@@ -1,6 +1,4 @@
-import { observer } from 'mobx-react-lite'
-
-export const WidgetHeaderControlsContainerUI = observer(function WidgetHeaderControlsContainerUI_(p: {
+export const WidgetHeaderControlsContainerUI = obs(function WidgetHeaderControlsContainerUI_(p: {
    className?: string
    children: React.ReactNode
 }) {
@@ -13,7 +11,7 @@ export const WidgetHeaderControlsContainerUI = observer(function WidgetHeaderCon
             'flex flex-1 items-center',
             // 🔴 paradigm shift; the whole minh stuff was to avoid those padding; break a few invariants
             // VVVVVV
-            // 'py-input',
+            'py-input',
             // THIS already injects min-height: var(--widget-height);
             // which should be sufficient/ better
             //  VVV

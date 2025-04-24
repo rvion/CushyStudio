@@ -1,14 +1,12 @@
 import type { ComfyNodeSlotName, ComfyUnionValue } from '../../../comfyui/comfyui-types'
 import type { CleanedEnumResult } from '../../../types/EnumUtils'
 
-import { observer } from 'mobx-react-lite'
-
 import { Ikon } from '../../icons/iconHelpers'
 import { MessageErrorUI } from '../../messages/MessageErrorUI'
 import { RevealUI } from '../../reveal/RevealUI'
 import { SelectUI } from '../../select/SelectUI'
 
-export const EnumSelectorUI = observer(function EnumSelectorUI_(p: {
+export const EnumSelectorUI = obs(function EnumSelectorUI_(p: {
    value: () => CleanedEnumResult<any>
    // displayValue?: boolean
    // substituteValue?: EnumValue | null

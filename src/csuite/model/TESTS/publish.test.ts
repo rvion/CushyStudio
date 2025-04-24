@@ -1,53 +1,53 @@
-import { describe, expect as expect_, it, type Matchers } from 'bun:test'
 import { toJS } from 'mobx'
+import { type Assertion, describe, expect as expect_, it } from 'vitest'
 
-import { simpleFactory } from '../../index'
+import { simpleFactory } from '../../simple/SimpleFactory'
 
 // ------------------------------------------------------------------------------
 describe('publish', () => {
    it('works with string', () => {
       const E = simpleFactory.document((f) =>
          f.fields({
-            a: f.string({ default: 'test' }).publish('foo', (self) => self.value),
-            b: f.string().subscribe<string>('foo', (x, self) => (self.value = x)),
+            a: f.string({ default: 'test' }).publishToChannel('foo', (self) => self.zValue),
+            b: f.string().subscribeToChannel<string>('foo', (x, self) => (self.zValue = x)),
          }),
       )
-      expect(E.value.a).toBe('test')
-      expect(E.value.b).toBe('test')
+      expect(E.zValue.a).toBe('test')
+      expect(E.zValue.b).toBe('test')
    })
 
    it('works with ints', () => {
       const E = simpleFactory.document((f) =>
          f.fields({
-            a: f.int({ default: 8 }).publish('foo', (self) => self.value),
-            b: f.int({ default: 1 }).subscribe<number>('foo', (x, self) => (self.value = x)),
+            a: f.int({ default: 8 }).publishToChannel('foo', (self) => self.zValue),
+            b: f.int({ default: 1 }).subscribeToChannel<number>('foo', (x, self) => (self.zValue = x)),
          }),
       )
-      expect(E.value.a).toBe(8)
-      expect(E.value.b).toBe(8)
+      expect(E.zValue.a).toBe(8)
+      expect(E.zValue.b).toBe(8)
    })
 
    it('works regardless field order definition', () => {
       const E = simpleFactory.document((f) =>
          f.fields({
-            b: f.string({ default: '🟡' }).subscribe<string>('foo', (x, self) => (self.value = x)),
-            a: f.string({ default: '🔵' }).publish('foo', (self) => self.value),
+            b: f.string({ default: '🟡' }).subscribeToChannel<string>('foo', (x, self) => (self.zValue = x)),
+            a: f.string({ default: '🔵' }).publishToChannel('foo', (self) => self.zValue),
          }),
       )
-      expect(E.value.a).toBe('🔵')
-      expect(E.value.b).toBe('🔵')
+      expect(E.zValue.a).toBe('🔵')
+      expect(E.zValue.b).toBe('🔵')
 
       // bonus test before weekend
-      E.fields.b.value = '🟤'
-      expect(E.value.a).toBe('🔵')
-      expect(E.value.b).toBe('🟤')
+      E.zFields.b.zValue = '🟤'
+      expect(E.zValue.a).toBe('🔵')
+      expect(E.zValue.b).toBe('🟤')
 
-      E.fields.a.value = '🟠'
-      expect(E.value.a).toBe('🟠')
-      expect(E.value.b).toBe('🟠')
+      E.zFields.a.zValue = '🟠'
+      expect(E.zValue.a).toBe('🟠')
+      expect(E.zValue.b).toBe('🟠')
    })
+   function expect(a: any): Assertion<any> {
+      // eslint-disable-next-line vitest/valid-expect
+      return expect_(toJS(a))
+   }
 })
-
-function expect(a: any): Matchers<any> {
-   return expect_(toJS(a))
-}

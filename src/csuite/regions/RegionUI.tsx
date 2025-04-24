@@ -1,4 +1,3 @@
-import { observer } from 'mobx-react-lite'
 import { nanoid } from 'nanoid'
 import { useEffect, useMemo } from 'react'
 
@@ -16,7 +15,7 @@ type RegionUIOwnProps<T = any> = {
  * regions are wrappers around react context that
  * enable custom shortcuts / commands inside them
  */
-export const RegionUI = observer(function RegionUI_<T extends any>({
+export const RegionUI = obs(function RegionUI_<T extends any>({
    regionCtx,
    regionValue,
    regionName,

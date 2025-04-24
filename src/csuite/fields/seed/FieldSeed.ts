@@ -1,6 +1,6 @@
-import type { BaseSchema } from '../../model/BaseSchema'
-import type { FieldConfig } from '../../model/FieldConfig'
-import type { FieldSerial } from '../../model/FieldSerial'
+import type { CSchema } from '../../model/CSchema'
+import type { FieldConstructor } from '../../model/FieldConstructor'
+import type { Patch } from '../../model/Patch'
 import type { Repository } from '../../model/Repository'
 import type { Problem_Ext } from '../../model/Validation'
 
@@ -9,131 +9,124 @@ import { produce } from 'immer'
 import { Field } from '../../model/Field'
 import { registerFieldClass } from '../WidgetUI.DI'
 import { getGlobalSeeder, type Seeder } from './Seeder'
-import { WidgetSeedUI } from './WidgetSeedUI'
 
 type SeedMode = 'randomize' | 'fixed' | 'last'
 
 // #region Config
-export type Field_seed_config = FieldConfig<
-   {
-      default?: number
-      defaultMode?: SeedMode
-      min?: number
-      max?: number
-      seeder?: Seeder
-   },
-   Field_seed_types
->
+export type Field_seed_config = Field_seed['{config}']
+type Field_seed_ownConfig = {
+   default?: number
+   defaultMode?: SeedMode
+   min?: number
+   max?: number
+   seeder?: Seeder
+}
 
 // #region Serial
-export type Field_seed_serial = FieldSerial<{
+export type Field_seed_serial = Field_seed['{serial}']
+type Field_seed_ownSerial = {
    $: 'seed'
    val?: number
    mode?: SeedMode
-}>
+}
 
 // #region Value
 export type Field_seed_value = number
 export type Field_seed_unchecked = Field_seed_value | undefined
 
 // #region Types
-export type Field_seed_types = {
-   $Type: 'seed'
-   $Config: Field_seed_config
-   $Serial: Field_seed_serial
-   $Value: Field_seed_value
-   $Unchecked: Field_seed_unchecked
-   $Field: Field_seed
-   $Child: never
-   $Reflect: Field_seed_types
+export interface Field_seed {
+   '{type}': 'seed'
+   '{ownConfig}': Field_seed_ownConfig
+   '{ownSerial}': Field_seed_ownSerial
+   '{value}': Field_seed_value
+   '{setValue}': Field_seed_value
+   '{unchecked}': Field_seed_unchecked
+   '{child}': never
+   '{opts}': unknown
+   '{ownPatch}': Patch<'seed'>
 }
 
 // STATE
-export class Field_seed extends Field<Field_seed_types> {
+export class Field_seed extends Field {
    // #region type
    static readonly type: 'seed' = 'seed'
-   static readonly emptySerial: Field_seed_serial = { $: 'seed' }
-   static codegenValueType(config: Field_seed_config): string {
-      return `number`
+   static override migrateSerial(): undefined {}
+   static readonly codeForTypescriptValue = (config: Field_seed_config): string => 'Z.Seed'
+
+   private static readonly unsetSerial: Field_seed_serial = { $: 'seed' }
+   static generateSerial(
+      setValue: Maybe<Field_seed['{setValue}']>,
+      config: Field_seed['{config}'],
+   ): Field_seed['{serial}'] {
+      if (setValue == null) return this.unsetSerial
+      return { $: 'seed', val: setValue, mode: config.defaultMode }
    }
-   static migrateSerial(): undefined {}
 
    // #region Ctor
    constructor(
       repo: Repository,
       root: Field | null,
       parent: Field | null,
-      schema: BaseSchema<Field_seed>,
+      schema: CSchema<Field_seed>,
       initialMountKey: string,
       serial?: Field_seed_serial,
    ) {
       super(repo, root, parent, schema, initialMountKey, serial)
-      this.init(serial, {
-         DefaultHeaderUI: false,
-         DefaultBodyUI: false,
-      })
+      this.init(serial)
    }
 
    // #region setOwnSerial
-   protected setOwnSerial(next: Field_seed_serial): void {
-      if (/* is unset */ next.val == null && next.mode == null) {
-         const def1 = this.defaultValue
-         if (/* has default value */ def1 != null) {
-            next = produce(next, (draft) => void (draft.val = def1))
-         }
-         const def2 = this.defaultMode
-         if (/* has default mode */ def2 != null) {
-            next = produce(next, (draft) => void (draft.mode = def2))
-         }
+   protected zSetOwnSerial(next: Field_seed_serial): void {
+      if (next.val == null) {
+         const def = this.defaultValue
+         if (def != null) next = produce(next, (draft) => void (draft.val = def))
+      }
+      if (next.mode == null) {
+         const def = this.defaultMode
+         if (def != null) next = produce(next, (draft) => void (draft.mode = def))
       }
 
-      this.assignNewSerial(next)
+      this.zAssignNewSerial(next)
    }
-
-   // #region UI
-   DefaultHeaderUI = WidgetSeedUI
-   DefaultBodyUI: undefined = undefined
 
    // #region validation
-   get ownConfigSpecificProblems(): Problem_Ext {
+   get zOwnConfigSpecificProblems(): Problem_Ext {
       return null
    }
 
-   get ownTypeSpecificProblems(): Problem_Ext {
+   get zOwnTypeSpecificProblems(): Problem_Ext {
       return null
    }
 
-   get isOwnSet(): boolean {
-      return (
-         this.serial.val != null || //
-         this.serial.mode != null
-      )
+   get zIsOwnSet(): boolean {
+      return this.zSerial.val != null
    }
 
    // #region changes
-   get hasChanges(): boolean {
-      if (this.serial.mode !== this.defaultMode) return true
-      if (this.serial.mode === 'fixed') return this.value !== this.defaultValue
+   get zHasChanges(): boolean {
+      if (this.zSerial.mode !== this.defaultMode) return true
+      if (this.zSerial.mode === 'fixed') return this.zValue !== this.defaultValue
       return false
    }
 
    // #region misc
    get defaultMode(): SeedMode {
-      return this.config.defaultMode ?? 'randomize'
+      return this.zConfig.defaultMode ?? 'randomize'
    }
 
    get defaultValue(): number | undefined {
-      return this.config.default
+      return this.zConfig.default
    }
 
    setMode = (mode: SeedMode): void => {
-      if (this.serial.mode === mode) return
-      this.runInTransaction(() => this.patchSerial((draft) => void (draft.mode = mode)))
+      if (this.zSerial.mode === mode) return
+      this.zRunInTransaction(() => this.zPatchSerial((draft) => void (draft.mode = mode)))
    }
 
    setToFixed = (val?: number): void => {
-      this.runInTransaction(() => {
-         this.patchSerial((draft) => {
+      this.zRunInTransaction(() => {
+         this.zPatchSerial((draft) => {
             draft.mode = 'fixed'
             if (val != null) draft.val = val
          })
@@ -141,51 +134,50 @@ export class Field_seed extends Field<Field_seed_types> {
    }
 
    setToRandomize(): void {
-      if (this.serial.mode === 'randomize') return
-      this.runInTransaction(() => this.patchSerial((draft) => void (draft.mode = 'randomize')))
+      if (this.zSerial.mode === 'randomize') return
+      this.zRunInTransaction(() => this.zPatchSerial((draft) => void (draft.mode = 'randomize')))
    }
 
    // #region value
-   get value(): Field_seed_value {
-      return this.value_or_fail
-      // const seeder = this.config.seeder ?? getGlobalSeeder()
-      // const count = seeder.count
-      // const mode = this.serial.mode ?? this.config.defaultMode ?? 'randomize'
-      // return mode === 'randomize' //
-      //     ? Math.floor(Math.random() * 9_999_999)
-      //     : this.serial.val ?? this.config.default ?? 0
-   }
-
-   set value(val: number) {
-      if (this.serial.mode === 'fixed' && this.serial.val === val) return
+   set zValue(val: number) {
+      if (this.zSerial.mode === 'fixed' && this.zSerial.val === val) return
       // 🔴 a moitié faux
-      this.runInTransaction(() => {
-         this.patchSerial((draft) => void (draft.val = val))
+      this.zRunInTransaction(() => {
+         this.zPatchSerial((draft) => void (draft.val = val))
       })
    }
 
-   get value_or_fail(): number {
-      const val = this.value_unchecked
-      if (val == null) throw new Error('Field_seed.value_or_fail: not set')
+   get zValue(): number {
+      const val = this.zValueUnchecked
+      if (val == null) throw new Error('Field_seed.zValue: not set')
       return val
    }
 
-   get value_or_zero(): number {
-      return this.value_unchecked ?? 0
+   get zValueOrZero(): number {
+      return this.zValueUnchecked ?? 0
    }
 
-   get value_unchecked(): number | undefined {
+   get zValueUnchecked(): number | undefined {
       return this.computeValue()
    }
 
+   override zIsValueEqual(other: Field): boolean {
+      if (!(other instanceof Field_seed)) return false
+      return this.zValueUnchecked === other.zValueUnchecked
+   }
+
    private computeValue(): number | undefined {
-      const seeder = this.config.seeder ?? getGlobalSeeder()
+      const seeder = this.zConfig.seeder ?? getGlobalSeeder()
       const count = seeder.count
-      const mode = this.serial.mode ?? this.config.defaultMode ?? 'randomize'
+      const mode = this.zSerial.mode ?? this.zConfig.defaultMode ?? 'randomize'
       return mode === 'randomize' //
          ? Math.floor(Math.random() * 9_999_999)
-         : this.serial.val
+         : this.zSerial.val
    }
+
+   // #region patches
+   public static readonly patchedSerialPaths: readonly string[] = Object.freeze(['val', 'mode'])
 }
 
 registerFieldClass('seed', Field_seed)
+Field_seed satisfies FieldConstructor<Field_seed>

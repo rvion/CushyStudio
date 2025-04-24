@@ -1,12 +1,9 @@
-import type { Tint } from '../kolor/Tint'
-
 import { makeAutoObservable, runInAction } from 'mobx'
-import { observer } from 'mobx-react-lite'
+
 import React, { useEffect, useMemo } from 'react'
 
 import { Button } from '../button/Button'
 import { Frame, type FrameProps } from '../frame/Frame'
-import { run_theme_dropShadow } from '../frame/SimpleDropShadow'
 import { run_tint } from '../kolor/prefab_Tint'
 import { parseFloatNoRoundingErr } from '../utils/parseFloatNoRoundingErr'
 import { window_addEventListener } from '../utils/window_addEventListenerAction'
@@ -43,7 +40,7 @@ type InputNumberProps = {
    placeholder?: string
    forceSnap?: boolean
    className?: string
-   tooltip?: string
+   tooltip?: React.ReactNode
 } & {
    // 💬 2024-09-30 rvion:
    // Temporarilly, let's just accept the two we use manually,
@@ -57,6 +54,7 @@ type InputNumberProps = {
 /** this class will be instanciated ONCE in every InputNumberUI, (local the the InputNumberUI) */
 class InputNumberStableState {
    constructor(public props: InputNumberProps) {
+      this.inputValue = this.value.toString()
       makeAutoObservable(this)
    }
 
@@ -89,7 +87,7 @@ class InputNumberStableState {
    }
 
    get numberSliderSpeed(): number {
-      return cushy.preferences.interface.value.widget.valueSliderMultiplier
+      return cushy.preferences.interface.zValue.widget.valueSliderMultiplier
    }
 
    get isInteger(): boolean {
@@ -97,7 +95,7 @@ class InputNumberStableState {
    }
 
    /* Used for making sure you can type whatever you want in to the value, but it gets validated when pressing Enter. */
-   inputValue: string = this.value.toString()
+   inputValue: string
 
    /* When editing the number <input> this will make it display inputValue instead of val.*/
    isEditing: boolean = false
@@ -238,7 +236,7 @@ class InputNumberStableState {
    }
 }
 
-export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProps) {
+export const InputNumberUI = obs(function InputNumberUI_(p: InputNumberProps) {
    // create stable state, that we can programmatically mutate witout caring about stale references
    const uist = useMemo(() => new InputNumberStableState(p), [])
 
@@ -253,7 +251,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
    const step = uist.step
    const rounding = uist.rounding
    const isEditing = uist.isEditing
-   const theme = cushy.preferences.theme.value
+   const theme = cushy.preferences.theme.zValue
 
    const dropShadow = uist.props.dropShadow ?? theme.global.shadow
    return (
@@ -265,9 +263,9 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
          className={p.className}
          // unsure about the amount of code we had to use for that prop
          dropShadow={dropShadow ? dropShadow : undefined}
-         tooltip={p.tooltip}
          roundness={p.roundness ?? theme.global.roundness}
          disabled={p.disabled}
+         tooltip={p.tooltip}
          tw={[
             'UI-InputNumber',
             'h-input relative',
@@ -304,7 +302,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
                tw='z-20 h-full items-center !rounded-none opacity-0'
                tabIndex={-1}
                onClick={uist.decrement}
-               icon='mdiChevronLeft'
+               icon={IKONS.mdiChevronLeft}
                square
                size='inside'
             />
@@ -445,7 +443,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
                tw='z-20 h-full items-center !rounded-none opacity-0'
                tabIndex={-1}
                onClick={uist.increment}
-               icon='mdiChevronRight'
+               icon={IKONS.mdiChevronRight}
                square
                size='inside'
             />

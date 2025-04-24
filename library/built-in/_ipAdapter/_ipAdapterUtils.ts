@@ -1,21 +1,21 @@
 export type UI_subform_IPAdapter_common = {
-   strength: X.XNumber
-   settings: X.XGroup<{
-      extra: X.XList<X.XImage>
-      crop: X.XBool
-      startAtStepPercent: X.XNumber
-      endAtStepPercent: X.XNumber
-      weight_type: X.XEnum<'IPAdapter_plus.IPAdapterAdvanced.weight_type'>
-      embedding_scaling: X.XEnum<'IPAdapter_plus.IPAdapterAdvanced.embeds_scaling'>
-      noise: X.XNumber
-      unfold_batch: X.XBool
+   strength: Z.Number
+   settings: Z.Group<{
+      extra: Z.List<Z.Image>
+      crop: Z.Bool
+      startAtStepPercent: Z.Number
+      endAtStepPercent: Z.Number
+      weight_type: Z.Enum<'IPAdapter_plus.IPAdapterAdvanced.weight_type'>
+      embedding_scaling: Z.Enum<'IPAdapter_plus.IPAdapterAdvanced.embeds_scaling'>
+      noise: Z.Number
+      unfold_batch: Z.Bool
    }>
 }
 
 // 🅿️ IPAdapter Common FORM ===================================================
 export function ui_subform_IPAdapter_common(
    //
-   ui: X.Builder,
+   ui: Z.Builder,
    defaultStrength: number = 1,
 ): UI_subform_IPAdapter_common {
    return {
@@ -47,11 +47,11 @@ export function ui_subform_IPAdapter_common(
 }
 
 export type UI_ipadapter_CLIPSelection = {
-   clip_name: X.XEnum<'CLIPVisionLoader.clip_name'>
+   clip_name: Z.Enum<'CLIPVisionLoader.clip_name'>
 }
 
 //🅿️ IPAdapter CLIP Selection ===================================================
-export function ui_ipadapter_CLIPSelection(form: X.Builder): UI_ipadapter_CLIPSelection {
+export function ui_ipadapter_CLIPSelection(form: Z.Builder): UI_ipadapter_CLIPSelection {
    return {
       clip_name: form.enum['CLIPVisionLoader.clip_name']({
          // @ts-ignore

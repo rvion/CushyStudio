@@ -1,127 +1,118 @@
-import type { BaseSchema } from '../../model/BaseSchema'
-import type { FieldConfig } from '../../model/FieldConfig'
-import type { FieldSerial } from '../../model/FieldSerial'
+import type { CSchema } from '../../model/CSchema'
+import type { FieldConstructor } from '../../model/FieldConstructor'
+import type { Patch } from '../../model/Patch'
 import type { Repository } from '../../model/Repository'
 import type { Problem_Ext } from '../../model/Validation'
-import type { FC } from 'react'
 
 import { Field } from '../../model/Field'
 import { registerFieldClass } from '../WidgetUI.DI'
-import { WidgetMardownUI } from './WidgetMarkdownUI'
 
-// #region $Config
-export type Field_markdown_config = FieldConfig<
-   {
-      markdown: string | ((self: Field_markdown) => string)
-      inHeader?: boolean
-   },
-   Field_markdown_types
->
+// #region CONFIG TYPE
+export type Field_markdown_config = Field_markdown['{config}']
+type Field_markdown_ownConfig = {
+   markdown: string | ((self: Field_markdown) => string)
+   inHeader?: boolean
+}
 
-// #region $Serial
-export type Field_markdown_serial = FieldSerial<{
-   $: 'markdown'
-}>
+// #region SERIAL TYPE
+export type Field_markdown_serial = Field_markdown['{serial}']
+type Field_markdown_ownSerial = { $: 'markdown' }
 
-// #region $Value
+// #region VALUE TYPE
 export type Field_markdown_value = { $: 'markdown' }
 export type Field_markdown_unchecked = Field_markdown_value
 
-// #region $Types
-export type Field_markdown_types = {
-   $Type: 'markdown'
-   $Config: Field_markdown_config
-   $Serial: Field_markdown_serial
-   $Value: Field_markdown_value
-   $Unchecked: Field_markdown_unchecked
-   $Field: Field_markdown
-   $Child: never
-   $Reflect: Field_markdown_types
-}
-
 // #region STATE TYPE
-export class Field_markdown extends Field<Field_markdown_types> {
+export interface Field_markdown {
+   '{type}': 'markdown'
+   '{ownConfig}': Field_markdown_ownConfig
+   '{ownSerial}': Field_markdown_ownSerial
+   '{value}': Field_markdown_value
+   '{setValue}': Field_markdown_value
+   '{unchecked}': Field_markdown_unchecked
+   '{child}': never
+   '{opts}': unknown
+   '{ownPatch}': Patch<'markdown'>
+}
+export class Field_markdown extends Field {
    // #region TYPE
    static readonly type: 'markdown' = 'markdown'
-   static readonly emptySerial: Field_markdown_serial = { $: 'markdown' }
-   static codegenValueType(config: Field_markdown_config): string {
-      return `undefined`
+   private static readonly unsetSerial: Field_markdown_serial = { $: 'markdown' }
+   static override migrateSerial(): undefined {}
+   static readonly codeForTypescriptValue = (config: Field_markdown_config): string => 'Markdown'
+
+   static generateSerial(): Field_markdown_serial {
+      return Field_markdown.unsetSerial
    }
-   static migrateSerial(): undefined {}
 
    // #region CTOR
    constructor(
       repo: Repository,
       root: Field | null,
       parent: Field | null,
-      schema: BaseSchema<Field_markdown>,
+      schema: CSchema<Field_markdown>,
       initialMountKey: string,
       serial?: Field_markdown_serial,
    ) {
       super(repo, root, parent, schema, initialMountKey, serial)
       this.init(serial)
    }
-   // #region UI
-   get DefaultHeaderUI(): FC<{ field: Field_markdown }> | undefined {
-      if (this.config.inHeader) return WidgetMardownUI
-      return undefined
-   }
-
-   get DefaultBodyUI(): FC<{ field: Field_markdown }> | undefined {
-      if (this.config.inHeader) return undefined
-      return WidgetMardownUI
-   }
 
    // #region SERIAL
-   protected setOwnSerial(_next: Field_markdown_serial): void {}
+   protected zSetOwnSerial(_next: Field_markdown_serial): void {}
 
    // #region VALIDATION
-   get ownConfigSpecificProblems(): Problem_Ext {
+   get zOwnConfigSpecificProblems(): Problem_Ext {
       return null
    }
 
-   get ownTypeSpecificProblems(): Problem_Ext {
+   get zOwnTypeSpecificProblems(): Problem_Ext {
       return null
    }
 
-   get isOwnSet(): boolean {
+   get zIsOwnSet(): boolean {
       return true
    }
 
    // #region MISC
    get markdown(): string {
-      const md = this.config.markdown
+      const md = this.zConfig.markdown
       if (typeof md === 'string') return md
       return md(this)
    }
 
    // #region value
    /** do nothing, see coment on the hasChange getter */
-   set value(_: Field_markdown_value) {}
+   set zValue(_: Field_markdown_value) {}
 
-   get value(): Field_markdown_value {
-      return this.serial
+   get zValue(): Field_markdown_value {
+      return this.zSerial
    }
 
    /**
     * always return false, because the text isn't part of the serial, it's part of the config
     * markdown fields have NO value
     */
-   get hasChanges(): boolean {
+   get zHasChanges(): boolean {
       return false
    }
-   // the whole markdown field is legacy
-   // this is why most of the attributes make no sense.
-   get value_or_fail(): Field_markdown_value {
-      return this.serial
+   get zValueOrZero(): Field_markdown_value {
+      return this.zSerial
    }
-   get value_or_zero(): Field_markdown_value {
-      return this.serial
+   get zValueUnchecked(): Field_markdown_unchecked {
+      return this.zSerial
    }
-   get value_unchecked(): Field_markdown_unchecked {
-      return this.serial
+
+   override zIsValueEqual(other: Field): boolean {
+      if (!(other instanceof Field_markdown)) return false
+
+      return true
    }
+
+   // #region PATCH
+   public static readonly patchedSerialPaths: readonly string[] = Object.freeze([])
 }
 
 // DI
 registerFieldClass('markdown', Field_markdown)
+Field_markdown satisfies FieldConstructor<Field_markdown>

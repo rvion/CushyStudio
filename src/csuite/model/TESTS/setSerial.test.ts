@@ -1,14 +1,14 @@
-import { describe, expect, it } from 'bun:test'
+import { describe, expect, it } from 'vitest'
 
-import { simpleBuilder as b } from '../../index'
+import { simpleBuilder as b } from '../../simple/SimpleFactory'
 
 // ------------------------------------------------------------------------------
-describe('setSerial ', () => {
+describe('setSerial', () => {
    it('works with valid serial', () => {
       const S1 = b.string({ default: '🔵A' })
       const E1 = S1.create()
-      E1.setSerial({ $: 'str', value: '🟢B' })
-      expect(E1.value).toEqual('🟢B')
+      E1.zSetSerial({ $: 'str', value: '🟢B' })
+      expect(E1.zValue).toBe('🟢B')
    })
 
    it('works with nested fields', () => {
@@ -21,7 +21,7 @@ describe('setSerial ', () => {
          }),
       })
       const E1 = S1.create()
-      E1.setSerial({
+      E1.zSetSerial({
          $: 'group',
          values_: {
             a: {
@@ -44,7 +44,7 @@ describe('setSerial ', () => {
             },
          },
       })
-      expect(E1.value.a.b.c).toEqual('🟢')
-      expect(E1.value.a.b.d).toEqual(2)
+      expect(E1.zValue.a.b.c).toBe('🟢')
+      expect(E1.zValue.a.b.d).toBe(2)
    })
 })

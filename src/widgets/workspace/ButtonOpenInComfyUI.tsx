@@ -1,10 +1,8 @@
 import type { ComfyWorkflowL } from '../../models/ComfyWorkflow'
 
-import { observer } from 'mobx-react-lite'
-
 import { Button } from '../../csuite/button/Button'
 
-export const ButtonOpenInComfyUI = observer(function ButtonOpenInComfyUI_(p: {
+export const ButtonOpenInComfyUI = obs(function ButtonOpenInComfyUI_(p: {
    graph: ComfyWorkflowL | ComfyWorkflowID
 }) {
    const graphOrGraphID = p.graph
@@ -16,10 +14,15 @@ export const ButtonOpenInComfyUI = observer(function ButtonOpenInComfyUI_(p: {
    return (
       <div tw='flex items-center gap-2'>
          Open:
-         <Button icon='mdiOpenInNew' look='ghost' size='sm' onClick={graph.menuAction_openInTab}>
+         <Button icon={IKONS.mdiOpenInNew} look='ghost' size='sm' onClick={graph.menuAction_openInTab}>
             open in ComfyUI Tab
          </Button>
-         <Button icon='mdiFullscreen' look='ghost' size='sm' onClick={graph.menuAction_openInFullScreen}>
+         <Button
+            icon={IKONS.mdiFullscreen}
+            look='ghost'
+            size='sm'
+            onClick={graph.menuAction_openInFullScreen}
+         >
             open in ComfyUI FULL
          </Button>
       </div>

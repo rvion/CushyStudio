@@ -17,22 +17,21 @@ app({
             .llmModel()
             .list()
             .withConfig({
-               uiui: (ui) =>
-                  ui.set({
-                     Body: () => (
-                        <div>
-                           {ui.field.defaultBody()}
-                           <LegacyFieldUI label='OpenRouter API KEY'>
-                              <InputStringUI
-                                 icon='mdiKey'
-                                 type='password'
-                                 getValue={() => cushy.configFile.value.OPENROUTER_API_KEY ?? ''}
-                                 setValue={(next) => cushy.configFile.update({ OPENROUTER_API_KEY: next })}
-                              />
-                           </LegacyFieldUI>
-                        </div>
-                     ),
-                  }),
+               uiui: {
+                  Body: ({ field }) => (
+                     <div>
+                        <uy.list.DefaultBody field={field} />
+                        <LegacyFieldUI label='OpenRouter API KEY'>
+                           <InputStringUI
+                              icon={IKONS.mdiKey}
+                              type='password'
+                              getValue={() => cushy.configFile.value.OPENROUTER_API_KEY ?? ''}
+                              setValue={(next) => cushy.configFile.update({ OPENROUTER_API_KEY: next })}
+                           />
+                        </LegacyFieldUI>
+                     </div>
+                  ),
+               },
             }),
          customSystemMessage: b.group({
             startCollapsed: true,
@@ -40,7 +39,7 @@ app({
                system: b.string({
                   textarea: true,
                   default: _defaultSystemPrompt,
-                  tooltip:
+                  description:
                      'Try experimenting with the system prompt. You may get better results from different models depending on how specific the instructions are.',
                }),
             },
@@ -53,12 +52,8 @@ app({
          promptFromLlm2: b.textarea({ default: '' }),
       }),
 
-   layout: (ui) => {
-      ui.set('', { Decoration: null, Indent: null })
-      ui.set(ui.field.PromptFromLlm2, { Header: UY.string.markdown })
-   },
    run: async (sdk, conf) => {
-      if (!sdk.LLM.isConfigured) {
+      if (!sdk.LLM.isConfigured()) {
          sdk.output_text(`Enter your api key in Config`)
          return
       }
@@ -80,7 +75,11 @@ app({
          ),
       )
       const summaryTxt = conf.llmModels.map((model, ix) => formatResult(model, llmResults[ix]!)).join('\n\n')
-      sdk.form.fields.promptFromLlm2.value = summaryTxt
+      sdk.form.promptFromLlm2.zValue = summaryTxt
       sdk.output_text(summaryTxt)
+   },
+   layout: (field, set) => {
+      set('', { Decoration: null, Indent: null })
+      set(field.promptFromLlm2, { Header: uy.string.markdown })
    },
 })

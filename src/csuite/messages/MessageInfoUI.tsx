@@ -1,9 +1,7 @@
-import { observer } from 'mobx-react-lite'
-
 import { knownOKLCHHues } from '../tinyCSS/knownHues'
 import { MessageUI } from './MessageUI'
 
-export const MessageInfoUI = observer(function MessageInfoUI_(p: {
+export const MessageInfoUI = obs(function MessageInfoUI_(p: {
    title?: string
    children?: React.ReactNode
    markdown?: string
@@ -13,7 +11,7 @@ export const MessageInfoUI = observer(function MessageInfoUI_(p: {
    return (
       <MessageUI //
          type='info'
-         icon='mdiInformationOutline'
+         icon={IKONS.mdiInformationOutline}
          hue={knownOKLCHHues.info}
          {...p}
       />

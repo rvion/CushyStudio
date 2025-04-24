@@ -1,4 +1,4 @@
-import type { IconName } from '../icons/icons'
+import type { IconName } from '../icons/IconName'
 
 import { observer, useLocalObservable } from 'mobx-react-lite'
 
@@ -8,7 +8,7 @@ import { IkonOf } from '../icons/iconHelpers'
 import { MarkdownUI } from '../markdown/MarkdownUI'
 import { knownOKLCHHues } from '../tinyCSS/knownHues'
 
-export const MessageUI = observer(function MessageInfoUI_({
+export const MessageUI = obs(function MessageInfoUI_({
    title,
    type,
    icon,
@@ -57,7 +57,7 @@ export const MessageUI = observer(function MessageInfoUI_({
                border={0}
                subtle
                square
-               icon='mdiClose'
+               icon={IKONS.mdiClose}
             ></Button>
          )}
       </Frame>

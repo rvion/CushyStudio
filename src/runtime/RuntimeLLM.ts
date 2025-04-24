@@ -20,7 +20,7 @@ export class RuntimeLLM {
    // ---------------------------
 
    /** verify key is ready */
-   isConfigured = async (): Promise<boolean> => {
+   isConfigured(): boolean {
       return !!this.rt.Cushy.configFile.value.OPENROUTER_API_KEY
    }
 

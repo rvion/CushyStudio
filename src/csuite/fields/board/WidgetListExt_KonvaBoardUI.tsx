@@ -1,17 +1,16 @@
-import type { BaseSchema } from '../../model/BaseSchema'
 import type { Field_board } from './Field_board'
 
-import { observer, useLocalObservable } from 'mobx-react-lite'
+import { useLocalObservable } from 'mobx-react-lite'
 import { Layer, Stage } from 'react-konva'
 
 import { InputNumberUI } from '../../input-number/InputNumberUI'
 import { ReactKonvaRectangleUI } from './ReactKonvaRectangleUI'
 
-export const WidgetListExt_KonvaBoardUI = observer(function WidgetListExt_KonvaBoardUI(p: {
+export const WidgetListExt_KonvaBoardUI = obs(function WidgetListExt_KonvaBoardUI(p: {
    field: Field_board<any>
 }) {
    const RG = p.field
-   const entries = RG.fields.items.childrenActive.map((i) => i.fields)
+   const entries = RG.zFields.items.map((i) => i.zFields)
    const uist = useLocalObservable(() => ({ scale: 1 }))
    return (
       <>
@@ -27,8 +26,8 @@ export const WidgetListExt_KonvaBoardUI = observer(function WidgetListExt_KonvaB
          <div
             style={{
                transform: `scale(${uist.scale})`,
-               width: RG.fields.area.width * uist.scale,
-               height: RG.fields.area.height * uist.scale,
+               width: RG.zFields.area.width * uist.scale,
+               height: RG.zFields.area.height * uist.scale,
                transformOrigin: 'top left',
                display: 'block',
                border: '1px solid red',
@@ -36,8 +35,8 @@ export const WidgetListExt_KonvaBoardUI = observer(function WidgetListExt_KonvaB
          >
             <Stage
                //
-               width={RG.fields.area.width}
-               height={RG.fields.area.height}
+               width={RG.zFields.area.width}
+               height={RG.zFields.area.height}
                onContextMenu={(e) => {
                   e.evt.preventDefault()
                   console.log('context menu')
@@ -52,14 +51,14 @@ export const WidgetListExt_KonvaBoardUI = observer(function WidgetListExt_KonvaB
                      <ReactKonvaRectangleUI
                         key={`rect-${value.id}`}
                         onChange={(p) => {
-                           shape.runInTransaction(() => {
-                              const v = shape.value
+                           shape.zRunInTransaction(() => {
+                              const v = shape.zValue
                               Object.assign(v, p)
                            })
                            value.applyValueUpdateEffects()
                         }}
-                        isSelected={shape.value.isSelected}
-                        shape={shape.value}
+                        isSelected={shape.zValue.isSelected}
+                        shape={shape.zValue}
                         // shape={{ x: 10, y: 10, width: 100, height: 100, fill: 'red', z: 0, depth: 0 }}
                      />
                   ))}

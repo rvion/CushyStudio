@@ -1,15 +1,14 @@
 import type { CushyShortcut } from '../commands/CommandManager'
-import type { IconName } from '../icons/icons'
+import type { IconName } from '../icons/IconName'
 
-import { observer } from 'mobx-react-lite'
 import { type ReactNode, useState } from 'react'
 
 import { ComboUI } from '../accelerators/ComboUI'
 import { Frame } from '../frame/Frame'
 import { Ikon, IkonOf } from '../icons/iconHelpers'
 import { formatMenuLabel } from '../menu/formatMenuLabel'
+import { observerWC } from '../mobx/observerWC'
 import { MenuDivider } from './MenuDivider'
-import { observerWC } from './observerWC'
 
 export type MenuItemProps = {
    // behaviour

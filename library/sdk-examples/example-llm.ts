@@ -21,7 +21,7 @@ app({
                system: b.string({
                   textarea: true,
                   default: defaultSystemPrompt,
-                  tooltip:
+                  description:
                      'Try experimenting with the system prompt. You may get better results from different models depending on how specific the instructions are.',
                }),
             },
@@ -37,7 +37,7 @@ app({
       }),
 
    run: async (sdk, ui) => {
-      if (!sdk.LLM.isConfigured) {
+      if (!sdk.LLM.isConfigured()) {
          sdk.output_text(`Enter your api key in Config`)
          return
       }
@@ -46,7 +46,7 @@ app({
       const llmResult = await sdk.LLM.expandPrompt(ui.topic, ui.llmModel.id, ui.customSystemMessage.system)
       const positiveTxt = llmResult.prompt
 
-      sdk.form.fields.promptFromLlm.config.markdown = positiveTxt
+      sdk.form.zFields.promptFromLlm.zConfig.markdown = positiveTxt
 
       // generate an image
       const graph = sdk.ComfyUI.create_basicWorkflow({

@@ -1,14 +1,14 @@
 import type { CushySchemaBuilder } from '../../controls/CushyBuilder'
 
-export type UI_Justify = X.XSelectOne_<'full' | 'L' | 'center' | 'R'>
+export type UI_Justify = Z.XSelectOne_<'full' | 'L' | 'center' | 'R'>
 
 export const ui_justify = (ui: CushySchemaBuilder): UI_Justify =>
    ui.selectOneOptionId(
       [
-         { id: 'full', icon: 'mdiFormatAlignJustify', label: '' },
-         { id: 'L', icon: 'mdiFormatAlignLeft', label: '' },
-         { id: 'center', icon: 'mdiFormatAlignCenter', label: '' },
-         { id: 'R', icon: 'mdiFormatAlignRight', label: '' },
+         { id: 'full', icon: IKONS.mdiFormatAlignJustify, label: '' },
+         { id: 'L', icon: IKONS.mdiFormatAlignLeft, label: '' },
+         { id: 'center', icon: IKONS.mdiFormatAlignCenter, label: '' },
+         { id: 'R', icon: IKONS.mdiFormatAlignRight, label: '' },
       ],
       {
          appearance: 'roll',
@@ -16,7 +16,7 @@ export const ui_justify = (ui: CushySchemaBuilder): UI_Justify =>
       },
    )
 
-export const run_justify = (value: ReturnType<typeof ui_justify>['$Value']): string | undefined => {
+export const run_justify = (value: ReturnType<typeof ui_justify>['{value}']): string | undefined => {
    if (value === 'full') return 'w-full'
    if (value === 'center') return 'max-w-xl m-auto'
    if (value === 'L') return 'max-w-xl'

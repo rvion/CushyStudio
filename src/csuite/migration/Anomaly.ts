@@ -1,5 +1,6 @@
 import type { AnyFieldSerial } from '../model/EntitySerial'
 import type { Field } from '../model/Field'
+import type { Timestamp } from '../types/Timestamp'
 
 /**
  * data-structure that preserve invalid serial

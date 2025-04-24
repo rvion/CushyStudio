@@ -5,7 +5,6 @@ import {
 
 export type RevealPlacement =
    /** ---------------------------------------------------------------------------
-    * @since 2024-07-23
     * will clamp the revealed content above the dom of the given element.
     */
    | 'above'
@@ -15,10 +14,13 @@ export type RevealPlacement =
 
    // cover is a bit like 'above', but slightly broken...
    | 'cover'
+   | 'cover-top'
+   | 'cover-auto'
    | 'cover-no-min-size'
 
    // absolute placement ---------------------------------------------------------
    | 'screen'
+   | 'screen-cover'
    | 'screen-top'
    | 'screen-top-left'
    | 'screen-top-right'
@@ -72,6 +74,32 @@ export type RevealComputedPosition = {
 
    //
    transform?: string
+   finalPlacementLogic:
+      | 'above'
+      | 'above-no-max-size'
+      | 'above-no-min-size'
+      | 'above-no-min-no-max-size'
+      | 'screen'
+      | 'screen-cover'
+      | 'screen-top'
+      | 'screen-top-left'
+      | 'screen-top-right'
+      | 'screen-centered'
+      | 'top'
+      | 'bottom'
+      | 'right'
+      | 'left'
+      | 'bottomStart'
+      | 'bottomEnd'
+      | 'topStart'
+      | 'topEnd'
+      | 'leftStart'
+      | 'leftEnd'
+      | 'rightStart'
+      | 'rightEnd'
+      | 'cover'
+      | 'cover-top'
+      | 'cover-no-min-size'
 }
 
 export const computePlacement = (
@@ -91,6 +119,15 @@ export const computePlacement = (
          left: 0,
          maxWidth: '100vw',
          maxHeight: '98vh',
+         finalPlacementLogic: 'screen',
+      }
+   if (placement === 'screen-cover')
+      return {
+         top: 0,
+         left: 0,
+         bottom: 0,
+         right: 0,
+         finalPlacementLogic: 'screen-cover',
       }
 
    if (placement === 'screen-top')
@@ -100,6 +137,7 @@ export const computePlacement = (
          transform: 'translateX(-50%)',
          maxWidth: '100vw',
          maxHeight: '98vh',
+         finalPlacementLogic: 'screen-top',
       }
 
    if (placement === 'screen-top-left')
@@ -108,6 +146,7 @@ export const computePlacement = (
          left: 0,
          maxWidth: '100vw',
          maxHeight: '98vh',
+         finalPlacementLogic: 'screen-top-left',
       }
 
    if (placement === 'screen-top-right')
@@ -116,6 +155,7 @@ export const computePlacement = (
          right: 0,
          maxWidth: '100vw',
          maxHeight: '98vh',
+         finalPlacementLogic: 'screen-top-right',
       }
 
    if (placement === 'screen-centered')
@@ -125,12 +165,14 @@ export const computePlacement = (
          transform: 'translateX(-50%) translateY(-50%)',
          maxWidth: '100vw',
          maxHeight: '98vh',
+         finalPlacementLogic: 'screen-centered',
       }
 
    if (anchor == null) {
       return {
          top: 0,
          left: 0,
+         finalPlacementLogic: 'screen-top-left',
       }
    }
 
@@ -146,6 +188,7 @@ export const computePlacement = (
          // TODO: review those two lines below:
          minWidth: anchor.width,
          minHeight: anchor.height,
+         finalPlacementLogic: 'above',
       }
    }
 
@@ -155,6 +198,7 @@ export const computePlacement = (
          left: anchor.left,
          minWidth: anchor.width,
          minHeight: anchor.height,
+         finalPlacementLogic: 'above-no-max-size',
       }
    }
    if (placement === 'above-no-min-size') {
@@ -163,12 +207,14 @@ export const computePlacement = (
          left: anchor.left,
          maxWidth: anchor.width,
          maxHeight: anchor.height,
+         finalPlacementLogic: 'above-no-min-size',
       }
    }
    if (placement === 'above-no-min-no-max-size') {
       return {
          top: anchor.top,
          left: anchor.left,
+         finalPlacementLogic: 'above-no-min-no-max-size',
       }
    }
    // AUTO ========================================================================================
@@ -187,11 +233,6 @@ export const computePlacement = (
             heightBetweenAnchorTopAndWinBottom > heightBetweenWinTopAndAnchorBottom
                ? 'rightStart'
                : 'rightEnd'
-         console.log(`[🤠] `, {
-            heightBetweenAnchorTopAndWinBottom,
-            heightBetweenWinTopAndAnchorBottom,
-            placement,
-         })
       }
       if (placement === 'autoLeft') {
          const heightBetweenAnchorTopAndWinBottom = window.innerHeight - anchor.top - anchor.bottom
@@ -270,6 +311,7 @@ export const computePlacement = (
          left: anchor.left,
          maxWidth: `calc(100vw - ${anchor.left}px)`,
          maxHeight: `calc(98vh - ${anchor.bottom}px)`,
+         finalPlacementLogic: 'bottomStart',
       }
 
    // |--------------------|
@@ -284,6 +326,7 @@ export const computePlacement = (
          transform: 'translate(-50%)',
          maxWidth: undefined, // '❓',
          maxHeight: `calc(98vh - ${anchor.bottom}px)`,
+         finalPlacementLogic: 'bottom',
       }
 
    // |--------------------|
@@ -291,14 +334,15 @@ export const computePlacement = (
    // |      [anchor]      |
    // |[XXXXXXXXXXXX]      |
    // |--------------------|
-   if (placement == 'bottomEnd')
+   if (placement == 'bottomEnd') {
       return {
          top: anchor.bottom,
-         left: anchor.right,
-         transform: 'translate(-100%)',
+         right: window.innerWidth - anchor.right,
          maxWidth: `${anchor.right}px`,
          maxHeight: `calc(98vh - ${anchor.bottom}px)`,
+         finalPlacementLogic: 'bottomEnd',
       }
+   }
 
    // TOP -----------------------------------------------------------------
    // |--------------------|
@@ -313,6 +357,7 @@ export const computePlacement = (
          transform: 'translateY(-100%)',
          maxWidth: `calc(100vw - ${anchor.left}px)`,
          maxHeight: `${anchor.top}px`,
+         finalPlacementLogic: 'topStart',
       }
 
    // |--------------------|
@@ -327,6 +372,7 @@ export const computePlacement = (
          transform: 'translate(-50%, -100%)',
          maxWidth: undefined, // '❓',
          maxHeight: `${anchor.top}px`,
+         finalPlacementLogic: 'top',
       }
 
    // |--------------------|
@@ -341,6 +387,7 @@ export const computePlacement = (
          transform: 'translate(-100%, -100%)',
          maxWidth: `${anchor.right}px`,
          maxHeight: `${anchor.top}px`,
+         finalPlacementLogic: 'topEnd',
       }
 
    // LEFT -----------------------------------------------------------------
@@ -357,6 +404,7 @@ export const computePlacement = (
          transform: 'translateX(-100%)',
          maxWidth: `${anchor.left}px`,
          maxHeight: `calc(98vh - ${anchor.top}px)`,
+         finalPlacementLogic: 'leftStart',
       }
 
    // |--------------------|
@@ -371,6 +419,7 @@ export const computePlacement = (
          transform: 'translate(-100%, -50%)',
          maxWidth: `${anchor.left}px`,
          maxHeight: undefined, // '❓',
+         finalPlacementLogic: 'left',
       }
 
    // |--------------------|
@@ -385,6 +434,7 @@ export const computePlacement = (
          transform: 'translate(-100%, -100%)',
          maxWidth: `${anchor.left}px`,
          maxHeight: `${anchor.bottom}px`,
+         finalPlacementLogic: 'leftEnd',
       }
 
    // RIGHT -----------------------------------------------------------------
@@ -400,6 +450,7 @@ export const computePlacement = (
          left: anchor.right,
          maxWidth: `calc(100vw - ${anchor.right}px)`,
          maxHeight: `calc(98vh - ${anchor.top}px)`,
+         finalPlacementLogic: 'rightStart',
       }
 
    // |--------------------|
@@ -414,6 +465,7 @@ export const computePlacement = (
          transform: 'translateY(-50%)',
          maxWidth: `calc(100vw - ${anchor.right}px)`,
          maxHeight: undefined /* ❓ 🔴 */,
+         finalPlacementLogic: 'right',
       }
 
    // |--------------------|
@@ -428,6 +480,7 @@ export const computePlacement = (
          transform: 'translateY(-100%)',
          maxWidth: `calc(100vw - ${anchor.right}px)`,
          maxHeight: `${anchor.bottom}px`,
+         finalPlacementLogic: 'rightEnd',
       }
 
    // |--------------------|
@@ -436,13 +489,32 @@ export const computePlacement = (
    // |      [XXXXXXXXXXXX]|
    // |--------------------|
    const WINDOW_PADDING = 5
-   if (placement == 'cover')
+   if (placement === 'cover-auto') {
+      placement =
+         anchor.top + anchor.height < window.innerHeight / 2 //
+            ? 'cover'
+            : 'cover-top'
+   }
+
+   if (placement == 'cover') {
       return {
          top: anchor.top - 1, // 🔴 -1 due to shell border, does not belongs here though
          left: anchor.left - 1,
          maxWidth: `calc(100vw - ${anchor.left + WINDOW_PADDING}px)`, //
          maxHeight: `calc(98vh - ${anchor.top + WINDOW_PADDING}px)`,
+         finalPlacementLogic: 'cover',
       }
+   }
+
+   if (placement == 'cover-top') {
+      return {
+         bottom: window.innerHeight - anchor.bottom + 1, // 🔴 -1 due to shell border, does not belongs here though
+         left: anchor.left - 1,
+         maxWidth: `calc(100vw - ${anchor.left + WINDOW_PADDING}px)`, //
+         maxHeight: `calc(${anchor.bottom - WINDOW_PADDING}px)`,
+         finalPlacementLogic: 'cover-top',
+      }
+   }
 
    // |--------------------|
    // |                    |
@@ -457,6 +529,7 @@ export const computePlacement = (
          maxHeight: `calc(98vh - ${anchor.top + WINDOW_PADDING}px)`,
          // minWidth: anchor.width,
          // minHeight: anchor.height,
+         finalPlacementLogic: 'cover-no-min-size',
       }
 
    if (placement == 'autoVerticalStartFixedSize') {
@@ -470,5 +543,6 @@ export const computePlacement = (
    return {
       top: anchor.bottom,
       left: anchor.left,
+      finalPlacementLogic: 'bottomStart',
    }
 }

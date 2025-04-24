@@ -1,15 +1,13 @@
 import type { DropdownProps } from '../../../csuite/dropdown/Dropdown'
 import type { Field } from '../../../csuite/model/Field'
 
-import { observer } from 'mobx-react-lite'
-
 import { UI } from '../../../csuite/components/UI'
 
 export type WidgetPresetsProps = {
    field: Field
 } & Omit<DropdownProps, 'title'>
 
-export const WidgetPresetsUI = observer(function WidgetPresets({
+export const WidgetPresetsUI = obs(function WidgetPresets({
    //own props
    field,
 
@@ -20,7 +18,7 @@ export const WidgetPresetsUI = observer(function WidgetPresets({
    // rest
    ...rest
 }: WidgetPresetsProps) {
-   const presets = field.config.presets
+   const presets = field.zConfig.presets
    const presetCount = presets?.length ?? 0
    if (presets == null) return null
    if (presetCount == 0) return null
@@ -36,7 +34,7 @@ export const WidgetPresetsUI = observer(function WidgetPresets({
                   tooltipPlacement='top'
                   subtle
                   borderless
-                  icon='mdiBookOutline'
+                  icon={IKONS.mdiBookOutline}
                   // children={presetCount}
                />
             )

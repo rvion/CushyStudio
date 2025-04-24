@@ -1,22 +1,30 @@
 import type { Field } from '../../csuite/model/Field'
+import type { RenderProps } from './RenderProps'
 import type { ReactNode } from 'react'
 
-import { observer } from 'mobx-react-lite'
+import { type RenderCtx, useRendererCtx } from './RenderCtx'
+import { defaultRulesV2, renderDefaultKey } from './RenderDefaultsKey'
+import { Renderer } from './Renderer'
 
-import { presenterCtx, usePresenterOrNull } from './RenderCtx'
-import { renderDefaultKey } from './RenderDefaultsKey'
-import { Presenter } from './Renderer'
-
-export const RenderUI = observer(function RenderUI_({
+export const RenderUI = obs(function RenderUI_({
    field,
-   ...p
-}: { field: Field } & RENDERER.FieldRenderArgs<any>): ReactNode {
-   const presenterOrNull = usePresenterOrNull()
-   if (presenterOrNull == null) {
-      const mobxHack = renderDefaultKey.version // do not remove this line; it allow to invalidate default rules during dev
-      const presenter = new Presenter(field)
-      return <presenterCtx.Provider value={presenter}>{presenter.render(field, p)}</presenterCtx.Provider>
-   } else {
-      return presenterOrNull.render(field, p)
+   ...renderProps
+}: { field: Field } & RenderProps<any>): ReactNode {
+   const prevCtx: RenderCtx | null = useRendererCtx()
+   // case 1. top level
+   if (prevCtx == null) {
+      // do not remove this line; it allow to invalidate default rules during dev
+      // only registered for the root field
+      const mobxHack = renderDefaultKey.version
+
+      // if presenter is full, we create it and inject it in future context
+      const renderer = new Renderer(field)
+      const rulesV2 = Renderer.normalizeRule(field, defaultRulesV2)
+      const rootCtx: RenderCtx = { parent: null, ancestors: [], renderer, rules: rulesV2 }
+      return renderer.render(field, renderProps, rootCtx)
    }
+
+   // case 2. sub field
+   const renderer: Renderer = prevCtx.renderer
+   return renderer.render(field, renderProps, prevCtx)
 })

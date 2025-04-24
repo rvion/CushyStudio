@@ -60,11 +60,11 @@
 
     "files.exclude": {
         "**/.git": true,
-        "**/.svn": true,
+        "**/.svn": false,
         "**/.hg": true,
-        "**/CVS": true,
         "**/.DS_Store": true,
-        "**/Thumbs.db": true
+        "**/Thumbs.db": true,
+        "**/CVS": true
     },
 
     "pasteImage.path": "site/assets",
@@ -97,8 +97,9 @@
     // minimap
     "editor.minimap.maxColumn": 60,
     "editor.minimap.scale": 2,
-    "editor.minimap.sectionHeaderFontSize": 13
-    // "typescript.tsserver.nodePath": ".cushy/node/v20.14.0-darwin-arm64/bin/node",
+    "editor.minimap.sectionHeaderFontSize": 13,
+    "explorerExclude.backup": {}
+    // "typescript.tsserver.nodePath": ".cushy/node/v22.14.0-darwin-arm64/bin/node",
     // "editor.inlayHints.enabled": "off"
     // "editor.semanticHighlighting.enabled": false,
 

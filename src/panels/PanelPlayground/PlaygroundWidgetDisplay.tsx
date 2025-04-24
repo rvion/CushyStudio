@@ -1,17 +1,12 @@
 import type { Field } from '../../csuite/model/Field'
 
-import { observer } from 'mobx-react-lite'
 import { Fragment } from 'react/jsx-runtime'
 
 import { FrameWithCSuiteOverride } from '../../csuite/ctx/CSuiteOverride'
 import { FormUI } from '../../csuite/form/FormUI'
-import { type FrameAppearance, frameTemplates } from '../../csuite/frame/FrameTemplates'
-import { getNthIconName } from '../../csuite/icons/getAllIcons'
-import { mapObjectEntries } from '../../csuite/utils/mapObjectEntries'
-import { mapObjectValues } from '../../csuite/utils/mapObjectValues'
 import { readJSON, writeJSON } from '../../state/jsonUtils'
 
-export const PlaygroundWidgetDisplay = observer(function PlaygroundRequirements_(p: {}) {
+export const PlaygroundWidgetDisplay = obs(function PlaygroundRequirements_(p: {}) {
    const doc = useDoc()
    return (
       <Fragment>
@@ -29,19 +24,23 @@ export const PlaygroundWidgetDisplay = observer(function PlaygroundRequirements_
    )
 })
 
-const useDoc = (): Field<any> => {
+const useDoc = (): Field => {
    return cushy.forms.use(
       (b) => {
          const booleanForm = {
             check: b.bool({}),
-            checkLabel: b.bool({
+            checkTextNoLabel: b.bool({
                label: false,
-               text: 'Check Label',
+               text: 'Text',
+            }),
+            checkTextAndLabel: b.bool({
+               label: 'Check',
+               text: 'Text',
             }),
             checkLabelIcon: b.bool({
                label: false,
                text: 'Check Label w icon',
-               icon: 'mdiContentSaveOutline',
+               icon: IKONS.mdiContentSaveOutline,
             }),
             toggleButton: b.bool({
                label: '',
@@ -52,7 +51,7 @@ const useDoc = (): Field<any> => {
                label: false,
                text: 'Toggle Button Icon',
                display: 'button',
-               icon: 'mdiCheckboxOutline',
+               icon: IKONS.mdiCheckboxOutline,
             }),
             toggleButtonExpand: b.bool({
                label: '',
@@ -65,7 +64,7 @@ const useDoc = (): Field<any> => {
                text: 'Toggle Button Expand w Icon',
                display: 'button',
                expand: true,
-               icon: 'mdiCheckboxOutline',
+               icon: IKONS.mdiCheckboxOutline,
             }),
          }
 
@@ -128,7 +127,13 @@ const useDoc = (): Field<any> => {
                { label: 'Choices' },
             ),
          }
-
+         return b.group({
+            // startCollapsed: true,
+            items: {
+               aligned: b.group({ border: false, items: booleanForm }),
+               // notAligned: b.group({ border: false, justifyLabel: false, items: booleanForm }),
+            },
+         })
          return b.fields({
             manyOf: b.fields({
                selectMany: b.selectManyStrings([
@@ -145,7 +150,7 @@ const useDoc = (): Field<any> => {
                ]),
                selectManyErr: b.selectManyStrings(
                   ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten'],
-                  { default: 'WRONG' },
+                  { default: ['WRONG'] },
                ),
             }),
             boolean: b.group({
@@ -197,30 +202,6 @@ const useDoc = (): Field<any> => {
                   }),
                },
             }),
-
-            button: b.group({
-               startCollapsed: true,
-               items: {
-                  button: b.button({}),
-                  ...mapObjectValues(frameTemplates, (k, v, ix) =>
-                     b.button({
-                        text: k,
-                        icon: getNthIconName(ix * 10),
-                        look: k as FrameAppearance,
-                     }),
-                  ),
-                  ...mapObjectEntries(frameTemplates, (k, v, ix) => [
-                     k + '_',
-                     b.button({
-                        text: k,
-                        icon: getNthIconName(1000 + ix * 10),
-                        look: k as FrameAppearance,
-                        expand: true,
-                     }),
-                  ]),
-               },
-            }),
-
             color: b.group({
                startCollapsed: true,
                items: {
@@ -231,8 +212,8 @@ const useDoc = (): Field<any> => {
                   v2: b.group({
                      border: false,
                      items: {
-                        color: b.colorV2({}),
-                        colorN: b.colorV2({ label: false, justifyLabel: false }),
+                        color: b.stringColor({}),
+                        colorN: b.stringColor({ label: false, justifyLabel: false }),
                      },
                   }),
                },
@@ -312,7 +293,7 @@ const useDoc = (): Field<any> => {
       {
          name: 'Playground Widget Showcase',
          serial: () => readJSON('settings/playground_form_display.json'),
-         onSerialChange: (form) => writeJSON('settings/playground_form_display.json', form.serial),
+         onSerialChange: (form) => writeJSON('settings/playground_form_display.json', form.zSerial),
       },
    )
 }

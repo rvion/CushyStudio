@@ -1,4 +1,4 @@
-import type { IconName } from '../icons/icons'
+import type { IconName } from '../icons/IconName'
 import type { Trigger } from '../trigger/Trigger'
 import type { Command } from './Command'
 
@@ -29,7 +29,7 @@ export class BoundCommand<Ctx = any> {
       return this.command.icon
    }
 
-   NavBarBtnUI = (p: { label?: string }): JSX.Element => {
+   NavBarBtnUI = (p: { label?: string }): React.JSX.Element => {
       return <div onClick={() => this.execute()}>{p.label ?? this.label}</div>
    }
 

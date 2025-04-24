@@ -1,10 +1,8 @@
-import { observer } from 'mobx-react-lite'
-
 import { ErrorBoundaryUI } from '../errors/ErrorBoundaryUI'
 import { Frame, type FrameProps } from '../frame/Frame'
 
 export type BodyContainerProps = FrameProps
-export const WidgetBodyContainerUI = observer(function WidgetBodyContainerUI_(
+export const WidgetBodyContainerUI = obs(function WidgetBodyContainerUI_(
    //
    p: BodyContainerProps,
 ) {

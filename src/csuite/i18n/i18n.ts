@@ -3,7 +3,7 @@ import { formatNumberEN, formatNumberFR, parseNumberEN, parseNumberFR } from './
 
 export type SupportedCSuiteLang = 'en' | 'fr'
 export type DateFormat = 'date' | 'datetime'
-export const NumberFormats = ['int', 'float', 'amount'] as const
+export const NumberFormats = ['int', 'float', 'amount', 'rawInt'] as const
 export type NumberFormat = (typeof NumberFormats)[number]
 
 export const csuite_i18n_en = {
@@ -71,7 +71,7 @@ export const csuite_i18n_en = {
       },
       select: {
          noResults: 'No results',
-         create: 'Create',
+         create: 'Create a new entry',
       },
    },
    langs: {
@@ -148,7 +148,7 @@ export const csuite_i18n_fr: CsuiteI18nConfig = {
       },
       select: {
          noResults: 'Aucun résultat',
-         create: 'Créer',
+         create: 'Créer un nouvel élément',
       },
    },
    langs: {

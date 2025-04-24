@@ -1,23 +1,21 @@
-// https://fonts.google.com/icons
+import { IkonOf } from '../../csuite/icons/iconHelpers'
 
-import { IconUI } from './IconUI'
-
-export const FolderIcon = (p: { isOpen?: boolean }): JSX.Element =>
+export const FolderIcon = (p: { isOpen?: boolean }): React.JSX.Element =>
    p.isOpen ? ( //
-      <IconUI icon='expand_more' color='e8a87c' />
+      <IkonOf name={IKONS.mdiExpandAll} color='e8a87c' />
    ) : (
-      <IconUI icon='chevron_right' color='e8a87c' />
+      <IkonOf name={IKONS.mdiChevronRight} color='e8a87c' />
    )
 
-export const FileIcon = (p: { filename: string }): JSX.Element | null => {
+export const FileIcon = (p: { filename: string }): React.JSX.Element | null => {
    const filename = p.filename
    const extension = filename.slice(filename.lastIndexOf('.') + 1)
    // prettier-ignore
    switch (extension) {
-        case 'js': return <IconUI icon='Javascript' color='yellow' />
-        case 'css': return <IconUI icon='css3' color='turquoise' />
-        case 'json': return <IconUI icon='list' color='yellow' />
-        case 'npmignore': return <IconUI icon='npm' color='red' />
+        case 'js': return <IkonOf name={IKONS.mdiLanguageJavascript} color='yellow' />
+        case 'css': return <IkonOf name={IKONS.mdiLanguageCss3} color='turquoise' />
+        case 'json': return <IkonOf name={IKONS.mdiListBox} color='yellow' />
+        case 'npmignore': return <IkonOf name={IKONS.mdiNpm} color='red' />
         default: return null
     }
 }

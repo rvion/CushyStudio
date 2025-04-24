@@ -1,3 +1,4 @@
+import type { Field_bool } from '../../../src/csuite/fields/bool/FieldBool'
 import type { OutputFor } from '../_prefabs/_prefabs'
 
 import { bang } from '../../../src/csuite/utils/bang'
@@ -23,86 +24,86 @@ import { run_cnet_SoftEdge, ui_subform_SoftEdge, type UI_subform_SoftEdge } from
 import { run_cnet_Tile, ui_subform_Tile, type UI_subform_Tile } from './prefab_cnet_tile'
 
 // 🅿️ CNET UI -----------------------------------------------------------
-export type UI_cnet = X.XLink<
-   X.XBool,
-   X.XList<
-      X.XGroup<{
-         image: X.XImage
-         mask: UI_Mask
-         resize: X.XBool
-         applyDuringUpscale: X.Bool
-         cnets: X.XChoices<{
-            IPAdapter: UI_subform_IPAdapter
-            FaceID: UI_IPAdapterFaceID
-            Pose: UI_subform_OpenPose
-            Canny: UI_subform_Canny
-            Depth: UI_subform_Depth
-            Normal: UI_subform_Normal
-            Tile: UI_subform_Tile
-            Scribble: UI_subform_Scribble
-            Lineart: UI_subform_Lineart
-            SoftEdge: UI_subform_SoftEdge
-            Sketch: UI_subform_Sketch
-         }>
+export type UI_cnet = Z.List<
+   Z.Group<{
+      image: Z.Image
+      mask: UI_Mask
+      resize: Z.Bool
+      applyDuringUpscale: Z.Shared<Field_bool>
+      cnets: Z.Choices<{
+         IPAdapter: UI_subform_IPAdapter
+         FaceID: UI_IPAdapterFaceID
+         Pose: UI_subform_OpenPose
+         Canny: UI_subform_Canny
+         Depth: UI_subform_Depth
+         Normal: UI_subform_Normal
+         Tile: UI_subform_Tile
+         Scribble: UI_subform_Scribble
+         Lineart: UI_subform_Lineart
+         SoftEdge: UI_subform_SoftEdge
+         Sketch: UI_subform_Sketch
       }>
-   >
+   }>
 >
 
 export function ui_cnet(): UI_cnet {
-   const form: X.Builder = getCurrentForm()
+   const form: Z.Builder = getBuilder()
 
-   const applyDuringUpscale2 = form.bool({
-      tooltip: 'Use the controlnet conditioning for the upscale pass if enabled',
-      label2: 'Apply during upscale',
-      label: false,
-      default: false,
-   })
-
-   const cnetList = form.with(applyDuringUpscale2, (applyDuringUpscale) =>
-      form
-         .list({
-            label: 'ControlNets',
-            icon: 'mdiCompass',
-            // box: { base: { hue: 90, chroma: 0.1 } },
-            tooltip: `Instructional resources:\nhttps://github.com/lllyasviel/ControlNet\nhttps://stable-diffusion-art.com/controlnet/`,
-            element: () =>
-               form.group({
-                  label: 'Controlnet Image',
-                  items: {
-                     image: form.image({}),
-                     mask: ui_mask()
-                        .addRequirements([
-                           {
-                              type: 'customNodesByNameInCushy',
-                              nodeName: 'Advanced-ControlNet.ACN_AdvancedControlNetApply',
-                           },
-                        ])
-                        .withConfig({ tooltip: 'Applies controlnet only to the masked area.' }),
-                     resize: form.bool({ default: true }),
-                     applyDuringUpscale: applyDuringUpscale,
-                     cnets: form.choices(
-                        {
-                           IPAdapter: ui_subform_IPAdapter(), // 🟢
-                           FaceID: ui_IPAdapterFaceID(), //      🟢
-                           Pose: ui_subform_OpenPose(), //       🟢
-                           Canny: ui_subform_Canny(), //         🟢
-                           Depth: ui_subform_Depth(), //         🟢
-                           Normal: ui_subform_Normal(), //       🟢
-                           Tile: ui_subform_Tile(), //           🟢
-                           Scribble: ui_subform_Scribble(), //   🟢
-                           Lineart: ui_subform_Lineart(), //     🟢
-                           SoftEdge: ui_subform_SoftEdge(), //   🟢
-                           Sketch: ui_subform_Sketch(), //       🟢
-                        },
-                        { label: false, border: false, appearance: 'tab', placeholder: 'ControlNets...' },
-                     ),
-                  },
-               }),
-         })
-         .addRequirements([
-            { type: 'customNodesByTitle', title: `ComfyUI's ControlNet Auxiliary Preprocessors` },
-         ]),
+   const applyDuringUpscale = form.linkedFromSharedUID(
+      'full-yolo-applyDuringUpscale',
+      form.bool({
+         description: 'Use the controlnet conditioning for the upscale pass if enabled',
+         label2: 'Apply during upscale',
+         label: false,
+         default: false,
+      }),
    )
+
+   const cnetList = form
+      .list({
+         label: 'ControlNets',
+         icon: IKONS.mdiCompass,
+         // box: { base: { hue: 90, chroma: 0.1 } },
+         description: `Instructional resources:\nhttps://github.com/lllyasviel/ControlNet\nhttps://stable-diffusion-art.com/controlnet/`,
+         element: () =>
+            form.group({
+               label: 'Controlnet Image',
+               summary: () => 'Controlnet Image',
+               items: {
+                  image: form.image({}),
+                  mask: ui_mask()
+                     .addRequirements([
+                        {
+                           type: 'customNodesByNameInCushy',
+                           nodeName: 'Advanced-ControlNet.ACN_AdvancedControlNetApply',
+                        },
+                     ])
+                     .withConfig({ description: 'Applies controlnet only to the masked area.' }),
+                  resize: form.bool({ default: true }),
+                  applyDuringUpscale: applyDuringUpscale,
+                  cnets: form.choices(
+                     {
+                        IPAdapter: ui_subform_IPAdapter(), // 🟢
+                        FaceID: ui_IPAdapterFaceID(), //      🟢
+                        Pose: ui_subform_OpenPose(), //       🟢
+                        Canny: ui_subform_Canny(), //         🟢
+                        Depth: ui_subform_Depth(), //         🟢
+                        Normal: ui_subform_Normal(), //       🟢
+                        Tile: ui_subform_Tile(), //           🟢
+                        Scribble: ui_subform_Scribble(), //   🟢
+                        Lineart: ui_subform_Lineart(), //     🟢
+                        SoftEdge: ui_subform_SoftEdge(), //   🟢
+                        Sketch: ui_subform_Sketch(), //       🟢
+                     },
+                     { label: false, border: false, appearance: 'tab', placeholder: 'ControlNets...' },
+                  ),
+               },
+            }),
+      })
+      .addRequirements([
+         { type: 'customNodesByTitle', title: `ComfyUI's ControlNet Auxiliary Preprocessors` },
+      ])
+
    return cnetList
    // return form.groupOpt({
    //     items: ({
@@ -138,7 +139,7 @@ export async function run_cnet(
    const cnetList = opts // opts?.controlNetList
    const args: Cnet_args = { ...ctx }
 
-   if (cnetList) {
+   if (cnetList.length > 0) {
       for (const cnetImage of cnetList) {
          let image: Comfy.Signal['IMAGE'] = (await run.loadImageAnswer(cnetImage.image))._IMAGE
          const mask: Comfy.Signal['MASK'] | null = await run_mask(cnetImage.mask)

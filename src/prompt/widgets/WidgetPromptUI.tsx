@@ -1,6 +1,5 @@
 import type { Field_prompt } from '../FieldPrompt'
 
-import { observer } from 'mobx-react-lite'
 import { useEffect, useLayoutEffect, useMemo } from 'react'
 
 import { Frame } from '../../csuite/frame/Frame'
@@ -10,7 +9,7 @@ import { WidgetPromptUISt } from '../WidgetPromptUISt'
 
 // UI
 
-export const WidgetPromptUI = observer(function WidgetPromptUI_(p: { field: Field_prompt }) {
+export const WidgetPromptUI = obs(function WidgetPromptUI_(p: { field: Field_prompt }) {
    const field = p.field
    const uist = useMemo(() => new WidgetPromptUISt(field), [])
    useLayoutEffect(() => {
@@ -26,9 +25,9 @@ export const WidgetPromptUI = observer(function WidgetPromptUI_(p: { field: Fiel
       uist.replaceTextBy(field.text)
    }, [field._valueUpdatedViaAPIAt])
 
-   const haveAtLeastOnePluginActive = plugins.some(
-      (plugin) => cushy.configFile.get(plugin.configKey) ?? false,
-   )
+   // const haveAtLeastOnePluginActive = plugins.some((plugin) =>
+   //    Boolean(cushy.configFile.get(plugin.configKey) ?? false),
+   // )
    return (
       <div ref={uist.mountRef}></div>
       // <div tw='flex flex-1 flex-col'>

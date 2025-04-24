@@ -1,9 +1,6 @@
-import type { Field_group_config, Field_group_types } from '../fields/group/FieldGroup'
-import type { BaseSchema } from './BaseSchema'
-import type { Field } from './Field'
-
-export interface IBuilder {
-   group(config: Field_group_config<any>): BaseSchema<Field_group_types<any>>
-   linked<T extends Field>(field: T): BaseSchema<any>
-   // SpecCtor: { new <T extends BaseField>(type: T['$Type'], config: T['$Config']): BaseSchema<T> }
-}
+// import type { Field_group, Field_group_config } from '../fields/group/FieldGroup'
+// import type { CSchema } from './CSchema'
+//
+// export interface IBuilder {
+//    group(config: Field_group_config<any>): CSchema<Field_group<any>>
+// }

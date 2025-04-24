@@ -9,30 +9,30 @@ const handNegativeDefault = 'bad hand, bad anatomy, bad details'
 const eyePositiveDefault = 'eyes, perfect eyes, perfect anatomy, hightly detailed, sharp details'
 const eyeNegativeDefault = 'bad eyes, bad anatomy, bad details'
 
-export type UI_Refiners = X.XGroup<{
-   refinerType: X.XChoices<{
-      faces: X.XGroup<{
-         prompt: X.XString
-         detector: X.XEnum<'Impact-Pack.UltralyticsDetectorProvider.model_name'>
+export type UI_Refiners = Z.Group<{
+   refinerType: Z.Choices<{
+      faces: Z.Group<{
+         prompt: Z.String
+         detector: Z.Enum<'Impact-Pack.UltralyticsDetectorProvider.model_name'>
       }>
-      hands: X.XGroup<{
-         prompt: X.XString
-         detector: X.XEnum<'Impact-Pack.UltralyticsDetectorProvider.model_name'>
+      hands: Z.Group<{
+         prompt: Z.String
+         detector: Z.Enum<'Impact-Pack.UltralyticsDetectorProvider.model_name'>
       }>
-      eyes: X.XGroup<{ prompt: X.XString }>
+      eyes: Z.Group<{ prompt: Z.String }>
    }>
-   settings: X.XGroup<{
+   settings: Z.Group<{
       sampler: UI_Sampler
-      sam: X.XOptional<
-         X.XGroup<{
-            model_name: X.XEnum<'Impact-Pack.SAMLoader.model_name'>
-            device_mode: X.XEnum<'Impact-Pack.SAMLoader.device_mode'>
+      sam: Z.Maybe<
+         Z.Group<{
+            model_name: Z.Enum<'Impact-Pack.SAMLoader.model_name'>
+            device_mode: Z.Enum<'Impact-Pack.SAMLoader.device_mode'>
          }>
       >
    }>
 }>
 export function ui_refiners(): UI_Refiners {
-   const form = getCurrentForm()
+   const form = getBuilder()
    return form.fields(
       {
          refinerType: form
@@ -49,7 +49,7 @@ export function ui_refiners(): UI_Refiners {
                         },
                         {
                            startCollapsed: true,
-                           toSummary: ({ value: ui }): string =>
+                           toString_: ({ zValue: ui }): string =>
                               `prompt:${ui.prompt} detector:${ui.detector}`,
                         },
                      )
@@ -71,7 +71,7 @@ export function ui_refiners(): UI_Refiners {
                         },
                         {
                            startCollapsed: true,
-                           toSummary: ({ value: ui }): string =>
+                           toString_: ({ zValue: ui }): string =>
                               `prompt:${ui.prompt} detector:${ui.detector}`,
                         },
                      )
@@ -84,7 +84,10 @@ export function ui_refiners(): UI_Refiners {
                   eyes: form
                      .fields(
                         { prompt: form.string({ default: eyePositiveDefault, textarea: true }) },
-                        { startCollapsed: true, toSummary: ({ value: ui }): string => `prompt:${ui.prompt}` },
+                        {
+                           startCollapsed: true,
+                           toString_: ({ zValue: ui }): string => `prompt:${ui.prompt}`,
+                        },
                      )
                      .addRequirements([
                         { type: 'customNodesByTitle', title: 'ComfyUI Impact Pack' },
@@ -105,15 +108,16 @@ export function ui_refiners(): UI_Refiners {
                      },
                      {
                         startCollapsed: true,
-                        tooltip: 'Enabling defines the bounding boxes more clearly rather than a square box',
-                        toSummary: ({ value: ui }): string => `model:${ui.model_name}`,
+                        description:
+                           'Enabling defines the bounding boxes more clearly rather than a square box',
+                        toString_: ({ zValue: ui }): string => `model:${ui.model_name}`,
                      },
                   )
                   .optional(),
             },
             {
                startCollapsed: true,
-               toSummary: ({ value: ui }): string => {
+               toString_: ({ zValue: ui }): string => {
                   return `sam:${ui.sam ? 'on' : 'off'} denoise:${ui.sampler.denoise} steps:${ui.sampler.steps} cfg:${
                      ui.sampler.cfg
                   } sampler:${ui.sampler.sampler_name}/$${ui.sampler.scheduler}`
@@ -122,8 +126,8 @@ export function ui_refiners(): UI_Refiners {
          ),
       },
       {
-         icon: 'mdiMagnifyExpand',
-         toSummary: ({ value: ui }): string => {
+         icon: IKONS.mdiMagnifyExpand,
+         toString_: ({ zValue: ui }): string => {
             return `Refiners ${ui.refinerType.faces ? 'FACE' : ''} ${ui.refinerType.hands ? 'HANDS' : ''} ${
                ui.refinerType.eyes ? 'EYES' : ''
             }`

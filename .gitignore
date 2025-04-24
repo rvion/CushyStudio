@@ -22,9 +22,13 @@ outputs/*
 
 # keep .schema folder
 schema/globa.d.ts
+
 schema/hosts/*
 !schema/hosts/virtual-base
 !schema/hosts/virtual-full
+!schema/hosts/standard
+!schema/hosts/standard/.gitkeep
+!schema/hosts/.gitkeep
 
 cushy.db
 cushy*.db
@@ -106,3 +110,6 @@ eslint.config.debug.json
 
 autotype.summary.txt
 src/theme/twin.css
+
+bunPlugin.cache
+bunPlugin.reload.ts

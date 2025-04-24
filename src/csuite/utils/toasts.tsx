@@ -1,20 +1,20 @@
-import type { ToastPosition } from 'react-toastify'
+import type { ToastContent, ToastOptions, ToastPosition } from 'react-toastify'
 
 import { toast } from 'react-toastify'
 
 import { Trigger } from '../trigger/Trigger'
 
 const position: ToastPosition = 'bottom-right'
-export const toastSuccess = (msg: string): Trigger => {
-   toast(msg, { type: 'success', position })
+export const toastSuccess = (content: ToastContent<unknown>, opts?: ToastOptions): Trigger => {
+   toast(content, { type: 'success', position, ...opts })
    return Trigger.UNMATCHED
 }
-export const toastInfo = (msg: string): Trigger => {
-   toast(msg, { type: 'info', position })
+export const toastInfo = (content: ToastContent<unknown>, opts?: ToastOptions): Trigger => {
+   toast(content, { type: 'info', position, ...opts })
    return Trigger.UNMATCHED
 }
-export const toastError = (msg: string): Trigger => {
-   toast(msg, { type: 'error', position })
+export const toastError = (content: ToastContent<unknown>, opts?: ToastOptions): Trigger => {
+   toast(content, { type: 'error', position, ...opts })
    return Trigger.UNMATCHED
 }
 
@@ -22,7 +22,7 @@ export const toastError = (msg: string): Trigger => {
 export const toastImage = (imageSrc: string | Buffer, message: string): void => {
    const src = typeof imageSrc === 'string' ? imageSrc : imageSrc.toString('base64')
    console.log(src)
-   const CustomToast = (): JSX.Element => (
+   const CustomToast = (): React.JSX.Element => (
       <div tw='flex aspect-square flex-col'>
          <img
             tw='rounded bg-black object-contain'

@@ -1,7 +1,5 @@
 import type { HostL } from '../../models/Host'
 
-import { observer } from 'mobx-react-lite'
-
 import { Button } from '../../csuite/button/Button'
 import { Frame } from '../../csuite/frame/Frame'
 import { Ikon } from '../../csuite/icons/iconHelpers'
@@ -10,7 +8,7 @@ import { RevealUI } from '../../csuite/reveal/RevealUI'
 import { QuickHostActionsUI } from '../../manager/REQUIREMENTS/QuickHostActionsUI'
 import { HostComfyLogsUI } from './HostComfyLogsUI'
 
-export const ConnectionInfoUI = observer(function ConnectionInfoUI_(p: { host: HostL }) {
+export const ConnectionInfoUI = obs(function ConnectionInfoUI_(p: { host: HostL }) {
    const host = p.host
    const size = host.schema?.size ?? 0
    const connected = p.host.isConnected
@@ -49,13 +47,13 @@ export const ConnectionInfoUI = observer(function ConnectionInfoUI_(p: { host: H
             borderless
             square
             look={connected ? 'success' : 'error'}
-            icon={connected ? 'mdiServer' : 'mdiServerOff'}
+            icon={connected ? IKONS.mdiServer : IKONS.mdiServerOff}
          />
       </RevealUI>
    )
 })
 
-export const HostWebsocketIndicatorUI = observer(function HostWebsocketIndicatorUI_(p: {
+export const HostWebsocketIndicatorUI = obs(function HostWebsocketIndicatorUI_(p: {
    //
    showIcon?: boolean
    host: HostL
@@ -71,7 +69,7 @@ export const HostWebsocketIndicatorUI = observer(function HostWebsocketIndicator
       <RevealUI showDelay={0} content={() => <HostQuickMenuUI host={p.host} />}>
          {ws == null ? (
             <Button //
-               icon={p.showIcon ? 'mdiCloudOff' : undefined}
+               icon={p.showIcon ? IKONS.mdiCloudOff : undefined}
                subtle
                tw='opacity-50'
                children='WS'
@@ -91,7 +89,7 @@ export const HostWebsocketIndicatorUI = observer(function HostWebsocketIndicator
    )
 })
 
-export const HostQuickMenuUI = observer(function HostQuickMenuUI_(p: { host: HostL }) {
+export const HostQuickMenuUI = obs(function HostQuickMenuUI_(p: { host: HostL }) {
    const host = p.host
    const ws = host.ws
    return (

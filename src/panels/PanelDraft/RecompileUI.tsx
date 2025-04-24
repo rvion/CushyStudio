@@ -1,11 +1,9 @@
 import type { CushyAppL } from '../../models/CushyApp'
 
-import { observer } from 'mobx-react-lite'
-
 import { Button } from '../../csuite/button/Button'
 import { MessageWarningUI } from '../../csuite/messages/MessageWarningUI'
 
-export const RecompileUI = observer(function RecompileUI_({
+export const RecompileUI = obs(function RecompileUI_({
    app,
    always,
    ...rest

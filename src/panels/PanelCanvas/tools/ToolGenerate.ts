@@ -1,4 +1,4 @@
-import type { IconName } from '../../../csuite/icons/icons'
+import type { IconName } from '../../../csuite/icons/IconName'
 import type { Trigger } from '../../../csuite/trigger/Trigger'
 import type { UnifiedCanvas } from '../states/UnifiedCanvas'
 import type { ICanvasTool, ToolMovePayload, ToolPressPayload } from '../utils/_ICanvasTool'
@@ -10,7 +10,7 @@ import { snap } from '../utils/snap'
 export class ToolGenerate implements ICanvasTool {
    id: 'generate' = 'generate'
    category: 'generate' = 'generate'
-   icon: IconName = 'mdiImageArea'
+   icon: IconName = IKONS.mdiImageArea
    description: string = 'run a portion of the canvas though some draft'
 
    constructor(public canvas: UnifiedCanvas) {}

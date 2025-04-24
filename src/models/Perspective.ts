@@ -1,12 +1,11 @@
 import type { LiveDB } from '../db/LiveDB'
 import type { TABLES } from '../db/TYPES.gen'
-import type { IJsonModel } from 'flexlayout-react'
+import type { IJsonModel } from '../flexlayout-react'
 import type { AnnotationMapEntry } from 'mobx'
 
 import { toastError } from '../csuite/utils/toasts'
 import { BaseInst } from '../db/BaseInst'
 import { LiveTable } from '../db/LiveTable'
-import { perspectiveHelper } from '../router/perspectives/_PerspectiveBuilder'
 
 export class PerspectiveRepo extends LiveTable<TABLES['perspective'], typeof PerspectiveL> {
    getOrCreateWith = (name: string, layout: () => IJsonModel): PerspectiveL => {
@@ -25,12 +24,10 @@ export class PerspectiveRepo extends LiveTable<TABLES['perspective'], typeof Per
 
    constructor(liveDB: LiveDB) {
       super(liveDB, 'perspective', '🗂️', PerspectiveL)
-      this.init()
    }
 }
 
 export class PerspectiveL extends BaseInst<TABLES['perspective']> {
-   instObservabilityConfig: undefined
    dataObservabilityConfig: Record<string, AnnotationMapEntry> = {
       layout: false,
       layoutDefault: false,
@@ -52,13 +49,16 @@ export class PerspectiveL extends BaseInst<TABLES['perspective']> {
    saveSnapshot(): void {
       this.update({ layoutDefault: this.data.layout })
    }
+
    resetToSnapshot(): void {
       this.update({ layout: this.data.layoutDefault ?? cushy.layout.makeNewPerspective_default1() })
       cushy.layout.openPerspective(this)
    }
+
    duplicate(): void {
       this.clone({ name: this.data.name + '2' }).open()
    }
+
    delete(): void {
       const perspectives = cushy.db.perspective.all
       if (perspectives.length === 1) {

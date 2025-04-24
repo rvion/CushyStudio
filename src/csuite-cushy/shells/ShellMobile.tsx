@@ -1,27 +1,24 @@
-import type { CompiledRenderProps } from '../presenters/RenderTypes'
-
-import { observer } from 'mobx-react-lite'
+import type { RenderPropsCompiled } from '../presenters/RenderPropsCompiled'
 
 import { WidgetHeaderContainerUI } from '../../csuite/form/WidgetHeaderContainerUI'
 import { Frame } from '../../csuite/frame/Frame'
-import { AnimatedSizeUI } from '../../csuite/smooth-size/AnimatedSizeUI'
 import { _isFC, renderFCOrNode, renderFCOrNodeWithWrapper } from '../../csuite/utils/renderFCOrNode'
 
-export const ShellMobileUI = observer(function ShellMobile(p: CompiledRenderProps) {
+export const ShellMobileUI = obs(function ShellMobile(p: RenderPropsCompiled) {
    const { field } = p
-   if (p.field.isHidden && !p.shouldShowHiddenFields) return null
+   if (p.field.zIsHidden && !p.shouldShowHiddenFields) return null
 
    const WUI = (
       <Frame
          className={p.className ?? undefined}
          tw={['UI-WidgetWithLabel !border-b-0 !border-l-0 !border-r-0']}
-         base={field.background}
-         border={field.border}
-         {...p.field.config.box}
+         // base={field.background}
+         border={field.zBorder}
+         {...p.field.zConfig.box}
       >
          {/* HEADER --------------------------------------------------------------------------------- */}
          <WidgetHeaderContainerUI field={field}>
-            {_isFC(p.Indent) ? <p.Indent tw='pr-2' depth={field.depth} /> : p.Indent}
+            {_isFC(p.Indent) ? <p.Indent tw='pr-2' depth={field.zDepth} /> : p.Indent}
             <div tw='flex-1'>
                {/* prettier-ignore */}
                <div tw='flex flex-1'>
@@ -52,6 +49,6 @@ export const ShellMobileUI = observer(function ShellMobile(p: CompiledRenderProp
       </Frame>
    )
 
-   if (field.animateResize && p.Body != null) return <AnimatedSizeUI>{WUI}</AnimatedSizeUI>
+   if (p.Body != null) return WUI // return <AnimatedSizeUI>{WUI}</AnimatedSizeUI>
    return WUI
 })

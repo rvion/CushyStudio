@@ -1,4 +1,4 @@
-import type { IconName } from '../../icons/icons'
+import type { IconName } from '../../icons/IconName'
 import type { SelectKey } from './SelectOneKey'
 
 export type SelectOptionID = string
@@ -25,7 +25,7 @@ type SelectOptionPresentation = {
    // optional presentation
    disabled?: boolean
    label?: string
-   labelNode?: JSX.Element
+   labelNode?: React.JSX.Element
    icon?: IconName
-   hue?: number
+   hue?: number | false
 }

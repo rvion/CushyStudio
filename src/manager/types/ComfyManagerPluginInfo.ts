@@ -22,6 +22,7 @@ export type ComfyManagerPluginInfo = {
    nodename_pattern?: string // "Inspire$",
    apt_dependency?: string[] // [ "rustc", "cargo" ],
    js_path?: string // "strimmlarn",
+   version?: string
 }
 
 // #region valibot
@@ -44,6 +45,7 @@ export const ComfyManagerPluginInfo_valibot = v.strictObject({
    nodename_pattern: v.optional(v.string()),
    apt_dependency: v.optional(v.array(v.string())),
    js_path: v.optional(v.string()),
+   version: v.optional(v.string()),
 
    // optional ?
    // (probably not really well specified, sicne some of those only appear one or two times)

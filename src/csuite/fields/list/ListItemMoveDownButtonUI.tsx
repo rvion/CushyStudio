@@ -1,10 +1,8 @@
 import type { Field_list } from './FieldList'
 
-import { observer } from 'mobx-react-lite'
-
 import { Button } from '../../button/Button'
 
-export const ListItemMoveDownButtonUI = observer(function ListItemMoveDownButtonUI_({
+export const ListItemMoveDownButtonUI = obs(function ListItemMoveDownButtonUI_({
    listField,
    ix,
 }: {
@@ -17,7 +15,7 @@ export const ListItemMoveDownButtonUI = observer(function ListItemMoveDownButton
          disabled={ix === listField.length - 1}
          onClick={(ev) => {
             listField.moveItem(ix, ix + 1)
-            listField.touch()
+            listField.zTouch()
             ev.preventDefault()
             ev.stopPropagation()
          }}
@@ -25,7 +23,7 @@ export const ListItemMoveDownButtonUI = observer(function ListItemMoveDownButton
          borderless
          subtle
          size='xs'
-         icon='mdiArrowDown'
+         icon={IKONS.mdiArrowDown}
       />
    )
 })

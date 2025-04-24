@@ -1,22 +1,22 @@
-import type { CompiledRenderProps } from '../presenters/RenderTypes'
-
-import { observer } from 'mobx-react-lite'
+import type { RenderPropsCompiled } from '../presenters/RenderPropsCompiled'
 
 import { Frame } from '../../csuite/frame/Frame'
+import { renderFCOrNode, renderFCOrNodeWithWrapper } from '../../csuite/utils/renderFCOrNode'
 
 // SHELL SIMPLE
-export const ShellInlineUI = observer(function ShellInline(p: CompiledRenderProps) {
+export const ShellInlineUI = obs(function ShellInline(p: RenderPropsCompiled) {
    const field = p.field
-   const utils = p.presenter.utils
    return (
       <Frame row>
-         {utils.renderFCOrNodeWithWrapper(p.Header, p, p.ContainerForHeader, {
+         {renderFCOrNode(p.OnTop, { field })}
+         {renderFCOrNodeWithWrapper(p.Header, p, p.ContainerForHeader, {
             className: p.classNameAroundBodyAndHeader ?? undefined,
             field,
          })}
-         {utils.renderFCOrNodeWithWrapper(p.Body, p, p.ContainerForBody, {
+         {renderFCOrNodeWithWrapper(p.Body, p, p.ContainerForBody, {
             className: p.classNameAroundBodyAndHeader ?? undefined,
          })}
+         {renderFCOrNode(p.OnBottom, { field })}
       </Frame>
    )
 })

@@ -1,18 +1,17 @@
 import type { SchemaDict } from '../../model/SchemaDict'
 import type { Field_choices } from './FieldChoices'
 
-import { observer } from 'mobx-react-lite'
-
 import { csuiteConfig } from '../../config/configureCsuite'
 import { SelectUI } from '../../select/SelectUI'
+import { WidgetTooltipUI } from '../number/WidgetNumberUI'
 
-export const WidgetChoices_HeaderSelectUI = observer(function WidgetChoices_HeaderSelectUI_<
+export const WidgetChoices_HeaderSelectUI = obs(function WidgetChoices_HeaderSelectUI_<
    T extends SchemaDict,
 >(p: { field: Field_choices<T> }) {
    const field = p.field
    type Entry = { key: string; label: string }
    const choices: Entry[] = field.choicesWithLabels
-   const isActive = !p.field.canBeToggledWithinParent || !p.field.isInsideDisabledBranch
+   const isActive = !p.field.zCanBeToggledWithinParent || !p.field.zIsInsideDisabledBranch
 
    return (
       <div
@@ -24,8 +23,9 @@ export const WidgetChoices_HeaderSelectUI = observer(function WidgetChoices_Head
       >
          <SelectUI<Entry>
             tw='flex-grow'
+            label={field.zLabelText}
             key={`${isActive}`}
-            placeholder={p.field.config.placeholder ?? csuiteConfig.i18n.ui.field.empty}
+            placeholder={p.field.zConfig.placeholder ?? csuiteConfig.i18n.ui.field.empty}
             value={() =>
                field.activeBranchNames.map((key) => ({
                   key,
@@ -40,15 +40,16 @@ export const WidgetChoices_HeaderSelectUI = observer(function WidgetChoices_Head
             //     </div>
             // )}
             equalityCheck={(a, b) => a.key === b.key}
-            multiple={field.config.multi ?? false}
-            // closeOnPick={false}
+            multiple={field.zConfig.multi ?? false}
+            closeOnPick={true}
             resetQueryOnPick={false}
             onOptionToggled={(v) => {
                // 🔴 DUBIOUS
-               if (p.field.canBeToggledWithinParent) p.field.enableSelfWithinParent()
+               if (p.field.zCanBeToggledWithinParent) p.field.zEnableSelfWithinParent()
                field.toggleBranch(v.key)
-               p.field.touch()
+               p.field.zTouch()
             }}
+            tooltip={<WidgetTooltipUI field={field} />}
          />
       </div>
    )

@@ -11,46 +11,46 @@ import { ui_ipadapter_CLIPSelection, ui_subform_IPAdapter_common } from './_ipAd
 import { ui_ipadapter_modelSelection } from './ui_ipadapter_modelSelection'
 
 // 🅿️ IPAdapter FaceID ===================================================
-export type UI_IPAdapterFaceID = X.XGroup<{
-   reinforce: X.XOptional<
-      X.XGroup<{
-         strength: X.XNumber
-         settings: X.XGroup<{
-            extra: X.XList<X.XImage>
-            crop: X.XBool
-            startAtStepPercent: X.XNumber
-            endAtStepPercent: X.XNumber
-            weight_type: X.XEnum<'IPAdapter_plus.IPAdapterAdvanced.weight_type'>
-            embedding_scaling: X.XEnum<'IPAdapter_plus.IPAdapterAdvanced.embeds_scaling'>
-            noise: X.XNumber
-            unfold_batch: X.XBool
+export type UI_IPAdapterFaceID = Z.Group<{
+   reinforce: Z.Maybe<
+      Z.Group<{
+         strength: Z.Number
+         settings: Z.Group<{
+            extra: Z.List<Z.Image>
+            crop: Z.Bool
+            startAtStepPercent: Z.Number
+            endAtStepPercent: Z.Number
+            weight_type: Z.Enum<'IPAdapter_plus.IPAdapterAdvanced.weight_type'>
+            embedding_scaling: Z.Enum<'IPAdapter_plus.IPAdapterAdvanced.embeds_scaling'>
+            noise: Z.Number
+            unfold_batch: Z.Bool
          }>
-         cnet_model_name: X.XEnum<'IPAdapter_plus.IPAdapterModelLoader.ipadapter_file'>
-         help: X.XMarkdown
+         cnet_model_name: Z.Enum<'IPAdapter_plus.IPAdapterModelLoader.ipadapter_file'>
+         help: Z.Markdown
       }>
    >
-   strength: X.XNumber
-   settings: X.XGroup<{
-      extra: X.XList<X.XImage>
-      crop: X.XBool
-      startAtStepPercent: X.XNumber
-      endAtStepPercent: X.XNumber
-      weight_type: X.XEnum<'IPAdapter_plus.IPAdapterAdvanced.weight_type'>
-      embedding_scaling: X.XEnum<'IPAdapter_plus.IPAdapterAdvanced.embeds_scaling'>
-      noise: X.XNumber
-      unfold_batch: X.XBool
+   strength: Z.Number
+   settings: Z.Group<{
+      extra: Z.List<Z.Image>
+      crop: Z.Bool
+      startAtStepPercent: Z.Number
+      endAtStepPercent: Z.Number
+      weight_type: Z.Enum<'IPAdapter_plus.IPAdapterAdvanced.weight_type'>
+      embedding_scaling: Z.Enum<'IPAdapter_plus.IPAdapterAdvanced.embeds_scaling'>
+      noise: Z.Number
+      unfold_batch: Z.Bool
    }>
-   help: X.XMarkdown
-   models: X.XGroup<{
-      lora: X.XEnum<'LoraLoader.lora_name'>
-      cnet_model_name: X.XEnum<'IPAdapter_plus.IPAdapterModelLoader.ipadapter_file'>
-      clip_name: X.XEnum<'CLIPVisionLoader.clip_name'>
+   help: Z.Markdown
+   models: Z.Group<{
+      lora: Z.Enum<'LoraLoader.lora_name'>
+      cnet_model_name: Z.Enum<'IPAdapter_plus.IPAdapterModelLoader.ipadapter_file'>
+      clip_name: Z.Enum<'CLIPVisionLoader.clip_name'>
    }>
-   lora_strength: X.XNumber
+   lora_strength: Z.Number
 }>
 
 export function ui_IPAdapterFaceID(): UI_IPAdapterFaceID {
-   const b = getCurrentForm()
+   const b = getBuilder()
    return b
       .group({
          label: 'FaceID IPAdapter',
@@ -87,7 +87,7 @@ export function ui_IPAdapterFaceID(): UI_IPAdapterFaceID {
                .group({
                   startCollapsed: true,
                   label: 'Reinforce With Additional IPAdapter',
-                  tooltip:
+                  description:
                      'Enabling will apply an additional IPAdapter. This usually makes faces more accurate, but pulls along more features from the face image.',
                   items: {
                      help: b.markdown({

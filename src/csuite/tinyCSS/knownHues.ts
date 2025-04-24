@@ -13,11 +13,11 @@ export const knownOKLCHHues = {
 }
 
 // prettier-ignore
-export const ratingsHue = [
-   knownOKLCHHues.rating_0,
-   knownOKLCHHues.rating_1,
-   knownOKLCHHues.rating_2,
-   knownOKLCHHues.rating_3,
-   knownOKLCHHues.rating_4,
-   knownOKLCHHues.rating_5,
+export const ratingsHue: number[] = [
+    knownOKLCHHues.rating_0,
+    knownOKLCHHues.rating_1,
+    knownOKLCHHues.rating_2,
+    knownOKLCHHues.rating_3,
+    knownOKLCHHues.rating_4,
+    knownOKLCHHues.rating_5,
 ]

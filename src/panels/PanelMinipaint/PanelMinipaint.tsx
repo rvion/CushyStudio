@@ -8,6 +8,6 @@ export const PanelMinipaint = new Panel({
    widget: (): React.FC<PanelMinipaintProps> => PanelMinipaintUI,
    header: (p): PanelHeader => ({ title: '🎨 Paint' }),
    def: (): PanelMinipaintProps => ({}),
-   icon: 'mdiPencil',
+   icon: IKONS.mdiPencil,
    category: 'tools',
 })

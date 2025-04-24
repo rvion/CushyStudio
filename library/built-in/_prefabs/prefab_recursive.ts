@@ -1,16 +1,16 @@
 // UI -----------------------------------------------------------
 
-export type UI_recursive = X.XOptional<
-   X.XGroup<{
-      cfg: X.XNumber
-      loops: X.XNumber
-      denoise: X.XNumber
-      steps: X.XNumber
+export type UI_recursive = Z.Maybe<
+   Z.Group<{
+      cfg: Z.Number
+      loops: Z.Number
+      denoise: Z.Number
+      steps: Z.Number
    }>
 >
 
 export function ui_recursive(): UI_recursive {
-   const form = getCurrentForm()
+   const form = getBuilder()
    return form
       .fields({
          cfg: form.float({ step: 1, label: 'CFG', min: 0, max: 100, softMax: 10, default: 8 }),

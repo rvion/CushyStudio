@@ -1,14 +1,15 @@
 import type { MediaImageL } from '../../models/MediaImage'
 
 import { existsSync, type PathLike } from 'fs'
-import { observer } from 'mobx-react-lite'
 
 import { RevealUI } from '../../csuite/reveal/RevealUI'
+import { useDragDropRefForReact19 } from '../../csuite/utils/dnd'
 import { ImageDropdownMenuUI } from '../../panels/ImageDropdownUI'
 import { useImageDrag } from './dnd'
+import { useDragItem } from './dndGeneric'
 import { ImageErrorDisplayUI } from './ImageErrorDisplayUI'
 
-export const ImageUI = observer(function ImageUI_({
+export const ImageUI = obs(function ImageUI_({
    size,
    img,
    onClick,
@@ -31,7 +32,8 @@ export const ImageUI = observer(function ImageUI_({
       return <div style={{ width: ImageWidth, height: ImageWidth }}>❌</div>
    }
 
-   const [{ opacity }, dragRef] = useImageDrag(image! /* 🔴 */)
+   const [{ opacity }, dragRef_] = useImageDrag(image! /* 🔴 */)
+   const dragRef = useDragDropRefForReact19(dragRef_)
    const IMG = (
       <img
          className={className}
@@ -62,7 +64,7 @@ export const ImageUI = observer(function ImageUI_({
    if (image.existsLocally && !existsSync(image?.absPath as PathLike))
       return (
          <ImageErrorDisplayUI //
-            icon={'mdiFolder'}
+            icon={IKONS.mdiFolder}
          />
       )
 
@@ -77,7 +79,7 @@ export const ImageUI = observer(function ImageUI_({
    )
 })
 
-export const ImageUIDumb = observer(function ImageUIDumb_({
+export const ImageUIDumb = obs(function ImageUIDumb_({
    className,
    img,
    ...rest
@@ -86,12 +88,12 @@ export const ImageUIDumb = observer(function ImageUIDumb_({
    className?: string
 }) {
    const image = typeof img === 'string' ? cushy.db.media_image.get(img) : img
-   const [{ opacity }, dragRef, dragPreview] = useImageDrag(image! /* 🔴 */)
+   // const [{ opacity }, dragRef, dragPreview] = useImageDragNew(image! /* 🔴 */)
 
    if (!image) {
       return (
          <ImageErrorDisplayUI //
-            icon={'mdiImageRemoveOutline'}
+            icon={IKONS.mdiImageRemoveOutline}
          />
       )
    }
@@ -99,10 +101,12 @@ export const ImageUIDumb = observer(function ImageUIDumb_({
    if (image.existsLocally && !existsSync(image?.absPath as PathLike)) {
       return (
          <ImageErrorDisplayUI //
-            icon={'mdiFolder'}
+            icon={IKONS.mdiFolder}
          />
       )
    }
+
+   const [{ opacity }, dragRef, dragPreview] = useDragItem(image)
 
    return (
       <RevealUI //

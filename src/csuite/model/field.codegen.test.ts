@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'bun:test'
+import { describe, expect, it } from 'vitest'
 
 import { sb } from '../simple/SimpleFactory'
 
@@ -12,7 +12,15 @@ describe('field schema string representations', () => {
          x: sb.string(),
          y: sb.string(),
       })
-      expect(schema.codegenValueType()).toBe(`{ x: string; y: string }`)
+      expect(schema.codeForTypescriptValue()).toBe(
+         [
+            //
+            `{`,
+            `   x: string,`,
+            `   y: string,`,
+            `}`,
+         ].join('\n'),
+      )
    })
    it('works for list and optional', () => {
       const schema = sb.fields({
@@ -20,15 +28,36 @@ describe('field schema string representations', () => {
          y: sb.int().optional(),
          z: sb.bool().list(),
       })
-      expect(schema.codegenValueType()).toBe(`{ x: string; y: Maybe<number>; z: boolean[] }`)
+      expect(schema.codeForTypescriptValue()).toBe(
+         [
+            //
+            `{`,
+            `   x: string,`,
+            `   y: Maybe<number>,`,
+            `   z: boolean[],`,
+            `}`,
+         ].join('\n'),
+      )
    })
    it('works for link and shared', () => {
-      const schema = sb.with(sb.int(), (int) =>
-         sb.fields({
-            x: int,
-         }),
+      const schema = sb.fields({
+         // very cool way to add volatile stuff for models
+         x1: sb.linkedFromExternalField(sb.number().create()),
+         x2: sb.linkedFromChannelId('<does-not-exists>', sb.number()),
+      })
+
+      expect(schema.codeForTypescriptValue()).toBe(
+         [
+            `{`,
+            `   x1: Z.Shared<number>,`,
+            `   x2: Z.Shared<number>,`,
+            `}`,
+            //
+            // 'Z.Link<number,{',
+            // '   x: Z.Shared<number>,',
+            // '}>',
+         ].join('\n'),
       )
-      expect(schema.codegenValueType()).toBe(`{ x: number }`)
    })
    it('support custom fields', () => {
       const schema = sb.fields({
@@ -36,6 +65,15 @@ describe('field schema string representations', () => {
          y: sb.int().optional(),
          z: sb.bool().list(),
       })
-      expect(schema.codegenValueType()).toBe(`{ x: string; y: Maybe<number>; z: boolean[] }`)
+      expect(schema.codeForTypescriptValue()).toBe(
+         [
+            //
+            `{`,
+            `   x: string,`,
+            `   y: Maybe<number>,`,
+            `   z: boolean[],`,
+            `}`,
+         ].join('\n'),
+      )
    })
 })

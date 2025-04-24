@@ -1,13 +1,11 @@
 import type { PromptPlugin } from '../plugins/PromptPlugin'
 
-import { observer } from 'mobx-react-lite'
-
 import { IkonOf } from '../../csuite/icons/iconHelpers'
 import { SelectUI } from '../../csuite/select/SelectUI'
 import { plugins } from '../plugins/PromptPluginList'
 
 const isActive = (plugin: PromptPlugin): boolean => (cushy.configFile.get(plugin.configKey) ? true : false)
-export const PluginToggleBarUI = observer(function PluginToggleBarUI_(p: {}) {
+export const PluginToggleBarUI = obs(function PluginToggleBarUI_(p: {}) {
    return (
       <SelectUI<PromptPlugin> //
          multiple

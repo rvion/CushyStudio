@@ -3,33 +3,33 @@ import type { OutputFor } from '../_prefabs/_prefabs'
 import { cnet_preprocessor_ui_common, cnet_ui_common } from './cnet_ui_common'
 
 // 🅿️ Lineart FORM ===================================================
-export type UI_subform_Lineart = X.XGroup<{
+export type UI_subform_Lineart = Z.Group<{
    preprocessor: UI_subform_Lineart_Preprocessor
-   models: X.XGroup<{
-      cnet_model_name: X.XEnum<'ControlNetLoader.control_net_name'>
+   models: Z.Group<{
+      cnet_model_name: Z.Enum<'ControlNetLoader.control_net_name'>
    }>
-   strength: X.XNumber
-   advanced: X.XGroup<{
-      startAtStepPercent: X.XNumber
-      endAtStepPercent: X.XNumber
-      crop: X.XEnum<'LatentUpscale.crop'>
-      upscale_method: X.XEnum<'ImageScale.upscale_method'>
+   strength: Z.Number
+   advanced: Z.Group<{
+      startAtStepPercent: Z.Number
+      endAtStepPercent: Z.Number
+      crop: Z.Enum<'LatentUpscale.crop'>
+      upscale_method: Z.Enum<'ImageScale.upscale_method'>
    }>
 }>
 
 export function ui_subform_Lineart(): UI_subform_Lineart {
-   const ui: X.Builder = getCurrentForm()
-   return ui
+   const b: Z.Builder = getBuilder()
+   return b
       .group({
          label: 'Lineart',
          items: {
-            ...cnet_ui_common(ui),
+            ...cnet_ui_common(b),
             preprocessor: ui_subform_Lineart_Preprocessor(),
-            models: ui.group({
+            models: b.group({
                label: 'Select or Download Models',
                // startCollapsed: true,
                items: {
-                  cnet_model_name: ui.enum['ControlNetLoader.control_net_name']({
+                  cnet_model_name: b.enum['ControlNetLoader.control_net_name']({
                      label: 'Model',
                      filter: (name) => name.toString().includes('lineart'),
                      // @ts-ignore
@@ -47,14 +47,14 @@ export function ui_subform_Lineart(): UI_subform_Lineart {
 }
 
 // ====================================================================================================
-export type UI_subform_Lineart_Preprocessor = X.XChoice<{
-   None: X.XEmpty
+export type UI_subform_Lineart_Preprocessor = Z.Choice<{
+   None: Z.Empty
    Realistic: UI_subform_Lineart_realistic
    Anime: UI_subform_Lineart_Anime
    Manga: UI_subform_Lineart_Manga
 }>
 export function ui_subform_Lineart_Preprocessor(): UI_subform_Lineart_Preprocessor {
-   const form: X.Builder = getCurrentForm()
+   const form: Z.Builder = getBuilder()
    return form.choice(
       {
          None: form.empty(),
@@ -67,13 +67,13 @@ export function ui_subform_Lineart_Preprocessor(): UI_subform_Lineart_Preprocess
 }
 
 // ====================================================================================================
-export type UI_subform_Lineart_realistic = X.XGroup<{
-   coarse: X.XBool
-   saveProcessedImage: X.XBool
+export type UI_subform_Lineart_realistic = Z.Group<{
+   coarse: Z.Bool
+   saveProcessedImage: Z.Bool
 }>
 
 export function ui_subform_Lineart_realistic(): UI_subform_Lineart_realistic {
-   const form: X.Builder = getCurrentForm()
+   const form: Z.Builder = getBuilder()
    return form.fields({
       ...cnet_preprocessor_ui_common(form),
       coarse: form.bool({ default: false }),
@@ -81,11 +81,11 @@ export function ui_subform_Lineart_realistic(): UI_subform_Lineart_realistic {
 }
 
 // ========================================================================
-export type UI_subform_Lineart_Anime = X.XGroup<{
-   saveProcessedImage: X.XBool
+export type UI_subform_Lineart_Anime = Z.Group<{
+   saveProcessedImage: Z.Bool
 }>
 export function ui_subform_Lineart_Anime(): UI_subform_Lineart_Anime {
-   const form: X.Builder = getCurrentForm()
+   const form: Z.Builder = getBuilder()
    return form.group({
       // label: 'Settings',
       // startCollapsed: true,
@@ -96,11 +96,11 @@ export function ui_subform_Lineart_Anime(): UI_subform_Lineart_Anime {
 }
 
 // ========================================================================
-export type UI_subform_Lineart_Manga = X.XGroup<{
-   saveProcessedImage: X.XBool
+export type UI_subform_Lineart_Manga = Z.Group<{
+   saveProcessedImage: Z.Bool
 }>
 export function ui_subform_Lineart_Manga(): UI_subform_Lineart_Manga {
-   const form: X.Builder = getCurrentForm()
+   const form: Z.Builder = getBuilder()
    return form.group({
       // label: 'Settings',
       // startCollapsed: true,

@@ -1,10 +1,8 @@
+import type { MediaImageL } from '../../models/MediaImage'
 import type { CSSProperties } from 'react'
-
-import { observer } from 'mobx-react-lite'
 
 import { Frame } from '../../csuite/frame/Frame'
 import { hashStringToNumber } from '../../csuite/hashUtils/hash'
-import { MediaImageL } from '../../models/MediaImage'
 import { useGalleryConf } from './galleryConf'
 import { GalleryImageCardUI } from './GalleryImageCardUI'
 
@@ -155,7 +153,7 @@ function computeStyles(
    return styles['warning']
 }
 
-export const StepGroupUI = observer(function StepGroupUI_(p: {
+export const StepGroupUI = obs(function StepGroupUI_(p: {
    index: number
    // grouper: StepGrouper
    style: CSSProperties
@@ -168,7 +166,7 @@ export const StepGroupUI = observer(function StepGroupUI_(p: {
    const conf = useGalleryConf()
    const ALLIMAGES = conf.imageToDisplay
 
-   const theme = cushy.preferences.theme.value
+   const theme = cushy.preferences.theme.zValue
 
    const img = ALLIMAGES[p.index]
    if (img == undefined) {

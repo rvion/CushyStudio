@@ -1,13 +1,11 @@
 import type { Civitai } from './Civitai'
 import type { CivitaiSearchResultItem } from './CivitaiTypes'
 
-import { observer } from 'mobx-react-lite'
-
 import { InputStringUI } from '../../csuite/input-string/InputStringUI'
 import { CivitaiResultCardUI } from './CivitaiResultCardUI'
 import { CivitaiResultFullUI } from './CivitaiResultFullUI'
 
-export const CivitaiUI = observer(function CivitaiUI_(p: { className?: string; civitai: Civitai }) {
+export const CivitaiUI = obs(function CivitaiUI_(p: { className?: string; civitai: Civitai }) {
    const civitai = p.civitai
    return (
       <div tw='flex flex-col overflow-auto' className={p.className}>
@@ -20,7 +18,7 @@ export const CivitaiUI = observer(function CivitaiUI_(p: { className?: string; c
                   className='px-1'
                >
                   <InputStringUI
-                     icon='mdiMagnify'
+                     icon={IKONS.mdiMagnify}
                      tw='csuite-basic-input w-full'
                      placeholder='rechercher'
                      getValue={() => civitai.query.value}

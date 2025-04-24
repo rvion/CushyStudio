@@ -10,5 +10,5 @@ export const PanelSteps = new Panel({
    def: (): NO_PROPS => ({}),
    category: 'outputs',
    about: 'this panels allow to list / search steps matching conditions',
-   icon: 'mdiStepForward',
+   icon: IKONS.mdiStepForward,
 })

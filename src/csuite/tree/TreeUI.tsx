@@ -1,9 +1,6 @@
 import type { TreeView } from './TreeView'
 
-import { observer } from 'mobx-react-lite'
-
 import { ComboUI } from '../accelerators/ComboUI'
-import { Button } from '../button/Button'
 import { Ikon } from '../icons/iconHelpers'
 import { RegionUI } from '../regions/RegionUI'
 import { RevealUI } from '../reveal/RevealUI'
@@ -11,7 +8,7 @@ import { TreeViewCtx } from './TreeCtx'
 import { TreeEntryUI } from './TreeEntryUI'
 import { TreeKeys } from './TreeKeys'
 
-export const TreeUI = observer(function TreeEditorUI_(p: {
+export const TreeUI = obs(function TreeEditorUI_(p: {
    //
    title?: string
    shortcut?: string
@@ -39,14 +36,12 @@ export const TreeUI = observer(function TreeEditorUI_(p: {
                      )}
                   >
                      {tv.tree.config.updateAll && (
-                        <Button
-                           size='xs'
-                           square
-                           icon='mdiUnfoldLessHorizontal'
+                        <div
+                           tw='btn btn-square btn-ghost btn-xs shrink-0'
                            onClick={() => tv.tree.config.updateAll?.({ isExpanded: null })}
                         >
                            <Ikon.mdiUnfoldLessHorizontal />
-                        </Button>
+                        </div>
                      )}
                   </RevealUI>
                </div>

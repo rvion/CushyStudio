@@ -1,18 +1,18 @@
 import type { MediaImageL, WatermarkProps } from '../../../src/models/MediaImage'
 import type { OutputFor } from './_prefabs'
 
-export type UI_watermark_v1 = X.XGroup<{
-   pos: X.XGroup<{ x: X.XNumber; y: X.XNumber }>
-   font: X.XSelectOne_<'Arial' | 'Times New Roman' | 'Courier New'>
-   format: X.XSelectOne_<'image/webp' | 'image/png' | 'image/jpeg'>
-   content: X.XString
-   color: X.XString
-   fontSize: X.XNumber
-   quality: X.XNumber
-   tool: X.XSelectOne_<'canvas' | 'konva'>
+export type UI_watermark_v1 = Z.Group<{
+   pos: Z.Group<{ x: Z.Number; y: Z.Number }>
+   font: Z.XSelectOne_<'Arial' | 'Times New Roman' | 'Courier New'>
+   format: Z.XSelectOne_<'image/webp' | 'image/png' | 'image/jpeg'>
+   content: Z.String
+   color: Z.String
+   fontSize: Z.Number
+   quality: Z.Number
+   tool: Z.XSelectOne_<'canvas' | 'konva'>
 }>
 export function ui_watermark_v1() {
-   const ui = getCurrentForm()
+   const ui = getBuilder()
    return ui.fields(
       {
          pos: ui.row({ x: ui.int({ default: 100 }), y: ui.int({ default: 100 }) }),
@@ -24,7 +24,7 @@ export function ui_watermark_v1() {
          quality: ui.number({ min: 0, max: 1, default: 1 }),
          tool: ui.selectOneString(['canvas', 'konva']),
       },
-      { icon: 'mdiWatermark' },
+      { icon: IKONS.mdiWatermark },
    )
 }
 

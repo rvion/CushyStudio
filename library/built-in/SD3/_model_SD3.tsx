@@ -5,16 +5,16 @@ import {
    schemaModelExtras,
 } from '../_prefabs/prefab_model_extras'
 
-export type $prefabModelSD3 = X.XGroup<{
-   ckpt_name: X.XEnum<'CheckpointLoaderSimple.ckpt_name'>
-   clip1: X.XEnum<'CLIPLoader.clip_name'>
-   clip2: X.XEnum<'CLIPLoader.clip_name'>
-   clip3: X.XEnum<'CLIPLoader.clip_name'>
+export type $prefabModelSD3 = Z.Group<{
+   ckpt_name: Z.Enum<'CheckpointLoaderSimple.ckpt_name'>
+   clip1: Z.Enum<'CLIPLoader.clip_name'>
+   clip2: Z.Enum<'CLIPLoader.clip_name'>
+   clip3: Z.Enum<'CLIPLoader.clip_name'>
    extra: $schemaModelExtras
 }>
 
 export const prefabModelSD3 = (): $prefabModelSD3 => {
-   const b = getCurrentForm()
+   const b = getBuilder()
    // const ckpts = cushy.managerRepository.getKnownCheckpoints()
    return b
       .fields({
@@ -26,12 +26,12 @@ export const prefabModelSD3 = (): $prefabModelSD3 => {
       })
       .addRequirements([
          { type: 'modelInManager', modelName: 'google-t5/t5-v1_1-xxl_encoderonly-fp16' },
-         { type: 'modelInManager', modelName: 'comfyanonymous/clip_l' },
+         { type: 'modelInManager', modelName: 'Comfy-Org/clip_l' },
          { type: 'modelInManager', modelName: 'CLIPVision model (stabilityai/clip_vision_g)' },
       ])
 }
 
-export function eval_model_SD3(doc: $prefabModelSD3['$Value']): {
+export function eval_model_SD3(doc: $prefabModelSD3['{value}']): {
    ckpt: Comfy.Signal['MODEL']
    vae: Comfy.Signal['VAE']
    clip: Comfy.Signal['CLIP']

@@ -1,8 +1,6 @@
-import { observer } from 'mobx-react-lite'
-
 import { MessageUI } from './MessageUI'
 
-export const MessageErrorUI = observer(function MessageErrorUI_(p: {
+export const MessageErrorUI = obs(function MessageErrorUI_(p: {
    title?: string
    children?: React.ReactNode
    markdown?: string
@@ -12,7 +10,7 @@ export const MessageErrorUI = observer(function MessageErrorUI_(p: {
    return (
       <MessageUI //
          type='error'
-         icon='mdiAlertCircle'
+         icon={IKONS.mdiAlertCircle}
          hue={0}
          {...p}
       />

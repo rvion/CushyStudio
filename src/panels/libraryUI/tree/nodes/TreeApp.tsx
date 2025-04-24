@@ -6,7 +6,6 @@ import type { DraftL } from '../../../../models/Draft'
 import type { STATE } from '../../../../state/state'
 
 import { makeAutoObservable } from 'mobx'
-import { observer } from 'mobx-react-lite'
 
 import { AppFavoriteBtnUI } from './misc/CardPicker2UI'
 import { TreeDraft } from './TreeDraft'
@@ -56,7 +55,7 @@ export class TreeApp implements ITreeEntry {
       return [...subFolders, ...subFiles]
    }
 
-   extra = (): JSX.Element | null => (
+   extra = (): React.JSX.Element | null => (
       <>
          {this.app?.isLoadedInMemory ? (
             <span className='material-symbols-outlined text-green-500'>memory</span>
@@ -67,7 +66,7 @@ export class TreeApp implements ITreeEntry {
    actions: TreeEntryAction[] = [
       {
          name: 'add Draft',
-         icon: 'mdiPlus',
+         icon: IKONS.mdiPlus,
          mode: 'small',
          onClick: (node): void => {
             if (this.app == null) return
@@ -78,7 +77,7 @@ export class TreeApp implements ITreeEntry {
    ]
 }
 
-export const TreeApp_BtnFavUI = observer(function TreeApp_BtnFavUI_(p: { entry: TreeApp }) {
+export const TreeApp_BtnFavUI = obs(function TreeApp_BtnFavUI_(p: { entry: TreeApp }) {
    if (p.entry.app == null) return null
    return <AppFavoriteBtnUI app={p.entry.app} />
 })

@@ -1,16 +1,19 @@
 import type { NO_PROPS } from '../types/NO_PROPS'
 import type { ObservableRef } from '../utils/observableRef'
-import type { RevealStateLazy } from './RevealStateLazy'
+import type { RevealId, RevealStateLazy } from './RevealStateLazy'
 import type { RevealContentProps } from './shells/ShellProps'
-import type { CSSProperties, FC, ReactNode } from 'react'
+import type { CSSProperties, FC, FocusEvent, MouseEvent, ReactNode, SyntheticEvent } from 'react'
 
-import { makeAutoObservable, observable } from 'mobx'
+import { action, makeAutoObservable, observable } from 'mobx'
 
 import { hasMod } from '../accelerators/META_NAME'
+import { regionMonitor } from '../regions/RegionMonitor'
 import { getUIDForMemoryStructure } from '../utils/getUIDForMemoryStructure'
 import { isElemAChildOf } from '../utils/isElemAChildOf'
 import { toCssSizeValue } from '../utils/toCssSizeValue'
+import { window_addEventListener } from '../utils/window_addEventListenerAction'
 import { DEBUG_REVEAL } from './DEBUG_REVEAL'
+import { VirtualDomRect } from './misc/VirtualDomRect'
 import { RevealCloseEvent } from './RevealCloseEvent'
 import { removeFromGlobalRevealStack } from './RevealGlobal'
 import { computePlacement, type RevealComputedPosition, type RevealPlacement } from './RevealPlacement'
@@ -40,7 +43,6 @@ export class RevealState {
       const isUsingDisplayContents =
          element.style.display === 'contents' || //
          element.className.includes('contents')
-      console.log(`[🔴3.1] `, isUsingDisplayContents)
 
       // 2. if it does not, return it's natural bouding rect
       if (!isUsingDisplayContents) return element?.getBoundingClientRect() ?? null
@@ -48,8 +50,7 @@ export class RevealState {
       // 2. it it does, compute virtual bounding box by reducing its children
       // https://stackoverflow.com/questions/75454061/getboundingclientrect-from-a-div-with-as-style-display-contents
       const children = element.children
-      console.log(`[🔴3.2] `, children)
-      if (!children || children.length === 0) return null
+      if (children == null || children.length === 0) return null
       // return new DOMRectReadOnly(10, 10, 10, 10)
 
       let minX = Infinity
@@ -68,28 +69,28 @@ export class RevealState {
    }
 
    static shared: { current: Maybe<RevealState> } = observable({ current: null }, { current: observable.ref })
-   uid: number
+   uid: RevealId
 
    get showBackdrop(): boolean {
       return this.p.showBackdrop ?? true
    }
 
-   onMiddleClickAnchor = (ev: React.MouseEvent<unknown>): void => {
+   onMiddleClickAnchor = (ev: React.MouseEvent): void => {
       this.logEv(ev, `anchor.onMiddleClick`)
       // this.onLeftClick(ev)
    }
 
-   onRightClickAnchor = (ev: React.MouseEvent<unknown>): void => {
+   onRightClickAnchor = (ev: React.MouseEvent): void => {
       this.logEv(ev, `anchor.onRightClick`)
       const closed = !this.isVisible
       if (closed) {
-         if (this.shouldShowOnAnchorRightClick) {
+         if (this.shouldShowOnAnchorRightClick(ev)) {
             this.open('rightClickAnchor')
             ev.stopPropagation()
             ev.preventDefault()
          }
       } else {
-         if (this.shouldHideOnAnchorRightClick) {
+         if (this.shouldHideOnAnchorRightClick(ev)) {
             this.close('rightClickAnchor')
             ev.stopPropagation()
             ev.preventDefault()
@@ -98,11 +99,11 @@ export class RevealState {
       // this.onLeftClickAnchor(ev) // 2024-07-31 domi: not sure what the use-case is, but annoying when you want to inspect the element
    }
 
-   onLeftClickAnchor = (ev: React.MouseEvent<unknown>): void => {
+   onLeftClickAnchor = (ev: React.MouseEvent): void => {
       this.logEv(ev, `onLeftClickAnchor (visible: ${this.isVisible ? '🟢' : '🔴'})`)
       const closed = !this.isVisible
       if (closed) {
-         if (this.shouldShowOnAnchorClick) {
+         if (this.shouldShowOnAnchorClick(ev)) {
             this.open('leftClickAnchor')
             ev.stopPropagation()
             ev.preventDefault()
@@ -116,11 +117,11 @@ export class RevealState {
       }
    }
 
-   onDoubleClickAnchor = (ev: React.MouseEvent<unknown>): void => {
+   onDoubleClickAnchor = (ev: React.MouseEvent): void => {
       this.logEv(ev, `onDoubleClickAnchor (visible: ${this.isVisible ? '🟢' : '🔴'})`)
       const closed = !this.isVisible
       if (closed) {
-         if (this._EVALBOOL(this.showTriggers.anchorDoubleClick)) {
+         if (this._EVALBOOL(this.showTriggers.anchorDoubleClick, ev)) {
             this.open('doubleClickAnchor')
             ev.stopPropagation()
             ev.preventDefault()
@@ -180,6 +181,7 @@ export class RevealState {
       this.shellRef = lazyState.shellRef
       this.uid = lazyState.uid
       // see comment above
+
       this.contentFn = (): ReactNode => {
          const Component = this.p.content
          if (Component == null) return null
@@ -257,59 +259,67 @@ export class RevealState {
 
    // #region HIDE TRIGGERS
    get shouldHideOnAnchorBlur(): boolean {
-      return this.hideTriggers.blurAnchor ?? false
+      return this._EVALBOOL(this.hideTriggers.blurAnchor, null)
    }
 
    get shouldHideOnKeyboardEscape(): boolean {
-      return this.hideTriggers.escapeKey ?? false
+      return this._EVALBOOL(this.hideTriggers.escapeKey, null)
    }
 
    get shouldHideOnAnchorClick(): boolean {
-      return this.hideTriggers.clickAnchor ?? false
+      return this._EVALBOOL(this.hideTriggers.clickAnchor, null)
    }
 
    get shouldHideOnAnchorOrTooltipMouseLeave(): boolean {
-      return this.hideTriggers.mouseOutside ?? false
+      return this._EVALBOOL(this.hideTriggers.mouseOutside, null)
    }
 
    get shouldHideOnBackdropClick(): boolean {
-      return this.hideTriggers.backdropClick ?? false
+      return this._EVALBOOL(this.hideTriggers.backdropClick, null)
    }
 
    get shouldHideOnShellClick(): boolean {
-      return this.hideTriggers.shellClick ?? false
+      return this._EVALBOOL(this.hideTriggers.shellClick, null)
+   }
+
+   get shouldHideOnTabKey(): boolean {
+      return this._EVALBOOL(this.hideTriggers.tabKey, null)
    }
 
    private _EVALBOOL(
-      b: boolean | undefined | ((self: RevealState, SELF: typeof RevealState) => boolean | undefined),
+      b:
+         | boolean
+         | undefined
+         | ((self: RevealState, SELF: typeof RevealState, e: Maybe<SyntheticEvent>) => boolean | undefined),
+      e: Maybe<SyntheticEvent>,
    ): boolean {
-      if (typeof b === 'function') return b(this, RevealState) ?? false
+      if (typeof b === 'function') return b(this, RevealState, e) ?? false
       return b ?? false
    }
 
-   get shouldHideOnAnchorRightClick(): boolean {
-      return this._EVALBOOL(this.showTriggers.anchorRightClick)
+   shouldHideOnAnchorRightClick(e: Maybe<SyntheticEvent>): boolean {
+      return this._EVALBOOL(this.showTriggers.anchorRightClick, e)
    }
 
    // #region SHOW TRIGGERS
-   get shouldShowOnAnchorFocus(): boolean {
-      return this._EVALBOOL(this.showTriggers.anchorFocus)
+   shouldShowOnAnchorFocus(e: Maybe<SyntheticEvent>): boolean {
+      return this._EVALBOOL(this.showTriggers.anchorFocus, e)
    }
 
-   get shouldShowOnKeyboardEnterOrLetterWhenAnchorFocused(): boolean {
-      return this._EVALBOOL(this.showTriggers.keyboardEnterOrLetterWhenAnchorFocused)
+   shouldShowOnKeyboardEnterOrLetterWhenAnchorFocused(e: Maybe<SyntheticEvent>): boolean {
+      return this._EVALBOOL(this.showTriggers.keyboardEnterOrLetterWhenAnchorFocused, e)
    }
 
-   get shouldShowOnAnchorClick(): boolean {
-      return this._EVALBOOL(this.showTriggers.anchorClick)
+   shouldShowOnAnchorClick(e: Maybe<SyntheticEvent>): boolean {
+      return this._EVALBOOL(this.showTriggers.anchorClick, e)
    }
 
-   get shouldShowOnAnchorRightClick(): boolean {
-      return this._EVALBOOL(this.showTriggers.anchorRightClick)
+   shouldShowOnAnchorRightClick(e: Maybe<SyntheticEvent>): boolean {
+      return this._EVALBOOL(this.showTriggers.anchorRightClick, e)
    }
 
-   get shouldShowOnAnchorHover(): boolean {
-      return this._EVALBOOL(this.showTriggers.anchorHover)
+   shouldShowOnAnchorHover(e: Maybe<SyntheticEvent>): boolean {
+      return this._EVALBOOL(this.showTriggers.anchorHover, e)
    }
 
    // #region DELAYS
@@ -354,9 +364,62 @@ export class RevealState {
       // ⏸️ console.log(`[🤠] posCSS`, JSON.stringify(out, null, 4))
       return out
    }
-   tooltipPosition: RevealComputedPosition = { top: 0, left: 0 }
+   tooltipPosition: RevealComputedPosition = {
+      top: 0,
+      left: 0,
+      finalPlacementLogic: 'screen-top-left',
+   }
    setPosition = (rect: DOMRect | null, shell: DOMRect | null): void => {
       this.tooltipPosition = computePlacement(this.placement, rect, shell)
+   }
+
+   // Needed for all placements that are relative to the window's bottom or right side
+   handleWindowResize = action((): void => {
+      if (this.p.relativeTo === 'mouse') return
+
+      this.updatePlacement()
+   })
+
+   updatePlacement = (): void => {
+      if (!this.isVisible) return
+
+      // find element to attach to
+      const relTo = this.p.relativeTo
+
+      // 1. place around mouse cursor
+      if (relTo === 'mouse') {
+         const x = regionMonitor.mouseX
+         const y = regionMonitor.mouseY
+         const vDomRect = new VirtualDomRect({ x, y, width: 1, height: 1 })
+         this.setPosition(vDomRect, null)
+      }
+
+      // 2. place around anchor
+      else if (relTo == null || relTo === 'anchor') {
+         const element = this.anchorRef.current
+         // console.log(`[🌍 1] `, element?.getBoundingClientRect())
+         // console.log(`[🌍 2] `, reveal.getBoundingClientRect(element))
+         this.setPosition(
+            // 🌍 element?.getBoundingClientRect() ?? null,
+            this.getBoundingClientRect(element),
+            // 🌍 shellRef.current?.getBoundingClientRect() ?? null,
+            this.getBoundingClientRect(this.shellRef.current),
+         )
+      }
+
+      // 3. place somewhere else
+      else if (relTo?.startsWith('#')) {
+         const element = document.getElementById(relTo.slice(1))!
+         // do we want to throw HERE ?
+         // or defer to anchor instead ?
+         // we could move this block above 2.
+         // and use 2 as a fallback case.
+         if (element == null) return
+         const rect = element.getBoundingClientRect()
+         this.setPosition(rect, this.shellRef.current?.getBoundingClientRect() ?? null)
+
+         // in that case, let's add a return here
+      }
    }
 
    // lock --------------------------------------------
@@ -367,7 +430,7 @@ export class RevealState {
 
    // UI --------------------------------------------
    get defaultCursor(): string {
-      if (!this.shouldShowOnAnchorHover) return 'cursor-pointer'
+      if (!this.shouldShowOnAnchorHover(null)) return 'cursor-pointer'
       return 'cursor-help'
    }
 
@@ -375,14 +438,14 @@ export class RevealState {
    enterAnchorTimeoutId: NodeJS.Timeout | null = null
    leaveAnchorTimeoutId: NodeJS.Timeout | null = null
 
-   onMouseEnterAnchor = (ev: React.MouseEvent<unknown>): void => {
+   onMouseEnterAnchor = (ev: React.MouseEvent): void => {
       this.logEv(ev, `anchor.onMouseEnter`)
       // console.log(`[🔴] ${this.uid}`, this.parents.length, `| curr=${RevealState.shared.current?.uid}`)
 
-      /* 🔥 */ if (this.isVisible) return
-      /* 🔥 */ if (!this.shouldShowOnAnchorHover) return
+      /* 🔥 */ if (!this.shouldShowOnAnchorHover(ev)) return
       // /* 🔥 */ if (RevealState.shared.current) return this.open('mouse-enter-anchor-(no-parent-open)')
       this._resetAllAnchorTimouts()
+      /* 🔥 */ if (this.isVisible) return
       this.enterAnchorTimeoutId = setTimeout(
          () => this.open('mouse-enter-anchor-(with-parent-open)'),
          this.showDelay,
@@ -418,7 +481,7 @@ export class RevealState {
       if (this.isVisible) return
 
       // ensure parents are properly opened first
-      if (!this.parent?.isVisible) console.warn(`[🔶] INVARIANT VIOLATION IN REVEAL STATE`)
+      if (this.parent && !this.parent?.isVisible) console.warn(`[🔶] INVARIANT VIOLATION IN REVEAL STATE`)
       // 🔴 if (this.parent && !this.parent.isVisible) {
       // 🔴     this.parent.open('child-is-opening-so-as-parent-I-must-open-too')
       // 🔴 }
@@ -444,7 +507,21 @@ export class RevealState {
       this._resetAllAnchorTimouts()
       this.inAnchor = true
 
+      // Just to be safe that we don't add the same event manager twice
+      window.removeEventListener('resize', this.handleWindowResize)
+      window_addEventListener('resize', this.handleWindowResize)
+
       if (!wasVisible) this.p.onRevealed?.(this)
+      if (!wasVisible) {
+         if (
+            this.p.focusOnOpen !== false &&
+            (typeof this.p.focusOnOpen != 'function' || this.p.focusOnOpen() != false)
+         ) {
+            this.focusFirstInputLikeOnMountOrNowIfMounted_EXCEPT_IF_FOCUS_ALREADY_INSIDE()
+         } else {
+            this.focusOnMountOrNowIfMounted_EXCEPT_IF_FOCUS_ALREADY_INSIDE()
+         }
+      }
    }
 
    get shouldCloseOthersonOpen(): boolean {
@@ -466,7 +543,17 @@ export class RevealState {
       }
    }
 
+   focusOnMountOrNowIfMounted_EXCEPT_IF_FOCUS_ALREADY_INSIDE(): void {
+      this.shellRef.focusOnMountOrNowIfMounted_EXCEPT_IF_FOCUS_ALREADY_INSIDE()
+   }
+
+   focusFirstInputLikeOnMountOrNowIfMounted_EXCEPT_IF_FOCUS_ALREADY_INSIDE(): void {
+      this.shellRef.focusFirstInputLikeOnMountOrNowIfMounted_EXCEPT_IF_FOCUS_ALREADY_INSIDE()
+   }
+
    close = (reason?: RevealHideReason): void => {
+      window.removeEventListener('resize', this.handleWindowResize)
+
       if (!this.isVisible) return this.log(`🔴 attempting to close BUT already closed ! (reason=${reason})`)
       this.log(`🚨 close (reason=${reason})`)
 
@@ -479,6 +566,8 @@ export class RevealState {
       // To avoid relying on the render loop to update the global stack
       // we remove the lazy state from the global stack as soon as we know it's closed
       removeFromGlobalRevealStack(this.lazyState)
+
+      this.parent?.focusOnMountOrNowIfMounted_EXCEPT_IF_FOCUS_ALREADY_INSIDE()
 
       this._unregister()
       this.lastOpenClose = Date.now()
@@ -518,9 +607,9 @@ export class RevealState {
          // TODO: review that:
          // if we entered via hover, the closure is likely not like a click on
          // the anchor (need clearer implementation though)
-         if (this._EVALBOOL(this.p.showTriggers?.anchorHover)) return
+         if (this._EVALBOOL(this.p.showTriggers?.anchorHover, null)) return
 
-         if (this.anchorRef.current == null) console.log('❌ anchorRef is null?!')
+         if (this.anchorRef.current == null) this.log('❌ anchorRef is null?!')
          this.anchorRef.current?.focus()
       }
    }
@@ -549,13 +638,13 @@ export class RevealState {
    private enterTooltipTimeoutId: NodeJS.Timeout | null = null
    private leaveTooltipTimeoutId: NodeJS.Timeout | null = null
 
-   onMouseEnterTooltip = (ev?: React.MouseEvent<unknown, MouseEvent>): void => {
+   onMouseEnterTooltip = (ev?: MouseEvent): void => {
       this.logEv(ev, `onMouseEnterTooltip`)
       this._resetAllTooltipTimouts()
       this.enterTooltipTimeoutId = setTimeout(this.enterTooltip, this.showDelay)
    }
 
-   onMouseLeaveTooltip = (ev?: React.MouseEvent<unknown, MouseEvent>): void => {
+   onMouseLeaveTooltip = (ev?: MouseEvent): void => {
       this.logEv(ev, `onMouseLeaveTooltip`)
       if (!this.shouldHideOnAnchorOrTooltipMouseLeave) return
       this._resetAllTooltipTimouts()
@@ -621,10 +710,10 @@ export class RevealState {
 
    get hasBackdrop(): boolean {
       // 🔴
-      return this.p.hasBackdrop ?? this.hideTriggers.backdropClick ?? false
+      return this.p.hasBackdrop ?? this.shouldHideOnBackdropClick
    }
 
-   onFocusAnchor = (ev: React.FocusEvent<unknown>): void => {
+   onFocusAnchor = (ev: FocusEvent): void => {
       if (isElemAChildOf(ev.relatedTarget, '._ShellForFocusEvents')) return
 
       /**
@@ -658,7 +747,7 @@ export class RevealState {
       // 🔶 another loop here: when we focus due to closure, it reopens due to focus...
       if (this.PREVENT_DOUBLE_OPEN_CLOSE_DELAY) return
 
-      if (!this.shouldShowOnAnchorFocus) return
+      if (!this.shouldShowOnAnchorFocus(ev)) return
 
       // if (ev.relatedTarget != null && !(ev.relatedTarget instanceof Window)) // 🔶 not needed anymore?
       this.open('focus-anchor')
@@ -680,14 +769,14 @@ export class RevealState {
 
    onAnchorKeyDown = (ev: React.KeyboardEvent): void => {
       this.logEv(ev, `AnchorOrShell.onKeyDown (⏳: ${this.delaySinceLastOpenClose})`)
-      this.p.onAnchorKeyDown?.(ev)
+      this.p.onAnchorKeyDown?.(ev, this)
       // keydown have been consumed by the anchor custom onAnchorKeyDown; we should just abort
       if (ev.isDefaultPrevented()) return console.log(`[🤠] 🔴 default prevented by custom onAnchorKeyDown`)
 
       // 🔶 without delay: press 'Enter' in option list => toggle => close popup => calls onAnchorKeyDown 'Enter' with visible now false => re-opens :(
       if (this.PREVENT_DOUBLE_OPEN_CLOSE_DELAY) return
 
-      if (this.shouldShowOnKeyboardEnterOrLetterWhenAnchorFocused && !this.isVisible) {
+      if (this.shouldShowOnKeyboardEnterOrLetterWhenAnchorFocused(ev) && !this.isVisible) {
          this.logEv(ev, `AnchorOrShell.onKeyDown: maybe open (visible: ${this.isVisible})`)
          const letterCode = ev.keyCode
          const isLetter = letterCode >= 65 && letterCode <= 90
@@ -721,7 +810,7 @@ export class RevealState {
          )
             return // 🔶 tab should not close popups
 
-         if (this.hideTriggers.tabKey) this.close(reason)
+         if (this.shouldHideOnTabKey) this.close(reason)
          // 🔴 if in grid context, do not stop propagation and do not focusNextElement so the grid focus the next cell (which have tabIndex=-1) itself
          // (or maybe call .selectCell ourselves to keep the grid selection in sync with our own?)
          // see ev.preventGridDefault() in https://github.com/adazzle/react-data-grid/blob/main/website/demos/CellNavigation.tsx#L136

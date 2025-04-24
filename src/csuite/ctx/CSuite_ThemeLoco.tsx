@@ -44,11 +44,10 @@ export class CSuite_ThemeLoco implements CSuiteConfig {
    inputBorder: number = 0
    inputContrast: number = 0
    inputRoundness: number = 3
-
-   // legacy
    labelText = { contrast: 0.48, chroma: 0.035 }
    showWidgetExtra: boolean = true
-   truncateLabels?: boolean | undefined = false
+   truncateLabels?: boolean | undefined = true
    fieldGroups = {}
-   enableRollingClick: boolean = false
+
+   enableRollingClick?: boolean | undefined = false
 }

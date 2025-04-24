@@ -1,3 +1,4 @@
+import type { ObservableRef } from '../../utils/observableRef'
 import type { RevealComputedPosition } from '../RevealPlacement'
 import type { RevealState } from '../RevealState'
 import type { ReactNode } from 'react'
@@ -7,7 +8,7 @@ export type RevealShellProps = {
    pos: RevealComputedPosition
    reveal: RevealState
    children?: ReactNode
-   shellRef: React.RefObject<HTMLDivElement>
+   shellRef: ObservableRef<HTMLDivElement>
 }
 
 export type RevealContentProps = {

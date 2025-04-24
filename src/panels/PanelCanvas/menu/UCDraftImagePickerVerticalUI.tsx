@@ -1,10 +1,8 @@
 import type { MediaImageL } from '../../../models/MediaImage'
 
-import { observer } from 'mobx-react-lite'
-
 import { ImageUI } from '../../../widgets/galleries/ImageUI'
 
-export const UCDraftImagePickerVerticalUI = observer(function UCDraftImagePickerVerticalUI_(p: {
+export const UCDraftImagePickerVerticalUI = obs(function UCDraftImagePickerVerticalUI_(p: {
    onCLick?: (img: MediaImageL) => void
    draftID: DraftID
 }) {

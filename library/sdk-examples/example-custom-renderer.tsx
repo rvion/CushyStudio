@@ -10,11 +10,15 @@ app({
          testA: b.fields(
             { a: b.int(), b: b.string(), c: b.string() },
             {
-               header: ({ field }) => (
-                  <div tw='flex'>
-                     👉 {field.fields.a.header()} ({field.fields.b.header()}) ({field.fields.a.header()}) 👈
-                  </div>
-               ),
+               uiui: {
+                  Header: ({ field }) => (
+                     <div tw='flex'>
+                        <field.zFields.a.UI Shell={uy.shell.HeaderOnly} />
+                        <field.zFields.b.UI Shell={uy.shell.HeaderOnly} />
+                        <field.zFields.a.UI Shell={uy.shell.HeaderOnly} />
+                     </div>
+                  ),
+               },
             },
          ),
 
@@ -22,30 +26,36 @@ app({
          testB: b.fields(
             { a: b.int(), b: b.string(), c: b.string() },
             {
-               body: null,
-               header: () => <div tw='flex'>nothing to see here</div>,
+               uiui: {
+                  Body: null,
+                  Header: () => <div tw='flex'>nothing to see here</div>,
+               },
             },
          ),
 
          c: b.header('Custom boolean header wrapping the default:'),
          testC: b.bool({
-            header: ({ field: widget }) => (
-               <div tw='flex-1 flex whitespace-nowrap'>
-                  <div
-                     tw='px-1 cursor-pointer'
-                     style={{ border: '3px solid red' }}
-                     onClick={() => (widget.value = !widget.value)}
-                  >
-                     click here
+            uiui: {
+               Header: ({ field: widget }) => (
+                  <div tw='flex flex-1 whitespace-nowrap'>
+                     <div
+                        tw='cursor-pointer px-1'
+                        style={{ border: '3px solid red' }}
+                        onClick={() => (widget.zValue = !widget.zValue)}
+                     >
+                        click here
+                     </div>
+                     <div tw='ml-auto flex flex-nowrap'>
+                        (default UI: 👉 <uy.boolean.Default field={widget} /> 👈)
+                     </div>
                   </div>
-                  <div tw='ml-auto flex flex-nowrap'>(default UI: 👉 {widget.defaultHeader()} 👈)</div>
-               </div>
-            ),
+               ),
+            },
          }),
 
          d: b.header('Custom string body:'),
          testD: b.string({
-            body: ({ field: widget }) => <div>the string is {widget.value.length} char long.</div>,
+            body: ({ field: widget }) => <div>the string is {widget.zValue.length} char long.</div>,
          }),
       }),
    run: (ctx) => {},

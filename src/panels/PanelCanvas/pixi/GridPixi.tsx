@@ -1,14 +1,9 @@
 import { extend } from '@pixi/react'
-import { observer } from 'mobx-react-lite'
+
 import { Graphics } from 'pixi.js'
 
 extend({ Graphics })
-export const GridPixi = observer(function PixiGridUI_(p: {
-   x: number
-   y: number
-   height: number
-   width: number
-}) {
+export const GridPixi = obs(function PixiGridUI_(p: { x: number; y: number; height: number; width: number }) {
    const cellW = p.width / 10
    const cellH = p.height / 10
    return (

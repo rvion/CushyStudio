@@ -12,12 +12,9 @@ export class Media3dDisplacementRepo extends LiveTable<
 > {
    constructor(liveDB: LiveDB) {
       super(liveDB, 'media_3d_displacement', '🖼️', Media3dDisplacementL)
-      this.init()
    }
 }
 
 export class Media3dDisplacementL extends BaseInst<TABLES['media_3d_displacement']> {
-   instObservabilityConfig: undefined
-   dataObservabilityConfig: undefined
    step = new LiveRefOpt<this, StepL>(this, 'stepID', 'step')
 }

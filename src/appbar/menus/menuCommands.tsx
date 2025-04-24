@@ -7,7 +7,7 @@ import { PanelShortcuts } from '../../panels/PanelShortcuts/PanelShortcuts'
 
 export const menuCommands = defineMenu({
    title: 'Commands',
-   icon: 'mdiKeyboard',
+   icon: IKONS.mdiKeyboard,
    // entries: () => [...allLayoutCommands],
    entries: (b): MenuEntry[] => {
       return [
@@ -19,7 +19,7 @@ export const menuCommands = defineMenu({
                new Menu({
                   title: c.name,
                   entries: (): Command<any>[] => c.commandsArr,
-                  icon: 'mdiKeyboardCaps',
+                  icon: IKONS.mdiKeyboardCaps,
                }),
          ),
       ]

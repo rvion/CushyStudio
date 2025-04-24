@@ -1,32 +1,38 @@
-import { describe, expect, it } from 'bun:test'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import { sb } from '../simple/SimpleFactory'
 import { MigrationEngine } from './MigrationEngine'
 
+const b = sb
+
 describe('paths and pathExt', () => {
+   beforeEach(() => {
+      vi.spyOn(console, 'log').mockImplementation(() => undefined)
+   })
+
    it('looks like jsonPath', () => {
-      const S1 = sb.fields({ a: sb.int() })
+      const S1 = b.fields({ a: b.int() })
       const E1 = S1.create()
-      expect(E1.path).toBe('$')
-      expect(E1.A.path).toBe('$.a')
-      expect(E1.A.pathExt).toBe('@group.a@number')
+      expect(E1.zPath).toBe('$')
+      expect(E1.zFields.a.zPath).toBe('$.a')
+      expect(E1.zFields.a.zPathExt).toBe('@group.a@number')
    })
 })
 
 describe('migrator', () => {
    it('never-loose-data', () => {
       // 1. first version: everything OK
-      const S1 = sb.fields({ a: sb.int() }).withUID('TEST-abcd')
+      const S1 = b.fields({ a: b.int() }).withUID('TEST-abcd')
       const E1 = S1.create()
-      E1.A.value = 100
-      expect(E1.serial.anomalies).toBeUndefined()
+      E1.zFields.a.zValue = 100
+      expect(E1.zSerial.anomalies).toBeUndefined()
 
       // 2. then schema changes, but serial not migrated => ANOMALIES
-      const S2 = sb.fields({ a: sb.string() }).withUID('TEST-abcd') // <--- Same Schema.uid
-      const E2 = S2.create(E1.serial as any)
-      expect(E2.A.serial.anomalies).toBeUndefined()
-      expect(E2.serial.anomalies?.length).toBe(1)
-      expect(E2.serial.anomalies![0]).toMatchObject({
+      const S2 = b.fields({ a: b.string() }).withUID('TEST-abcd') // <--- Same Schema.uid
+      const E2 = S2.create(E1.zSerial as any)
+      expect(E2.zFields.a.zSerial.anomalies).toBeUndefined()
+      expect(E2.zSerial.anomalies?.length).toBe(1)
+      expect(E2.zSerial.anomalies![0]).toMatchObject({
          type: 'invalid-serial',
          path: '$.a',
          pathExt: '@group.a@str',
@@ -35,7 +41,7 @@ describe('migrator', () => {
 
       // 3. fortunately, migrator is here to offer us Fixes
       const migrator = new MigrationEngine()
-      const E3 = S2.create(E1.serial as any)
+      const E3 = S2.create(E1.zSerial as any)
       migrator.consider(E2)
       migrator.consider(E3)
 
@@ -47,18 +53,18 @@ describe('migrator', () => {
       //     },
       //     config: (b) => b.string(),
       //     action: ({ document, config, anomaly, data }) => {
-      //         data.field.value = config.value
+      //         data.field.zValue = config.value
       //         return 'SUCCESS'
       //     },
       // })
 
-      expect(E1.hoistAnomalies).toBeDefined()
+      expect(E1.zHoistAnomalies).toBeDefined()
       expect(migrator.scope.size).toBe(2)
-      expect(Object.keys(migrator.batchOfSimilarAnomalies).length).toBe(1)
-      expect(migrator.suggestions.length).toBe(1)
-      expect(migrator.suggestions.map((s) => s.id)).toMatchObject(['{{TEST-abcd}}@group.a@str'])
+      expect(Object.keys(migrator.batchOfSimilarAnomalies)).toHaveLength(1)
+      expect(migrator.suggestions).toHaveLength(1)
+      expect(migrator.suggestions.map((s) => s.id)).toEqual(['{{TEST-abcd}}@group.a@str'])
       expect(migrator.suggestions[0]!.count).toBe(2)
-      expect(migrator.suggestions[0]!.candidates).toMatchObject([
+      expect(migrator.suggestions[0]!.candidates).toEqual([
          { name: 'drop', solutionID: 'drop' },
          { name: 'convert previous number serial to string serial', solutionID: 'number-to-string' },
       ])
@@ -67,10 +73,10 @@ describe('migrator', () => {
       const res = migrator.attemptMigration({
          '{{TEST-abcd}}@group.a@str': {
             solutionID: 'number-to-string',
-            config: sb
-               .choices({ prefix: sb.string(), suffix: sb.string() })
+            config: b
+               .choices({ prefix: b.string(), suffix: b.string() })
                .create()
-               .setValue({ prefix: '🔢', suffix: '🔚' }),
+               .zSetValue({ prefix: '🔢', suffix: '🔚' }),
          },
       })
 
@@ -89,9 +95,10 @@ describe('migrator', () => {
          ],
          status: 'SUCCESS',
       })
-      expect(E3.A.value).toBe('🔢100🔚')
+      expect(E3.zFields.a.zValue).toBe('🔢100🔚')
    })
 
+   // eslint-disable-next-line vitest/no-commented-out-tests
    // it.skip('never-loose-data', () => {
    //     const S1 = b.fields({
    //         a: b.int(),
@@ -99,7 +106,7 @@ describe('migrator', () => {
    //         c: b.bool().list(),
    //     })
    //     const E1 = S1.create()
-   //     expect(E1.serial.anomalies).toBeUndefined()
+   //     expect(E1.serial.anomalies).toBe(undefined)
 
    //     const S2 = b.fields({
    //         a: b.float({ min: Math.PI }),

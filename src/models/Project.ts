@@ -17,15 +17,11 @@ export const asProjectID = (s: string): ProjectID => s as any
 export class ProjectRepo extends LiveTable<TABLES['project'], typeof ProjectL> {
    constructor(liveDB: LiveDB) {
       super(liveDB, 'project', '🤠', ProjectL)
-      this.init()
    }
 }
 
 /** a thin wrapper around a single Project somewhere in a .ts file */
 export class ProjectL extends BaseInst<TABLES['project']> {
-   instObservabilityConfig: undefined
-   dataObservabilityConfig: undefined
-
    rootGraph = new LiveRef<this, ComfyWorkflowL>(this, 'rootGraphID', 'comfy_workflow')
    draft = new LiveRefOpt<this, DraftL>(this, 'currentDraftID', 'draft')
 

@@ -1,28 +1,25 @@
 import type { Field } from '../Field'
 
-import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
 
 import { bang } from '../../utils/bang'
 
+export type ChannelOrChannelId<T> = Channel<T> | ChannelId
 export type ChannelId = string
+export interface Channel<T> {
+   '{type}': T
+}
 
 export class Channel<T> {
-   $type!: T
-
-   get() {
-      return (field: Field): Maybe<T> => field.consume(this)
+   readFrom(field: Field): Maybe<T> {
+      return field.zReadChannel(this)
    }
 
    getOrThrow(field: Field): T {
-      return bang(field.consume(this), 'Empty channel')
+      return bang(field.zReadChannel(this), 'Empty channel')
    }
 
-   id: ChannelId = nanoid()
-
-   constructor() {
-      makeAutoObservable(this)
-   }
+   constructor(public id: ChannelId = nanoid()) {}
 
    // see src/csuite/utils/potatoClone.ts
    [Symbol.for('🥔')](): this {

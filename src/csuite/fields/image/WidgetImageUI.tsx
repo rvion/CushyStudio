@@ -1,29 +1,40 @@
 import type { Field_image } from './FieldImage'
 
-import { observer } from 'mobx-react-lite'
 import { nanoid } from 'nanoid'
 
 import { createMediaImage_fromBlobObject } from '../../../models/createMediaImage_fromWebFile'
 import { FPath } from '../../../models/FPath'
 import { PanelGalleryUI } from '../../../panels/PanelGallery/PanelGalleryUI'
-import { useImageDrop } from '../../../widgets/galleries/dnd'
-import { ImageUI, ImageUIDumb } from '../../../widgets/galleries/ImageUI'
+import { ImageUIDumb } from '../../../widgets/galleries/ImageUI'
 import { Button } from '../../button/Button'
 import { SpacerUI } from '../../components/SpacerUI'
 import { Frame } from '../../frame/Frame'
-import { Ikon, IkonOf } from '../../icons/iconHelpers'
+import { Ikon } from '../../icons/iconHelpers'
 import { ResizableFrame } from '../../resizableFrame/resizableFrameUI'
 import { RevealUI } from '../../reveal/RevealUI'
 
-export const WidgetSelectImageUI = observer(function WidgetSelectImageUI_(p: {
+export const WidgetSelectImageUI = obs(function WidgetSelectImageUI_(p: {
    //
    field: Field_image
 }) {
    const field = p.field
-   const [dropStyle, dropRef] = useImageDrop(cushy, (imageL) => {
-      field.value = imageL
+   const [isOver, dropRef] = uy.dnd.useDropZone({
+      config: { shallow: true },
+      Image: {
+         onDrop: (item, monitor) => {
+            field.zValue = item
+         },
+         onHover: (item, monitor) => {
+            cushy.dndHandler.setContent({
+               icon: IKONS.mdiImage,
+               label: 'Drop Image',
+               suffixIcon: IKONS.mdiMenuOpen,
+            })
+         },
+      },
    })
-   const image = field.value
+
+   const image = field.zValue
    // ⏸️ const suggestionsRaw = p.field.config.assetSuggested
    // ⏸️ const suggestions: RelativePath[] =
    // ⏸️     suggestionsRaw == null ? [] : Array.isArray(suggestionsRaw) ? suggestionsRaw : [suggestionsRaw]
@@ -33,20 +44,18 @@ export const WidgetSelectImageUI = observer(function WidgetSelectImageUI_(p: {
          border
          tw='w-full text-sm'
          currentSize={size}
-         onResize={(val) => {
-            field.size = val
-         }}
+         onResize={(val) => void (field.size = val)}
          snap={16}
          base={{ contrast: -0.025 }}
          header={
             <Frame expand line>
-               {/* <Button onClick={() => {}} subtle icon='mdiCircle'></Button>
-               <Button onClick={() => {}} subtle icon='mdiSquare'></Button> */}
+               {/* <Button onClick={() => {}} subtle icon={IKONS.mdiCircle}></Button>
+               <Button onClick={() => {}} subtle icon={IKONS.mdiSquare}></Button> */}
 
                <Button
                   square
                   subtle
-                  icon='mdiContentPaste'
+                  icon={IKONS.mdiContentPaste}
                   tooltip='Paste image data from the clipboard'
                   onClick={() => {
                      // XXX: This is slow, should probably be done through electron's api, but works for now. Could also be made re-usable? getImageFromClipboard()?
@@ -61,7 +70,7 @@ export const WidgetSelectImageUI = observer(function WidgetSelectImageUI_(p: {
                                     const filename = `${imageID}.png`
                                     const fpath = new FPath(`outputs/imported/${filename}`)
                                     const out = await createMediaImage_fromBlobObject(blob, fpath)
-                                    field.value = out
+                                    field.zValue = out
                                  }
                               }
                            }
@@ -80,8 +89,8 @@ export const WidgetSelectImageUI = observer(function WidgetSelectImageUI_(p: {
                      <Button
                         tw='!justify-start'
                         subtle
-                        icon='mdiImageSearchOutline'
-                        suffixIcon={'mdiChevronDown'}
+                        icon={IKONS.mdiImageSearchOutline}
+                        suffixIcon={IKONS.mdiChevronDown}
                      >
                         {image.id}
                         <SpacerUI />
@@ -90,7 +99,7 @@ export const WidgetSelectImageUI = observer(function WidgetSelectImageUI_(p: {
                   content={(p) => (
                      <PanelGalleryUI
                         onClick={(img) => {
-                           field.value = img
+                           field.zValue = img
                            p.reveal.close()
                         }}
                      />
@@ -98,12 +107,12 @@ export const WidgetSelectImageUI = observer(function WidgetSelectImageUI_(p: {
                />
                <SpacerUI />
                <Button //
-                  disabled={field.value == cushy.defaultImage}
+                  disabled={field.zValue == cushy.defaultImage}
                   tooltip='reset'
                   square
                   subtle
-                  icon={'mdiRestore'}
-                  onClick={() => (field.value = cushy.defaultImage)}
+                  icon={IKONS.mdiRestore}
+                  onClick={() => (field.zValue = cushy.defaultImage)}
                />
             </Frame>
          }
@@ -116,7 +125,9 @@ export const WidgetSelectImageUI = observer(function WidgetSelectImageUI_(p: {
          }
       >
          <div
-            style={dropStyle}
+            style={{
+               opacity: isOver ? '75%' : '100%',
+            }}
             ref={dropRef}
             className='DROP_IMAGE_HANDLER'
             tw='_WidgetSelectImageUI flex h-full w-full flex-1 items-center justify-center'

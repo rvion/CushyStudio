@@ -1,10 +1,8 @@
 import type { ComfyNode } from '../../comfyui/livegraph/ComfyNode'
 
-import { observer } from 'mobx-react-lite'
-
 import { comfyColors } from '../../core/Colors'
 
-export const NodeRefUI = observer(function NodeRefUI_(p: {
+export const NodeRefUI = obs(function NodeRefUI_(p: {
    //
    label?: string
    size?: number

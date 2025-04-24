@@ -6,7 +6,7 @@ import type { NodeInputExt, NodeOutputExt } from '../comfyui-types'
 import type { ComfyUIObjectInfoParsedNodeSchema } from '../objectInfo/ComfyUIObjectInfoParsedNodeSchema'
 import type { ReactNode } from 'react'
 
-import { configure, extendObservable, makeAutoObservable } from 'mobx'
+import { action, configure, extendObservable, makeAutoObservable } from 'mobx'
 import { createElement } from 'react'
 
 import { comfyColors } from '../../core/Colors'
@@ -41,6 +41,8 @@ export type NodePort = {
    type: string
    x: number
    y: number
+   toNode?: ComfyNode<any, {}>
+   fromNode?: ComfyNode<any, {}>
 }
 
 export type ComfyNodeUID = string
@@ -185,7 +187,9 @@ export class ComfyNode<
       for (const x of this.$schema.singleOuputs) {
          extensions[`_${x.typeName}`] = outputs[x.nameInCushy]
       }
-      makeAutoObservable(this)
+      makeAutoObservable(this, {
+         tagDirty: action,
+      })
       extendObservable(this, extensions)
       // console.log(Object.keys(Object.getOwnPropertyDescriptors(this)).join(','))
       // makeObservable(this, { artifacts: observable })
@@ -240,9 +244,40 @@ export class ComfyNode<
    //     return this._incomingNodes().map((id) => this.graph.getNode(id)!)
    // }
 
-   x: number = 0
-   y: number = 0
+   _visible: boolean = true
+   set visible(value: boolean) {
+      this._visible = value
+   }
+
+   get visible(): boolean {
+      return this._visible
+   }
+
+   _x: number = 0
+   _y: number = 0
+   set x(value: number) {
+      this.isDirty = true
+      this._x = value
+   }
+   get x(): number {
+      return this._x
+   }
+   set y(value: number) {
+      this.isDirty = true
+      this._y = value
+   }
+   get y(): number {
+      return this._y
+   }
+
+   isDirty = true
+
+   tagDirty(value: boolean): void {
+      this.isDirty = value
+   }
+
    col: number = 0
+   selected: boolean = false
    get outgoingPorts(): NodePort[] {
       return this.$outputs.map(
          (o, ix): NodePort => ({
@@ -250,6 +285,8 @@ export class ComfyNode<
             label: o.type,
             width: NodeSlotSize,
             height: NodeSlotSize,
+            fromNode: this,
+            toNode: o.node ?? undefined,
             type: o.type,
             x: this.x + this.width, // + NodeSlotSize / 2,
             y:
@@ -267,6 +304,8 @@ export class ComfyNode<
             id: this.uid + '<-' + e.from + '#' + e.fromSlotIx,
             width: NodeSlotSize,
             height: NodeSlotSize,
+            fromNode: this.graph.getNode(e.from) ?? undefined,
+            toNode: this,
             label: e.inputName,
             type: e.type,
             x: this.x, // - NodeSlotSize / 2,

@@ -1,6 +1,6 @@
-import type { BaseSchema } from '../../model/BaseSchema'
-import type { FieldConfig } from '../../model/FieldConfig'
-import type { FieldSerial } from '../../model/FieldSerial'
+import type { CSchema } from '../../model/CSchema'
+import type { FieldConstructor } from '../../model/FieldConstructor'
+import type { Patch } from '../../model/Patch'
 import type { Repository } from '../../model/Repository'
 import type { Problem_Ext } from '../../model/Validation'
 
@@ -8,118 +8,118 @@ import { produce } from 'immer'
 
 import { Field } from '../../model/Field'
 import { registerFieldClass } from '../WidgetUI.DI'
-import { WidgetColorUI } from './WidgetColorUI'
 
 // CONFIG
-export type Field_color_config = FieldConfig<{ default?: string }, Field_color_types>
+type Field_color_ownConfig = { default?: string }
 
 // SERIAL
-export type Field_color_serial = FieldSerial<{
+type Field_color_ownSerial = {
    $: 'color'
    /** color, stored as string */
    value?: string
-}>
+}
 
 // VALUE
 export type Field_color_value = string
 export type Field_color_unchecked = Field_color_value | undefined
 
-// TYPES
-export type Field_color_types = {
-   $Type: 'color'
-   $Config: Field_color_config
-   $Serial: Field_color_serial
-   $Value: Field_color_value
-   $Unchecked: Field_color_unchecked
-   $Field: Field_color
-   $Child: never
-   $Reflect: Field_color_types
-}
-
 // STATE
-export class Field_color extends Field<Field_color_types> {
-   // #region types
+export interface Field_color {
+   '{type}': 'color'
+   '{ownConfig}': Field_color_ownConfig
+   '{ownSerial}': Field_color_ownSerial
+   '{value}': Field_color_value
+   '{setValue}': Field_color_value
+   '{unchecked}': Field_color_unchecked
+   '{child}': never
+   '{opts}': unknown
+   '{ownPatch}': Patch<'color'>
+}
+export class Field_color extends Field {
    static readonly type: 'color' = 'color'
-   static readonly emptySerial: Field_color_serial = { $: 'color' }
-   static codegenValueType(config: Field_color_config): string {
-      return `string`
+   static override migrateSerial(): undefined {}
+   static readonly codeForTypescriptValue = (config: Field_color['{config}']): string => 'Z.Color'
+   static readonly unsetSerial: Field_color['{serial}'] = { $: 'color' }
+   static generateSerial(
+      setValue: Maybe<Field_color['{setValue}']>,
+      config: Field_color['{config}'],
+   ): Field_color['{serial}'] {
+      if (setValue == null && config.default == null) return this.unsetSerial
+      const value = setValue ?? config.default
+      return { $: 'color', value }
    }
-   static migrateSerial(): undefined {}
 
-   // #region UI
-   readonly DefaultHeaderUI = WidgetColorUI
-   readonly DefaultBodyUI: undefined = undefined
-
-   // #region Ctor
    constructor(
       repo: Repository,
       root: Field | null,
       parent: Field | null,
-      schema: BaseSchema<Field_color>,
+      schema: CSchema<Field_color>,
       initialMountKey: string,
-      serial?: Field_color_serial,
+      serial?: Field_color['{serial}'],
    ) {
       super(repo, root, parent, schema, initialMountKey, serial)
-      this.init(serial, {
-         DefaultHeaderUI: false,
-         DefaultBodyUI: false,
-      })
+      this.init(serial)
    }
 
-   protected setOwnSerial(next: Field_color_serial): void {
+   protected zSetOwnSerial(next: this['{serial}']): void {
       if (next.value == null) {
          const def = this.defaultValue
          if (def != null) next = produce(next, (draft) => void (draft.value = def))
       }
 
-      this.assignNewSerial(next)
+      this.zAssignNewSerial(next)
    }
 
-   get isOwnSet(): boolean {
-      return this.serial.value !== undefined
+   get zIsOwnSet(): boolean {
+      return this.zSerial.value !== undefined
    }
 
-   get value(): Field_color_value {
-      return this.value_or_fail
+   set zValue(next: Field_color_value) {
+      if (this.zSerial.value === next) return
+      this.zRunInTransaction(() => this.zPatchSerial((draft) => void (draft.value = next)))
    }
 
-   set value(next: Field_color_value) {
-      if (this.serial.value === next) return
-      this.runInTransaction(() => this.patchSerial((draft) => void (draft.value = next)))
-   }
-
-   get value_or_fail(): Field_color_value {
-      const val = this.value_unchecked
-      if (val == null) throw new Error('Field_color.value_or_fail: not set')
+   get zValue(): Field_color_value {
+      const val = this.zValueUnchecked
+      if (val == null) throw new Error('Field_color.zValue: not set')
       return val
    }
 
-   get value_or_zero(): Field_color_value {
-      return this.serial.value ?? '#000000' /* <- zero */
+   get zValueOrZero(): Field_color_value {
+      return this.zSerial.value ?? '#000000' /* <- zero */
    }
 
-   get value_unchecked(): Field_color_unchecked {
-      return this.serial.value
+   get zValueUnchecked(): Field_color_unchecked {
+      return this.zSerial.value
    }
 
-   get ownTypeSpecificProblems(): Problem_Ext {
+   override zIsValueEqual(other: Field): boolean {
+      if (!(other instanceof Field_color)) return false
+
+      return this.zSerial.value === other.zSerial.value
+   }
+
+   public static readonly patchedSerialPaths: readonly string[] = Object.freeze(['value'])
+
+   get zOwnTypeSpecificProblems(): Problem_Ext {
       return null
    }
 
-   get ownConfigSpecificProblems(): Problem_Ext {
+   get zOwnConfigSpecificProblems(): Problem_Ext {
       return null
    }
 
    get defaultValue(): string | undefined {
-      return this.config.default
+      return this.zConfig.default
    }
 
-   get hasChanges(): boolean {
-      if (!this.isSet) return false
-      if (this.serial.value === this.defaultValue) return false
+   get zHasChanges(): boolean {
+      if (!this.zIsSet) return false
+      if (this.zSerial.value === this.defaultValue) return false
       return true
    }
 }
 
 // DI
 registerFieldClass('color', Field_color)
+Field_color satisfies FieldConstructor<Field_color>

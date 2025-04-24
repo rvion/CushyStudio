@@ -2,8 +2,8 @@ import type { ComfyWorkflowBuilder } from '../../../src/back/NodeBuilder'
 import type { Requirements } from '../../../src/manager/REQUIREMENTS/Requirements'
 import type { OutputFor } from './_prefabs'
 
-export const ui_upscaleWithModel_v2 = (): X.XSelectMany_<Comfy.Slots['UpscaleModelLoader.model_name']> => {
-   const ui: X.Builder = getCurrentForm()
+export const ui_upscaleWithModel_v2 = (): Z.XSelectMany_<Comfy.Slots['UpscaleModelLoader.model_name']> => {
+   const ui: Z.Builder = getBuilder()
    const allUpscaleModels = Array.from(cushy.comfyAddons.knownModels.values()) //
       .filter((t) => t.type === 'upscale')
 

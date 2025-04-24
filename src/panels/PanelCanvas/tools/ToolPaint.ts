@@ -1,11 +1,11 @@
-import type { IconName } from '../../../csuite/icons/icons'
+import type { IconName } from '../../../csuite/icons/IconName'
 import type { UnifiedCanvas } from '../states/UnifiedCanvas'
 import type { ICanvasTool } from '../utils/_ICanvasTool'
 
 export class ToolPaint implements ICanvasTool {
    id: 'paint' = 'paint'
    category: 'draw' = 'draw'
-   icon: IconName = 'mdiBrush'
+   icon: IconName = IKONS.mdiBrush
    description: string = 'draw on top of the canvas'
 
    constructor(public canvas: UnifiedCanvas) {}

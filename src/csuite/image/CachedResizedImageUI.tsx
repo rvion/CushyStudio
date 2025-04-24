@@ -1,6 +1,5 @@
 import type { ImgHTMLAttributes } from 'react'
 
-import { observer } from 'mobx-react-lite'
 import { useState } from 'react'
 import sharp from 'sharp'
 
@@ -17,7 +16,7 @@ import { ImageErrorDisplayUI } from '../../widgets/galleries/ImageErrorDisplayUI
  * ```
  */
 
-export const CachedResizedImage = observer(function CachedResizedImage_({
+export const CachedResizedImage = obs(function CachedResizedImage_({
    // own --------------------------------------------------------------
    /** unrelated to the underlying image element */
    size,
@@ -42,7 +41,7 @@ export const CachedResizedImage = observer(function CachedResizedImage_({
          .toBuffer((err, buffer, info) => {
             if (err) {
                console.error(err)
-               return <ImageErrorDisplayUI icon='mdiCached' />
+               return <ImageErrorDisplayUI icon={IKONS.mdiCached} />
             }
 
             setCached(`data:image/png;base64,${buffer.toString('base64')}`)

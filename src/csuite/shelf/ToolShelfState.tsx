@@ -56,7 +56,7 @@ export class ToolShelfState {
             break
       }
 
-      const iconSize = cushy.preferences.interface.value.toolBarIconSize
+      const iconSize = cushy.preferences.interface.zValue.toolBarIconSize
       const pState = this.props.panelState
       if (this.size <= iconSize * 0.5) {
          pState.size = 0

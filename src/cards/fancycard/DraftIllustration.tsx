@@ -1,24 +1,26 @@
 import type { DraftL } from '../../models/Draft'
 
 import { existsSync } from 'fs'
-import { observer } from 'mobx-react-lite'
+
 import { fileURLToPath } from 'url'
 
+import { useDragDropRefForReact19 } from '../../csuite/utils/dnd'
 import { useImageDrop } from '../../widgets/galleries/dnd'
 import { ImageErrorDisplayUI } from '../../widgets/galleries/ImageErrorDisplayUI'
 import { AppIllustrationUI } from './AppIllustrationUI'
 
-export const DraftIllustrationUI = observer(function DraftIllustrationUI_(p: {
+export const DraftIllustrationUI = obs(function DraftIllustrationUI_(p: {
    className?: string
    onClick?: () => void
    draft: Maybe<DraftL>
    revealAppIllustrationOnHover?: boolean
    size: string
 }) {
-   const [dropStyle, dropRef] = useImageDrop(cushy, (img) => {
+   const [dropStyle, dropRef__] = useImageDrop(cushy, (img) => {
       if (p.draft == null) return
       img.useAsDraftIllustration(p.draft)
    })
+   const dropRef = useDragDropRefForReact19(dropRef__)
 
    // 1. no draft
    const draft = p.draft
@@ -70,7 +72,7 @@ export const DraftIllustrationUI = observer(function DraftIllustrationUI_(p: {
             />
          ) : (
             <div style={{ width: p.size, height: p.size, objectFit: 'contain' }}>
-               <ImageErrorDisplayUI icon='mdiFolder' />
+               <ImageErrorDisplayUI icon={IKONS.mdiFolder} />
             </div>
          )}
       </div>

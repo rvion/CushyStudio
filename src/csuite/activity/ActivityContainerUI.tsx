@@ -1,12 +1,11 @@
 import type { Routine } from './Routine'
 
-import { observer } from 'mobx-react-lite'
 import { type CSSProperties, type ReactNode, useRef } from 'react'
 
 import { ModalShellUI } from '../../csuite/modal/ModalShell'
 import { computePlacement } from '../../csuite/reveal/RevealPlacement'
 
-export const ActivityContainerUI = observer(function ActivityContainerUI_(p: {
+export const ActivityContainerUI = obs(function ActivityContainerUI_(p: {
    routine: Routine
    uid?: string
    ix?: number
@@ -90,11 +89,11 @@ export const ActivityContainerUI = observer(function ActivityContainerUI_(p: {
                </div>
             ) : null}
 
-            <div // debug info
+            {/* <div // debug info
                tw='absolute left-10 top-10 [z-index:99999]'
             >
                activity "{activity.title}"
-            </div>
+            </div> */}
 
             <div // activity area
                // 1. when an activity is POPED, we NEED to focus it

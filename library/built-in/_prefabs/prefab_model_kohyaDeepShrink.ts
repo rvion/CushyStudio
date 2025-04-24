@@ -1,20 +1,20 @@
-export type UI_model_kohyaDeepShrink = X.XGroup<{
-   include: X.XChoices<{
-      base: X.XGroup<{}>
-      hiRes: X.XGroup<{}>
+export type UI_model_kohyaDeepShrink = Z.Group<{
+   include: Z.Choices<{
+      base: Z.Group<{}>
+      hiRes: Z.Group<{}>
    }>
-   advancedSettings: X.XGroup<{
-      downscaleFactor: X.XNumber
-      block_number: X.XNumber
-      startPercent: X.XNumber
-      endPercent: X.XNumber
-      downscaleAfterSkip: X.XBool
-      downscaleMethod: X.XEnum<'LatentUpscale.upscale_method'>
-      upscaleMethod: X.XEnum<'LatentUpscale.upscale_method'>
+   advancedSettings: Z.Group<{
+      downscaleFactor: Z.Number
+      block_number: Z.Number
+      startPercent: Z.Number
+      endPercent: Z.Number
+      downscaleAfterSkip: Z.Bool
+      downscaleMethod: Z.Enum<'LatentUpscale.upscale_method'>
+      upscaleMethod: Z.Enum<'LatentUpscale.upscale_method'>
    }>
 }>
 
-export function ui_model_kohyaDeepShrink(form: X.Builder): UI_model_kohyaDeepShrink {
+export function ui_model_kohyaDeepShrink(form: Z.Builder): UI_model_kohyaDeepShrink {
    return form.fields(
       {
          include: form.choices(
@@ -29,7 +29,7 @@ export function ui_model_kohyaDeepShrink(form: X.Builder): UI_model_kohyaDeepShr
                   max: 9,
                   softMax: 4,
                   step: 0.25,
-                  tooltip: 'only applies to shrink on base model. hires will use hires scale factor.',
+                  description: 'only applies to shrink on base model. hires will use hires scale factor.',
                }),
                block_number: form.int({ default: 3, max: 32, min: 1 }),
                startPercent: form.float({ default: 0, min: 0, max: 1, step: 0.05 }),
@@ -44,7 +44,7 @@ export function ui_model_kohyaDeepShrink(form: X.Builder): UI_model_kohyaDeepShr
             },
             {
                startCollapsed: true,
-               toSummary: ({ value: ui }): string => {
+               toString_: ({ zValue: ui }): string => {
                   return `scale:${ui.downscaleFactor} end:${ui.endPercent} afterSkip:${ui.downscaleAfterSkip} downMethod:${ui.downscaleMethod}`
                },
             },
@@ -52,10 +52,10 @@ export function ui_model_kohyaDeepShrink(form: X.Builder): UI_model_kohyaDeepShr
       },
       {
          startCollapsed: true,
-         tooltip:
+         description:
             'Shrinks and patches the model. Can be used to generate resolutions higher than the model training and helps with hires fix.',
-         toSummary: ({ value: ui }): string => {
-            return `${ui.include.base ? '🟢Base (' + ui.advancedSettings.downscaleFactor + ')' : ''}${ui.include.hiRes ? '🟢HiRes ' : ''} end:${ui.advancedSettings.endPercent}`
+         toString_: ({ zValue: v }): string => {
+            return `${v.include.base ? '🟢Base (' + v.advancedSettings.downscaleFactor + ')' : ''}${v.include.hiRes ? '🟢HiRes ' : ''} end:${v.advancedSettings.endPercent}`
          },
       },
    )
@@ -63,7 +63,7 @@ export function ui_model_kohyaDeepShrink(form: X.Builder): UI_model_kohyaDeepShr
 
 /** https://www.reddit.com/r/StableDiffusion/comments/18ld5sj/kohya_deep_shrink_explain_to_me_like_im_5_years/  */
 export const run_model_kohyaDeepShrink = (
-   ui: UI_model_kohyaDeepShrink['$Value'],
+   ui: UI_model_kohyaDeepShrink['{value}'],
    ckpt: Comfy.Signal['MODEL'],
    forHiRes?: boolean,
    kohyaScale?: number,

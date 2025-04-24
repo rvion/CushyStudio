@@ -1,0 +1,58 @@
+diff --git a/node_modules/@pixi/react/dist/pixi-react.js b/node_modules/@pixi/react/dist/pixi-react.js
+index bff4775..ab2d27f 100644
+--- a/node_modules/@pixi/react/dist/pixi-react.js
++++ b/node_modules/@pixi/react/dist/pixi-react.js
+@@ -91,15 +91,15 @@ function wrapContext(context) {
+     return context;
+   }
+ }
+-const error = console.error;
+-console.error = function() {
+-  const message = [...arguments].join("");
+-  if ((message == null ? void 0 : message.startsWith("Warning:")) && message.includes("useContext")) {
+-    console.error = error;
+-    return;
+-  }
+-  return error.apply(this, arguments);
+-};
++// const error = console.error;
++// console.error = function() {
++//   const message = [...arguments].join("");
++//   if ((message == null ? void 0 : message.startsWith("Warning:")) && message.includes("useContext")) {
++//     console.error = error;
++//     return;
++//   }
++//   return error.apply(this, arguments);
++// };
+ const FiberContext = wrapContext(React__namespace.createContext(null));
+ class FiberProvider extends React__namespace.Component {
+   render() {
+diff --git a/node_modules/@pixi/react/dist/pixi-react.mjs b/node_modules/@pixi/react/dist/pixi-react.mjs
+index 11f1457..f42b72d 100644
+--- a/node_modules/@pixi/react/dist/pixi-react.mjs
++++ b/node_modules/@pixi/react/dist/pixi-react.mjs
+@@ -71,15 +71,15 @@ function wrapContext(context) {
+     return context;
+   }
+ }
+-const error = console.error;
+-console.error = function() {
+-  const message = [...arguments].join("");
+-  if ((message == null ? void 0 : message.startsWith("Warning:")) && message.includes("useContext")) {
+-    console.error = error;
+-    return;
+-  }
+-  return error.apply(this, arguments);
+-};
++// const error = console.error;
++// console.error = function() {
++//   const message = [...arguments].join("");
++//   if ((message == null ? void 0 : message.startsWith("Warning:")) && message.includes("useContext")) {
++//     console.error = error;
++//     return;
++//   }
++//   return error.apply(this, arguments);
++// };
+ const FiberContext = wrapContext(React.createContext(null));
+ class FiberProvider extends React.Component {
+   render() {

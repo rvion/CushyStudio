@@ -8,7 +8,7 @@ import { JsonViewUI } from '../../csuite/json/JsonViewUI'
 import { RevealUI } from '../../csuite/reveal/RevealUI'
 import { CivitaiDownloadableFileUI } from './CivitaiDownloadableFileUI'
 
-export const CivitaiResultVersionUI = observer(function CivitaiResultVersionUI_(p: {
+export const CivitaiResultVersionUI = obs(function CivitaiResultVersionUI_(p: {
    //
    entry: CivitaiSearchResultItem
    version: CivitaiModelVersion
@@ -22,8 +22,8 @@ export const CivitaiResultVersionUI = observer(function CivitaiResultVersionUI_(
    }))
    const img = uist.image
    const imgUrl = img?.url // ?? noImage
-   const size1 = `${cushy.civitaiConf.fields.imgSize1.value}px`
-   const size2 = `${cushy.civitaiConf.fields.imgSize2.value}px`
+   const size1 = `${cushy.civitaiConf.zFields.imgSize1.zValue}px`
+   const size2 = `${cushy.civitaiConf.zFields.imgSize2.zValue}px`
 
    return (
       <div tw='flex flex-col gap-1'>

@@ -1,13 +1,11 @@
 import type { Civitai } from './Civitai'
 import type { CivitaiModelVersion, CivitaiSearchResultItem } from './CivitaiTypes'
 
-import { observer } from 'mobx-react-lite'
-
 import { BadgeListUI } from '../../csuite/badge/BadgeListUI'
 import { BadgeUI } from '../../csuite/badge/BadgeUI'
 import { Frame } from '../../csuite/frame/Frame'
 
-export const CivitaiResultCardUI = observer(function CivitaiResultCardUI_(p: {
+export const CivitaiResultCardUI = obs(function CivitaiResultCardUI_(p: {
    //
    civitai: Civitai
    item: CivitaiSearchResultItem

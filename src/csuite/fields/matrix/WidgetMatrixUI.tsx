@@ -1,8 +1,6 @@
 import type { Field_matrix } from './FieldMatrix'
 
-import { observer } from 'mobx-react-lite'
-
-export const WidgetMatrixUI = observer(function WidgetStrUI_(p: { field: Field_matrix }) {
+export const WidgetMatrixUI = obs(function WidgetStrUI_(p: { field: Field_matrix }) {
    const field = p.field
    const cols = field.cols
    const rows = field.rows
@@ -18,7 +16,7 @@ export const WidgetMatrixUI = observer(function WidgetStrUI_(p: { field: Field_m
                      className='cursor-pointer hover:text-red-600'
                      onClick={() => {
                         field.setAll(!field.firstValue)
-                        field.touch()
+                        field.zTouch()
                      }}
                   >
                      all
@@ -30,7 +28,7 @@ export const WidgetMatrixUI = observer(function WidgetStrUI_(p: { field: Field_m
                         key={ix}
                         onClick={() => {
                            field.setCol(col, !field.getCell(rows[0]!, col).value)
-                           field.touch()
+                           field.zTouch()
                         }}
                      >
                         {col}
@@ -45,7 +43,7 @@ export const WidgetMatrixUI = observer(function WidgetStrUI_(p: { field: Field_m
                         //
                         onClick={() => {
                            field.setRow(row, !field.getCell(row, cols[0]!).value)
-                           field.touch()
+                           field.zTouch()
                         }}
                         className='cursor-pointer'
                      >
@@ -59,7 +57,7 @@ export const WidgetMatrixUI = observer(function WidgetStrUI_(p: { field: Field_m
                               className='cursor-pointer hover:bg-gray-400'
                               onClick={() => {
                                  field.setCell(row, col, !checked)
-                                 field.touch()
+                                 field.zTouch()
                               }}
                               tw={[checked ? undefined : '']}
                               style={{

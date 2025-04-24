@@ -1,8 +1,6 @@
-import { observer } from 'mobx-react-lite'
-
 import { SelectUI } from '../select/SelectUI'
 
-export const MenuFuzzySearchActivityUI = observer(function MenuFuzzySearchActivityUI(p: {}) {
+export const MenuFuzzySearchActivityUI = obs(function MenuFuzzySearchActivityUI(p: {}) {
    return (
       <div>
          <SelectUI //

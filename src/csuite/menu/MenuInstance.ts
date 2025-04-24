@@ -42,11 +42,11 @@ export class MenuInstance implements Activity {
       //    this.root.entriesWithKb.length,
       // )
       this.revealRef.current?.getRevealState().close('programmatic')
-      if (this.parent) this.parent.menuUIRef.focusOnMount()
+      if (this.parent) this.parent.menuUIRef.focusOnMountOrNowIfMounted_EXCEPT_IF_FOCUS_ALREADY_INSIDE()
    }
 
    /** calle */
-   UI = (): JSX.Element => createElement(MenuUI, { menu: this })
+   UI = (): React.JSX.Element => createElement(MenuUI, { menu: this })
 
    /** unique volative menu id */
    uid: string = nanoid()

@@ -3,12 +3,19 @@ import type { MediaImageL } from '../../../models/MediaImage'
 import type { UnifiedCanvas } from '../states/UnifiedCanvas'
 import type { Layer$ } from '../stateV2/Layer$'
 
-import { extend, useAsset } from '@pixi/react'
+import { extend } from '@pixi/react'
 // import { Sprite, Text } from '@pixi/react/lib/components'
 import { makeAutoObservable } from 'mobx'
-import { observer } from 'mobx-react-lite'
-import { type Container, type FederatedEventHandler, type FederatedPointerEvent, Sprite } from 'pixi.js'
-import { useMemo } from 'react'
+import {
+   Assets,
+   type Container,
+   type FederatedEventHandler,
+   type FederatedPointerEvent,
+   Sprite,
+   Texture,
+   type TextureSource,
+} from 'pixi.js'
+import { useEffect, useMemo, useState } from 'react'
 
 import { useUnifiedCanvas } from '../states/UnifiedCanvasCtx'
 
@@ -34,24 +41,23 @@ let currentlyDragged: {
 class XXX {
    constructor(
       public i: MediaImageL,
-      public placement: SimpleShape$['$Field'],
+      public placement: SimpleShape$['{field}'],
       public uc: UnifiedCanvas,
    ) {
       makeAutoObservable(this)
    }
    get xInWorld(): number {
-      return this.placement.X.value
+      return this.placement.x.zValue
    }
 
    /** y position relative the the whole view origin */
    get yInWorld(): number {
-      return this.placement.Y.value
+      return this.placement.y.zValue
    }
 
    onDragStart: FederatedEventHandler<FederatedPointerEvent> = (event: FederatedPointerEvent): void => {
       if (event.button !== 0) return
       // console.log(`[💩] button is`, event.button, event.buttons)
-      // eslint-disable-next-line consistent-this
       currentlyDragged = {
          self: this,
          startXInWorld: this.xInWorld,
@@ -91,27 +97,35 @@ class XXX {
 
       // Respect snap to grid global nullable value
       const snapToGrid = this.uc.snapToGrid ? this.uc.snapSize : null
-      const snappedX = snapToGrid ? Math.round(nextXInWorld / snapToGrid) * snapToGrid : nextXInWorld
-      const snappedY = snapToGrid ? Math.round(nextYInWorld / snapToGrid) * snapToGrid : nextYInWorld
+      const snappedX = snapToGrid != null ? Math.round(nextXInWorld / snapToGrid) * snapToGrid : nextXInWorld
+      const snappedY = snapToGrid != null ? Math.round(nextYInWorld / snapToGrid) * snapToGrid : nextYInWorld
 
-      this.placement.runInTransaction(() => {
-         this.placement.X.value = snappedX
-         this.placement.Y.value = snappedY
+      this.placement.zRunInTransaction(() => {
+         this.placement.x.zValue = snappedX
+         this.placement.y.zValue = snappedY
       })
    }
 }
 
 type DraggableSpriteProps = {
-   placement: SimpleShape$['$Field']
+   placement: SimpleShape$['{field}']
    mediaImage: MediaImageL
-   layer?: Layer$['$Field']
+   layer?: Layer$['{field}']
    onClick?: () => void
    alpha?: number
 }
 
 extend({ Sprite })
 
-export const PixiMediaImage = observer(function DraggableSpriteUI_(p: DraggableSpriteProps) {
+const useAsset = (relPath: string = 'https://pixijs.com/assets/bunny.png'): Texture<TextureSource<any>> => {
+   const [texture, setTexture] = useState(Texture.EMPTY)
+   useEffect(() => {
+      void Assets.load(relPath).then((result) => void setTexture(result))
+   })
+   return texture
+}
+
+export const PixiMediaImage = obs(function DraggableSpriteUI_(p: DraggableSpriteProps) {
    const mediaImage = p.mediaImage
    const uc = useUnifiedCanvas()
    const xxx = useMemo(() => new XXX(p.mediaImage, p.placement, uc), [mediaImage])
@@ -125,8 +139,8 @@ export const PixiMediaImage = observer(function DraggableSpriteUI_(p: DraggableS
       <>
          <pixiSprite //
             interactive
-            width={p.placement.Width.value || mediaImage.width}
-            height={p.placement.Height.value || mediaImage.height}
+            width={p.placement.width.zValue || mediaImage.width}
+            height={p.placement.height.zValue || mediaImage.height}
             alpha={p.alpha}
             key={mediaImage.id}
             onClick={p.onClick}
@@ -135,20 +149,20 @@ export const PixiMediaImage = observer(function DraggableSpriteUI_(p: DraggableS
             onPointerUp={xxx.onDragEnd}
             onPointerUpOutside={xxx.onDragEnd}
             onPointerMove={xxx.onDragMove}
-            x={xxx.placement.X.value}
-            y={xxx.placement.Y.value}
+            x={xxx.placement.x.zValue}
+            y={xxx.placement.y.zValue}
             texture={asset}
          />
 
          {/* <pixiText //
-            text={xxx.placement.X.value.toString()}
-            x={xxx.placement.X.value}
-            y={xxx.placement.Y.value - 100}
+            text={xxx.placement.X.zValue.toString()}
+            x={xxx.placement.X.zValue}
+            y={xxx.placement.Y.zValue - 100}
          />
          <pixiText //
             text={uc.viewportInfos.x.toString()}
-            x={xxx.placement.X.value}
-            y={xxx.placement.Y.value - 50}
+            x={xxx.placement.X.zValue}
+            y={xxx.placement.Y.zValue - 50}
          /> */}
       </>
    )

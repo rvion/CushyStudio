@@ -1,5 +1,6 @@
 import type { RevealProps } from './RevealProps'
 
+import DefaultMap from 'mnemonist/default-map'
 import { makeAutoObservable } from 'mobx'
 import React from 'react'
 
@@ -7,21 +8,41 @@ import { createObservableRef, type ObservableRef } from '../utils/observableRef'
 import { DEBUG_REVEAL } from './DEBUG_REVEAL'
 import { RevealState } from './RevealState'
 
+export type RevealId = string | number
 /**
  * state wrapper that lazily initializes the actual state when actually required
  * it's important to keep that class lighweight.
  */
 export class RevealStateLazy {
+   static VisibleReveals: DefaultMap<RevealId, Set<RevealStateLazy>> = new DefaultMap(() => new Set())
+   static unregisterAnchor(rsl: RevealStateLazy): void {
+      const id = rsl.uid
+      if (DEBUG_REVEAL) console.log(`💙 unregisterAnchor ${id} ${rsl.uid}`)
+      const set = this.VisibleReveals.get(id)
+      set.delete(rsl)
+      if (set.size === 0) this.VisibleReveals.delete(id)
+   }
+   static registerAnchor(rsl: RevealStateLazy): void {
+      const id = rsl.uid
+      if (DEBUG_REVEAL) console.log(`💙 registerAnchor ${id} ${rsl.uid}`)
+      const set = this.VisibleReveals.get(id)
+      set.add(rsl)
+   }
+   static getAnchor(id: RevealId): Maybe<RevealStateLazy> {
+      if (!this.VisibleReveals.has(id)) return null
+      const set = this.VisibleReveals.get(id)
+      const item = set.values().next().value
+      return item
+   }
+
    static nextUID: number = 1
-   uid: number = RevealStateLazy.nextUID++
+   uid: RevealId
    childRef = React.createRef<HTMLDivElement>()
 
    /**
     * stack of RevealStateLazy, from root,
     * including self as last item
-    *
-    * @since 2024-10-11
-    * */
+    */
    readonly tower: RevealStateLazy[]
    readonly towerContext: { tower: RevealStateLazy[] }
 
@@ -31,6 +52,7 @@ export class RevealStateLazy {
       public p: RevealProps,
       public parentsLazy: RevealStateLazy[],
    ) {
+      this.uid = p.id ?? RevealStateLazy.nextUID++
       // if (DEBUG_REVEAL) console.log(`💙 new RevealStateLazy (lazyId: ${this.uid} / props: ${p.placement})`)
       this.tower = [...parentsLazy, this]
       this.towerContext = { tower: this.tower }
@@ -52,7 +74,7 @@ export class RevealStateLazy {
    }
 
    // all of those callbacks are for anchor ----------------------------------------
-   onContextMenu = (ev: React.MouseEvent<unknown>): void => {
+   onContextMenu = (ev: React.MouseEvent): void => {
       if (this.p.trigger === 'rightClick') {
          this.getRevealState().onRightClickAnchor(ev)
       }
@@ -65,10 +87,10 @@ export class RevealStateLazy {
       }
    }
 
-   onClick = (ev: React.MouseEvent<unknown>): void => {
+   onClick = (ev: React.MouseEvent): void => {
       return this.getRevealState().onLeftClickAnchor(ev)
    }
-   onDoubleClick = (ev: React.MouseEvent<unknown>): void => {
+   onDoubleClick = (ev: React.MouseEvent): void => {
       return this.getRevealState().onDoubleClickAnchor(ev)
    }
    // 🧑‍🎤 onMouseDown = (ev: React.MouseEvent<unknown>): void => {
@@ -77,23 +99,23 @@ export class RevealStateLazy {
    // 🧑‍🎤 onMouseUp = (ev: React.MouseEvent<unknown>): void => {
    // 🧑‍🎤     return this.getRevealState().onMouseUpAnchor(ev)
    // 🧑‍🎤 }
-   onAuxClick = (ev: React.MouseEvent<unknown>): void => {
+   onAuxClick = (ev: React.MouseEvent): void => {
       if (ev.button === 1) return this.getRevealState().onMiddleClickAnchor(ev)
       if (ev.button === 2) return this.getRevealState().onRightClickAnchor(ev)
    }
-   onMouseEnter = (ev: React.MouseEvent<unknown>): void => {
+   onMouseEnter = (ev: React.MouseEvent): void => {
       return this.getRevealState().onMouseEnterAnchor(ev)
    }
-   onMouseLeave = (ev: React.MouseEvent<unknown>): void => {
+   onMouseLeave = (ev: React.MouseEvent): void => {
       return this.getRevealState().onMouseLeaveAnchor(ev)
    }
-   onFocus = (ev: React.FocusEvent<unknown>): void => {
+   onFocus = (ev: React.FocusEvent): void => {
       return this.getRevealState().onFocusAnchor(ev)
    }
-   onBlur = (ev: React.FocusEvent<unknown>): void => {
+   onBlur = (ev: React.FocusEvent): void => {
       return this.getRevealState().onBlurAnchor(ev)
    }
-   onKeyDown = (ev: React.KeyboardEvent<Element>): void => {
+   onKeyDown = (ev: React.KeyboardEvent): void => {
       return this.getRevealState().onAnchorKeyDown(ev)
    }
 }

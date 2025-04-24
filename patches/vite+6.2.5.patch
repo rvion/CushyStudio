@@ -1,0 +1,13 @@
+diff --git a/node_modules/vite/dist/node/index.d.ts b/node_modules/vite/dist/node/index.d.ts
+index b327c1e..cda7b77 100644
+--- a/node_modules/vite/dist/node/index.d.ts
++++ b/node_modules/vite/dist/node/index.d.ts
+@@ -2,7 +2,7 @@
+ import { PluginHooks, RollupError, SourceMap, ModuleInfo, PartialResolvedId, RollupOptions, InputOption, ModuleFormat, WatcherOptions, RollupOutput, RollupWatcher, InputOptions, CustomPluginOptions, LoadResult, SourceDescription, PluginContextMeta, RollupLog, OutputBundle, OutputChunk, ObjectHook, ResolveIdResult, ExistingRawSourceMap, SourceMapInput, GetManualChunk } from 'rollup';
+ import * as rollup from 'rollup';
+ export { rollup as Rollup };
+-export { parseAst, parseAstAsync } from 'rollup/parseAst';
++export { parseAst, parseAstAsync } from 'rollup/dist/parseAst';
+ import * as http from 'node:http';
+ import { OutgoingHttpHeaders, ClientRequestArgs, IncomingMessage, ClientRequest, Agent, Server, ServerResponse } from 'node:http';
+ import { Http2SecureServer } from 'node:http2';

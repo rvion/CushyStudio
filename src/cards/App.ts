@@ -1,5 +1,6 @@
-import type { CushySchema } from '../controls/CushySchema'
-import type { DisplaySlotFn } from '../csuite-cushy/presenters/RenderTypes'
+import type { CSchema } from '../controls/CSchema.cushy'
+import type { RenderProps } from '../csuite-cushy/presenters/RenderProps'
+import type { RenderRule, RenderRule_asList, RenderRuleFn } from '../csuite-cushy/presenters/RenderRule'
 import type { Field } from '../csuite/model/Field'
 import type { SchemaDict } from '../csuite/model/SchemaDict'
 import type { MediaImageL } from '../models/MediaImage'
@@ -15,7 +16,7 @@ import type { CSSProperties, ReactNode } from 'react'
 ) => CustomViewRef<P>
 /* 🛋️ */ export type GlobalGetCurrentRun = () => Runtime
 
-/* shared */ export type GlobalGetCurrentForm = () => X.Builder
+/* shared */ export type GlobalGetBuilderFn = () => Z.Builder
 
 /* ⏰ */ export type ActionTagMethod = (arg0: string) => string
 /* ⏰ */ export type ActionTagMethodList = Array<{ key: string; method: ActionTagMethod }>
@@ -36,7 +37,7 @@ export type CustomViewRef<PARAMS> = {
    id: CushyViewID
 }
 
-export type $ExtractFormValueType<FIELDS extends SchemaDict> = { [k in keyof FIELDS]: FIELDS[k]['$Value'] }
+export type $ExtractFormValueType<FIELDS extends SchemaDict> = { [k in keyof FIELDS]: FIELDS[k]['{value}'] }
 
 export type CustomView<T = any> = {
    preview: (t: T) => ReactNode
@@ -51,10 +52,16 @@ export type DraftExecutionContext = {
 
 export type App<FIELD extends Field> = {
    /** app interface (GUI) */
-   ui: (form: X.Builder) => CushySchema<FIELD>
+   ui: (form: Z.Builder) => CSchema<FIELD>
 
-   /* layout */
-   layout?: Maybe<DisplaySlotFn<NoInfer<FIELD>>>
+   /**
+    * Use that option to change the look of the form by using the set function
+    *You can also use the `set` function both
+    *   - to acumulate child ruules rules easilly
+    *   - or to set the top-level UIProps
+    */
+   // prettier-ignore
+   layout?: RenderRuleFn<FIELD>
 
    /** so you cana have fancy buttons to switch between a few things */
    presets?: Record<string, (doc: NoInfer<FIELD>) => void>
@@ -63,8 +70,9 @@ export type App<FIELD extends Field> = {
    run: (
       //
       runtime: Runtime<NoInfer<FIELD>>,
-      formResult: NoInfer<FIELD>['$Value'],
+      value: NoInfer<FIELD>['{value}'],
       context: DraftExecutionContext,
+      field: NoInfer<FIELD>,
    ) => void | Promise<void>
 
    /** if set to true, will register drafts to quick action in image context menu */
@@ -83,4 +91,9 @@ export type App<FIELD extends Field> = {
    customNodeRequired?: string[]
    /** help text to show user when using their card */
    help?: string
+
+   /** Will be used for compatability handling
+    *  Anything that changes an api path or would break "extensions" should (usually) increment the major version
+    */
+   version?: { major: number; minor: number; patch: number }
 }

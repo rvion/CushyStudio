@@ -1,10 +1,22 @@
-import { describe, expect, it } from 'bun:test'
+import { describe, expect, it } from 'vitest'
+
+import { CSchema } from '../csuite/model/CSchema'
+import { SimpleBuilder } from '../csuite/simple/SimpleBuilder'
+import { Field_prompt } from './FieldPrompt'
 
 describe('FieldPrompt', () => {
-   // 🔴🔴🔴
-   if (1 - 1 === 0) return
-   const { builder: b } = require('../controls/Builder') as typeof import('../controls/CushyBuilder')
-   // 🔴🔴🔴
+   // 💬 2025-03-21 rvion: hacky way of testing the prompt
+   const b = new (class SimpleBuilderWithPrompt extends SimpleBuilder {
+      /** prompt, defaulting to '' */
+      prompt(config: Field_prompt['{config}'] = {}): Z.Prompt {
+         const def = config.default ?? ''
+         return this.prompt_({ default: def, ...config })
+      }
+
+      prompt_(config: Field_prompt['{config}'] = {}): Z.Prompt {
+         return CSchema.new<Field_prompt>(Field_prompt, config)
+      }
+   })()
 
    const S1 = b.fields(
       {
@@ -19,44 +31,41 @@ describe('FieldPrompt', () => {
          presets: [
             {
                label: 'test',
-               apply({ fields }): void {
+               apply({ zFields: fields }): void {
                   // V1
-                  fields.c.enableBranch('bar')
-                  fields.c.activeBranchesDict.bar?.setText('new prompt A')
+                  fields.c.zEnableBranch('bar')
+                  fields.c.bar?.setText('new prompt A')
                   // V2
-                  fields.c.enableBranch('bar')?.setText('new prompt B')
+                  fields.c.zEnableBranch('bar')?.setText('new prompt B')
                },
             },
          ],
       },
    )
 
-   describe('works', () => {
-      it('works', () => {
-         const E1 = S1.create()
-         expect(E1.value.c.foo).toBe('')
-         expect(E1.value.c.bar).toBeNil()
+   it('works', () => {
+      const E1 = S1.create()
+      expect(E1.c.firstActiveBranchName).toBe('foo')
+      expect(E1.c.foo?._).toBe('')
+      expect(E1.c.bar).toBeUndefined()
 
-         E1.fields.c.enableBranch('bar')
+      E1.zFields.c.zEnableBranch('bar')
 
-         expect(E1.value.c.foo).toBeNil()
-         expect(E1.value.c.bar?.text).toBe('coucou')
+      expect(E1.c.foo).toBeUndefined()
+      expect(E1.c.bar?.text).toBe('coucou')
 
-         E1.fields.c.activeBranchesDict.bar?.setText('new prompt')
+      E1.zFields.c.bar?.setText('new prompt')
 
-         expect(E1.value.c.bar?.text).toBe('new prompt')
-      })
+      expect(E1.zValue.c.bar?.text).toBe('new prompt')
    })
 
-   describe('works too', () => {
-      it('works', () => {
-         const E1 = S1.create()
-         expect(E1.value.c.foo).toBe('')
-         expect(E1.value.c.bar).toBeNil()
+   it('works too', () => {
+      const E1 = S1.create()
+      expect(E1.zValue.c.foo).toBe('')
+      expect(E1.zValue.c.bar).toBeUndefined()
 
-         E1.fields.c.enableBranch('bar')?.setText('new prompt')
+      E1.zFields.c.zEnableBranch('bar')?.setText('new prompt')
 
-         expect(E1.value.c.bar?.text).toBe('new prompt')
-      })
+      expect(E1.zValue.c.bar?.text).toBe('new prompt')
    })
 })

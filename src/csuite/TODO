@@ -1,0 +1,6 @@
+☐ migrate to decorators.
+☐ template all fields on t
+☐ setup global interfaces for mixins that merge into all classses.
+☐ remove HKT.
+☐ make sure we have dedicated schemas class for all fields.
+☐ make sure we have interfaces.

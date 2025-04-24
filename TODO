@@ -1,5 +1,7 @@
 SHORT TERM TODO:
 
+    ☐ need to build a tree of all selectors
+    ☐ Shell Fluid.
     ☐ give you a way to have multiple built-in perspectives
     ☐ add a stop run button in the steps panel
     ☐ paths: switche to / instead of .
@@ -40,7 +42,7 @@ SHORT TERM TODO:
             ✔ we need to fork select once forall; @done(24-12-10 23:12)
             ✔ I don't want to add those p-input-2, ... classes @done(24-12-10 23:12)
         ✔ need other name in 20241115_144643_gggdomi_d6cd16e_rename-configtostring @done(24-12-10 23:12)
-            ✔ toString  => ❌toString_, but 🟢 toSummary?, toText?, ... @done(24-12-10 23:12)
+            ✔ toString  => ❌toString_, but 🟢 toString_?, toText?, ... @done(24-12-10 23:12)
         ✔ .... @done(24-12-10 23:12)
         ✔ skip: 20241128_000225_gggdomi_d6cfc25_choice-widget-via-type-subfield @done(24-12-10 23:12)
 

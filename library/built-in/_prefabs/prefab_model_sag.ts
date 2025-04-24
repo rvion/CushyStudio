@@ -1,13 +1,13 @@
-export type UI_model_sag = X.XGroup<{
-   include: X.XChoices<{
-      base: X.XGroup<{}>
-      hiRes: X.XGroup<{}>
+export type UI_model_sag = Z.Group<{
+   include: Z.Choices<{
+      base: Z.Group<{}>
+      hiRes: Z.Group<{}>
    }>
-   scale: X.XNumber
-   blur_sigma: X.XNumber
+   scale: Z.Number
+   blur_sigma: Z.Number
 }>
 
-export const ui_model_sag = (form: X.Builder): UI_model_sag => {
+export const ui_model_sag = (form: Z.Builder): UI_model_sag => {
    return form.fields(
       {
          include: form.choices(
@@ -26,9 +26,9 @@ export const ui_model_sag = (form: X.Builder): UI_model_sag => {
       },
       {
          startCollapsed: true,
-         tooltip: 'Self Attention Guidance can improve image quality but runs slower',
-         toSummary: ({ value: ui }): string => {
-            return `${ui.include.base ? '🟢Base ' : ''}${ui.include.hiRes ? '🟢HiRes ' : ''}`
+         description: 'Self Attention Guidance can improve image quality but runs slower',
+         toString_: ({ zValue: v }): string => {
+            return `${v.include.base ? '🟢Base ' : ''}${v.include.hiRes ? '🟢HiRes ' : ''}`
          },
       },
    )

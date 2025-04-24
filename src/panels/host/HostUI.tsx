@@ -1,7 +1,6 @@
 import type { HostL } from '../../models/Host'
 
 import { runInAction } from 'mobx'
-import { observer } from 'mobx-react-lite'
 
 import { Button } from '../../csuite/button/Button'
 import { InputBoolUI } from '../../csuite/checkbox/InputBoolUI'
@@ -14,7 +13,7 @@ import { LabelUI } from '../LabelUI'
 import { HostSchemaIndicatorUI } from './HostSchemaIndicatorUI'
 import { HostWebsocketIndicatorUI } from './HostWebsocketIndicatorUI'
 
-export const HostUI = observer(function MachineUI_(p: { host: HostL }) {
+export const HostUI = obs(function MachineUI_(p: { host: HostL }) {
    const config = cushy.configFile.value
    const host: HostL = p.host
    const isMain = host.id === config.mainComfyHostID
@@ -55,12 +54,12 @@ export const HostUI = observer(function MachineUI_(p: { host: HostL }) {
                />
                <Button
                   look='ghost'
-                  icon='mdiContentDuplicate'
+                  icon={IKONS.mdiContentDuplicate}
                   onClick={() => host.clone({ name: host.data.name + '-clone' })}
                   children='clone'
                />
                <Button
-                  icon='mdiDelete'
+                  icon={IKONS.mdiDelete}
                   // disabled={host.isReadonly}
                   onClick={() => {
                      // if (host.isReadonly) return

@@ -1,7 +1,5 @@
 import type { CivitaiSearchResultItem } from '../../panels/PanelModels/CivitaiTypes'
 
-import { observer } from 'mobx-react-lite'
-
 import { Button } from '../../csuite/button/Button'
 import { RevealUI } from '../../csuite/reveal/RevealUI'
 import { usePromise } from '../../csuite/utils/usePromise'
@@ -14,11 +12,11 @@ const testDataIllustrious = {
    modelVersionId: 889818,
 }
 
-export const IntallBtnForKnownCivitaiModelId = observer(function IntallBtnForKnownCivitaiModelId_(p: {
+export const IntallBtnForKnownCivitaiModelId = obs(function IntallBtnForKnownCivitaiModelId_(p: {
    civitaiModelId?: string | number
 }) {
    const x = usePromise(() => {
-      const apiKey = cushy.civitaiConf.fields.apiKey.value // retrieve api key
+      const apiKey = cushy.civitaiConf.zFields.apiKey.zValue // retrieve api key
       if (!apiKey) return Promise.resolve({ error: 'no api key' })
       let url = `https://civitai.com` // base civitai url (or later proxy to civitai when you live in a bad country)
       url = `${url}/api/v1/models/${p.civitaiModelId || testDataIllustrious.modelId}` // enpoint url
@@ -45,10 +43,10 @@ export const IntallBtnForKnownCivitaiModelId = observer(function IntallBtnForKno
    )
 })
 
-export const IntallBtnForKnownCivitaiModelVersionId = observer(
+export const IntallBtnForKnownCivitaiModelVersionId = obs(
    function IntallBtnForKnownCivitaiModelVersionId_(p: { civitaiModelVersionId?: string | number }) {
       const x = usePromise(() => {
-         const apiKey = cushy.civitaiConf.fields.apiKey.value // retrieve api key
+         const apiKey = cushy.civitaiConf.zFields.apiKey.zValue // retrieve api key
          if (!apiKey) return Promise.resolve({ error: 'no api key' })
          let url = `https://civitai.com` // base civitai url (or later proxy to civitai when you live in a bad country)
          url = `${url}/api/v1/model-versions/${p.civitaiModelVersionId || testDataIllustrious.modelVersionId}` // enpoint url

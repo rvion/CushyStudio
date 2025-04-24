@@ -2,6 +2,7 @@ import type { MenuEntry } from '../menu/MenuEntry'
 import type { Field } from '../model/Field'
 import type { Provenance } from '../provenance/Provenance'
 
+import { getVisualPath } from '../../csuite-cushy/presenters/RenderCtx'
 import { MenuDividerUI_ } from '../dropdown/MenuDivider2'
 import { defineMenuTemplate, MenuTemplate } from '../menu/MenuTemplate'
 import { SimpleMenuAction } from '../menu/SimpleMenuAction'
@@ -20,10 +21,10 @@ export const fieldActionMenu: MenuTemplate<FieldActionMenuProps> = defineMenuTem
    entries: ({ field, provenance }) => {
       const out: MenuEntry[] = []
       // CREATE PRESET ACTION
-      const presets = field.config.presets ?? []
+      const presets = field.zConfig.presets ?? []
       out.push(
          new MenuTemplate({
-            icon: 'mdiLanguageXaml',
+            icon: IKONS.mdiLanguageXaml,
             title: `Presets ${presets.length}`,
             disabled: presets.length === 0,
             entries: (): MenuEntry[] =>
@@ -40,17 +41,17 @@ export const fieldActionMenu: MenuTemplate<FieldActionMenuProps> = defineMenuTem
       out.push(
          new SimpleMenuModal({
             label: 'Create Preset',
-            icon: 'mdiPlus',
+            icon: IKONS.mdiPlus,
             submit: (): void => {
                console.log(`[🤠] values`)
             },
-            UI: (w): JSX.Element => <CreatePresetUI field={field} />,
+            UI: (w): React.JSX.Element => <CreatePresetUI field={field} />,
          }),
       )
       out.push(
          new SimpleMenuAction({
             label: 'Open in VSCode',
-            icon: 'mdiMicrosoftVisualStudioCode',
+            icon: IKONS.mdiMicrosoftVisualStudioCode,
             disabled: (): boolean => provenance == null,
             onClick: (): Promise<void> | void => {
                console.log(`[🤠] `, provenance)
@@ -62,18 +63,18 @@ export const fieldActionMenu: MenuTemplate<FieldActionMenuProps> = defineMenuTem
       out.push(
          new SimpleMenuAction({
             label: 'Reset',
-            icon: 'mdiUndoVariant',
-            disabled: (): boolean => !field.hasChanges,
-            onClick: (): void => void field.reset(),
+            icon: IKONS.mdiUndoVariant,
+            disabled: (): boolean => !field.zHasChanges,
+            onClick: (): void => void field.zReset(),
          }),
       )
       out.push(MenuDividerUI_)
       out.push(
          new SimpleMenuAction({
             label: 'Save Snapshot',
-            icon: 'mdiArrowLeftBox',
+            icon: IKONS.mdiArrowLeftBox,
             onClick: (): void => {
-               const snap = field.saveSnapshot()
+               const snap = field.zSaveSnapshot()
                console.log(JSON.stringify(potatoClone(snap), null, 4))
             },
          }),
@@ -82,9 +83,9 @@ export const fieldActionMenu: MenuTemplate<FieldActionMenuProps> = defineMenuTem
       out.push(
          new SimpleMenuAction({
             label: 'Restore Snapshot',
-            icon: 'mdiArrowRightBox',
-            disabled: (): boolean => !field.hasSnapshot,
-            onClick: (): void => void field.revertToSnapshot(),
+            icon: IKONS.mdiArrowRightBox,
+            disabled: (): boolean => !field.zHasSnapshot,
+            onClick: (): void => void field.zRevertToSnapshot(),
          }),
       )
       out.push(MenuDividerUI_)
@@ -93,8 +94,8 @@ export const fieldActionMenu: MenuTemplate<FieldActionMenuProps> = defineMenuTem
       out.push(
          new SimpleMenuAction({
             label: 'Collapse All',
-            icon: 'mdiCollapseAll',
-            onClick: (): void => field.collapseAllChildren(),
+            icon: IKONS.mdiCollapseAll,
+            onClick: (): void => field.zCollapseAllChildren(),
          }),
       )
 
@@ -102,9 +103,9 @@ export const fieldActionMenu: MenuTemplate<FieldActionMenuProps> = defineMenuTem
       out.push(
          new SimpleMenuAction({
             label: 'Expand All',
-            icon: 'mdiExpandAll',
-            disabled: field.hasNoChild,
-            onClick: (): void => field.expandAllChildren(),
+            icon: IKONS.mdiExpandAll,
+            disabled: field.zHasNoChild,
+            onClick: (): void => field.zExpandAllChildren(),
          }),
       )
 
@@ -131,21 +132,43 @@ export const fieldActionMenu: MenuTemplate<FieldActionMenuProps> = defineMenuTem
       out.push(MenuDividerUI_)
       out.push(
          new SimpleMenuAction({
-            label: `copy path (${field.path})`,
-            icon: 'mdiContentCopy',
+            label: `copy pathNice (${field.zPathNice})`,
+            icon: IKONS.mdiContentCopy,
             onClick: (): Promise<void> => {
-               toastInfo(field.path)
-               return navigator.clipboard.writeText(field.path)
+               toastInfo(field.zPathNice)
+               return navigator.clipboard.writeText(field.zPathNice)
             },
          }),
       )
       out.push(
          new SimpleMenuAction({
-            label: `copy pathExt (${field.pathExt})`,
-            icon: 'mdiContentCopy',
+            label: `copy path (${field.zPath})`,
+            icon: IKONS.mdiContentCopy,
             onClick: (): Promise<void> => {
-               toastInfo(field.path)
-               return navigator.clipboard.writeText(field.pathExt)
+               toastInfo(field.zPath)
+               return navigator.clipboard.writeText(field.zPath)
+            },
+         }),
+      )
+      out.push(
+         new SimpleMenuAction({
+            label: `copy pathExt (${field.zPathExt})`,
+            icon: IKONS.mdiContentCopy,
+            onClick: (): Promise<void> => {
+               toastInfo(field.zPathExt)
+               return navigator.clipboard.writeText(field.zPathExt)
+            },
+         }),
+      )
+
+      out.push(
+         new SimpleMenuAction({
+            label: `copy VISUAL pathExt (${getVisualPath(/* field */)})`,
+            icon: IKONS.mdiContentCopy,
+            onClick: (): Promise<void> => {
+               const visualPath = getVisualPath(/* field */)
+               toastInfo(visualPath)
+               return navigator.clipboard.writeText(visualPath)
             },
          }),
       )

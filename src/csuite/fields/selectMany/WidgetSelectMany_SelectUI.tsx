@@ -3,13 +3,11 @@ import type { SelectKey } from '../selectOne/SelectOneKey'
 import type { SelectOption } from '../selectOne/SelectOption'
 import type { Field_selectMany } from './FieldSelectMany'
 
-import { observer } from 'mobx-react-lite'
-
 import { InputBoolFlipButtonUI } from '../../checkbox/InputBoolFlipButtonUI'
 import { SelectUI } from '../../select/SelectUI'
 import { makeLabelFromPrimitiveValue } from '../../utils/makeLabelFromFieldName'
 
-export const WidgetSelectMany_SelectUI = observer(function WidgetSelectMany_SelectUI_<
+export const WidgetSelectMany_SelectUI = obs(function WidgetSelectMany_SelectUI_<
    //
    VALUE extends any,
    KEY extends SelectKey,
@@ -22,24 +20,25 @@ export const WidgetSelectMany_SelectUI = observer(function WidgetSelectMany_Sele
    return (
       <div tw='flex w-full flex-1 gap-1'>
          <SelectUI<OPTION>
-            hasErrors={p.field.mustDisplayErrors}
+            hasErrors={field.zHasOwnErrors}
             multiple
             wrap={field.wrap}
             tw={[
-               field.ownTypeSpecificProblems != null &&
-                  field.ownTypeSpecificProblems.length > 0 &&
+               field.zOwnTypeSpecificProblems != null &&
+                  field.zOwnTypeSpecificProblems.length > 0 &&
                   'rsx-field-error',
             ]}
             getLabelText={(t: OPTION): string => {
-               if (t == null) return field.config.placeholder ?? '<null>'
+               if (t == null) return field.zConfig.placeholder ?? '<null>'
                return t.label ?? makeLabelFromPrimitiveValue(t.id)
             }}
-            OptionLabelUI={field.config.OptionLabelUI}
+            label={field.zLabelText}
+            OptionLabelUI={field.OptionLabelUI}
             getSearchQuery={() => field.query}
             setSearchQuery={(query) => (field.query = query)}
-            disableLocalFiltering={field.config.disableLocalFiltering}
+            disableLocalFiltering={field.zConfig.disableLocalFiltering}
             options={() => field.options}
-            createOption={field.config.createOption}
+            createOption={field.zConfig.createOption}
             value={() => field.selectedOptions}
             equalityCheck={(a, b) => a?.id === b?.id}
             onOptionToggled={(selectOption) => {
@@ -48,43 +47,42 @@ export const WidgetSelectMany_SelectUI = observer(function WidgetSelectMany_Sele
                if (selectOption == null) return field.unset()
 
                field.toggleId(selectOption.id)
-               field.touch()
+               field.zTouch()
             }}
             onCleared={
-               field.canBeToggledWithinParent &&
-               // 🔴 ARE THOSE TRHE CONDITIONS BELOW CORRECT ?
-               field.isEnabledWithinParent &&
-               !field.config.readonly &&
-               !field.parent?.config.readonly
+               p.field.zCanBeToggledWithinParent &&
+               p.field.zIsEnabledWithinParent &&
+               !p.field.zConfig.readonly &&
+               !p.field.zParent?.zConfig.readonly
                   ? (): void => {
-                       field.disableSelfWithinParent()
-                       field.touch()
+                       p.field.zDisableSelfWithinParent()
+                       field.zTouch()
                        p.selectProps?.onCleared?.()
                     }
                   : null
             }
-            placeholder={field.config.placeholder}
+            placeholder={field.zConfig.placeholder}
             {...p.selectProps}
             revealProps={{
                ...p.selectProps?.revealProps,
                onHidden: (reason) => {
-                  field.touch()
+                  field.zTouch()
                   p.selectProps?.revealProps?.onHidden?.(reason)
                },
             }}
          />
-         {field.config.wrapButton && (
+         {field.zConfig.wrapButton && (
             <InputBoolFlipButtonUI
-               toggleGroup={field.id}
+               toggleGroup={field.zUid}
                tooltip='Wrap items'
                tw='self-start'
-               icon={p.field.wrap ? 'mdiWrapDisabled' : 'mdiWrap'}
+               icon={p.field.wrap ? IKONS.mdiWrapDisabled : IKONS.mdiWrap}
                value={p.field.wrap}
                onValueChange={(next) => {
                   p.field.wrap = next
-                  p.field.touch()
+                  p.field.zTouch()
                }}
-               onBlur={() => p.field.touch()}
+               onBlur={() => p.field.zTouch()}
             />
          )}
       </div>

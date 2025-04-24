@@ -1,13 +1,13 @@
-export type UI_model_pag = X.XGroup<{
-   include: X.XChoices<{
-      base: X.XGroup<{}>
-      hiRes: X.XGroup<{}>
+export type UI_model_pag = Z.Group<{
+   include: Z.Choices<{
+      base: Z.Group<{}>
+      hiRes: Z.Group<{}>
    }>
-   scale: X.XNumber
-   adaptiveScale: X.XNumber
+   scale: Z.Number
+   adaptiveScale: Z.Number
 }>
 
-export const ui_model_pag = (form: X.Builder): UI_model_pag => {
+export const ui_model_pag = (form: Z.Builder): UI_model_pag => {
    return form
       .fields(
          {
@@ -28,7 +28,7 @@ export const ui_model_pag = (form: X.Builder): UI_model_pag => {
                softMax: 6,
                max: 100,
                step: 0.1,
-               tooltip:
+               description:
                   'PAG scale, has some resemblance to CFG scale - higher values can both increase structural coherence of the image and oversaturate/fry it entirely. Note: Default for standard models is 3, but that fries lightning and turbo models, so lower it accordingly. Try 0.9 ish for turbo.',
             }),
             adaptiveScale: form.float({
@@ -36,14 +36,14 @@ export const ui_model_pag = (form: X.Builder): UI_model_pag => {
                min: 0,
                max: 1,
                step: 0.1,
-               tooltip:
+               description:
                   'PAG dampening factor, it penalizes PAG during late denoising stages, resulting in overall speedup: 0.0 means no penalty and 1.0 completely removes PAG.',
             }),
          },
          {
             startCollapsed: true,
-            tooltip: 'Perturbed Attention Guidance - can improve attention at the cost of performance',
-            toSummary: ({ value: ui }): string => {
+            description: 'Perturbed Attention Guidance - can improve attention at the cost of performance',
+            toString_: ({ zValue: ui }): string => {
                return `scale:${ui.include.base ? 'Base ' : ''}${ui.include.hiRes ? 'HiRes ' : ''} scale:${ui.scale} dampening:${ui.adaptiveScale}`
             },
          },

@@ -1,12 +1,11 @@
 import type { MenuInstance } from './MenuInstance'
 
-import { observer } from 'mobx-react-lite'
 import * as React from 'react'
 
 import { Button } from '../button/Button'
 import { RevealUI } from '../reveal/RevealUI'
 
-export const MenuRootUI = observer(function MenuRootUI_(p: { menu: MenuInstance }) {
+export const MenuRootUI = obs(function MenuRootUI_(p: { menu: MenuInstance }) {
    return (
       <RevealUI /* className='dropdown' */ placement='bottomStart' content={() => <p.menu.UI />}>
          <Button borderless subtle>

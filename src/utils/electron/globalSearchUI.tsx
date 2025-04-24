@@ -1,7 +1,6 @@
-import { observer } from 'mobx-react-lite'
 import { nanoid } from 'nanoid'
 
-export const GlobalSearchUI = observer(function GlobalSearch(p: {}) {
+export const GlobalSearchUI = obs(function GlobalSearch(p: {}) {
    if (!cushy.search.active) return null
    const aa = nanoid()
    return (

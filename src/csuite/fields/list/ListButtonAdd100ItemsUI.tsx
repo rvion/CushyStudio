@@ -1,13 +1,9 @@
 import type { IWidgetListLike } from './IWidgetListLike'
-
 import { runInAction } from 'mobx'
-import { observer } from 'mobx-react-lite'
 
 import { Button } from '../../button/Button'
 
-export const ListButtonAdd100ItemsUI = observer(function ListButtonAdd100ItemsUI_(p: {
-   field: IWidgetListLike
-}) {
+export const ListButtonAdd100ItemsUI = obs(function ListButtonAdd100ItemsUI_(p: { field: IWidgetListLike }) {
    const field = p.field
    return (
       <Button
@@ -15,9 +11,9 @@ export const ListButtonAdd100ItemsUI = observer(function ListButtonAdd100ItemsUI
          borderless
          subtle
          square
-         icon='mdiUnfoldLessHorizontal'
+         icon={IKONS.mdiUnfoldLessHorizontal}
          onClick={() => {
-            field.touch()
+            field.zTouch()
             runInAction(() => {
                for (let i = 0; i < 100; i++) field.addItem()
             })

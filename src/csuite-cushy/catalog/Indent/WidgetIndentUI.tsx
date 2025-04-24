@@ -1,12 +1,10 @@
-import { observer } from 'mobx-react-lite'
-
 import { Frame, type FrameProps } from '../../../csuite/frame/Frame'
 
 export type WidgetIndentProps = {
    depth: number
 } & FrameProps
 
-export const WidgetIndentUI = observer(function WidgetIndentNoLinesUI_({
+export const WidgetIndentUI = obs(function WidgetIndentNoLinesUI_({
    // own props
    depth,
 

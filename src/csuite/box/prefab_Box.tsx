@@ -1,30 +1,30 @@
 import type { Builder } from '../../CUSHY'
-import type { Field_choices_config } from '../fields/choices/FieldChoices'
+import type { Field_choices } from '../fields/choices/FieldChoices'
 import type { Box } from './Box'
 
 import { run_tint, ui_tint, type UI_Tint } from '../kolor/prefab_Tint'
 
-export type UI_Box = X.XChoices<{
+export type UI_Box = Z.Choices<{
    base: UI_Tint
    text: UI_Tint
    textShadow: UI_Tint
    shadow: UI_Tint
    border: UI_Tint
-   hover: X.XBool
+   hover: Z.Bool
 }>
 
 export const ui_Box = (
    //
    ui: Builder,
    config?: Omit<
-      Field_choices_config<{
+      Field_choices<{
          base: UI_Tint
          text: UI_Tint
          textShadow: UI_Tint
          shadow: UI_Tint
          border: UI_Tint
-         hover: X.XBool
-      }>,
+         hover: Z.Bool
+      }>['{config}'],
       'multi' | 'items'
    >,
 ): UI_Box => {
@@ -44,7 +44,7 @@ export const ui_Box = (
    )
 }
 
-export const run_Box = (ui: UI_Box['$Value']): Box => {
+export const run_Box = (ui: UI_Box['{value}']): Box => {
    const box: Box = { hover: ui.hover }
    if (ui.base) box.base = run_tint(ui.base)
    if (ui.text) box.text = run_tint(ui.text)

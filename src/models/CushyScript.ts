@@ -5,12 +5,12 @@ import type { TABLES } from '../db/TYPES.gen'
 import type { CushyAppL } from './CushyApp'
 
 import { existsSync, statSync } from 'fs'
-import { runInAction } from 'mobx'
+import { computed, observable, runInAction } from 'mobx'
 
 import { type CustomView, type CustomViewRef } from '../cards/App'
-import { CUSHY_IMPORT, replaceImportsWithSyncImport } from '../compiler/transpiler'
+import { CUSHY_IMPORT } from '../compiler/transpiler'
 import { extractErrorMessage } from '../csuite/formatters/extractErrorMessage'
-import { getCurrentForm_IMPL } from '../csuite/model/runWithGlobalForm'
+import { getBuilder_IMPL } from '../csuite/model/runWithGlobalForm'
 import { SQLITE_false, SQLITE_true } from '../csuite/types/SQLITE_boolean'
 import { BaseInst } from '../db/BaseInst'
 import { LiveTable } from '../db/LiveTable'
@@ -21,76 +21,57 @@ import { getCurrentRun_IMPL } from './getGlobalRuntimeCtx'
 export class CushyScriptRepo extends LiveTable<TABLES['cushy_script'], typeof CushyScriptL> {
    constructor(liveDB: LiveDB) {
       super(liveDB, 'cushy_script', '⭐️', CushyScriptL)
-      this.init()
    }
 }
 
 export class CushyScriptL extends BaseInst<TABLES['cushy_script']> {
-   instObservabilityConfig: undefined
-   dataObservabilityConfig: undefined
-   // get firstApp(): Maybe<CushyAppL> {
-   //     return this.apps[0]
-   // }
-
    /** relative path from CushyStudio root to the file that produced this script */
-   get relPath(): RelativePath {
+   @computed get relPath(): RelativePath {
       return asRelativePath(this.data.path)
    }
 
-   openInVSCode = (): Promise<void> => {
+   openInVSCode(): Promise<void> {
       return cushy.openInVSCode(this.relPath)
    }
 
    _apps_viaScript: Maybe<CushyAppL[]> = null
 
-   get _apps_viaDB(): CushyAppL[] {
+   @computed get _apps_viaDB(): CushyAppL[] {
       return cushy.db.cushy_app.select((q) => q.where('scriptID', '=', this.id), ['cushy_script'])
    }
-   // private _apps_viaDB = new LiveCollection<TABLES['cushy_app']>({
-   //     table: () => this.db.cushy_app,
-   //     where: () => ({ scriptID: this.id }),
-   // })
 
-   get apps(): CushyAppL[] {
+   @computed get apps(): CushyAppL[] {
       if (this._apps_viaScript != null) return this._apps_viaScript
       return this._apps_viaDB
    }
-
-   // ⏸️ get apps_viaDB(): CushyAppL[] {
-   // ⏸️     return this._apps_viaDB.items
-   // ⏸️ }
-
-   // ⏸️ get apps_viaScript(): CushyAppL[] {
-   // ⏸️     if (this._apps_viaScript == null) this.extractApps()
-   // ⏸️     return this._apps_viaScript!
-   // ⏸️ }
 
    onHydrate = (): void => {
       if (this.data.lastEvaluatedAt == null) this.evaluateAndUpdateAppsAndViews()
    }
 
-   get file(): LibraryFile {
+   @computed get file(): LibraryFile {
       return this.st.library.getFile(this.relPath)
    }
 
-   errors: { title: string; details: any }[] = []
+   readonly errors: { title: string; details: any }[] = observable([], { deep: false })
+
    addError = (title: string, details: any = null): LoadStatus => {
       this.errors.push({ title, details })
       return LoadStatus.FAILURE
    }
 
-   get isOutOfDate(): { needRecompile: boolean; reason: string } {
+   @computed get isOutOfDate(): { needRecompile: boolean; reason: string } {
       return this.checkIfisOutOfDate()
    }
 
-   get stillExistsOnDisk(): boolean {
+   @computed get stillExistsOnDisk(): boolean {
       return existsSync(this.relPath)
    }
 
-   checkIfisOutOfDate = (): {
+   private checkIfisOutOfDate(): {
       needRecompile: boolean
       reason: string
-   } => {
+   } {
       try {
          // 1. no lastExtractedAt => ❌ need recompile
          const lastExtractedAt = this.data.lastExtractedAt
@@ -129,10 +110,10 @@ export class CushyScriptL extends BaseInst<TABLES['cushy_script']> {
    }
    // --------------------------------------------------------------------------------------
    /** cache of extracted apps */
-   private _VIEWS: Maybe<LoadedCustomView[]> = []
+   @observable private accessor _VIEWS: Maybe<LoadedCustomView[]> = null
 
    /** cache of extracted views */
-   private _EXECUTABLES: Maybe<Executable[]> = null
+   @observable private accessor _EXECUTABLES: Maybe<Executable[]> = null
 
    /** do not evaluate the script if script is not evaluated yet, nor re-evaluate it if script if missing */
    getExecutable_orNull(appID: CushyAppID): Maybe<Executable> {
@@ -165,9 +146,8 @@ export class CushyScriptL extends BaseInst<TABLES['cushy_script']> {
     *  - 2. upsert apps in db
     *  - 3. bumpt lastEvaluatedAt (and lastSuccessfulEvaluation)
     */
-   evaluateAndUpdateAppsAndViews = (): /* Executable[]  */ void => {
+   evaluateAndUpdateAppsAndViews = (): void => {
       console.log(`[🧐] extracting apps...`)
-      // debugger
       const evalRes = this._EVALUATE_SCRIPT()
       this._EXECUTABLES = evalRes.apps
       this._VIEWS = evalRes.views
@@ -185,11 +165,19 @@ export class CushyScriptL extends BaseInst<TABLES['cushy_script']> {
             })
             return app
          })
+         console.log(`[🧐] found ${this._apps_viaScript.length} apps`)
 
          // bumpt timestamps
          const now = Date.now()
-         if (this._apps_viaScript.length === 0) this.update({ lastEvaluatedAt: now })
-         else this.update({ lastEvaluatedAt: now, lastSuccessfulEvaluationAt: now })
+         if (this._apps_viaScript.length === 0)
+            this.update({
+               lastEvaluatedAt: now,
+            })
+         else
+            this.update({
+               lastEvaluatedAt: now,
+               lastSuccessfulEvaluationAt: now,
+            })
       })
       return // this._EXECUTABLES
    }
@@ -199,7 +187,10 @@ export class CushyScriptL extends BaseInst<TABLES['cushy_script']> {
     * and returns the apps defined in it
     * returns [] on script execution failure
     * */
-   private _EVALUATE_SCRIPT = (): { apps: Executable[]; views: LoadedCustomView[] } => {
+   private _EVALUATE_SCRIPT = (): {
+      apps: Executable[]
+      views: LoadedCustomView[]
+   } => {
       // toastInfo(`evaluating script: ${this.relPath}`)
       const codeJS = this.data.code
 
@@ -207,6 +198,7 @@ export class CushyScriptL extends BaseInst<TABLES['cushy_script']> {
       // APPS ---------------------------------------------------------------------------
       const APPS: Executable[] = []
       let appIndex = 0
+
       const registerAppFn = (appDef: App<any>): AppRef<any> => {
          const app = new Executable(this, appIndex++, appDef)
          console.info(`[💙] found app: "${app.name}"`, { path: this.relPath, appID: app.appID })
@@ -224,28 +216,20 @@ export class CushyScriptL extends BaseInst<TABLES['cushy_script']> {
          return view.ref
       }
 
+      console.log(`[🔴] CODE IS:`, { codeJS })
       // 2. eval file to extract actions
-
-      let codJSWithoutWithImportsReplaced
-      try {
-         // console.log(`🟡 BEFORE: rewriting module import (${mod})`)
-         codJSWithoutWithImportsReplaced = replaceImportsWithSyncImport(codeJS) // REWRITE_IMPORTS(codeJS)
-      } catch {
-         console.error(`❌ script evealuation crashed when replacing imports`)
-         return { apps: [], views: [] }
-      }
       try {
          // 2.1. replace imports
          const ProjectScriptFn = new Function(
             //
             'app',
             'view',
-            'CUSHY_IMPORT',
-            'getCurrentForm',
+            'require',
+            'getBuilder',
             'getCurrentRun',
             'cushy',
             //
-            codJSWithoutWithImportsReplaced,
+            codeJS,
          )
 
          // 2.2. extract apps by evaluating script
@@ -255,7 +239,7 @@ export class CushyScriptL extends BaseInst<TABLES['cushy_script']> {
             registerViewFn,
             //
             CUSHY_IMPORT,
-            getCurrentForm_IMPL,
+            getBuilder_IMPL,
             getCurrentRun_IMPL,
             //
             cushy,
@@ -266,7 +250,7 @@ export class CushyScriptL extends BaseInst<TABLES['cushy_script']> {
       } catch (e) {
          console.error(`[📜] CushyScript execution failed:`, e)
          console.groupCollapsed(`[📜] <script that failed>`)
-         console.log(codJSWithoutWithImportsReplaced)
+         console.log(codeJS)
          console.groupEnd()
          // this.addError('❌5. cannot convert prompt to code', e)
          return { apps: [], views: [] }

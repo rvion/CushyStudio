@@ -1,6 +1,6 @@
 import { extend } from '@pixi/react'
 import { runInAction, trace } from 'mobx'
-import { observer } from 'mobx-react-lite'
+
 import { Viewport } from 'pixi-viewport'
 import React, { useState } from 'react'
 
@@ -20,7 +20,7 @@ export type PixiViewportProps = {
 // https://github.com/davidfig/pixi-viewport/issues/488#issuecomment-2156417301
 
 let max: number = 20
-export const PixiViewport = observer(function PixiViewport_(p: PixiViewportProps) {
+export const PixiViewport = obs(function PixiViewport_(p: PixiViewportProps) {
    const uc = useUnifiedCanvas()
    // const app = useApplication2()
    const [wrapper, setWrapper] = useState<Viewport | null>(null)

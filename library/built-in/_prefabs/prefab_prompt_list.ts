@@ -2,27 +2,27 @@ import type { OutputFor } from './_prefabs'
 
 import { run_prompt } from './prefab_prompt'
 
-type PromptLisT$ = X.XGroup<{
-   joinType: X.XChoices<{
-      concat: X.XGroup<{}>
-      combine: X.XGroup<{}>
-      average: X.XGroup<{
-         strength: X.XNumber
+type PromptLisT$ = Z.Group<{
+   joinType: Z.Choices<{
+      concat: Z.Group<{}>
+      combine: Z.Group<{}>
+      average: Z.Group<{
+         strength: Z.Number
       }>
    }>
-   promptList: X.XList<
-      X.XGroup<{
-         prompt: X.XPrompt
-         mask: X.XImage
-         invert: X.XBool
-         mode: X.XEnum<'LoadImageMask.channel'>
-         blur: X.XNumber
+   promptList: Z.List<
+      Z.Group<{
+         prompt: Z.Prompt
+         mask: Z.Image
+         invert: Z.Bool
+         mode: Z.Enum<'LoadImageMask.channel'>
+         blur: Z.Number
       }>
    >
 }>
 
 export const ui_promptList = (): PromptLisT$ => {
-   const form = getCurrentForm()
+   const form = getBuilder()
    return form.fields(
       {
          joinType: form.choice(
@@ -43,7 +43,7 @@ export const ui_promptList = (): PromptLisT$ => {
                   blur: form.float({ default: 6, min: 0, max: 2048, softMax: 24, step: 1 }),
                },
                {
-                  toSummary: ({ value: ui }): string => {
+                  toString_: ({ zValue: ui }): string => {
                      return `${ui.prompt}`
                   },
                },
@@ -51,7 +51,7 @@ export const ui_promptList = (): PromptLisT$ => {
          }),
       },
       {
-         toSummary: ({ value: ui }): string => {
+         toString_: ({ zValue: ui }): string => {
             return `(${ui.promptList.length})${ui.joinType}`
          },
       },

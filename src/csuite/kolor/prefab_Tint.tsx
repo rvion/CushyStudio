@@ -2,22 +2,22 @@ import type { Tint } from './Tint'
 
 import { getNum } from '../tinyCSS/CSSVar'
 
-export type UI_Tint = X.XChoices<{
-   l: X.XChoice<{
-      lightness: X.XNumber
-      contrast: X.XNumber
+export type UI_Tint = Z.Choices<{
+   l: Z.Choice<{
+      lightness: Z.Number
+      contrast: Z.Number
    }>
-   c: X.XChoice<{
-      chroma: X.XNumber
-      chromaBlend: X.XNumber
+   c: Z.Choice<{
+      chroma: Z.Number
+      chromaBlend: Z.Number
    }>
-   h: X.XChoice<{
-      hue: X.XNumber
-      hueShift: X.XNumber
+   h: Z.Choice<{
+      hue: Z.Number
+      hueShift: Z.Number
    }>
 }>
 
-export const ui_tint = (ui: X.Builder, def?: Tint): UI_Tint => {
+export const ui_tint = (ui: Z.Builder, def?: Tint): UI_Tint => {
    return ui.choices(
       {
          l: ui.choice(
@@ -29,7 +29,7 @@ export const ui_tint = (ui: X.Builder, def?: Tint): UI_Tint => {
                   max: 1,
                   default: getNum(def?.lightness, 0.1),
                   step: 0.1,
-                  icon: 'mdiGradientHorizontal',
+                  icon: IKONS.mdiGradientHorizontal,
                }),
                contrast: ui.number({
                   label: 'Relative',
@@ -39,17 +39,17 @@ export const ui_tint = (ui: X.Builder, def?: Tint): UI_Tint => {
                   max: 1,
                   default: getNum(def?.contrast, 0.1),
                   step: 0.1,
-                  icon: 'mdiInvertColors',
+                  icon: IKONS.mdiInvertColors,
                }),
             },
             {
-               uiui: (ui) => {
-                  ui.set(ui.field.activeBranchesDict.contrast, ui.presets.noLabel)
-                  ui.set(ui.field.activeBranchesDict.lightness, ui.presets.noLabel)
+               uiui: (_, set) => {
+                  set(`&.contrast`, { Title: null, Icon: null, Indent: null })
+                  set(`&.lightness`, { Title: null, Icon: null, Indent: null })
                },
                appearance: 'tab',
                label: 'Light',
-               default: def?.lightness ? 'lightness' : 'contrast',
+               default: def?.lightness != null ? 'lightness' : 'contrast',
             },
          ),
          c: ui.choice(
@@ -60,7 +60,7 @@ export const ui_tint = (ui: X.Builder, def?: Tint): UI_Tint => {
                   max: 0.47,
                   default: getNum(def?.chroma, 0.1),
                   step: 0.1,
-                  icon: 'mdiPalette',
+                  icon: IKONS.mdiPalette,
                }),
                chromaBlend: ui.number({
                   label: 'Relative',
@@ -69,13 +69,13 @@ export const ui_tint = (ui: X.Builder, def?: Tint): UI_Tint => {
                   softMax: 2,
                   default: getNum(def?.chromaBlend, 1),
                   step: 0.1,
-                  icon: 'mdiEyedropper',
+                  icon: IKONS.mdiEyedropper,
                }),
             },
             {
                appearance: 'tab',
                label: 'Chroma',
-               default: def?.chroma ? 'chroma' : 'chromaBlend',
+               default: def?.chroma != null ? 'chroma' : 'chromaBlend',
             },
          ),
          h: ui.choice(
@@ -87,7 +87,7 @@ export const ui_tint = (ui: X.Builder, def?: Tint): UI_Tint => {
                   max: 360,
                   default: getNum(def?.hue, 220),
                   step: 1,
-                  icon: 'mdiPalette',
+                  icon: IKONS.mdiPalette,
                }),
                hueShift: ui.number({
                   label: 'Relative',
@@ -97,13 +97,13 @@ export const ui_tint = (ui: X.Builder, def?: Tint): UI_Tint => {
                   max: 360,
                   default: getNum(def?.hueShift, 0),
                   step: 10,
-                  icon: 'mdiEyedropper',
+                  icon: IKONS.mdiEyedropper,
                }),
             },
             {
                appearance: 'tab',
                label: 'Hue',
-               default: def?.hue ? 'hue' : 'hueShift',
+               default: def?.hue != null ? 'hue' : 'hueShift',
             },
          ),
       },
@@ -115,10 +115,10 @@ export const ui_tint = (ui: X.Builder, def?: Tint): UI_Tint => {
          },
          presets: [
             {
-               icon: 'mdiText',
+               icon: IKONS.mdiText,
                label: 'Text (v1)',
                apply(w): void {
-                  w.setValue({
+                  w.zSetValue({
                      l: { contrast: 0.9 },
                      c: { chromaBlend: 1 },
                      h: { hue: 0 },
@@ -126,10 +126,10 @@ export const ui_tint = (ui: X.Builder, def?: Tint): UI_Tint => {
                },
             },
             {
-               icon: 'mdiText',
+               icon: IKONS.mdiText,
                label: 'Text (colored)',
                apply(w): void {
-                  w.setValue({
+                  w.zSetValue({
                      l: { contrast: 0.7 },
                      c: { chroma: 0.3 },
                      h: { hueShift: 180 },
@@ -137,17 +137,17 @@ export const ui_tint = (ui: X.Builder, def?: Tint): UI_Tint => {
                },
             },
             {
-               icon: 'mdiText',
+               icon: IKONS.mdiText,
                label: 'Text (subtle)',
                apply(w): void {
-                  w.setValue({ l: { contrast: 0.3 } })
+                  w.zSetValue({ l: { contrast: 0.3 } })
                },
             },
             {
-               icon: 'mdiSquareCircle',
+               icon: IKONS.mdiSquareCircle,
                label: 'base 100',
                apply(w): void {
-                  w.setValue({ l: { contrast: 0.05 } })
+                  w.zSetValue({ l: { contrast: 0.05 } })
                },
             },
          ],
@@ -155,7 +155,7 @@ export const ui_tint = (ui: X.Builder, def?: Tint): UI_Tint => {
    )
 }
 
-export const run_tint = (ui: ReturnType<typeof ui_tint>['$Value']): Tint => {
+export const run_tint = (ui: ReturnType<typeof ui_tint>['{value}']): Tint => {
    return {
       // l
       lightness: ui.l?.lightness,

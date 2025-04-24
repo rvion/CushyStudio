@@ -6,33 +6,33 @@ import {
 import { ui_model_pag, type UI_model_pag } from './prefab_model_pag'
 import { ui_model_sag, type UI_model_sag } from './prefab_model_sag'
 
-export type $schemaModelExtras = X.XChoices<{
-   checkpointConfig: X.XEnum<'CheckpointLoader.config_name'>
-   rescaleCFG: X.XNumber
-   vae: X.XEnum<'VAELoader.vae_name'>
-   clipSkip: X.XNumber
-   freeU: X.XEmpty
-   freeUv2: X.XEmpty
-   vpred: X.XGroup<{ zsnr: X.XBool }>
-   epred: X.XGroup<{ zsnr: X.XBool }>
-   sampling: X.XGroup<{
-      sampling: X.XEnum<'ModelSamplingDiscrete.sampling'>
-      zsnr: X.XBool
+export type $schemaModelExtras = Z.Choices<{
+   checkpointConfig: Z.Enum<'CheckpointLoader.config_name'>
+   rescaleCFG: Z.Number
+   vae: Z.Enum<'VAELoader.vae_name'>
+   clipSkip: Z.Number
+   freeU: Z.Empty
+   freeUv2: Z.Empty
+   vpred: Z.Group<{ zsnr: Z.Bool }>
+   epred: Z.Group<{ zsnr: Z.Bool }>
+   sampling: Z.Group<{
+      sampling: Z.Enum<'ModelSamplingDiscrete.sampling'>
+      zsnr: Z.Bool
    }>
    pag: UI_model_pag
    sag: UI_model_sag
    KohyaDeepShrink: UI_model_kohyaDeepShrink
-   civitai_ckpt_air: X.XString
+   civitai_ckpt_air: Z.String
 }>
 
 export const schemaModelExtras = (
    p: {
       defaultVAE?: Comfy.Slots['VAELoader.vae_name']
       vaeActiveByDefault?: boolean
-      // default?: $schemaModelExtras['$Value']
+      // default?: $schemaModelExtras['{value}']
    } = {},
 ): $schemaModelExtras => {
-   const b = getCurrentForm()
+   const b = getBuilder()
    return b
       .choices(
          {
@@ -50,7 +50,7 @@ export const schemaModelExtras = (
             KohyaDeepShrink: ui_model_kohyaDeepShrink(b),
             civitai_ckpt_air: b
                .string({
-                  tooltip: 'Civitai checkpoint Air, as found on the civitai Website. It should look like this: 43331@176425', // prettier-ignore
+                  description: 'Civitai checkpoint Air, as found on the civitai Website. It should look like this: 43331@176425', // prettier-ignore
                   label: 'Civitai Ref',
                   placeHolder: 'e.g. 43331@176425',
                })
@@ -77,7 +77,7 @@ export const schemaModelExtras = (
          if (f.isBranchEnabled('vpred') && f.isBranchEnabled('sampling')) {
             return 'You can only use one of Vpred or Sampling, not both; vpred is just a shortcut for sampling with vpred mode enabled.'
          }
-      })
+      }, [])
 }
 
 // ------------
@@ -86,7 +86,7 @@ type XX2 = { vae: Comfy.Signal['VAE']; clip: Comfy.Signal['CLIP']; ckpt: Comfy.S
 
 export function evalModelExtras_part1(
    //
-   extra: $schemaModelExtras['$Value'],
+   extra: $schemaModelExtras['{value}'],
    { vae, clip, ckpt }: XX1,
 ): XX2 {
    const graph = getCurrentRun().nodes
@@ -132,7 +132,7 @@ export function evalModelExtras_part1(
 }
 
 export const evalModelExtras_part2 = (
-   extra: $schemaModelExtras['$Value'],
+   extra: $schemaModelExtras['{value}'],
    ckpt: Comfy.Signal['MODEL'],
    forHiRes?: boolean,
    kohyaScale?: number,

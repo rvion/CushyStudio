@@ -3,12 +3,11 @@ import type { MeshStandardMaterial } from 'three'
 
 import { CameraControls, OrbitControls, useTexture } from '@react-three/drei'
 import { Canvas } from '@react-three/fiber'
-import { observer } from 'mobx-react-lite'
 
 import { Ground3D } from '../3d-utils/Ground3d'
 import { SkyBox3D } from '../3d-utils/SkyBox3D'
 
-export const DisplacementUI = observer(function DisplacementUI_(p: { uist: DisplacementState }) {
+export const DisplacementUI = obs(function DisplacementUI_(p: { uist: DisplacementState }) {
    return (
       <Canvas ref={p.uist.canvasRef} tw='flex-1' camera={{ fov: 10 }}>
          <DisplacementUI2 uist={p.uist} />
@@ -16,7 +15,7 @@ export const DisplacementUI = observer(function DisplacementUI_(p: { uist: Displ
    )
 })
 
-export const DisplacementUI2 = observer(function DisplacementUI2_(p: { uist: DisplacementState }) {
+export const DisplacementUI2 = obs(function DisplacementUI2_(p: { uist: DisplacementState }) {
    const uist = p.uist
    const st = cushy
    const [depthMap, normalMap, image] = useTexture([
@@ -26,15 +25,15 @@ export const DisplacementUI2 = observer(function DisplacementUI2_(p: { uist: Dis
       uist.p.image,
    ])
 
-   const conf = st.displacementConf.fields
+   const conf = st.displacementConf.zFields
    return (
       <>
-         <ambientLight color={conf.ambientLightColor.value} intensity={conf.ambientLightIntensity.value} />
+         <ambientLight color={conf.ambientLightColor.zValue} intensity={conf.ambientLightIntensity.zValue} />
          <pointLight position={[10, 10, 10]} />
 
-         {conf.ground.value && <Ground3D />}
+         {conf.ground.zValue && <Ground3D />}
 
-         {conf.skyBox.value && <SkyBox3D />}
+         {conf.skyBox.zValue && <SkyBox3D />}
 
          <mesh>
             <planeGeometry attach='geometry' args={[1, 1, 800, 800]}></planeGeometry>
@@ -43,10 +42,10 @@ export const DisplacementUI2 = observer(function DisplacementUI2_(p: { uist: Dis
                ref={uist.materialRef}
                transparent={true}
                displacementMap={depthMap}
-               displacementScale={conf.displacementScale.value}
+               displacementScale={conf.displacementScale.zValue}
                normalMap={normalMap}
-               metalness={conf.metalness.value}
-               roughness={conf.roughness.value}
+               metalness={conf.metalness.zValue}
+               roughness={conf.roughness.zValue}
                userData={{
                   cutout: { value: conf.cutout },
                   removeBackground: { value: conf.removeBackground },
@@ -66,7 +65,7 @@ export const DisplacementUI2 = observer(function DisplacementUI2_(p: { uist: Dis
             </points>
             */}
 
-         {conf.camera.value.orbit ? (
+         {conf.camera.zValue.orbit ? (
             <OrbitControls
                // change start position
                // getPolarAngle={() => p.widget.state.val.elevation / (180 / Math.PI)}

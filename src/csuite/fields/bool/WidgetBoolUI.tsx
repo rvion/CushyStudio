@@ -1,38 +1,34 @@
 import type { Field_bool } from './FieldBool'
 
-import { observer } from 'mobx-react-lite'
-
 import { InputBoolUI } from '../../checkbox/InputBoolUI'
-import { SpacerUI } from '../../components/SpacerUI'
+import { WidgetTooltipUI } from '../number/WidgetNumberUI'
 
-export const WidgetBoolUI = observer(function WidgetBoolUI_(p: { field: Field_bool }) {
+export const WidgetBoolUI = obs(function WidgetBoolUI_(p: { expand?: boolean; field: Field_bool }) {
    const field = p.field
 
-   if (field.config.label2) {
+   if (field.zConfig.label2) {
       console.warn(
          'label2 is deprecated, please use the text option instead. label2 will be removed in the future',
       )
    }
 
    return (
-      <div tw='flex h-full w-full '>
-         <InputBoolUI
-            // config
-            display={field.config.display}
-            expand={field.config.display === 'button' ? field.config.expand : true}
-            icon={field.icon}
-            widgetLabel={field.config.text ?? field.config.label2}
-            // value
-            value={field.value_or_zero}
-            onBlur={() => field.touch()}
-            onValueChange={(value) => {
-               field.value = value
-               p.field.touch()
-            }}
-            toggleGroup={'field-bool'}
-         />
-
-         <SpacerUI />
-      </div>
+      <InputBoolUI
+         // config
+         display={field.zConfig.display}
+         expand={p.expand ?? (field.zConfig.display === 'button' ? field.zConfig.expand : true)}
+         icon={field.zIcon}
+         text={field.zConfig.text ?? field.zConfig.label2}
+         // value
+         value={field.zValueOrZero}
+         onBlur={() => field.zTouch()}
+         onValueChange={(value) => {
+            field.zValue = value
+            p.field.zTouch()
+         }}
+         toggleGroup={field.zUid}
+         // toggleGroup={'field-bool'}
+         tooltip={<WidgetTooltipUI field={field} />}
+      />
    )
 })

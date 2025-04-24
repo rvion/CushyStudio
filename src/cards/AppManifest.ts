@@ -27,6 +27,7 @@ export type AppMetadata = {
 
    /** this description will show-up at the top of the action form */
    description?: string
+   version?: { major: number; minor: number; patch: number }
 
    requirements?: Requirements[]
    /** help text to display (visbble by default) at the top of the draft) */

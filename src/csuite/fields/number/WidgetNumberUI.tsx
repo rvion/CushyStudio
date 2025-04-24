@@ -1,29 +1,48 @@
+import type { Field } from '../../model/Field'
 import type { Field_number } from './FieldNumber'
-
-import { observer } from 'mobx-react-lite'
 
 import { InputNumberUI } from '../../input-number/InputNumberUI'
 
-export const WidgetNumberUI = observer(function WidgetNumberUI_(p: { field: Field_number }) {
+export const WidgetNumberUI = obs(function WidgetNumberUI_(p: {
+   field: Field_number
+   config?: Field_number['zConfig']
+}) {
    const field = p.field
-   const value = field.value_or_zero
-   const mode = field.config.mode
-   const step = field.config.step ?? (mode === 'int' ? 1 : 0.1)
+   const value = field.zValueOrZero
+   const finalConfig = p.config ? { ...field.zConfig, ...p.config } : field.zConfig
+   const mode = finalConfig.mode
+   const step = finalConfig.step ?? (mode === 'int' ? 1 : 0.1)
 
    return (
       <InputNumberUI
          mode={mode === 'int' ? 'int' : 'float'}
          value={value}
-         hideSlider={field.config.hideSlider}
-         max={field.config.max}
-         min={field.config.min}
-         softMin={field.config.softMin}
-         softMax={field.config.softMax}
+         hideSlider={finalConfig.hideSlider}
+         max={finalConfig.max}
+         min={finalConfig.min}
+         softMin={finalConfig.softMin}
+         softMax={finalConfig.softMax}
          step={step}
-         suffix={field.config.suffix}
-         text={field.config.text}
-         onValueChange={(next) => void (field.value = next)}
-         forceSnap={field.config.forceSnap}
+         suffix={finalConfig.suffix}
+         text={finalConfig.text}
+         onValueChange={(next) => void (field.zValue = next)}
+         onBlur={() => field.zTouch()}
+         forceSnap={finalConfig.forceSnap}
+         tooltip={<WidgetTooltipUI field={field} />}
       />
+   )
+})
+
+export const WidgetTooltipUI = obs(function WidgetTooltipUI_({ field }: { field: Field }) {
+   return (
+      <div tw='py-1 px-2'>
+         <div tw='flex flex-col'>
+            <span>{field.zLabelText}</span>
+            {field.zDescription ? <span>{field.zDescription}</span> : <></>}
+            {cushy.preferences.interface.developerOptions.showDeveloperTooltips.zValue && (
+               <span tw='opacity-75'>{field.zPath}</span>
+            )}
+         </div>
+      </div>
    )
 })
