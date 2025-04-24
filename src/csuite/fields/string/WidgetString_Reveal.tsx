@@ -7,9 +7,11 @@ import { WidgetString_SmallInput } from './WidgetString_SmallInput'
 export const WidgetString_Reveal = obs(function WidgetString_Reveal_({
    field,
    readonly,
+   placeholder,
 }: {
    field: Field_string
    readonly?: boolean
+   placeholder?: string
 }) {
    const content = memoized(
       field,
@@ -30,7 +32,7 @@ export const WidgetString_Reveal = obs(function WidgetString_Reveal_({
          placement='above-no-max-size'
          children={
             <div tabIndex={1} tw='overflow-ellipsis line-clamp-1 flex-grow'>
-               {field.zValueUnchecked}
+               {field.zValueUnchecked || (placeholder ?? <div tw='italic opacity-50'>no title</div>)}
             </div>
          }
          content={content}

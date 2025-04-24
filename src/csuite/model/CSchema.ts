@@ -574,7 +574,7 @@ export class CSchema<out FIELD extends Field = Field> {
       const mergedChecks = memoized(
          this,
          'addCheck-2',
-         (f) => {
+         (f: FIELD) => {
             const prevCheckResults = prevCheck!(f)
             const nextCheckResults = checkToAdd(f)
             return [prevCheckResults, nextCheckResults]

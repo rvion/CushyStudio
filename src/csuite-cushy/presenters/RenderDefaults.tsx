@@ -145,6 +145,7 @@ function resetDefaultRules() {
          Body: (f) => {
             return (
                <uy.list.BlenderLike
+                  onSelectionChange={(ix, _, i) => (cushy.activePrompt = i.prompt)}
                   direction='vertical'
                   field={f.field}
                   renderItem={(item) => {
@@ -162,7 +163,10 @@ function resetDefaultRules() {
                            </RevealUI>
 
                            {/* title */}
-                           <item.name.UI Shell={uy.shell.HeaderOnly} Header={uy.string.reveal} />
+                           <item.name.UI
+                              Shell={uy.shell.HeaderOnly}
+                              Header={uy.string.reveal /* 🔴 .with({ placeholder: item.prompt.text }) */}
+                           />
 
                            {/* toogle */}
                            <div tw='flex gap-1'>

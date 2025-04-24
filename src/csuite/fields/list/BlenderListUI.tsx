@@ -18,6 +18,12 @@ export type BlenderListProps<T extends Field_list<any>> = {
    childRules?: RenderRule<T>[]
    renderItem: (item: T['items'][number], index: number) => ReactNode
    direction?: 'horizontal' | 'vertical'
+   // prettier-ignore
+   onSelectionChange?: (
+      index: number,
+      list: T,
+      selectedChild: T['{subfields}']['{field}'],
+   ) => void
 }
 
 export const BlenderListUI = obs(function BlenderListUI_<T extends Field_list<CSchema>>({
@@ -25,10 +31,17 @@ export const BlenderListUI = obs(function BlenderListUI_<T extends Field_list<CS
    activeIndex = 0,
    renderItem,
    direction = 'horizontal',
+   onSelectionChange,
 }: BlenderListProps<T>) {
    const uiConf = useLocalObservable(() => ({ size: undefined as Maybe<number> }), [field])
    const size = uiConf.size
-   const x = useLocalObservable(() => ({ selectedIx: activeIndex }))
+   const x = useLocalObservable(() => ({
+      selectedIx: activeIndex,
+      select(ix: number): void {
+         x.selectedIx = ix
+         onSelectionChange?.(ix, field, field.items[x.selectedIx]!)
+      },
+   }))
    const selectedChild = field.items[x.selectedIx]
    const theme = cushy.preferences.theme.zValue
    const wrapperCls =
@@ -56,7 +69,7 @@ export const BlenderListUI = obs(function BlenderListUI_<T extends Field_list<CS
                            tw={['h-widget select-none overflow-clip !border-none !box-content']}
                            triggerOnPress={{ startingState: selected, toggleGroup: 'blender-list-item-selected' }} // prettier-ignore
                            border={{ contrast: 0 }}
-                           onClick={action(() => (x.selectedIx = ix))}
+                           onClick={action(() => x.select(ix))}
                            base={{ contrast: selected ? 0.1 : 0 }}
                            roundness={theme.global.roundness}
                         >

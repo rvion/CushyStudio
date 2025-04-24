@@ -121,6 +121,8 @@ export interface Field_list<T extends CSchema> {
    '{child}': T['{field}']
    '{opts}': unknown
    '{ownPatch}': Field_list_patch<T>
+   // own
+   '{subfields}': T
 }
 export class Field_list<T extends CSchema> extends Field {
    // #region TYPE
