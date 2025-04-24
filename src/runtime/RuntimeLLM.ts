@@ -9,6 +9,16 @@ import { makeAutoObservable } from 'mobx'
 import { OpenRouter_ask } from '../csuite/openrouter/OpenRouter_ask'
 import { openRouterInfos } from '../csuite/openrouter/OpenRouter_infos'
 
+export type LLMVendor = 'openrouter' | 'ollama'
+
+type LLMRequest = {
+   vendor: LLMVendor
+   model: string
+   systemPrompt: string
+   userPrompt: string
+   image?: MediaImageL // base64 (optional)
+}
+
 /** namespace for all store-related utils */
 export class RuntimeLLM {
    constructor(private rt: Runtime) {
@@ -19,6 +29,9 @@ export class RuntimeLLM {
    // LOCAL LLM PART GOES HERE
    // 👉 .. TODO
    // ---------------------------
+   public getOpenRouterApiKey(): string | undefined {
+      return this.rt.Cushy.configFile?.value?.OPENROUTER_API_KEY
+   }
 
    /** verify key is ready */
    isConfigured(): boolean {
@@ -28,6 +41,123 @@ export class RuntimeLLM {
    /** geenric function to ask open router anything */
    ask_OpenRouter = async (p: OpenRouterRequest): Promise<OpenRouterResponse> => {
       return OpenRouter_ask(this.rt.Cushy.configFile.value.OPENROUTER_API_KEY, p)
+   }
+
+   LLM_Call = async ({
+      vendor,
+      model,
+      systemPrompt,
+      userPrompt,
+      image,
+      API_KEY,
+      unloadModelAfterRun = false,
+   }: LLMRequest & { API_KEY?: string; unloadModelAfterRun?: boolean }): Promise<any> => {
+      const headers: Record<string, string> = {
+         'Content-Type': 'application/json',
+      }
+
+      let url = ''
+      const isOllama = vendor === 'ollama'
+      const isOpenRouter = vendor === 'openrouter'
+
+      const baseBody = {
+         max_tokens: 300,
+         model,
+         messages: [
+            { role: 'system', content: systemPrompt },
+            image
+               ? isOpenRouter
+                  ? {
+                       role: 'user',
+                       content: [
+                          { type: 'text', text: userPrompt },
+                          {
+                             type: 'image_url',
+                             image_url: { url: image.getBase64Url() },
+                          },
+                       ],
+                    }
+                  : isOllama
+                    ? {
+                         role: 'user',
+                         content: userPrompt,
+                         images: [image.getBase64Payload()],
+                      }
+                    : {
+                         role: 'user',
+                         content: userPrompt,
+                      }
+               : {
+                    role: 'user',
+                    content: userPrompt,
+                 },
+         ],
+      }
+
+      // const baseBody = {
+      //    max_tokens: 300,
+      //    model,
+      //    messages: [
+      //       { role: 'system', content: systemPrompt },
+      //       image
+      //          ? {
+      //               role: 'user',
+      //               content: [
+      //                  { type: 'text', text: userPrompt },
+      //                  vendor === 'openrouter'
+      //                     ? {
+      //                          type: 'image_url',
+      //                          image_url: { url: image.getBase64Url() },
+      //                       }
+      //                     : {},
+      //                  vendor === 'ollama' ? { images: [image.getBase64Payload()] } : null,
+      //               ].filter(Boolean), // This removes any empty objects from the array
+      //            }
+      //          : { role: 'user', content: userPrompt },
+      //    ],
+      // }
+      // const baseBodyOllama = {
+      //    max_tokens: 300,
+      //    model,
+      //    messages: [
+      //       { role: 'system', content: systemPrompt },
+      //       image
+      //          ? {
+      //               role: 'user',
+      //               content: userPrompt,
+      //               images: [image.getBase64Payload()], // This removes any empty objects from the array
+      //            }
+      //          : { role: 'user', content: userPrompt },
+      //    ],
+      // }
+
+      let body = {}
+
+      if (vendor === 'openrouter') {
+         url = 'https://openrouter.ai/api/v1/chat/completions'
+         if (API_KEY) headers['Authorization'] = `Bearer ${API_KEY}`
+         body = { ...baseBody }
+      } else if (vendor === 'ollama') {
+         url = 'http://localhost:11434/api/chat' // Ollama endpoint
+         body = {
+            ...baseBody,
+            keep_alive: unloadModelAfterRun ? 0 : undefined,
+            stream: false,
+         }
+      } else throw new Error(`LLM vendor ${vendor} not supported`)
+      console.log('body', body)
+
+      const response = await fetch(url, {
+         method: 'POST',
+         headers,
+         body: JSON.stringify(body),
+      })
+      console.log('response', response)
+      if (!response.ok) {
+         throw new Error(`HTTP error! status: ${response.status}`)
+      }
+
+      return await response.json()
    }
 
    /** dictionary of all known openrouter models */
