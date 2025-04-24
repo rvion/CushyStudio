@@ -25,9 +25,9 @@ export const WidgetPromptUI = obs(function WidgetPromptUI_(p: { field: Field_pro
       uist.replaceTextBy(field.text)
    }, [field._valueUpdatedViaAPIAt])
 
-   const haveAtLeastOnePluginActive = plugins.some(
-      (plugin) => cushy.configFile.get(plugin.configKey) ?? false,
-   )
+   // const haveAtLeastOnePluginActive = plugins.some((plugin) =>
+   //    Boolean(cushy.configFile.get(plugin.configKey) ?? false),
+   // )
    return (
       <div ref={uist.mountRef}></div>
       // <div tw='flex flex-1 flex-col'>

@@ -25,6 +25,7 @@ import { WidgetSelectOneUI } from '../../csuite/fields/selectOne/WidgetSelectOne
 import { WigetSize_BlockUI } from '../../csuite/fields/size/WigetSize_BlockUI'
 import { WigetSize_LineUI } from '../../csuite/fields/size/WigetSize_LineUI'
 import { WidgetString_MarkdownUI } from '../../csuite/fields/string/WidgetString_Markdown'
+import { WidgetString_Reveal } from '../../csuite/fields/string/WidgetString_Reveal'
 import { WidgetString_SmallInput } from '../../csuite/fields/string/WidgetString_SmallInput'
 import { WidgetString_summary } from '../../csuite/fields/string/WidgetString_summary'
 import { WidgetString_TextareaInput } from '../../csuite/fields/string/WidgetString_TextareaInput'
@@ -39,6 +40,8 @@ import { MessageWarningUI } from '../../csuite/messages/MessageWarningUI'
 import { ResizableFrame } from '../../csuite/resizableFrame/resizableFrameUI'
 import { WidgetPromptCollapsibleUI } from '../../prompt/widgets/WidgetPromptCollapsibleUI'
 import { WidgetPromptUI } from '../../prompt/widgets/WidgetPromptUI'
+import { WidgetPromptUI2 } from '../../prompt/widgets/WidgetPromptUI2'
+import { WidgetPromptUIBird_d } from '../../prompt/widgets/WidgetPromptUIBird_d'
 import { useDropZone } from '../../widgets/galleries/dndGeneric'
 import { POPUP } from '../../widgets/misc/SimplePopUp'
 import { ColoredMarginUI } from '../catalog/Decorations/ColoredMarginUI'
@@ -179,6 +182,7 @@ const catalog_string = {
    summary: WidgetString_summary,
    textarea: WidgetString_TextareaInput,
    markdown: WidgetString_MarkdownUI,
+   reveal: WidgetString_Reveal,
 }
 
 const catalog_list = {
@@ -190,6 +194,8 @@ const catalog_list = {
 const catalog_prompt = {
    DefaultHeaderUI: WidgetPromptCollapsibleUI,
    DefaultBodyUI: WidgetPromptUI,
+   WidgetPromptUI2: WidgetPromptUI2,
+   WidgetPromptUIBird_d: WidgetPromptUIBird_d,
 }
 
 const catalog_group = {

@@ -1,7 +1,7 @@
 import type { Temporal } from '@js-temporal/polyfill'
 
 import { Field_date } from '../../fields/date/FieldDate'
-import { memoizedFN } from '../../hashUtils/hash'
+import { memoized } from '../../hashUtils/hash'
 import { IDENTITY } from '../../utils/identity'
 import { CSchema } from '../CSchema'
 import { type Problem_Ext, Severity } from '../Validation'
@@ -50,7 +50,7 @@ const BuilderDateImpl = (): BuilderDateMixin =>
             valueToDate: IDENTITY,
             dateToValue: IDENTITY,
             codeForTypescriptValue: 'Date',
-            check: memoizedFN(
+            check: memoized(
                this,
                'date',
                (field: Field_date<Date>): Problem_Ext => {

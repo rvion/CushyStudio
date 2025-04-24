@@ -11,16 +11,11 @@ import { BasicShelfUI } from '../../csuite/shelf/ShelfUI'
 import { PromptLang } from '../cm-lang/LANG'
 import { basicSetup } from '../cm-lang/SETUP'
 import { type Prompt_Lora, PromptAST } from '../grammar/grammar.practical'
-import { GrammarChoiceUI } from './components/GrammarChoiceUI'
+import { GrammarChoiceUI } from '../panel/components/GrammarChoiceUI'
 
 type X = { id: FieldId; label?: string }
 
-export const PromptEditorUI = obs(function PromptEditorUI_(p: { promptID: Field_prompt['zUid'] }) {
-   return '❌ broken'
-   // 1. retrieve the widget to get the inital value
-   // |  the widget won't be used afterwise unless we programmatically do stuff with it
-   const field = cushy.repository.getFieldByID(p.promptID) as Field_prompt | undefined
-
+export const WidgetPromptUIBird_d = obs(function WidgetPromptUIBird_d_({ field }: { field: Field_prompt }) {
    // 2. create a self-contained state to play with prompt-lang
    // | completely independent from the widget thing
    const uist = useMemo(
@@ -63,9 +58,7 @@ export const PromptEditorUI = obs(function PromptEditorUI_(p: { promptID: Field_
 
             // ------------------------------------------------------------------
             mountRef = createRef<HTMLDivElement>()
-
             editorView: Maybe<EditorView> = null
-
             editorState: EditorState
 
             get ast(): PromptAST {
@@ -166,6 +159,7 @@ export const PromptEditorUI = obs(function PromptEditorUI_(p: { promptID: Field_
          /> */}
          </Frame>
          <BasicShelfUI anchor='right'>
+            {/* <pre>{uist.ast.toString()}</pre> */}
             {uist.ast.findAll('Choice').map((choice, choiceIndex) => {
                return <GrammarChoiceUI view={uist.editorView} choice={choice} index={choiceIndex} />
             })}

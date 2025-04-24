@@ -1,4 +1,5 @@
 import type { FrameProps } from '../frame/Frame'
+import type { RevealProps } from '../reveal/RevealProps'
 
 import { makeAutoObservable, observable, runInAction } from 'mobx'
 import React, { useEffect, useMemo } from 'react'
@@ -20,6 +21,9 @@ export type ButtonProps = FrameProps & {
    hue?: number
    contrast?: number
    chroma?: number
+
+   /** if provided, automatically wrap the button with a reveal */
+   // reveal?: RevealProps['content']
 }
 
 const _Button = obs(function Button_(p: ButtonProps) {

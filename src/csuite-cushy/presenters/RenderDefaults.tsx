@@ -21,6 +21,7 @@ import { WidgetMenuUI } from '../../csuite/form/WidgetMenu'
 import { WidgetSingleLineSummaryUI } from '../../csuite/form/WidgetSingleLineSummaryUI'
 import { WidgetToggleUI } from '../../csuite/form/WidgetToggleUI'
 import { WidgetUndoChangesButtonUI } from '../../csuite/form/WidgetUndoChangesButtonUI'
+import { RevealUI } from '../../csuite/reveal/RevealUI'
 import { FieldSelector } from '../../csuite/selector/selector'
 import { WidgetErrorsUI } from '../catalog/Errors/WidgetErrorsUI'
 import { WidgetPresetsUI } from '../catalog/Presets/WidgetPresets'
@@ -111,7 +112,11 @@ function resetDefaultRules() {
    r<Z.FColor>('@color', { Header: WidgetColorUI, Body: null })
    r<Z.FBool>('@bool', { Header: uy.boolean.Default, Body: null })
    r<any>('@enum', { Header: uy.enum.default, Body: null })
-   r<any>('@prompt', { Header: uy.prompt.DefaultHeaderUI, Body: uy.prompt.DefaultBodyUI })
+   r<any>('@prompt', {
+      Header: uy.prompt.DefaultHeaderUI,
+      // Body: uy.prompt.DefaultBodyUI,
+      Body: uy.prompt.WidgetPromptUI2,
+   })
    r<Field>('$', { collapsible: false })
    // r<Field>('!(:has(.))', { Caret: false })
    r<Field_group>('$@group', {
@@ -126,14 +131,15 @@ function resetDefaultRules() {
    // })
    // '@list:has(.@group.{@image & {name | title}@string})'
 
-   r<Z.FList<Z.Record<{ enabled: Z.Bool; name: Z.String }>>>(
-      '@list:has(.@group:has(.enabled@bool):has(.name@str))',
+   r<Z.FList<Z.Record<{ enabled: Z.Bool; name: Z.String; prompt: Z.Prompt }>>>(
+      '@list:has(.@group:has(.enabled@bool):has(.name@str):has(.prompt@prompt))',
       {
          rules: (f, set) => {
             set('&.@group.enabled', { Shell: null })
             set('&.@group.name', { Shell: null })
             set('&.@group', { Head: null })
-            set('&.@group.prompt', { Head: null })
+            // set('&.@group.prompt', { Head: null })
+            set('&.@group.prompt', { Shell: null })
             set('&', { Head: null })
          },
          Body: (f) => {
@@ -148,8 +154,14 @@ function resetDefaultRules() {
                      const txt = str?.zValueUnchecked ?? item.zSummary
                      return (
                         <div tw='flex items-center flex-grow'>
-                           <item.name.UI Shell={uy.shell.HeaderOnly} />
-                           <div>
+                           <RevealUI
+                              content={() => <item.prompt.UI Shell={uy.prompt.WidgetPromptUIBird_d} />}
+                              // contentDeps={[item]}
+                           >
+                              <uy.misc.Button subtle borderless icon={IKONS.cdiNodes} />
+                           </RevealUI>
+                           <item.name.UI Shell={uy.shell.HeaderOnly} Header={uy.string.reveal} />
+                           <div tw='flex gap-1'>
                               <item.enabled.UI Shell={uy.shell.HeaderOnly} />
                            </div>
                            {img && <img src={img.zValue.url} tw='h-widget w-widget' />}

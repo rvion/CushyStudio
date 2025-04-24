@@ -26,7 +26,7 @@ import {
    isSchemaSelectOne,
    isSchemaString,
 } from '../fields/WidgetUI.DI'
-import { memoizedFN, schemaConfigHash } from '../hashUtils/hash'
+import { memoized, schemaConfigHash } from '../hashUtils/hash'
 import { objectAssignTsEfficient_t_pt } from '../utils/objectAssignTsEfficient'
 import { potatoClone } from '../utils/potatoClone'
 import { CSchemaNeighborhood, type NeighborhoodName } from './CSchemaTraversal'
@@ -562,7 +562,7 @@ export class CSchema<out FIELD extends Field = Field> {
        */
       memo: any[],
    ): this {
-      const checkToAdd = memoizedFN(this, 'addCheck-1', check_, memo)
+      const checkToAdd = memoized(this, 'addCheck-1', check_, memo)
       const prevCheck = this.config.check
       // case 1. same
       if (prevCheck === checkToAdd) return this
@@ -571,7 +571,7 @@ export class CSchema<out FIELD extends Field = Field> {
       if (prevCheck == null) return this.withConfig({ check: checkToAdd })
 
       // case 3. merge both
-      const mergedChecks = memoizedFN(
+      const mergedChecks = memoized(
          this,
          'addCheck-2',
          (f) => {

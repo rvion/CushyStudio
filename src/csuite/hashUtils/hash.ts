@@ -123,21 +123,29 @@ export function schemaConfigHash(obj: any): string {
 const memoMapIndex = new DefaultWeakMap(() => new Map<any, any>())
 
 /**
- * Memoizes a function based on its unique key, and its dependencies hash.
- * before 2025-03-04, this function was plain wrong: similar deps lead to reusing
- * wrong memoized functions, since we had no specific key for scope/context.
+ * Memoizes a function based on 1:its owner + 2:a key + 3:a hash of its dependencies.
+ * (1) helps with purging the cache when the owner is destroyed
+ * (2) helps avoiding collisions between different within owners
+ *     when two functions have the same deps because it's easy to
+ *     forget to add some kind of key in the deps.
+ * (3) anything else you want as a dependency cache
  */
-export function memoizedFN<FN extends (...args: any[]) => any>(
+export function memoized<STUFF>(
+   /** first scope (object you're currently in, globalThis if you don't) */
    owner: object,
-   /** unique for this usage withing owner */
+
+   /** second scope; short and unique string */
    uid: string,
-   fn: FN,
+
+   stuff: STUFF,
+
+   /** third scope */
    deps: any[],
-): FN {
+): STUFF {
    const memoMap = memoMapIndex.get(owner)
    const key = uid + schemaConfigHash(deps)
    const memo = memoMap.get(key)
    if (memo) return memo
-   memoMap.set(key, fn)
-   return fn
+   memoMap.set(key, stuff)
+   return stuff
 }

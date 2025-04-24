@@ -120,11 +120,12 @@ export type RevealProps = {
    // components / slots -------------------------------------------------------------
    shell?: FC<RevealShellProps> | KnownShells
    content: FC<RevealContentProps> // | null
+   contentDeps?: any[] // | null
    children?: React.ReactNode //, React.ReactNode]
    title?: React.ReactNode // only for popup
 
    // callbacks if we need to add side effects after reveal/hide
-   onAnchorKeyDown?: (ev: React.KeyboardEvent) => void
+   onAnchorKeyDown?: (ev: React.KeyboardEvent, reveal: RevealState) => void
    onRevealed?: (rst: RevealState) => void
    onBeforeHide?: (ev: RevealCloseEvent) => void
    onHidden?: (reason: RevealHideReason) => void

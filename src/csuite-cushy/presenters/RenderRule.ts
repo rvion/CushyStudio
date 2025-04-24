@@ -1,7 +1,7 @@
 import type { Field } from '../../csuite/model/Field'
 import type { FL_RawFieldSelector } from '../../csuite/selector/selector'
 import type { CovariantFn } from '../../csuite/variance/BivariantHack'
-import type { RenderProps, RenderPropsFlat } from './RenderProps'
+import type { RenderProps } from './RenderProps'
 
 export const RENDER_PRIORITY_DEFAULT_RULES = 10
 export const RENDER_PRIORITY_UIUI = 20

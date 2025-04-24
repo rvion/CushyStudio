@@ -181,6 +181,7 @@ export class RevealState {
       this.shellRef = lazyState.shellRef
       this.uid = lazyState.uid
       // see comment above
+
       this.contentFn = (): ReactNode => {
          const Component = this.p.content
          if (Component == null) return null
@@ -768,7 +769,7 @@ export class RevealState {
 
    onAnchorKeyDown = (ev: React.KeyboardEvent): void => {
       this.logEv(ev, `AnchorOrShell.onKeyDown (⏳: ${this.delaySinceLastOpenClose})`)
-      this.p.onAnchorKeyDown?.(ev)
+      this.p.onAnchorKeyDown?.(ev, this)
       // keydown have been consumed by the anchor custom onAnchorKeyDown; we should just abort
       if (ev.isDefaultPrevented()) return console.log(`[🤠] 🔴 default prevented by custom onAnchorKeyDown`)
 

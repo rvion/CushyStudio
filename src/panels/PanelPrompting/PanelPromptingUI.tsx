@@ -2,7 +2,7 @@ import type { NO_PROPS } from '../../csuite/types/NO_PROPS'
 
 import { Button } from '../../csuite/button/Button'
 import { PanelUI } from '../../csuite/panel/PanelUI'
-import { PromptEditorUI } from '../../prompt/panel/PromptEditorUI'
+import { WidgetPromptUIBird_d } from '../../prompt/widgets/WidgetPromptUIBird_d'
 
 export const PanelPromptingUI = obs(function PanelPromptingUI_(p: NO_PROPS) {
    return (
@@ -11,7 +11,7 @@ export const PanelPromptingUI = obs(function PanelPromptingUI_(p: NO_PROPS) {
             <Button>Mode</Button>
          </PanelUI.Header>
          <PanelUI.Content>
-            {cushy.activePrompt && <PromptEditorUI promptID={cushy.activePrompt.zUid}></PromptEditorUI>}
+            {cushy.activePrompt && <WidgetPromptUIBird_d field={cushy.activePrompt}></WidgetPromptUIBird_d>}
          </PanelUI.Content>
       </PanelUI>
    )
