@@ -19,5 +19,9 @@ export function pythonModuleToPrefix(pythonModule: string): string {
             .replace(/[-_]node[-_]suite$/i, '') + '.'
       )
    }
+   if (pythonModule.startsWith('comfy_api_nodes.')) {
+      return pythonModule.replace(/^comfy_api_nodes\./i, '') + '.'
+   }
+
    throw new Error(`unexpected pythonModule: ${pythonModule}`)
 }
