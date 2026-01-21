@@ -69,7 +69,8 @@ async function START() {
 
         // start CSS builder
         console.log(`[✅] starting tailwind dev-server`)
-        void spawn('./node_modules/.bin/tailwindcss', ['--watch', '-o', 'src/theme/twin.css'], { stdio: 'inherit' })
+        const tailwindCmd = process.platform === 'win32' ? './node_modules/.bin/tailwindcss.cmd' : './node_modules/.bin/tailwindcss'
+        void spawn(tailwindCmd, ['--watch', '-o', 'src/theme/twin.css'], { stdio: 'inherit' })
         // void spawn('./node_modules/.bin/unocss', ['--watch', '-o', 'src/theme/twin.css'], { stdio: 'inherit' })
     }
 
