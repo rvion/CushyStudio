@@ -1,26 +1,4 @@
-<div align="center">
-
-# 🛋️ CushyStudio
-
-### _The **Generative AI Platform** for everyone_
-
-<img height="21"  alt="Maturity"     src="https://img.shields.io/badge/status-BETA-yellow" />
-<img height="21" alt="Build Status" src="https://img.shields.io/badge/build-passing-%20brightgreen" />
-<img height="21"  alt="Activity"     src="https://img.shields.io/github/commit-activity/y/rvion/cushystudio" />
-
-<!-- <img height="21"  alt="Sponsors"     src="https://img.shields.io/github/sponsors/rvion" /> -->
-
-<!-- <br /> -->
-<a href="https://discord.gg/GfAN6hF2ad">
-    <img height="21" alt="Join our Discord" src="https://dcbadge.vercel.app/api/server/GfAN6hF2ad?style=flat">
-</a>
-<a href="https://twitter.com/_rvion">
-    <img height="21" alt="Follow _rvion on Twitter" src="https://img.shields.io/badge/%40__rvion-666666?style=flat&logo=twitter&labelColor=555&label=Follow">
-</a>
-
-</div>
-
----
+<a href="https://github.com/rvion/comfy-ts"><img src="docs/migrate-to-comfy-ts.png" alt="CushyStudio is legacy: move on to comfy-ts (bun add comfy-ts)" width="100%" /></a>
 
 > [!IMPORTANT]
 > **CushyStudio is a legacy project.** For anything ComfyUI, go to **[comfy-ts](https://github.com/rvion/comfy-ts)**: the ComfyUI library that was born here, now a package of its own. ComfyUI workflows in TypeScript, typed from your own install, with a terminal UI, a web panel and a guide for coding agents.
@@ -30,6 +8,31 @@
 > ```
 >
 > The Discord stays open, for comfy-ts and for CushyStudio.
+
+<div align="center">
+
+# 🛋️ CushyStudio
+
+### _The **Generative AI Platform** for everyone_
+
+<img height="21"  alt="Maturity"     src="https://img.shields.io/badge/status-LEGACY-lightgrey" />
+<img height="21" alt="Build Status" src="https://img.shields.io/badge/build-passing-%20brightgreen" />
+<img height="21"  alt="Activity"     src="https://img.shields.io/github/commit-activity/y/rvion/cushystudio" />
+
+<!-- <img height="21"  alt="Sponsors"     src="https://img.shields.io/github/sponsors/rvion" /> -->
+
+<!-- <br /> -->
+<a href="https://discord.gg/GfAN6hF2ad">
+    <img height="21" alt="Join our Discord" src="https://img.shields.io/badge/Discord-join-5865F2?logo=discord&logoColor=white">
+</a>
+<a href="https://twitter.com/_rvion">
+    <img height="21" alt="Follow _rvion on Twitter" src="https://img.shields.io/badge/%40__rvion-666666?style=flat&logo=twitter&labelColor=555&label=Follow">
+</a>
+
+</div>
+
+---
+
 
 
 **CushyStudio** is the go-to platform for easy generative AI use, empowering creatives of any level to effortlessly create stunning images, videos, and 3D models.
@@ -43,10 +46,8 @@
 
 **Dive into the AI Revolution with CushyStudio**. Unleash your creativity, share your projects, and connect with a vibrant community pushing the boundries of generative AI. Experience the fusion of simplicity and innovation.
 
-> [!WARNING]
-> ⚠️ CushyStudio is under active development, so you might encounter incomplete features
-> or issues due to rapid updates. Your feedback is vital for us to refine and expand the project.
-> Please report any critical problems you find in our discord or open a GitHub issue.
+> [!NOTE]
+> CushyStudio is no longer under active development. The code stays here as it is, and some of it may not work with recent ComfyUI versions. New work on ComfyUI happens in [comfy-ts](https://github.com/rvion/comfy-ts): report its issues there, or ask on the Discord.
 
 -----------
 
