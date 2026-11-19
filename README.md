@@ -22,6 +22,16 @@
 
 ---
 
+> [!IMPORTANT]
+> **CushyStudio is a legacy project.** For anything ComfyUI, go to **[comfy-ts](https://github.com/rvion/comfy-ts)**: the ComfyUI library that was born here, now a package of its own. ComfyUI workflows in TypeScript, typed from your own install, with a terminal UI, a web panel and a guide for coding agents.
+>
+> ```sh
+> bun add comfy-ts
+> ```
+>
+> The Discord stays open, for comfy-ts and for CushyStudio.
+
+
 **CushyStudio** is the go-to platform for easy generative AI use, empowering creatives of any level to effortlessly create stunning images, videos, and 3D models.
 
 
