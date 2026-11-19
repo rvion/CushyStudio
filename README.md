@@ -1,7 +1,7 @@
 <a href="https://github.com/rvion/comfy-ts"><img src="docs/migrate-to-comfy-ts.png" alt="CushyStudio is legacy: move on to comfy-ts (bun add comfy-ts)" width="100%" /></a>
 
 > [!IMPORTANT]
-> **CushyStudio is a legacy project.** For anything ComfyUI, go to **[comfy-ts](https://github.com/rvion/comfy-ts)**: the ComfyUI library that was born here, now a package of its own. ComfyUI workflows in TypeScript, typed from your own install, with a terminal UI, a web panel and a guide for coding agents.
+> **CushyStudio is a legacy project.** Its ComfyUI library is now a package of its own: **[comfy-ts](https://github.com/rvion/comfy-ts), the most efficient way to create, run, maintain and operate your ComfyUI workflows, for humans and agents.** It has a terminal UI, a web panel and a guide for coding agents.
 >
 > ```sh
 > bun add comfy-ts
